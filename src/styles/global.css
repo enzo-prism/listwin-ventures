@@ -55,8 +55,15 @@ img {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
   width: var(--typing-width, 22ch);
   min-width: var(--typing-width, 22ch);
+}
+
+#hero-typing {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 @media (min-width: 640px) {
