@@ -10,42 +10,68 @@ design or content work.
 
 ## Getting Started
 
-Install dependencies:
+1. Install dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
-Start the local development server (runs at http://localhost:8080):
+2. Start the local development server (http://localhost:8080):
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
-## Production Build
+3. Generate and inspect a production build when ready:
 
-Generate an optimized production build and preview it locally on the same port:
+   ```bash
+   npm run build
+   npm run preview
+   ```
 
-```bash
-npm run build
-npm run preview
-```
+### Large Files
+
+The repo intentionally ignores:
+
+- `public/assets/uploads/termageddon-maxmind/`
+- `public/assets/uploads/2025/06/`
+- All `*.mp4`
+
+Copy those assets from the internal media archive if you need them locally. They are not
+required for most development tasks, but missing files will surface as 404s when referencing
+the related media.
 
 ## Project Structure
 
-- `src/pages/` &mdash; Astro pages created from the original WordPress content.
-- `src/layouts/` &mdash; Global layout with responsive navigation and shared styles.
-- `src/components/LogoGrid.astro` & `HeroMedia.astro` &mdash; helpers to showcase logos and imagery.
-- `src/data/assets.ts` &mdash; catalog of preserved imagery mapped to boards, investments, and philanthropy.
-- `public/assets/` &mdash; Imported uploads, theme styles, and other static files.
-- See also `../docs/architecture.md` for a full tour of the rebuild and guidance on extending it.
-- `archive/` (at the repository root) &mdash; Unmodified exports of the legacy `site/` and
-  `content-source/` folders for reference.
+- `src/pages/` – Astro page routing (hero/homepage, legal pages, BelizeKids spotlight, oral history, etc.).
+- `src/layouts/BaseLayout.astro` – Global shell (sticky nav, dropdown menus, frosted glass header/footer).
+- `src/components/LogoGrid.astro` & `HeroMedia.astro` – reusable media primitives that feed off the data catalogs.
+- `src/data/assets.ts` – legacy media mapping plus grouped board/investment/philanthropy collections.
+- `src/data/entityDetails.ts` – canonical portfolio metadata powering `/company/[slug]` pages and the nav dropdowns.
+- `public/assets/` – static uploads, legacy CSS, and any new media (note the large-file exclusions above).
+- `docs/architecture.md` – ground truth for the design system, section structure, and data flow.
+- `archive/` – frozen WordPress exports for historical reference (do not edit).
+
+## Data-Driven Company Pages
+
+Each logo on the homepage links to `/company/[slug]`, generated from `src/data/entityDetails.ts`.
+
+To add or update a company:
+
+1. Add/refresh the asset entry in `src/data/assets.ts` (under the appropriate group).
+2. Add a `DetailContent` entry in `src/data/entityDetails.ts` with `summary`, `highlights`, and optional `externalUrl`.
+3. Ensure the slug is listed in `requiredSlugs` so the page is pre-rendered.
+4. Run `npm run build` to verify the new route.
+
+The navigation dropdowns pull from the same detail list. Company names now render in only one dropdown:
+
+- Work – currently Carbon Robotics only.
+- Investments – grouped by stage, plus an Exits group.
+- Community Projects – philanthropic entities.
 
 ## Next Steps
 
-- Replace or extend theme styling in `public/assets/css/` and Tailwind utilities in `src/styles`.
-- Review `src/data/assets.ts` to confirm each logo reflects the latest board/investment roster and
-  swap in higher fidelity artwork (e.g., venture partner logos) as it becomes available.
-- Add collections or content sources as needed (MDX, CMS, etc.).
-- Remove or enhance legacy pages such as `home-old` once no longer required.
+- Keep `docs/architecture.md` in sync when redesigning sections (hero, investments, exploits, nav).
+- Use `src/data/entityDetails.ts` as the single source of truth for copy, CTA links, and navigation labels.
+- Leverage the four homepage sections after “My Story”: Recent Work, Investments, Exploits, and Contact.
+- Prune or archive legacy pages (`home-old`, placeholder legal docs) once they are no longer needed.
