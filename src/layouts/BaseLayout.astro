@@ -351,12 +351,16 @@ const navItems = [
 
       const typingEl = document.getElementById("hero-typing");
       const typingPhrases = ["Technology investor", "CEO", "Philanthropist"];
+      const prefersStaticTyping = window.matchMedia("(max-width: 640px)").matches;
       if (typingEl && typingPhrases.length) {
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let deleting = false;
-        const typeSpeed = 90;
-        const eraseSpeed = 60;
+        if (prefersStaticTyping) {
+          typingEl.textContent = typingPhrases.join(" • ");
+        } else {
+          let phraseIndex = 0;
+          let charIndex = 0;
+          let deleting = false;
+          const typeSpeed = 90;
+          const eraseSpeed = 60;
         const holdTime = 1200;
 
         const typeLoop = () => {
@@ -382,7 +386,8 @@ const navItems = [
           setTimeout(typeLoop, deleting ? eraseSpeed : typeSpeed);
         };
 
-        typeLoop();
+          typeLoop();
+        }
       }
     </script>
   </body>
