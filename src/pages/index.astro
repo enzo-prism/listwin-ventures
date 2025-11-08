@@ -17,7 +17,7 @@ const carbonRoboticsAsset = investmentAssets
 const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
 const entityDetails = getEntityDetails();
 const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail) => [detail.slug, detail]));
-const exitSlugs = ['openwave', 'joyent', 'isilon', 'plumgrid', 'teradici'];
+const exitSlugs = ['robin', 'teradici'];
 const exitItems = exitSlugs.map((slug) => entityDetailMap.get(slug)).filter((detail): detail is EntityDetail => Boolean(detail));
 
 const investmentCarousels = investmentAssets.reduce((acc, group) => {
