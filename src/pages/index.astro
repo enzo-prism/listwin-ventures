@@ -21,6 +21,7 @@ const exitSlugs = ['openwave', 'joyent', 'isilon', 'plumgrid', 'teradici'];
 const exitItems = exitSlugs.map((slug) => entityDetailMap.get(slug)).filter((detail): detail is EntityDetail => Boolean(detail));
 
 const investmentCarousels = investmentAssets.reduce((acc, group) => {
+  if (group.label === 'Frontier') return acc;
   acc.push({
     label: group.label,
     items: group.items
