@@ -372,7 +372,7 @@ const navItems = [
             maxWidth = Math.max(maxWidth, measure.getBoundingClientRect().width);
           });
           measure.remove();
-          typingWrapper.style.setProperty("--typing-width", `${Math.ceil(maxWidth) + 12}px`);
+          typingWrapper.style.setProperty("--typing-width", `${Math.ceil(maxWidth * 1.5)}px`);
         }
 
         let phraseIndex = 0;
