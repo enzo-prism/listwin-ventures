@@ -98,9 +98,9 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Seed',
     items: [
-      make('uberflip', '2018/05/uberflip.png', 'Uberflip wordmark', 'https://www.uberflip.com/'),
-      make('vida', '2022/05/vida.png', 'VIDA lung health wordmark', 'https://www.vidalung.ai/'),
-      make('zededa', '2020/05/zededa.png', 'Zededa wordmark', 'https://zededa.com/'),
+      make('uberflip', '2018/05/uberflip.png', 'Uberflip', 'https://www.uberflip.com/'),
+      make('vida', '2022/05/vida.png', 'VIDA lung health', 'https://www.vidalung.ai/'),
+      make('zededa', '2020/05/zededa.png', 'Zededa', 'https://zededa.com/'),
     ],
   },
   {
@@ -140,8 +140,8 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Philanthropic',
     items: [
-      make('belizekids', '2018/05/belize.png', 'BelizeKids wordmark', 'https://belizekids.org/'),
-      make('canary-foundation', '2018/05/cf.png', 'Canary Foundation wordmark', 'https://www.canaryfoundation.org/'),
+      make('belizekids', '2018/05/belize.png', 'BelizeKids', 'https://belizekids.org/'),
+      make('canary-foundation', '2018/05/cf.png', 'Canary Foundation', 'https://www.canaryfoundation.org/'),
     ],
   },
 ];
