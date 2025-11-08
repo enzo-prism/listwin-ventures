@@ -40,6 +40,7 @@ export const heroAssets: VisualAsset[] = [
   make('clarius', '2020/05/clarius.png', 'Clarius Mobile Health logo', 'https://clarius.com/'),
   make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
   make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo', 'https://zevx.com/'),
+  make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
 ];
 
 export const boardAssets: AssetGroup[] = [
@@ -116,15 +117,6 @@ export const investmentAssets: AssetGroup[] = [
   },
   {
     type: 'investment',
-    label: 'Frontier',
-    items: [
-      make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
-      make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
-      make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
-    ],
-  },
-  {
-    type: 'investment',
     label: 'Venture',
     items: [
       make('bdc', '2018/05/bdc.png', 'BDC logo', 'https://www.bdc.ca/'),
@@ -183,6 +175,9 @@ export const belizeKidsGallery: VisualAsset[] = [
   make('belizekids-mentorship', 'https://i.imgur.com/44skZfu.jpg', 'Mentorship circle with scholarship recipients'),
   make('belizekids-tech-lab', 'https://i.imgur.com/r8J764N.jpg', 'Mobile technology lab brought to coastal schools'),
   make('belizekids-celebration', 'https://i.imgur.com/BHPVT5L.jpg', 'Celebration with students after completing summer institute'),
+  make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
+  make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
+  make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
 ];
 
 export type { AssetGroup };
