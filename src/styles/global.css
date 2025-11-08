@@ -39,6 +39,10 @@ img {
   .video-frame iframe {
     border-radius: 0;
   }
+
+  video {
+    border-radius: 0 !important;
+  }
 }
 
 [data-reveal] {
