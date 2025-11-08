@@ -101,6 +101,7 @@ export const investmentAssets: AssetGroup[] = [
       make('uberflip', '2018/05/uberflip.png', 'Uberflip', 'https://www.uberflip.com/'),
       make('vida', '2022/05/vida.png', 'VIDA lung health', 'https://www.vidalung.ai/'),
       make('zededa', '2020/05/zededa.png', 'Zededa', 'https://zededa.com/'),
+      make('cradle', '2019/07/cradle.png', 'Cradle Genomics logo', 'https://www.cradlegenomics.com/'),
     ],
   },
   {
@@ -108,13 +109,18 @@ export const investmentAssets: AssetGroup[] = [
     label: 'Private',
     items: [
       make('awarex', '2020/05/awarex.png', 'AwareX logo', 'https://www.awarex.com/'),
-      make('cradle', '2019/07/cradle.png', 'Cradle Genomics logo', 'https://www.cradlegenomics.com/'),
       make('clarius', '2020/05/clarius-02.png', 'Clarius Mobile Health logo', 'https://clarius.com/'),
+      make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
+      make('teradici', '2018/05/teradici.png', 'Teradici logo', 'https://www.teradici.com/'),
+    ],
+  },
+  {
+    type: 'investment',
+    label: 'Frontier',
+    items: [
       make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
       make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
-      make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
       make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
-      make('teradici', '2018/05/teradici.png', 'Teradici logo', 'https://www.teradici.com/'),
     ],
   },
   {
