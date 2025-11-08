@@ -354,8 +354,25 @@ const navItems = [
       if (typingEl && typingPhrases.length) {
         const typingWrapper = document.querySelector(".typing-line");
         if (typingWrapper) {
-          const maxLength = Math.max(...typingPhrases.map((phrase) => phrase.length));
-          typingWrapper.style.setProperty("--typing-width", `${maxLength + 2}ch`);
+          const computed = window.getComputedStyle(typingEl);
+          const wrapperComputed = window.getComputedStyle(typingWrapper);
+          const measure = document.createElement("span");
+          measure.style.position = "absolute";
+          measure.style.visibility = "hidden";
+          measure.style.pointerEvents = "none";
+          measure.style.whiteSpace = "nowrap";
+          measure.style.fontSize = computed.fontSize;
+          measure.style.fontFamily = computed.fontFamily;
+          measure.style.fontWeight = computed.fontWeight;
+          measure.style.letterSpacing = wrapperComputed.letterSpacing;
+          document.body.appendChild(measure);
+          let maxWidth = 0;
+          typingPhrases.forEach((phrase) => {
+            measure.textContent = phrase;
+            maxWidth = Math.max(maxWidth, measure.getBoundingClientRect().width);
+          });
+          measure.remove();
+          typingWrapper.style.setProperty("--typing-width", `${Math.ceil(maxWidth) + 12}px`);
         }
 
         let phraseIndex = 0;
