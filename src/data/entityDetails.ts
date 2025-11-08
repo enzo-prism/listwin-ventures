@@ -195,10 +195,11 @@ const content: Record<string, DetailContent> = {
   },
   openwave: {
     summary:
-      'Openwave (formerly Software.com + Phone.com) created core mobile internet messaging and browser platforms in the early 2000s.',
+      'Openwave (born from the merger of Software.com and Phone.com) built the essential software stack that powered the first generation of the mobile internet.',
     highlights: [
-      'Don led the company as CEO through the dot-com crash, restructuring it for the next phase of mobile growth.',
-      'Lessons from Openwave informed his leadership philosophy for later ventures.',
+      'Under Don’s leadership (2000–2004), Openwave merged global teams, navigated the dot-com crash, and refocused on durable carrier-grade infrastructure.',
+      'Technology shipped on more than a billion devices, defined early mobile browsing/messaging standards, and set the foundation for today’s mobile data services.',
+      'The experience reshaped Don’s leadership philosophy—balancing innovation with pragmatic execution for founders building next-gen networked technologies.',
     ],
   },
   poet: {
