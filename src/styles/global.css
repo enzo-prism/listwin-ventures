@@ -97,6 +97,10 @@ img {
 [data-dropdown][open] summary span[data-dropdown-caret] {
   transform: rotate(180deg);
 }
+
+button[data-nav-toggle][aria-expanded="true"] {
+  @apply border-brand bg-brand text-white;
+}
 [data-dropdown] summary span[data-dropdown-caret] {
   transform: rotate(0deg);
   transition: transform 0.3s ease;
