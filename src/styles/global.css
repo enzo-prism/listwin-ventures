@@ -43,6 +43,20 @@ img {
   will-change: opacity, transform;
 }
 
+[class~="typing-line"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 18ch;
+}
+
+@media (min-width: 640px) {
+  [class~="typing-line"] {
+    min-width: 20ch;
+  }
+}
+
 [data-reveal].is-visible {
   opacity: 1;
   transform: none;
