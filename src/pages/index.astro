@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LogoGrid from '../components/LogoGrid.astro';
+import CompanyCarousel from '../components/CompanyCarousel.astro';
 import HeroMedia from '../components/HeroMedia.astro';
-import { heroAssets, investmentAssets, philanthropyAssets } from '../data/assets';
-import { getDetailPath } from '../data/entityDetails';
+import { heroAssets, investmentAssets } from '../data/assets';
+import { getDetailPath, getEntityDetails, type EntityDetail } from '../data/entityDetails';
 import { getExploitPath } from '../data/exploitDetails';
 
 const pageTitle = 'Home';
@@ -15,6 +15,14 @@ const carbonRoboticsAsset = investmentAssets
   .flatMap((group) => group.items)
   .find((asset) => asset.id === 'carbon-robotics');
 const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
+const entityDetails = getEntityDetails();
+const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail) => [detail.slug, detail]));
+const investmentCarousels = investmentAssets.map((group) => ({
+  label: group.label,
+  items: group.items
+    .map((asset) => entityDetailMap.get(asset.id))
+    .filter((detail): detail is EntityDetail => Boolean(detail)),
+}));
 
 const linkTargets = {
   openwave: getDetailPath('openwave'),
@@ -363,9 +371,9 @@ const exploitThemes = [
         This is how we do groundbreaking work bringing new products to market.
       </p>
     </div>
-    <div class="space-y-5">
-      {investmentAssets.map((group) => (
-        <LogoGrid title={group.label} assets={group.items} columns={5} />
+    <div class="space-y-8">
+      {investmentCarousels.map((group) => (
+        <CompanyCarousel title={group.label} items={group.items} />
       ))}
     </div>
   </section>
