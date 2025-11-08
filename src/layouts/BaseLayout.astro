@@ -28,20 +28,39 @@ if (exitItems.length) {
   investmentSections.push({ label: 'Exits', items: exitItems });
 }
 
-investmentSections.push({
-  label: 'Philanthropic',
-  items: [],
-  links: [{ label: 'Explore community projects →', href: '#exploits' }]
-});
-
 const communityItems = entityDetails.filter((detail) => detail.categories.includes('philanthropy'));
 
 const prettify = (name: string) => name.replace(/\s+(logo|crest|lockup)$/i, '');
 
-const dropdowns = [
-  { label: 'Work', items: workItems },
-  { label: 'Investments', sections: investmentSections },
-  { label: 'Community Projects', items: communityItems },
+const workHighlights = [
+  {
+    label: 'Carbon Robotics',
+    description: 'AI-driven laser weeding and farm autonomy.',
+    href: getDetailPath('carbon-robotics'),
+  },
+  {
+    label: 'BelizeKids.org',
+    description: 'STEM, clinics, and conservation programs across Belize.',
+    href: '/belizekids',
+  },
+];
+
+const storyLinks = [
+  { label: 'Interviews', href: '/oral-history' },
+  { label: 'My Story', href: '/#my-story' },
+];
+
+const communityLinks = communityItems.map((item) => ({
+  label: item.name,
+  href: getDetailPath(item.slug),
+}));
+
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Work', type: 'work' },
+  { label: 'Investments', type: 'investments' },
+  { label: 'Community', type: 'community' },
+  { label: 'Stories', type: 'stories' },
 ];
 ---
 
@@ -75,48 +94,131 @@ const dropdowns = [
           <nav
             id="primary-navigation"
             data-nav-menu
-            class="hidden w-full flex-col gap-4 text-sm sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6"
+            class="hidden w-full flex-col gap-4 rounded-3xl bg-white/95 p-5 text-sm text-ink shadow-panel ring-1 ring-ink/5 sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6 sm:rounded-none sm:bg-transparent sm:p-0 sm:text-ink sm:shadow-none sm:ring-0"
           >
-            <a class="font-medium text-ink/80 transition hover:text-brand" href="/">
-              Home
-            </a>
-            {dropdowns.map((dropdown) => (
-              <details class="relative group" key={dropdown.label}>
-                <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
-                  {dropdown.label}
-                  <span aria-hidden="true" class="text-xs text-ink/50">&#9662;</span>
-                </summary>
-                <div class="mt-2 hidden flex-col gap-2 rounded-2xl bg-white/95 p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:left-0 sm:mt-3 sm:min-w-[240px]">
-                  {dropdown.sections ? (
-                    dropdown.sections.map((section) => (
-                      <div class="space-y-2" key={section.label}>
-                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">{section.label}</p>
-                        {section.items.map((item) => (
-                          <a class="block transition hover:text-brand" href={getDetailPath(item.slug)}>
-                            {prettify(item.name)}
-                          </a>
-                        ))}
-                        {section.links &&
-                          section.links.map((link) => (
-                            <a class="block text-brand transition hover:text-brand-soft" href={link.href}>
-                              {link.label}
-                            </a>
-                          ))}
-                      </div>
-                    ))
-                  ) : (
-                    dropdown.items.map((item) => (
-                      <a class="transition hover:text-brand" href={getDetailPath(item.slug)}>
-                        {prettify(item.name)}
-                      </a>
-                    ))
-                  )}
-                </div>
-              </details>
-            ))}
-            <a class="font-medium text-ink/80 transition hover:text-brand" href="#contact">
+            {navItems.map((item, index) => {
+              if (!item.type) {
+                return (
+                  <a class="font-medium text-ink/80 transition hover:text-brand" href={item.href} key={item.label}>
+                    {item.label}
+                  </a>
+                );
+              }
+
+              if (item.type === 'investments') {
+                return (
+                  <details class="relative group" key={item.label} data-dropdown>
+                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
+                      {item.label}
+                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+                        &#9662;
+                      </span>
+                    </summary>
+                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:min-w-[260px] sm:w-[720px] sm:flex-row sm:flex-wrap sm:gap-5 sm:p-6">
+                      {investmentSections.map((section) => (
+                        <div class="w-full space-y-3 rounded-2xl border border-ink/5 bg-fog/30 p-4 sm:w-[calc(50%-10px)]" key={section.label}>
+                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
+                          <div class="space-y-1.5">
+                            {section.items.map((sectionItem) => (
+                              <a
+                                class="block rounded-xl px-3 py-1.5 text-ink/80 transition hover:bg-brand/10 hover:text-brand"
+                                href={getDetailPath(sectionItem.slug)}
+                              >
+                                {prettify(sectionItem.name)}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                );
+              }
+
+              if (item.type === 'work') {
+                return (
+                  <details class="relative group" key={item.label} data-dropdown>
+                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
+                      {item.label}
+                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+                        &#9662;
+                      </span>
+                    </summary>
+                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:min-w-[320px]">
+                      {workHighlights.map((highlight) => (
+                        <a
+                          key={highlight.label}
+                          class="block space-y-1 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-3 text-left transition hover:border-brand hover:bg-brand/10 hover:text-brand"
+                          href={highlight.href}
+                        >
+                          <span class="block text-sm font-semibold text-ink">{highlight.label}</span>
+                          <span class="block text-xs text-ink/60">{highlight.description}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+                );
+              }
+
+              if (item.type === 'community') {
+                return (
+                  <details class="relative group" key={item.label} data-dropdown>
+                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
+                      {item.label}
+                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+                        &#9662;
+                      </span>
+                    </summary>
+                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:w-[320px]">
+                      {communityLinks.map((link) => (
+                        <a
+                          key={link.label}
+                          class="block rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-brand hover:bg-brand/10 hover:text-brand"
+                          href={link.href}
+                        >
+                          {prettify(link.label)}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+                );
+              }
+
+              if (item.type === 'stories') {
+                return (
+                  <details class="relative group" key={item.label} data-dropdown>
+                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
+                      {item.label}
+                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+                        &#9662;
+                      </span>
+                    </summary>
+                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:w-[260px]">
+                      {storyLinks.map((link) => (
+                        <a
+                          key={link.label}
+                          class="block rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-brand hover:bg-brand/10 hover:text-brand"
+                          href={link.href}
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+                );
+              }
+
+              return null;
+            })}
+            <a
+              class="inline-flex items-center justify-center rounded-full border border-ink/20 px-4 py-2 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand sm:ml-4"
+              href="/contact"
+            >
               Contact
             </a>
+            <div class="border-t border-ink/10 pt-4 text-xs uppercase tracking-[0.3em] text-ink/50 sm:hidden">
+              Built with founders, operators, and community partners.
+            </div>
           </nav>
         </div>
       </header>
@@ -126,8 +228,16 @@ const dropdowns = [
         </div>
       </main>
       <footer class="border-t border-white/60 bg-white/80">
-        <div class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-ink/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <span>&copy; {new Date().getFullYear()} Listwin Ventures. All rights reserved.</span>
+        <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm text-ink/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <div class="flex items-center gap-3">
+            <img
+              src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp"
+              alt="Listwin Ventures"
+              class="h-8 w-auto"
+              loading="lazy"
+            />
+            <span>&copy; {new Date().getFullYear()} Listwin Ventures. All rights reserved.</span>
+          </div>
           <div class="flex flex-wrap gap-6">
             <a class="hover:text-brand" href="/privacy-policy">Privacy</a>
             <a class="hover:text-brand" href="/cookie-policy">Cookies</a>
@@ -156,6 +266,60 @@ const dropdowns = [
             toggle.setAttribute("aria-expanded", "false");
           }
         });
+      }
+
+      const revealElements = document.querySelectorAll("[data-reveal]");
+      if ("IntersectionObserver" in window && revealElements.length) {
+        const observer = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
+        );
+        revealElements.forEach((el) => observer.observe(el));
+      } else {
+        revealElements.forEach((el) => el.classList.add("is-visible"));
+      }
+
+      const typingEl = document.getElementById("hero-typing");
+      const typingPhrases = ["Technology investor", "CEO", "Philanthropist"];
+      if (typingEl && typingPhrases.length) {
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let deleting = false;
+        const typeSpeed = 90;
+        const eraseSpeed = 60;
+        const holdTime = 1200;
+
+        const typeLoop = () => {
+          const currentPhrase = typingPhrases[phraseIndex];
+          if (!deleting) {
+            typingEl.textContent = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
+            if (charIndex === currentPhrase.length) {
+              setTimeout(() => {
+                deleting = true;
+                typeLoop();
+              }, holdTime);
+              return;
+            }
+          } else {
+            typingEl.textContent = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+            if (charIndex === 0) {
+              deleting = false;
+              phraseIndex = (phraseIndex + 1) % typingPhrases.length;
+            }
+          }
+          setTimeout(typeLoop, deleting ? eraseSpeed : typeSpeed);
+        };
+
+        typeLoop();
       }
     </script>
   </body>

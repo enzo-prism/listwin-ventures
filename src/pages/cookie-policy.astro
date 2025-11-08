@@ -2,20 +2,91 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const pageTitle = 'Cookie Policy';
-const pageDescription = 'How Listwin Ventures uses cookies and where to review the full consent policy.';
+const pageDescription = 'How Listwin Ventures uses cookies and your choices for managing them.';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <h1 class="text-3xl font-semibold">Cookie Policy</h1>
-  <p class="mt-6">
-    Our cookie and consent policy is managed through Termageddon. Please wait while the policy loads.
-    If it does not load, you can
-    <a
-      rel="nofollow noopener"
-      href="https://app.termageddon.com/api/policy/ZUZvdmFURnZURXh2VUVkVk1sRTlQUT09?h-align=left&amp;h-depth=3&amp;no-title=true&amp;table-style=accordion"
-      target="_blank"
-    >
-      view it directly here
-    </a>.
-  </p>
+  <article class="space-y-6 text-base leading-7 text-ink/80">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-semibold text-ink">Cookie Policy</h1>
+      <p>
+        We value your privacy very highly. Please read this Cookie Policy carefully before using the listwinventures.com Website
+        (the “Website”) operated by Listwin Ventures, a Limited Liability Company formed in California, United States (“us, we,
+        our”). This Cookie Policy contains important information regarding our use of cookies and other tracking technologies, your
+        privacy, and how we may use the information that we collect about you. Please also read our Privacy Policy, which provides
+        more information about our privacy practices, your choices, and your privacy rights.
+      </p>
+    </header>
+
+    <section class="space-y-3">
+      <h2 class="text-2xl font-semibold text-ink">What are cookies?</h2>
+      <p>A cookie is a small piece of data sent from a Website and stored on your device by your browser.</p>
+    </section>
+
+    <section class="space-y-3">
+      <h2 class="text-2xl font-semibold text-ink">Our collection and classification of cookies</h2>
+      <p>This Website collects the cookies identified below. We classify cookies by the purpose they serve.</p>
+    </section>
+
+    <section class="space-y-3">
+      <h3 class="text-xl font-semibold text-ink">Essential cookies</h3>
+      <p>
+        Essential cookies are necessary for you to browse this Website and use its features, such as maintaining security,
+        authenticating users, and preventing fraudulent actions. These cookies are enabled by default, and without them the Website
+        may not be fully functional.
+      </p>
+      <p>This Website collects the following essential cookie:</p>
+      <ul class="list-disc space-y-1 pl-6">
+        <li>Usercentrics Consent Management Platform</li>
+      </ul>
+    </section>
+
+    <section class="space-y-3">
+      <h3 class="text-xl font-semibold text-ink">Functional cookies</h3>
+      <p>
+        Functional cookies allow a Website to remember choices that you have made in the past and how you use the Website (e.g.,
+        preferred language, pages visited, login information). These cookies are disabled by default and are only enabled if you
+        grant consent.
+      </p>
+      <p>If you provide consent, this Website will collect the following functional cookies:</p>
+      <ul class="list-disc space-y-1 pl-6">
+        <li>Google Fonts</li>
+        <li>Google Tag Manager</li>
+      </ul>
+    </section>
+
+    <section class="space-y-3">
+      <h3 class="text-xl font-semibold text-ink">Marketing cookies</h3>
+      <p>
+        Marketing cookies track your online activity to help deliver more relevant advertisements or limit how many times you see an
+        advertisement. These cookies are disabled by default and are only enabled if you grant consent.
+      </p>
+      <p>If you provide consent, this Website will collect the following marketing cookie:</p>
+      <ul class="list-disc space-y-1 pl-6">
+        <li>Google Analytics</li>
+      </ul>
+    </section>
+
+    <section class="space-y-3">
+      <h2 class="text-2xl font-semibold text-ink">Your choices regarding cookies</h2>
+      <p>You can control your cookie preferences in the following ways:</p>
+      <ul class="list-disc space-y-1 pl-6">
+        <li>
+          Through our cookie consent tool, where you can select categories of cookies to allow and withdraw consent at any time.
+        </li>
+        <li>
+          Through your browser settings (Tools, Edit, or Help menus) to delete or refuse cookies. Visit
+          <a class="text-brand underline" href="https://www.aboutcookies.org">aboutcookies.org</a> to learn more about opting out.
+        </li>
+      </ul>
+    </section>
+
+    <section class="space-y-3">
+      <h2 class="text-2xl font-semibold text-ink">Questions</h2>
+      <p>
+        If you have any questions about this Cookie Policy, please contact us at
+        <a class="text-brand underline" href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>.
+      </p>
+    </section>
+  </article>
 </BaseLayout>

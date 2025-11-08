@@ -16,6 +16,12 @@ const assetBase = '/assets/uploads';
 
 const resolvePath = (file: string) => (file.startsWith('http') ? file : `${assetBase}/${file}`);
 
+const formatAssetName = (alt: string) => {
+  const trimmed = alt.trim();
+  const cleaned = trimmed.replace(/\s+(logo|crest|lockup)\b.*$/i, '');
+  return cleaned.length ? cleaned : trimmed;
+};
+
 const make = (
   id: string,
   file: string,
@@ -23,7 +29,7 @@ const make = (
   href?: string,
 ): VisualAsset => ({
   id,
-  name: alt,
+  name: formatAssetName(alt),
   path: resolvePath(file),
   alt,
   href,
@@ -92,8 +98,9 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Seed',
     items: [
-      make('zededa', '2020/05/zededa.png', 'Zededa logo', 'https://zededa.com/'),
-      make('uberflip', '2018/05/uberflip.png', 'Uberflip logo', 'https://www.uberflip.com/'),
+      make('uberflip', '2018/05/uberflip.png', 'Uberflip wordmark', 'https://www.uberflip.com/'),
+      make('vida', '2022/05/vida.png', 'VIDA lung health wordmark', 'https://www.vidalung.ai/'),
+      make('zededa', '2020/05/zededa.png', 'Zededa wordmark', 'https://zededa.com/'),
     ],
   },
   {
@@ -103,7 +110,7 @@ export const investmentAssets: AssetGroup[] = [
       make('awarex', '2020/05/awarex.png', 'AwareX logo', 'https://www.awarex.com/'),
       make('cradle', '2019/07/cradle.png', 'Cradle Genomics logo', 'https://www.cradlegenomics.com/'),
       make('clarius', '2020/05/clarius-02.png', 'Clarius Mobile Health logo', 'https://clarius.com/'),
-      make('carbon-robotics', 'https://carbonrobotics.com/wp-content/uploads/2021/05/carbon-logo.svg', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
+      make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
       make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
       make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
       make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
@@ -127,6 +134,14 @@ export const investmentAssets: AssetGroup[] = [
     items: [
       make('calix', '2018/05/calix.png', 'Calix logo', 'https://www.calix.com/'),
       make('poet', '2020/05/poet-02.png', 'POET Technologies logo', 'https://poet-technologies.com/'),
+    ],
+  },
+  {
+    type: 'investment',
+    label: 'Philanthropic',
+    items: [
+      make('belizekids', '2018/05/belize.png', 'BelizeKids wordmark', 'https://belizekids.org/'),
+      make('canary-foundation', '2018/05/cf.png', 'Canary Foundation wordmark', 'https://www.canaryfoundation.org/'),
     ],
   },
 ];

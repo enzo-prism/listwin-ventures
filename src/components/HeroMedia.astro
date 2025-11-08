@@ -14,10 +14,15 @@ const { asset, rounded = true, shadow = true, className = '', linkHref = undefin
 
 const resolvedLink = linkHref === null ? undefined : linkHref ?? asset.href;
 const isExternal = resolvedLink ? !linkHref && !!asset.href : false;
+const usesDarkFrame = asset.id === 'carbon-robotics';
+const figureToneClass = usesDarkFrame ? 'bg-ink text-white/80 ring-white/20' : 'bg-white/90 text-ink/70 ring-white/60';
+const captionToneClass = usesDarkFrame ? 'text-white/60' : 'text-ink/50';
+const isLogoAsset = /\b(logo|lockup|crest)\b/i.test(asset.alt);
+const showMediaCaption = showCaption && !isLogoAsset;
 ---
 
 <figure
-  class={`w-full flex flex-col items-center gap-3 rounded-apple bg-white/90 p-4 text-center text-sm text-ink/70 shadow-panel ring-1 ring-white/60 ${className}`}
+  class={`w-full flex flex-col items-center gap-3 rounded-apple p-4 text-center text-sm shadow-panel ring-1 ${figureToneClass} ${className}`}
 >
   {resolvedLink ? (
     <a
@@ -41,5 +46,7 @@ const isExternal = resolvedLink ? !linkHref && !!asset.href : false;
       class={`w-full object-contain ${rounded ? 'rounded-[28px]' : ''} ${shadow ? 'shadow-panel' : ''}`}
     />
   )}
-  {showCaption && <figcaption class="text-xs uppercase tracking-[0.25em] text-ink/50">{asset.name}</figcaption>}
+  {showMediaCaption && (
+    <figcaption class={`text-xs uppercase tracking-[0.25em] ${captionToneClass}`}>{asset.name}</figcaption>
+  )}
 </figure>

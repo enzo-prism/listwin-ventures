@@ -43,11 +43,12 @@ the related media.
 
 ## Project Structure
 
-- `src/pages/` – Astro page routing (hero/homepage, legal pages, BelizeKids spotlight, oral history, etc.).
+- `src/pages/` – Astro page routing (hero/homepage, legal pages, BelizeKids spotlight, oral history, contact form, exploit detail pages, etc.).
 - `src/layouts/BaseLayout.astro` – Global shell (sticky nav, dropdown menus, frosted glass header/footer).
 - `src/components/LogoGrid.astro` & `HeroMedia.astro` – reusable media primitives that feed off the data catalogs.
 - `src/data/assets.ts` – legacy media mapping plus grouped board/investment/philanthropy collections.
 - `src/data/entityDetails.ts` – canonical portfolio metadata powering `/company/[slug]` pages and the nav dropdowns.
+- `src/data/exploitDetails.ts` – structured content for the Exploits cards and `/exploits/[slug]` pages (events, Belize initiatives, retreats).
 - `public/assets/` – static uploads, legacy CSS, and any new media (note the large-file exclusions above).
 - `docs/architecture.md` – ground truth for the design system, section structure, and data flow.
 - `archive/` – frozen WordPress exports for historical reference (do not edit).
@@ -69,9 +70,22 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 - Investments – grouped by stage, plus an Exits group.
 - Community Projects – philanthropic entities.
 
+## Navigation
+
+`src/layouts/BaseLayout.astro` now renders a responsive navigation system with distinct menus:
+
+- **Work** – curated spotlight cards for current focus areas (Carbon Robotics, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
+- **Investments** – mega-menu fed by `investmentAssets`/`entityDetails` (Seed, Private, Venture, Public, Exits).
+- **Community** – philanthropy slugs sourced from `entityDetails`.
+- **Stories** – links to the oral-history interview and the on-page “My Story” anchor.
+- **Contact** – dedicated `/contact` page with a Netlify-backed form (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
+
+All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
+
 ## Next Steps
 
 - Keep `docs/architecture.md` in sync when redesigning sections (hero, investments, exploits, nav).
 - Use `src/data/entityDetails.ts` as the single source of truth for copy, CTA links, and navigation labels.
-- Leverage the four homepage sections after “My Story”: Recent Work, Investments, Exploits, and Contact.
+- Maintain `src/data/exploitDetails.ts` when adding new “Exploits” cards so `/exploits/[slug]` stays in sync with the homepage.
+- Homepage content flows from: Hero → My Story → Investments → Exploits. The Contact form now lives at `/contact`.
 - Prune or archive legacy pages (`home-old`, placeholder legal docs) once they are no longer needed.

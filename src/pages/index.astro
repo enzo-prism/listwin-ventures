@@ -4,6 +4,7 @@ import LogoGrid from '../components/LogoGrid.astro';
 import HeroMedia from '../components/HeroMedia.astro';
 import { heroAssets, investmentAssets, philanthropyAssets } from '../data/assets';
 import { getDetailPath } from '../data/entityDetails';
+import { getExploitPath } from '../data/exploitDetails';
 
 const pageTitle = 'Home';
 const pageDescription =
@@ -27,31 +28,97 @@ const linkTargets = {
   canaryChallenge: getDetailPath('canary-challenge'),
 };
 
+const cardMedia: Record<
+  string,
+  {
+    path: string;
+    alt: string;
+  }
+> = {
+  netaid: {
+    path: '/assets/uploads/2020/09/netaid-768x598.jpg',
+    alt: 'NetAid concert with performers raising funds for anti-poverty initiatives',
+  },
+  sjgp: {
+    path: '/assets/uploads/2020/09/sjgp-768x576.jpg',
+    alt: 'Champ cars racing through downtown San Jose streets during the Grand Prix',
+  },
+  'canary-foundation': {
+    path: '/assets/uploads/2020/10/canary-foundation.jpg',
+    alt: 'Canary Foundation researchers collaborating inside the lab',
+  },
+  'canary-center': {
+    path: '/assets/uploads/2020/09/canary-center-768x457.jpg',
+    alt: 'Exterior of the Canary Center at Stanford with modern glass architecture',
+  },
+  'canary-challenge': {
+    path: '/assets/uploads/2020/09/canary-challenge-768x608.jpg',
+    alt: 'Cyclists riding in the Canary Challenge charity event',
+  },
+  'cancer-conference': {
+    path: '/assets/uploads/2020/09/cancer-conference-768x662.jpg',
+    alt: 'Early Detection of Cancer Conference audience and speaker session',
+  },
+  'vision-clinic': {
+    path: '/assets/uploads/2020/09/vision-clinic-768x685.jpg',
+    alt: 'Doctors providing eye exams at the Belize vision clinic',
+  },
+  catholic: {
+    path: '/assets/uploads/2020/09/catholic-768x653.jpg',
+    alt: 'Students outside San Pedro Roman Catholic Primary School',
+  },
+  adventist: {
+    path: '/assets/uploads/2020/09/adventist-768x526.jpg',
+    alt: 'Students gathered near New Horizon SDA Primary School upgrades',
+  },
+  'hol-chan': {
+    path: '/assets/uploads/2020/09/hol-chan-768x606.jpg',
+    alt: 'Hol Chan Marine Reserve waters and tour boats near the reef',
+  },
+  'community-relief': {
+    path: '/assets/uploads/2020/09/dolla-dive-768x576.jpg',
+    alt: "Volunteers organizing the Dolla' a Dive and COVID food drive supplies",
+  },
+  boca: {
+    path: '/assets/uploads/2020/09/boca-768x545.jpg',
+    alt: 'Families enjoying the renovated Boca Del Rio Park playground',
+  },
+  'canary-cove': {
+    path: '/assets/uploads/2020/12/caaray-cove-01-768x511.jpg',
+    alt: 'Canary Cove beachfront villas and dock on Ambergris Caye',
+  },
+  railroad: {
+    path: '/assets/uploads/2020/12/railroad-768x576.jpg',
+    alt: 'Chelsea & Woodside backyard railroad with Don Listwin driving the train',
+  },
+};
+
 const exploitThemes = [
   {
     kicker: 'BIG EVENTS',
     heading: 'Creating Awareness and Driving Impact',
-    description:
-      'Large-scale initiatives and events that raised global awareness for poverty relief and early cancer detection.',
+    description: null,
     cards: [
       {
         title: 'NetAid',
         description:
           'NETAID was an anti-poverty initiative co-founded by the United Nations Development Programme and Cisco Systems with a 1999 concert and simultaneous digital events spanning 40+ countries.',
         tag: 'netaid',
+        link: getExploitPath('netaid'),
       },
       {
         title: 'San Jose Grand Prix',
         description:
           'SAN JOSE GRAND PRIX brought Champ Car racing to Silicon Valley, amplifying Canary Foundation’s mission and the importance of early cancer detection.',
         tag: 'sjgp',
+        link: getExploitPath('san-jose-grand-prix'),
       },
     ],
   },
   {
     kicker: 'BIG IDEA',
     heading: 'Advancing Early Cancer Detection',
-    description: 'Institutions and conferences accelerating breakthroughs from lab to clinic.',
+    description: null,
     cards: [
       {
         title: 'Canary Foundation',
@@ -79,13 +146,14 @@ const exploitThemes = [
         description:
           'A cross-disciplinary conference series investing in early detection research, screening accuracy, and the biology of early-stage cancers.',
         tag: 'cancer-conference',
+        link: getExploitPath('cancer-conference'),
       },
     ],
   },
   {
     kicker: 'BIG LOVE',
     heading: 'Helping Communities in Belize',
-    description: 'Health, education, and conservation programs delivering lasting change across Belize.',
+    description: null,
     cards: [
       {
         title: 'Belize Vision Clinic',
@@ -99,49 +167,56 @@ const exploitThemes = [
         description:
           'Expanded with new classrooms, electrical upgrades, and refreshed facilities to support 700+ students.',
         tag: 'catholic',
+        link: linkTargets.belizekids,
       },
       {
         title: 'New Horizon SDA Primary School',
         description:
           'Added classrooms, shaded palapa space, and infrastructure repairs to serve more than 500 students.',
         tag: 'adventist',
+        link: linkTargets.belizekids,
       },
       {
         title: 'Hol Chan Marine Reserve + SP Tour Guide Association',
         description:
           'Created “no-take” zones, installed mooring buoys, and supported sustainable tourism to protect Belize’s reef.',
         tag: 'hol-chan',
+        link: getExploitPath('hol-chan'),
       },
       {
         title: 'Dolla’ a Dive & COVID Food Drive',
         description:
           'Grassroots campaigns with local dive shops and guides raising funds for healthcare and families during tourism shutdowns.',
         tag: 'community-relief',
+        link: getExploitPath('community-relief'),
       },
       {
         title: 'Boca Del Rio Park Playground',
         description:
           'Renovated beachfront park with palapas, playground equipment, and sports upgrades for families.',
         tag: 'boca',
+        link: getExploitPath('boca-del-rio-park'),
       },
     ],
   },
   {
     kicker: 'BIG FUN',
     heading: 'Creating Delight',
-    description: 'Spaces designed for connection, reflection, and memorable gatherings.',
+    description: null,
     cards: [
       {
         title: 'Canary Cove',
         description:
           'A private resort on Ambergris Caye bringing family, friends, and business teams together in Belize.',
         tag: 'canary-cove',
+        link: getExploitPath('canary-cove'),
       },
       {
         title: 'Chelsea & Woodside Railroad',
         description:
           'A backyard railroad experience complete with Don as train conductor to delight kids of all ages.',
         tag: 'railroad',
+        link: getExploitPath('chelsea-woodside-railroad'),
       },
     ],
   },
@@ -150,39 +225,34 @@ const exploitThemes = [
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <section class="space-y-6 rounded-apple bg-white/95 p-6 text-center shadow-panel ring-1 ring-white/60 sm:p-10">
-    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Don Listwin</p>
-    <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Technology investor, CEO, philanthropist</h1>
+  <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 text-center shadow-panel ring-1 ring-white/60 sm:p-10">
+    <p class="font-semibold uppercase tracking-[0.5em] text-ink/50">
+      <span class="sr-only">Roles:</span>
+      <span id="hero-typing" class="text-sm text-ink/70"></span>
+      <span class="ml-1 inline-block h-4 w-[2px] animate-pulse bg-brand align-middle"></span>
+    </p>
+    <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Don Listwin</h1>
     <p class="text-ink/70">
       Building enduring companies across networking, data, and health while backing founders who pair engineering rigor with human impact.
     </p>
-    <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+    <div
+      data-reveal
+      class="space-y-3 rounded-[32px] border border-ink/10 px-6 py-5 text-center text-white shadow-panel"
+      style="background-image: linear-gradient(135deg, rgba(3, 7, 18, 0.75), rgba(30, 64, 175, 0.65)),
+        url('https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp'); background-size: cover; background-position: center;"
+    >
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">New investment</p>
+      <p class="text-lg font-semibold text-white">Carbon Robotics</p>
       <a
-        class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
-        href="/my-cv"
-      >
-        View full CV
-      </a>
-      <a
-        class="inline-flex items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand"
-        href="#investments"
-      >
-        Explore portfolio
-      </a>
-    </div>
-    <div class="space-y-3 rounded-[32px] border border-ink/10 bg-fog/60 px-6 py-5 text-center">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/60">New investment</p>
-      <p class="text-lg font-semibold text-ink">Carbon Robotics</p>
-      <a
-        class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-soft hover:text-white"
+        class="inline-flex items-center justify-center rounded-full bg-white/90 px-6 py-3 text-sm font-semibold text-ink transition hover:bg-white"
         href={carbonRoboticsDetailPath ?? '#'}
       >
-        Discover the Carbon Robotics thesis
+        Learn more
       </a>
     </div>
   </section>
 
-  <section id="my-story" class="space-y-6">
+  <section id="my-story" data-reveal class="space-y-6">
     <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
       <div class="grid gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-center">
         <div class="space-y-4">
@@ -259,46 +329,37 @@ const exploitThemes = [
         more efficient ways to farm. Carbon Robotics addresses these needs by delivering advanced AI robotic laser weeders and
         tractor autonomy that drives efficiencies to the global community.
       </p>
-      <a
-        class="inline-flex items-center gap-2 text-sm font-semibold text-brand"
-        href={carbonRoboticsDetailPath ?? '#'}
-      >
-        Explore the Carbon Robotics detail →
-      </a>
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a class="inline-flex items-center gap-2 text-sm font-semibold text-brand" href={carbonRoboticsDetailPath ?? '#'}>
+          Explore the Carbon Robotics detail →
+        </a>
+        <a
+          class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-soft hover:text-white"
+          href="https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read the press release
+        </a>
+      </div>
     </div>
     {carbonRoboticsAsset && <HeroMedia asset={carbonRoboticsAsset} rounded={false} linkHref={carbonRoboticsDetailPath} />}
   </section>
 
-  <section id="investments" class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-      <div class="space-y-4">
-        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Investments</p>
-        <h2 class="text-3xl font-semibold text-ink">Technology and business development</h2>
-        <p class="text-lg text-ink/70">For new technologies.</p>
-        <p class="text-ink/70">
-          I partner with founders shipping new infrastructure, neurovascular AI, edge compute, and data platforms—helping
-          them navigate enterprise design partners, operating discipline, and long-term business development.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Seed → Growth</span>
-          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Operator-led diligence</span>
-          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Hands-on go-to-market</span>
-        </div>
-        <a
-          class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
-          href="mailto:dj22listwin@gmail.com"
-        >
-          Share your deck
-        </a>
-      </div>
-      <div class="rounded-[32px] border border-white/70 bg-white/90 p-6 text-ink/80 shadow-panel">
-        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Current theses</p>
-        <ul class="mt-4 space-y-3 text-sm">
-          <li>• Autonomous systems that merge robotics, AI, and field data (e.g., Carbon Robotics).</li>
-          <li>• Neurovascular and imaging software that changes treatment guidelines.</li>
-          <li>• Cloud infrastructure that abstracts complexity for telecom, edge, and AI workloads.</li>
-        </ul>
-      </div>
+  <section id="investments" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-4">
+      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">TECHNOLOGY AND BUSINESS DEVELOPMENT</p>
+      <h2 class="text-3xl font-semibold text-ink">For New Technologies</h2>
+      <p class="text-lg font-semibold text-ink">My Investments</p>
+      <p class="text-ink/70">
+        My investments range from seed through sizable stakes in public entities.
+      </p>
+      <p class="text-ink/70">
+        I like helping to solve technology and market development problems. As an engineer and entrepreneur, I think just about
+        any problem can be fixed with the right amount of leadership, intellect, and time. I believe in a systematic approach
+        that involves many disciplines collaborating to share information and working together around the world to give an edge.
+        This is how we do groundbreaking work bringing new products to market.
+      </p>
     </div>
     <div class="space-y-5">
       {investmentAssets.map((group) => (
@@ -307,35 +368,17 @@ const exploitThemes = [
     </div>
   </section>
 
-  <section id="exploits" class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+  <section id="exploits" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="grid gap-8 lg:grid-cols-[1.2fr]">
       <div class="space-y-4">
         <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Exploits</p>
         <h2 class="text-3xl font-semibold text-ink">Community development projects</h2>
-        <p class="text-lg text-ink/70">
-          Canary Foundation, <a href={linkTargets.belizekids} class="text-brand">BelizeKids.org</a>, and long-standing
-          partnerships with <a href={linkTargets.stanford} class="text-brand">Stanford Medicine</a> expand early cancer
-          detection, eye care, and entrepreneurship training across Belize and North America.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Early detection research</span>
-          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Belize field clinics</span>
-          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">STEM & reef stewardship</span>
-        </div>
         <a
           class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
           href={linkTargets.belizekids ?? '#'}
         >
           Visit BelizeKids.org
         </a>
-      </div>
-      <div class="rounded-[32px] border border-white/70 bg-white/90 p-6 text-ink/80 shadow-panel">
-        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Impact snapshots</p>
-        <ul class="mt-4 space-y-3 text-sm">
-          <li>• Canary Foundation labs translating biomarkers into clinical standards.</li>
-          <li>• BelizeKids.org mobile clinics delivering eye care and STEM labs on the islands.</li>
-          <li>• Stanford partnerships that pair residents and researchers with community programs.</li>
-        </ul>
       </div>
     </div>
     <div class="space-y-10">
@@ -344,67 +387,48 @@ const exploitThemes = [
           <div class="space-y-2">
             <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/60">{theme.kicker}</p>
             <h3 class="text-xl font-semibold text-ink">{theme.heading}</h3>
-            {theme.description && <p class="text-sm text-ink/70">{theme.description}</p>}
           </div>
           <div class="grid gap-4 md:grid-cols-2">
-            {theme.cards.map((card) => (
-              <article
-                class="space-y-2 rounded-[28px] border border-white/70 bg-white/90 p-5 text-sm text-ink/75 shadow-panel"
-                key={card.title}
-              >
-                {card.tag && <span class="text-xs font-semibold uppercase tracking-[0.3em] text-brand">{card.tag}</span>}
-                <h4 class="text-lg font-semibold text-ink">{card.title}</h4>
-                <p>{card.description}</p>
-                {card.link && (
-                  <a class="text-brand transition hover:text-brand-soft" href={card.link}>
-                    Learn more →
+            {theme.cards.map((card, cardIndex) => {
+              const media = card.tag ? cardMedia[card.tag] : undefined;
+              const buttonHref = card.link ?? '#';
+              const buttonDisabled = !card.link;
+              return (
+                <article
+                  data-reveal
+                  style={`--reveal-delay:${cardIndex * 80}ms;`}
+                  class="group space-y-3 rounded-[28px] border border-white/70 bg-white/90 p-5 text-sm text-ink/75 shadow-panel transition hover:-translate-y-1 hover:border-brand/40 hover:shadow-xl"
+                  key={card.title}
+                >
+                  {media && (
+                    <img
+                      src={media.path}
+                      alt={media.alt}
+                      loading="lazy"
+                      class="w-full rounded-[24px] border border-white/70"
+                    />
+                  )}
+                  <h4 class="text-lg font-semibold text-ink">{card.title}</h4>
+                  <p>{card.description}</p>
+                  <a
+                    class={`inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition ${
+                      buttonDisabled
+                        ? 'cursor-not-allowed border-ink/20 text-ink/40'
+                        : 'border-ink/30 text-ink group-hover:border-brand group-hover:bg-brand group-hover:text-white'
+                    }`}
+                    href={buttonDisabled ? '#' : buttonHref}
+                    aria-disabled={buttonDisabled}
+                    tabindex={buttonDisabled ? -1 : undefined}
+                  >
+                    Learn more
                   </a>
-                )}
-              </article>
-            ))}
+                </article>
+              );
+            })}
           </div>
         </div>
       ))}
     </div>
-    <div class="space-y-5">
-      {philanthropyAssets.map((group) => (
-        <LogoGrid title={group.label} assets={group.items} columns={4} />
-      ))}
-    </div>
   </section>
 
-  <section id="contact" class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <p class="text-sm font-semibold uppercase tracking-wide text-ink/60">Contact</p>
-    <h2 class="text-2xl font-semibold text-ink">Let’s build the next chapter</h2>
-    <p class="text-ink/70">
-      Whether you’re scaling infrastructure, launching a healthtech product, or expanding a community initiative, I’m
-      always open to conversations that blend engineering rigor with human impact.
-    </p>
-    <div class="grid gap-4 sm:grid-cols-2">
-      <div class="space-y-2 rounded-[28px] border border-white/80 bg-fog/70 p-5 text-ink/80">
-        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">Phone</p>
-        <a class="text-lg font-semibold" href="tel:+16508149966">(650) 814-9966</a>
-        <p class="text-sm">Reach out for board opportunities, investments, or speaking.</p>
-      </div>
-      <div class="space-y-2 rounded-[28px] border border-white/80 bg-fog/70 p-5 text-ink/80">
-        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">Email</p>
-        <a class="text-lg font-semibold" href="mailto:dj22listwin@gmail.com">dj22listwin@gmail.com</a>
-        <p class="text-sm">Share a brief on your company, research, or community project.</p>
-      </div>
-    </div>
-    <div class="flex flex-wrap gap-4">
-      <a
-        class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-soft"
-        href="mailto:dj22listwin@gmail.com"
-      >
-        Send a note
-      </a>
-      <a
-        class="inline-flex items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand"
-        href="/oral-history"
-      >
-        Learn more about my story
-      </a>
-    </div>
-  </section>
 </BaseLayout>

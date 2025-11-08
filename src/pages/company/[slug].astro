@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroMedia from '../../components/HeroMedia.astro';
 import { getEntityDetails, type EntityDetail } from '../../data/entityDetails';
+import type { VisualAsset } from '../../data/assets';
 
 export const prerender = true;
 
@@ -21,40 +22,122 @@ const categoryLabels: Record<string, string> = {
   philanthropy: 'Philanthropy',
   hero: 'Spotlight',
 };
+const externalUrlLabel = detail.externalUrl ? detail.externalUrl.replace(/\/$/, '') : null;
+const pressReleaseUrl =
+  detail.slug === 'carbon-robotics'
+    ? 'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board'
+    : null;
+const isCarbonRobotics = detail.slug === 'carbon-robotics';
+const carbonFieldAsset: VisualAsset | null = isCarbonRobotics
+  ? {
+      id: 'carbon-robotics-laserweeder',
+      name: 'Carbon Robotics LaserWeeder G2',
+      path: 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp',
+      alt: 'Carbon Robotics LaserWeeder G2 operating at sunset in a field',
+    }
+  : null;
+const carbonVideos = isCarbonRobotics
+  ? [
+      'https://res.cloudinary.com/dhqpqfw6w/video/upload/v1762635443/CR_video_1_ui2n13.mp4',
+      'https://res.cloudinary.com/dhqpqfw6w/video/upload/v1762635466/CR_video_1-1_ncwtrz.mp4',
+    ]
+  : [];
+const galleryAssets = [carbonFieldAsset].filter(Boolean) as VisualAsset[];
 ---
 
 <BaseLayout title={title} description={detail.summary}>
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-      <div class="space-y-4">
-        <div class="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
-          {detail.categories.map((category) => (
-            <span class="rounded-full border border-ink/10 px-3 py-1 text-ink/70" key={category}>
-              {categoryLabels[category] ?? category}
-            </span>
-          ))}
+    <div class="space-y-6 text-center">
+      <div class="flex flex-wrap justify-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+        <span class="rounded-full border border-ink/10 px-3 py-1 text-ink/70">
+          {categoryLabels[detail.categories[0]] ?? detail.categories[0]}
+        </span>
+      </div>
+      <div class="mx-auto flex max-w-md flex-col items-center space-y-4">
+        <HeroMedia asset={detail.asset} linkHref={null} showCaption={false} />
+      </div>
+      {isCarbonRobotics && carbonVideos[0] && (
+        <div class="mx-auto w-full max-w-5xl">
+          <video
+            class="w-full rounded-[40px] border border-ink/10 shadow-panel"
+            src={carbonVideos[0]}
+            autoplay
+            muted
+            loop
+            playsinline
+            controls
+          />
         </div>
+      )}
+      <div class="space-y-2">
         <h1 class="font-display text-3xl font-semibold text-ink sm:text-4xl">{detail.name}</h1>
-        <p class="text-ink/70">{detail.summary}</p>
-        <ul class="list-disc space-y-2 pl-6 text-sm text-ink/70">
-          {detail.highlights.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-        {detail.externalUrl && (
-          <a
-            class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
-            href={detail.externalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Visit official site
-          </a>
-        )}
+        <p class="text-base text-ink/70">{detail.summary}</p>
       </div>
-      <div>
-        <HeroMedia asset={detail.asset} linkHref={null} />
-      </div>
+      {(detail.externalUrl || pressReleaseUrl) && (
+        <div class="flex flex-wrap justify-center gap-3">
+          {detail.externalUrl && (
+            <a
+              class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
+              href={detail.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit official site
+            </a>
+          )}
+          {pressReleaseUrl && (
+            <a
+              class="inline-flex items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand"
+              href={pressReleaseUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read press release
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+
+    <div class="rounded-[32px] border border-ink/10 bg-white/90 p-6">
+      <h2 class="text-xl font-semibold text-ink">Impact highlights</h2>
+      <ul class="mt-4 list-disc space-y-2 pl-6 text-sm text-ink/80">
+        {detail.highlights.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
     </div>
   </section>
+
+  {galleryAssets.length > 0 && (
+    <section class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <h2 class="text-2xl font-semibold text-ink">Media gallery</h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        {galleryAssets.map((asset) => (
+          <figure key={asset.id} class="space-y-3">
+            <img src={asset.path} alt={asset.alt} loading="lazy" class="w-full rounded-[32px] border border-ink/10" />
+            <figcaption class="text-sm text-ink/60">{asset.name}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {carbonVideos.length > 0 && (
+    <section class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <h2 class="text-2xl font-semibold text-ink">Field footage</h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        {carbonVideos.map((src, index) => (
+          <video
+            key={src}
+            class="w-full rounded-[32px] border border-ink/10"
+            src={src}
+            controls
+            playsinline
+            aria-label={`Carbon Robotics video ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  )}
 </BaseLayout>

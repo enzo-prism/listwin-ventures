@@ -13,7 +13,7 @@ listwinventures-rebuild/
     components/            # HeroMedia, LogoGrid, etc.
     data/                  # assets.ts (media) + entityDetails.ts (portfolio metadata)
     layouts/               # BaseLayout.astro (sticky nav + dropdowns)
-    pages/                 # Astro routes (home, CV, oral history, BelizeKids, company detail)
+    pages/                 # Astro routes (home, contact form, oral history, BelizeKids, exploit detail, company detail)
     styles/global.css      # Tailwind entry point + Apple-inspired theming
   docs/                    # this file
 ```
@@ -24,30 +24,35 @@ listwinventures-rebuild/
   investment, and philanthropy collections consumed by `LogoGrid`.
 - **`src/data/entityDetails.ts`** – extends the catalog with copy, highlights, and slugs. It powers
   the `/company/[slug]` routes and navigation dropdowns.
+- **`src/data/exploitDetails.ts`** – drives the Exploits cards and `/exploits/[slug]` pages
+  (NetAid, San Jose Grand Prix, Belize initiatives, Canary Cove, etc.).
 - **`public/assets/uploads/`** – static media. Large items (GeoLite DB, Carbon Robotics videos,
   `*.mp4`) are ignored by git; copy them from the secure archive if you need them locally.
 
 ## Navigation & Dropdowns
 
-`BaseLayout.astro` renders three dropdown menus fed by `entityDetails`:
+`BaseLayout.astro` renders a responsive navigation system:
 
-1. **Work** – currently Carbon Robotics only.
-2. **Investments** – grouped by stage (Seed/Private/Venture/Public) with extra Exits and
-   philanthropic dividers.
-3. **Community Projects** – philanthropic slugs.
+1. **Work** – curated spotlight cards (currently Carbon Robotics + BelizeKids.org). Update the
+   `workHighlights` array in the layout when swapping focus projects.
+2. **Investments** – mega-menu grouped by stage (`investmentAssets` + `entityDetails`). Exits sit in
+   their own group at the end.
+3. **Community** – philanthropy slugs pulled from `entityDetails`.
+4. **Stories** – quick links to the oral-history interview and the on-page “My Story”.
+5. **Contact** – persistent CTA linking to `/contact`.
 
-When adding a new company, update `entityDetails` so the dropdowns, homepage grids, and company
-detail pages stay in sync.
+The dropdown carets animate, the desktop mega-menu stays right-aligned to prevent overflow, and the
+mobile nav expands into a full-width card with all sections stacked.
 
 ## Homepage Sections
 
-After the hero and “My Story” modules, the homepage is limited to four sections:
+After the hero and “My Story” modules, the homepage is limited to three key sections:
 
 1. **Recent Work** – Carbon Robotics spotlight (copy + CTA + media).
-2. **Investments** – redesigned hero with thesis chips, CTA, and stage-specific grids.
-3. **Exploits** – mirrors the investment layout, covering events, research initiatives, Belize
-   community programmes, and hospitality experiences.
-4. **Contact** – structured phone/email CTAs.
+2. **Investments** – hero text plus stage-specific grids.
+3. **Exploits** – themed cards that now link to `/exploits/[slug]` for long-form writeups.
+
+The standalone contact section was removed; all inquiries route through `/contact`.
 
 ## Development Workflow
 

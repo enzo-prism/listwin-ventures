@@ -43,16 +43,15 @@ registerGroup(philanthropyAssets.flatMap((group) => group.items), 'philanthropy'
 
 const content: Record<string, DetailContent> = {
   awarex: {
-    summary:
-      'AwareX builds cloud-native customer experience software so telecom and utility providers can deliver intuitive self-service, billing, and support apps.',
+    summary: 'AwareX provides a custom engagement platform for mobile phone users.',
     highlights: [
-      'Board insight helps AwareX align product roadmaps with the needs of large service providers.',
-      'The platform improves NPS by unifying notifications, payments, and care flows across mobile and web.',
+      'Lets carriers deliver tailored billing, support, and self-serve journeys inside branded apps.',
+      'Board guidance keeps the platform tuned to telecom-scale personalization and reliability.',
     ],
   },
   belizekids: {
     summary:
-      'BelizeKids.org is a nonprofit co-founded by Don Listwin that combines mobile clinics, STEM education, and reef conservation across Belize.',
+      'BelizeKids.org (Founder & Chairman) is a non-profit organization partnering with businesses to support the needs of kids in Belize.',
     highlights: [
       'Runs joint programs with Stanford Medicine to deliver eye care and chronic-disease screening.',
       'Scholarships, maker labs, and dive expeditions help local students pursue technology careers.',
@@ -76,7 +75,7 @@ const content: Record<string, DetailContent> = {
   },
   calix: {
     summary:
-      'Calix provides broadband access platforms and managed services that modernize how rural and regional ISPs deliver fiber experiences.',
+      'Calix is a leading provider of next generation fiber optic based broadband solutions.',
     highlights: [
       'Don serves as Lead Independent Director, focusing on go-to-market discipline and customer success.',
       'Calix Cloud and Revenue EDGE help providers launch new services without heavy engineering teams.',
@@ -92,7 +91,7 @@ const content: Record<string, DetailContent> = {
   },
   'canary-foundation': {
     summary:
-      'The Canary Foundation advances early cancer detection through multi-disciplinary research spanning biology, engineering, and data science.',
+      'Canary Foundation (Founder & CEO) has been the only foundation in the world focused solely on early cancer detection for over 15 years.',
     highlights: [
       'Funded collaborative centers at Stanford, Cambridge, and Calgary to translate lab breakthroughs to clinics.',
       'Catalyzed new standards of care for prostate and ovarian cancer screening.',
@@ -108,10 +107,10 @@ const content: Record<string, DetailContent> = {
   },
   clarius: {
     summary:
-      'Clarius Mobile Health builds handheld, ultra-portable ultrasound scanners that connect to smartphones for point-of-care imaging.',
+      'Clarius Mobile Health empowers every medical professional with accurate, easy to use and affordable imaging tools.',
     highlights: [
-      'Battery-powered probes give clinicians RapidAI-style diagnostic agility outside traditional hospitals.',
-      'Subscription software layers AI imaging tools for emergency, MSK, and OB use cases.',
+      'Handheld ultrasound scanners pair with smartphones so clinicians can scan anywhere care happens.',
+      'AI-enhanced software keeps imaging workflows intuitive for emergency, MSK, and OB teams.',
     ],
   },
   cradle: {
@@ -124,7 +123,7 @@ const content: Record<string, DetailContent> = {
   },
   dwave: {
     summary:
-      'D-Wave Systems commercializes quantum computing hardware and annealing software for optimization workloads.',
+      'D-Wave Systems is the world’s only functional quantum computer.',
     highlights: [
       'Don backed the company early as it bridged physics breakthroughs into enterprise-grade systems.',
       'Customers use D-Wave quantum solutions for logistics, cybersecurity, and drug discovery research.',
@@ -227,11 +226,10 @@ const content: Record<string, DetailContent> = {
     ],
   },
   rapidai: {
-    summary:
-      'RapidAI delivers cerebrovascular imaging software that extends stroke treatment windows and standardizes care pathways.',
+    summary: 'RapidAI is the worldwide leader in neurovascular imaging.',
     highlights: [
-      'Don served as CEO, scaling the company globally and influencing treatment guidelines from six to twenty-four hours.',
-      'Combines AI, cloud imaging, and clinical workflow design—mirroring his shift into health tech.',
+      'Platforms guide stroke teams from the first scan through intervention with AI-enhanced insights.',
+      'Leadership in perfusion imaging extended global treatment windows and reshaped stroke protocols.',
     ],
   },
   redback: {
@@ -244,10 +242,10 @@ const content: Record<string, DetailContent> = {
   },
   robin: {
     summary:
-      'Robin Systems created container-based infrastructure to run stateful enterprise applications with guaranteed QoS.',
+      'ROBIN (Q1 2022) next-generation data center software delivering automated container infrastructure, sold to Rakuten Symphony.',
     highlights: [
-      'Investment supported the convergence of virtualization and data-centric workloads.',
-      'Robin’s technology later evolved into solutions for Kubernetes and AI pipelines.',
+      'Platform automated Kubernetes-based infrastructure for data-intensive and telco workloads.',
+      'Exit to Rakuten Symphony in Q1 2022 expanded its reach across global telecom clouds.',
     ],
   },
   sana: {
@@ -284,26 +282,32 @@ const content: Record<string, DetailContent> = {
   },
   teradici: {
     summary:
-      'Teradici invented PCoIP technology that securely streams high-performance desktops to artists, engineers, and cloud workstations.',
+      'TERADICI (Q4 2021) multi-cloud access for high-performance devices, sold to HP Inc.',
     highlights: [
-      'Board oversight helped Teradici expand from niche workstations to mainstream remote work.',
-      'Technology now underpins remote production pipelines in media and semiconductor design.',
+      'Invented PCoIP technology that securely streams high-performance desktops to artists, engineers, and cloud workstations.',
+      'Earned a 2020 Engineering Emmy® for enabling remote content creation before exiting to HP Inc.',
     ],
   },
   uberflip: {
-    summary:
-      'Uberflip delivers a content experience platform that lets marketing teams assemble personalized resource hubs.',
+    summary: 'Uberflip is a next-generation marketing engagement platform.',
     highlights: [
-      'Investment aligns with Don’s view that storytelling drives enterprise demand generation.',
-      'Uberflip’s analytics reveal which assets convert high-value prospects.',
+      'Transforms static content into personalized destinations that nurture buyers.',
+      'Enables marketing teams to orchestrate engagement journeys that convert faster.',
+    ],
+  },
+  vida: {
+    summary:
+      'VIDA is a precision lung health company accelerating therapies to patients through AI-powered lung intelligence.',
+    highlights: [
+      'VIDA Discovery services provide precise quantitative endpoints for respiratory clinical trials.',
+      'AI-powered data quality controls, site training, and workflow guidance help sponsors save millions in development costs.',
     ],
   },
   zededa: {
-    summary:
-      'ZEDEDA orchestrates edge computing infrastructure so enterprises can securely deploy apps across distributed sites.',
+    summary: 'Zededa is a new distributed IoT platform.',
     highlights: [
-      'Supports industrial, energy, and telco customers running AI at the edge.',
-      'Investment mirrors Don’s history with networking platforms that abstract complexity for operators.',
+      'Delivers a cloud-based control plane that keeps edge and IoT deployments secure and observable.',
+      'Simplifies how operators roll out and update distributed applications across industrial sites.',
     ],
   },
   zevx: {
@@ -349,6 +353,7 @@ const requiredSlugs = Array.from(new Set([
   'stanford',
   'teradici',
   'uberflip',
+  'vida',
   'zededa',
   'zevx',
 ]));
