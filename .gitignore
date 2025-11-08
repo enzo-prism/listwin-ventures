@@ -1,0 +1,12 @@
+node_modules
+.dist
+/build
+.dist/
+dist/
+.astro/
+*.log
+.DS_Store
+.env
+public/assets/uploads/termageddon-maxmind/
+public/assets/uploads/2025/06/
+*.mp4

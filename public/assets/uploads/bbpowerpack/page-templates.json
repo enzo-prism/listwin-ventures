@@ -1,0 +1,782 @@
+{
+    "pp-agency-1-home": {
+        "name": "Agency 1 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/agency-1-home\/",
+        "type": "home"
+    },
+    "pp-agency-2-home": {
+        "name": "Agency 2 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/agency-2-home\/",
+        "type": "home"
+    },
+    "pp-business-about": {
+        "name": "Business - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/business-about\/",
+        "type": "about"
+    },
+    "pp-portfolio-landing": {
+        "name": "Portfolio - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/portfolio-landing\/",
+        "type": "landing"
+    },
+    "pp-business-contact": {
+        "name": "Business - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/business-contact\/",
+        "type": "contact"
+    },
+    "pp-business-home": {
+        "name": "Business - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/business-home\/",
+        "type": "home"
+    },
+    "pp-cafe-about": {
+        "name": "Cafe - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/cafe-about\/",
+        "type": "about"
+    },
+    "pp-cafe-contact": {
+        "name": "Cafe - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/cafe-contact\/",
+        "type": "contact"
+    },
+    "pp-cafe-home": {
+        "name": "Cafe - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/cafe-home\/",
+        "type": "home"
+    },
+    "pp-charity-about": {
+        "name": "Charity - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/charity-about\/",
+        "type": "about"
+    },
+    "pp-charity-contact": {
+        "name": "Charity - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/charity-contact\/",
+        "type": "contact"
+    },
+    "pp-charity-home": {
+        "name": "Charity - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/charity-home\/",
+        "type": "home"
+    },
+    "pp-dentist-about": {
+        "name": "Dentist - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/dentist-about\/",
+        "type": "about"
+    },
+    "pp-dentist-contact": {
+        "name": "Dentist - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/dentist-contact\/",
+        "type": "contact"
+    },
+    "pp-dentist-home": {
+        "name": "Dentist - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/dentist-home\/",
+        "type": "home"
+    },
+    "pp-education-about": {
+        "name": "Education - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/education-about\/",
+        "type": "about"
+    },
+    "pp-education-contact": {
+        "name": "Education - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/education-contact\/",
+        "type": "contact"
+    },
+    "pp-education-home": {
+        "name": "Education - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/education-home\/",
+        "type": "home"
+    },
+    "pp-female-entrepreneurs-about": {
+        "name": "Female Entrepreneurs - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/female-entrepreneurs-about\/",
+        "type": "about"
+    },
+    "pp-female-entrepreneurs-contact": {
+        "name": "Female Entrepreneurs - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/female-entrepreneurs-contact\/",
+        "type": "contact"
+    },
+    "pp-female-entrepreneurs-home": {
+        "name": "Female Entrepreneurs - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/female-entrepreneurs-home\/",
+        "type": "home"
+    },
+    "pp-fitness-about": {
+        "name": "Fitness - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/fitness-about\/",
+        "type": "about"
+    },
+    "pp-fitness-contact": {
+        "name": "Fitness - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/fitness-contact\/",
+        "type": "contact"
+    },
+    "pp-fitness-home": {
+        "name": "Fitness - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/fitness-home\/",
+        "type": "home"
+    },
+    "pp-hotel-about": {
+        "name": "Hotel - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/hotel-about\/",
+        "type": "about"
+    },
+    "pp-hotel-contact": {
+        "name": "Hotel - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/hotel-contact\/",
+        "type": "contact"
+    },
+    "pp-hotel-home": {
+        "name": "Hotel - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/hotel-home\/",
+        "type": "home"
+    },
+    "pp-mini-squeeze-confirmation": {
+        "name": "Mini Squeeze - 1 Confirmation",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/min-squeeze-1-confirmation\/",
+        "type": "sales"
+    },
+    "pp-mini-squeeze-download": {
+        "name": "Mini Squeeze - 1 Download",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/mini-squeeze-1-download\/",
+        "type": "sales"
+    },
+    "pp-mini-squeeze-lead-gen": {
+        "name": "Mini Squeeze - 1 Lead Gen",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/mini-squeeze-1-lead-gen\/",
+        "type": "sales"
+    },
+    "pp-pet-care-about": {
+        "name": "Pet Care - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/pet-care-about\/",
+        "type": "about"
+    },
+    "pp-pet-care-contact": {
+        "name": "Pet Care - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/pet-care-contact\/",
+        "type": "contact"
+    },
+    "pp-pet-care-home": {
+        "name": "Pet Care - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/pet-care-home\/",
+        "type": "home"
+    },
+    "pp-travel-about": {
+        "name": "Travel - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/travel-about\/",
+        "type": "about"
+    },
+    "pp-travel-contact": {
+        "name": "Travel - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/travel-contact\/",
+        "type": "contact"
+    },
+    "pp-travel-home": {
+        "name": "Travel - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/travel-home\/",
+        "type": "home"
+    },
+    "pp-web-agency-about": {
+        "name": "Web Agency - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/web-agency-about\/",
+        "type": "about"
+    },
+    "pp-web-agency-contact": {
+        "name": "Web Agency - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/web-agency-contact\/",
+        "type": "contact"
+    },
+    "pp-web-agency-home": {
+        "name": "Web Agency - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/web-agency-home\/",
+        "type": "home"
+    },
+    "pp-wedding-about": {
+        "name": "Wedd. Photography - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/wedding-photography-about\/",
+        "type": "about"
+    },
+    "pp-wedding-contact": {
+        "name": "Wedd. Photography - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/wedding-photography-contact\/",
+        "type": "contact"
+    },
+    "pp-wedding-home": {
+        "name": "Wedd. Photography - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/wedding-photography-home\/",
+        "type": "home"
+    },
+    "pp-yoga-about": {
+        "name": "Yoga - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/yoga-about\/",
+        "type": "about"
+    },
+    "pp-yoga-contact": {
+        "name": "Yoga - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/yoga-contact\/",
+        "type": "contact"
+    },
+    "pp-yoga-home": {
+        "name": "Yoga - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/yoga-home\/",
+        "type": "home"
+    },
+    "pp-coming-soon-01": {
+        "name": "Coming Soon - 01",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-1\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-02": {
+        "name": "Coming Soon - 02",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-2\/",
+        "type": "coming-soon"
+    },
+    "pp-finance-home": {
+        "name": "Finance - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/finance-home\/",
+        "type": "home"
+    },
+    "pp-finance-about": {
+        "name": "Finance - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/finance-about\/",
+        "type": "about"
+    },
+    "pp-finance-contact": {
+        "name": "Finance - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/finance-contact\/",
+        "type": "contact"
+    },
+    "pp-restaurant-1-home": {
+        "name": "Restaurant 1 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/restaurant-home\/",
+        "type": "home"
+    },
+    "pp-sales-funnel-video": {
+        "name": "Sales Funnel Video",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/sales-funnel-video\/",
+        "type": "sales"
+    },
+    "pp-product-landing-1": {
+        "name": "Product - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/product-landing-1\/",
+        "type": "landing"
+    },
+    "pp-ecommerce-home": {
+        "name": "eCommerce - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/ecommerce-home\/",
+        "type": "home"
+    },
+    "pp-book-launch-landing": {
+        "name": "Book Launch - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/book-launch-landing\/",
+        "type": "landing"
+    },
+    "pp-car-repair-home": {
+        "name": "Car Repair - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/car-repair-home\/",
+        "type": "home"
+    },
+    "pp-mobile-app-landing": {
+        "name": "Mobile App - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/mobile-app-landing\/",
+        "type": "landing"
+    },
+    "pp-webinar-landing": {
+        "name": "Webinar - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/webinar-landing\/",
+        "type": "landing"
+    },
+    "pp-yoga-landing": {
+        "name": "Yoga - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/yoga-landing\/",
+        "type": "landing"
+    },
+    "pp-author-landing": {
+        "name": "Author - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/author-landing\/",
+        "type": "landing"
+    },
+    "pp-construction-landing": {
+        "name": "Construction - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/construction-landing\/",
+        "type": "landing"
+    },
+    "pp-freelance-writer-landing": {
+        "name": "Freelance Writer - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/freelance-writer-landing\/",
+        "type": "landing"
+    },
+    "pp-interior-design-home": {
+        "name": "Interior Design - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/interior-design-home\/",
+        "type": "home"
+    },
+    "pp-business-landing": {
+        "name": "Business - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/business-landing\/",
+        "type": "landing"
+    },
+    "pp-real-estate-home": {
+        "name": "Real Estate - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/real-estate-home\/",
+        "type": "home"
+    },
+    "pp-restaurant-2-home": {
+        "name": "Restaurant 2 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/restaurant-2-home\/",
+        "type": "home"
+    },
+    "pp-webinar-2-landing": {
+        "name": "Webinar 2 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/webinar-2-landing\/",
+        "type": "landing"
+    },
+    "pp-female-entrepreneurs-2-home": {
+        "name": "Female Entrepreneurs 2 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/female-entrepreneurs-2-home\/",
+        "type": "home"
+    },
+    "pp-female-entrepreneurs-3-home": {
+        "name": "Female Entrepreneurs 3 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/female-entrepreneurs-3-home\/",
+        "type": "home"
+    },
+    "pp-female-entrepreneurs-4-home": {
+        "name": "Female Entrepreneurs 4 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/female-entrepreneurs-4-home\/",
+        "type": "home"
+    },
+    "pp-delivery-service-home": {
+        "name": "Delivery Service - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/delivery-services-home\/",
+        "type": "home"
+    },
+    "pp-bakery-home": {
+        "name": "Bakery - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/bakery-home\/",
+        "type": "home"
+    },
+    "pp-freelance-blogger-home": {
+        "name": "Freelance Blogger - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/freelance-blogger-home\/",
+        "type": "home"
+    },
+    "pp-thank-you-landing": {
+        "name": "Thank You - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/thank-you-landing\/",
+        "type": "landing"
+    },
+    "pp-dentist-landing": {
+        "name": "Dentist - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/dentist-landing\/",
+        "type": "landing"
+    },
+    "pp-gym-landing": {
+        "name": "Gym - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/gym-landing\/",
+        "type": "landing"
+    },
+    "pp-wedding-photographer-home": {
+        "name": "Wedding Photographer - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/wedding-photographer-home\/",
+        "type": "home"
+    },
+    "pp-e-learning-landing": {
+        "name": "E-Learning - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/e-learning-landing\/",
+        "type": "landing"
+    },
+    "pp-architect-home": {
+        "name": "Architect - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/architect-home\/",
+        "type": "home"
+    },
+    "pp-architect-about": {
+        "name": "Architect - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/architect-about\/",
+        "type": "about"
+    },
+    "pp-architect-contact": {
+        "name": "Architect - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/architect-contact\/",
+        "type": "contact"
+    },
+    "pp-interior-home": {
+        "name": "Interior - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/interior-home\/",
+        "type": "home"
+    },
+    "pp-interior-about": {
+        "name": "Interior - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/interior-about\/",
+        "type": "about"
+    },
+    "pp-interior-contact": {
+        "name": "Interior - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/interior-contact\/",
+        "type": "contact"
+    },
+    "pp-spa-2-home": {
+        "name": "Spa 2 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/spa-2-home\/",
+        "type": "home"
+    },
+    "pp-seo-home": {
+        "name": "SEO - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/seo-home\/",
+        "type": "home"
+    },
+    "pp-seo-about": {
+        "name": "SEO - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/seo-about\/",
+        "type": "about"
+    },
+    "pp-seo-contact": {
+        "name": "SEO - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/seo-contact\/",
+        "type": "contact"
+    },
+    "pp-home-rent-landing": {
+        "name": "Home Rent - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/home-rent-landing\/",
+        "type": "landing"
+    },
+    "pp-restaurant-home": {
+        "name": "Restaurant - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/restaurant-home\/",
+        "type": "home"
+    },
+    "pp-restaurant-about": {
+        "name": "Restaurant - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/restaurant-about\/",
+        "type": "about"
+    },
+    "pp-restaurant-contact": {
+        "name": "Restaurant - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/restaurant-contact\/",
+        "type": "contact"
+    },
+    "pp-beauty-landing": {
+        "name": "Beauty - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/beauty-landing\/",
+        "type": "landing"
+    },
+    "pp-creative-agency-landing": {
+        "name": "Creative Agency - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/creative-agency-landing\/",
+        "type": "landing"
+    },
+    "pp-event-1-landing": {
+        "name": "Event 1 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/event-1-landing\/",
+        "type": "landing"
+    },
+    "pp-event-2-landing": {
+        "name": "Event 2 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/event-2-landing\/",
+        "type": "landing"
+    },
+    "pp-lawyer-1-landing": {
+        "name": "Lawyer 1 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/lawyer-1-landing\/",
+        "type": "landing"
+    },
+    "pp-lawyer-2-landing": {
+        "name": "Lawyer 2 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/lawyer-2-landing\/",
+        "type": "landing"
+    },
+    "pp-lawyer-3-landing": {
+        "name": "Lawyer 3 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/lawyer-3-landing\/",
+        "type": "landing"
+    },
+    "pp-barber-landing": {
+        "name": "Barber - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/barber-landing\/",
+        "type": "landing"
+    },
+    "pp-finance-landing": {
+        "name": "Finance - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/finance-landing\/",
+        "type": "landing"
+    },
+    "pp-charity-landing": {
+        "name": "Charity - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/charity-landing\/",
+        "type": "landing"
+    },
+    "pp-medical-landing": {
+        "name": "Medical - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/medical-landing\/",
+        "type": "landing"
+    },
+    "pp-moving-landing": {
+        "name": "Moving - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/moving-landing\/",
+        "type": "landing"
+    },
+    "pp-offer-1-landing": {
+        "name": "Offer 1 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/offer-1-landing\/",
+        "type": "landing"
+    },
+    "pp-education-landing": {
+        "name": "Education - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/education-landing\/",
+        "type": "landing"
+    },
+    "pp-travel-landing": {
+        "name": "Travel - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/travel-landing\/",
+        "type": "landing"
+    },
+    "pp-pet-care-landing": {
+        "name": "Pet Care - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/pet-care-landing\/",
+        "type": "landing"
+    },
+    "pp-pet-care-2-landing": {
+        "name": "Pet Care 2 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/pet-care-2-landing\/",
+        "type": "landing"
+    },
+    "pp-webinar-3-landing": {
+        "name": "Webinar 3 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/webinar-3-landing\/",
+        "type": "landing"
+    },
+    "pp-seminar-landing": {
+        "name": "Seminar - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/seminar-landing-2\/",
+        "type": "landing"
+    },
+    "pp-car-rent-1-landing": {
+        "name": "Car Rent 1 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/car-rent-1-landing\/",
+        "type": "landing"
+    },
+    "pp-car-rent-2-landing": {
+        "name": "Car Rent 2 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/car-rent-2-landing\/",
+        "type": "landing"
+    },
+    "pp-book-store-landing": {
+        "name": "Book Store - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/book-store-landing\/",
+        "type": "landing"
+    },
+    "pp-professional-event-landing": {
+        "name": "Professional Event - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/professional-event-landing\/",
+        "type": "landing"
+    },
+    "pp-freelance-blogger-about": {
+        "name": "Freelance Blogger - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/freelance-blogger-about\/",
+        "type": "about"
+    },
+    "pp-freelance-blogger-contact": {
+        "name": "Freelance Blogger - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/freelance-blogger-contact\/",
+        "type": "contact"
+    },
+    "pp-restaurant-2-about": {
+        "name": "Restaurant 2 - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/restaurant-2-about\/",
+        "type": "about"
+    },
+    "pp-restaurant-2-contact": {
+        "name": "Restaurant 2 - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/restaurant-2-contact\/",
+        "type": "contact"
+    },
+    "pp-wedding-photographer-about": {
+        "name": "Wedding Photographer - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/wedding-photographer-about\/",
+        "type": "about"
+    },
+    "pp-wedding-photographer-contact": {
+        "name": "Wedding Photographer - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/wedding-photographer-contact\/",
+        "type": "contact"
+    },
+    "pp-bakery-about": {
+        "name": "Bakery - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/bakery-about\/",
+        "type": "about"
+    },
+    "pp-bakery-contact": {
+        "name": "Bakery - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/bakery-contact\/",
+        "type": "contact"
+    },
+    "pp-interior-design-about": {
+        "name": "Interior Design - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/interior-design-about\/",
+        "type": "about"
+    },
+    "pp-interior-design-contact": {
+        "name": "Interior Design - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/interior-design-contact\/",
+        "type": "contact"
+    },
+    "pp-financial-service-landing": {
+        "name": "Financial Service - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/financial-service-landing\/",
+        "type": "landing"
+    },
+    "pp-product-launch-landing": {
+        "name": "Product Launch - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/product-launch-landing\/",
+        "type": "landing"
+    },
+    "pp-wedding-landing": {
+        "name": "Wedding - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/wedding-landing\/",
+        "type": "landing"
+    },
+    "pp-loan-landing": {
+        "name": "Loan - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/loan-landing\/",
+        "type": "landing"
+    },
+    "pp-product-landing": {
+        "name": "Product 1 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/product-landing\/",
+        "type": "landing"
+    },
+    "pp-gym-2-landing": {
+        "name": "GYM 2 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/gym-2-landing\/",
+        "type": "landing"
+    },
+    "pp-cafe-2-home": {
+        "name": "Cafe 2 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/cafe-2-home\/",
+        "type": "home"
+    },
+    "pp-business-1-home": {
+        "name": "Business 1 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/business-1-home\/",
+        "type": "home"
+    },
+    "pp-car-loan-home": {
+        "name": "Car Loan - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/car-loan-home\/",
+        "type": "home"
+    },
+    "pp-home-rent-2-landing": {
+        "name": "Home Rent 2 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/templates-demo\/home-rent-2-landing\/",
+        "type": "landing"
+    },
+    "pp-seo-1-home": {
+        "name": "SEO 1 - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/seo-1-home\/",
+        "type": "home"
+    },
+    "pp-jewellery-home": {
+        "name": "Jewellery - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/jewellery-home\/",
+        "type": "home"
+    },
+    "pp-car-dealer-home": {
+        "name": "Car Dealer - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/car-dealer-home\/",
+        "type": "home"
+    },
+    "pp-car-dealer-about": {
+        "name": "Car Dealer - About",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/car-dealer-about\/",
+        "type": "about"
+    },
+    "pp-car-dealer-contact": {
+        "name": "Car Dealer - Contact",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/car-dealer-contact\/",
+        "type": "contact"
+    },
+    "pp-car-dealer-services": {
+        "name": "Car Dealer - Services",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/car-dealer-services\/",
+        "type": "services"
+    },
+    "pp-plantation": {
+        "name": "Plantation - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/plantation\/",
+        "type": "home"
+    },
+    "pp-photography": {
+        "name": "Photography - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/photography\/",
+        "type": "home"
+    },
+    "pp-adventure-home": {
+        "name": "Adventure - Home",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/adventure-home\/",
+        "type": "home"
+    },
+    "pp-mobile-app-1-landing": {
+        "name": "Mobile App 1 - Landing",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/mobile-app-1-landing\/",
+        "type": "landing"
+    },
+    "pp-coming-soon-03": {
+        "name": "Coming Soon - 03",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-3\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-04": {
+        "name": "Coming Soon - 04",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-4\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-05": {
+        "name": "Coming Soon - 05",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-5\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-06": {
+        "name": "Coming Soon - 06",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-6\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-07": {
+        "name": "Coming Soon - 07",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-7\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-08": {
+        "name": "Coming Soon - 08",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-8\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-09": {
+        "name": "Coming Soon - 09",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-9\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-10": {
+        "name": "Coming Soon - 10",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-10\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-11": {
+        "name": "Coming Soon - 11",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-11\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-12": {
+        "name": "Coming Soon - 12",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-12\/",
+        "type": "coming-soon"
+    },
+    "pp-coming-soon-13": {
+        "name": "Coming Soon - 13",
+        "slug": "https:\/\/demo.wpbeaveraddons.com\/powerpack-templates-demo\/coming-soon-13\/",
+        "type": "coming-soon"
+    }
+}

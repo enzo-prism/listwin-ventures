@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LogoGrid from '../components/LogoGrid.astro';
+import HeroMedia from '../components/HeroMedia.astro';
+import {
+  heroAssets,
+  boardAssets,
+  investmentAssets,
+  philanthropyAssets,
+} from '../data/assets';
+
+const pageTitle = 'Home (Legacy)';
+const pageDescription =
+  'Historical snapshot of the original Listwin Ventures homepage and portfolio highlights.';
+
+const portrait = heroAssets.find((asset) => asset.id === 'don-listwin')!;
+const clarius = heroAssets.find((asset) => asset.id === 'clarius')!;
+const rapidAI = heroAssets.find((asset) => asset.id === 'rapidai')!;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section class="space-y-6">
+    <p>
+      <a
+        href={clarius.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex flex-wrap items-center gap-4"
+      >
+        <span class="text-sm font-semibold uppercase tracking-widest text-emerald-600">
+          Our latest investment in the future
+        </span>
+        <img src={clarius.path} alt={clarius.alt} class="h-10 w-auto" loading="lazy" />
+      </a>
+    </p>
+    <h1 class="text-3xl font-semibold">Don Listwin</h1>
+    <h3 class="text-xl font-medium text-slate-600">Technology Investor, CEO, Philanthropist</h3>
+    <p>
+      <a href="#my-story" class="font-semibold">My Story</a>
+    </p>
+    <p>
+      I have 35+ years in the technology industry, built a successful tech career at Cisco (#2
+      executive), been the CEO of a public company, invested in several other leading technology
+      companies, and founded the Canary Foundation in 2004 to focus on early cancer technology. I
+      currently serve on nine boards, am the CEO of RapidAI, and also serve as a technology partner
+      at Sequoia Capital and Rally Ventures.
+    </p>
+  </section>
+
+  <section id="my-story" class="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start">
+    <div class="space-y-6">
+      <p>
+        With a focus on developing networking and data center technologies for the Internet, I began
+        my career in 1980 at Develcon in Canada, marketing data switching technology for the
+        mini-computer era. In the mid-1980s, I relocated to Silicon Valley and joined Cisco Systems in
+        1990. During a 10-year tenure at Cisco, I built the IBM business unit, the Access business
+        unit, and the Service Provider line of business&mdash;overseeing business totaling more than
+        $12 billion in annual revenue. In 2000, I became CEO of Openwave, which invented much of the
+        early mobile Internet technology.
+      </p>
+      <p>
+        After 25 years of senior leadership operating experience, I founded the Canary Foundation in
+        2004 and dedicated myself to philanthropic work in science and technology for the early
+        detection of cancer. The Canary Foundation is the world&apos;s first non-profit organization
+        focused solely on the funding, discovery, and development of tests for early cancer detection.
+        I continue to be deeply involved with other cancer-related organizations. In 2009, I was
+        appointed to the National Cancer Institute&apos;s Board of Scientific Advisors. I am a member
+        of the Stanford Advisory Board for the Canary Center for Cancer Early Detection at Stanford
+        and in 2018 I was honored to be awarded the Dean&apos;s Medal&mdash;the highest honor bestowed
+        by the School of Medicine to individuals whose contributions have significantly advanced the
+        mission of Stanford Medicine. I am also a consulting professor at Stanford University.
+      </p>
+      <p>
+        In 2018, I joined RapidAI as CEO. RapidAI is the worldwide leader in cerebrovascular imaging
+        analysis, delivering the proven software tools that healthcare professionals around the world
+        use to successfully identify and treat more stroke patients than ever before.
+      </p>
+      <p>
+        I live part-time in Belize where I scuba dive daily and work on restoring and protecting the
+        barrier reef. In 2010, my wife and I built the non-profit BelizeKids.org to support local
+        community and education initiatives and have created a partnership with Stanford to deliver
+        eye care for the local community.
+      </p>
+      <p>
+        A native of Canada, I hold a B.S. degree in Electrical Engineering and an Honorary Doctorate
+        of Law from the University of Saskatchewan, Canada where I continue to actively support
+        student entrepreneurs.
+      </p>
+    </div>
+    <div class="mx-auto flex max-w-md flex-col items-center gap-6">
+      <HeroMedia asset={portrait} />
+      <HeroMedia asset={rapidAI} rounded={false} />
+    </div>
+  </section>
+
+  {boardAssets.map((group) => (
+    <LogoGrid title={group.label} assets={group.items} columns={4} />
+  ))}
+
+  <section class="space-y-8">
+    <h2 class="text-2xl font-semibold">Investment Highlights</h2>
+    {investmentAssets.map((group) => (
+      <LogoGrid title={group.label} assets={group.items} columns={5} />
+    ))}
+  </section>
+
+  {philanthropyAssets.map((group) => (
+    <LogoGrid title={group.label} assets={group.items} columns={4} />
+  ))}
+</BaseLayout>

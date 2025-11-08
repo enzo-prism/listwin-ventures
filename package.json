@@ -1,0 +1,20 @@
+{
+  "name": "listwinventures-rebuild",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --port 8080",
+    "build": "astro build",
+    "preview": "astro preview --port 8080"
+  },
+  "dependencies": {
+    "astro": "^4.9.0"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "^5.1.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.3"
+  }
+}

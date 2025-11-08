@@ -1,0 +1,134 @@
+{
+    "pp-contact-blocks": {
+        "name": "Contact Blocks",
+        "slug": "",
+        "count": "6",
+        "type": "section"
+    },
+    "pp-contact-forms": {
+        "name": "Contact Forms",
+        "slug": "",
+        "count": "16",
+        "type": "section"
+    },
+    "pp-call-to-action": {
+        "name": "Call To Action",
+        "slug": "",
+        "count": "5",
+        "type": "section"
+    },
+    "pp-hero": {
+        "name": "Hero",
+        "slug": "",
+        "count": "11",
+        "type": "section"
+    },
+    "pp-subscribe-forms": {
+        "name": "Subscribe Forms",
+        "slug": "",
+        "count": "14",
+        "type": "section"
+    },
+    "pp-content": {
+        "name": "Content",
+        "slug": "",
+        "count": "19",
+        "type": "section"
+    },
+    "pp-blog-posts": {
+        "name": "Blog Posts",
+        "slug": "",
+        "count": "12",
+        "type": "section"
+    },
+    "pp-logos": {
+        "name": "Logos",
+        "slug": "",
+        "count": "7",
+        "type": "section"
+    },
+    "pp-team": {
+        "name": "Team",
+        "slug": "",
+        "count": "13",
+        "type": "section"
+    },
+    "pp-testimonials": {
+        "name": "Testimonials",
+        "slug": "",
+        "count": "6",
+        "type": "section"
+    },
+    "pp-features": {
+        "name": "Features",
+        "slug": "",
+        "count": "6",
+        "type": "section"
+    },
+    "pp-services": {
+        "name": "Services",
+        "slug": "",
+        "count": "27",
+        "type": "section"
+    },
+    "pp-heading": {
+        "name": "Heading",
+        "slug": "",
+        "count": "5",
+        "type": "section"
+    },
+    "pp-faq": {
+        "name": "FAQ",
+        "slug": "",
+        "count": "5",
+        "type": "section"
+    },
+    "pp-advanced-accordions": {
+        "name": "Advanced Accordions",
+        "slug": "",
+        "count": "5",
+        "type": "section"
+    },
+    "pp-hover-cards": {
+        "name": "Hover Cards",
+        "slug": "",
+        "count": "6",
+        "type": "section"
+    },
+    "pp-pricing-tables": {
+        "name": "Pricing Tables",
+        "slug": "",
+        "count": "6",
+        "type": "section"
+    },
+    "pp-restaurant-menu": {
+        "name": "Restaurant Menu",
+        "slug": "",
+        "count": "6",
+        "type": "section"
+    },
+    "pp-smart-banners": {
+        "name": "Smart Banner",
+        "slug": "",
+        "count": "4",
+        "type": "section"
+    },
+    "pp-advanced-tabs": {
+        "name": "Advanced Tabs",
+        "slug": "",
+        "count": "7",
+        "type": "section"
+    },
+    "pp-footer": {
+        "name": "Footer",
+        "slug": "",
+        "count": "9",
+        "type": "section"
+    },
+    "pp-header": {
+        "name": "Header",
+        "slug": "",
+        "count": "14",
+        "type": "section"
+    }
+}

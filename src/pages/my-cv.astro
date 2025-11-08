@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LogoGrid from '../components/LogoGrid.astro';
+import HeroMedia from '../components/HeroMedia.astro';
+import {
+  heroAssets,
+  boardAssets,
+  investmentAssets,
+  philanthropyAssets,
+} from '../data/assets';
+
+const pageTitle = 'My CV';
+const pageDescription =
+  'Curriculum vitae for Don Listwin, spanning board roles, executive leadership, investing, and philanthropy.';
+
+const portrait = heroAssets.find((asset) => asset.id === 'don-listwin')!;
+const ceoExperience = boardAssets.find((group) => group.label === 'CEO Experience');
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-start">
+      <div class="space-y-4 text-sm text-ink/70">
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">Curriculum Vitae</p>
+        <h1 class="text-3xl font-semibold text-ink sm:text-4xl">Don Listwin</h1>
+        <p class="text-lg">
+          Board Director with over 35 years of experience leading technology businesses, philanthropy, and venture
+          investing. CEO of RapidAI, venture partner at Rally Ventures, technology partner at Sequoia Capital, and
+          Associate Professor of Radiology at Stanford University since 2012.
+        </p>
+        <div class="grid gap-4 text-sm sm:grid-cols-2">
+          <div>
+            <p class="font-semibold text-ink">Studio</p>
+            <p>3480 Woodside Road, Woodside, CA 94062</p>
+          </div>
+          <div class="space-y-1">
+            <p>
+              Cell:
+              <a href="tel:+16508149966">(650) 814-9966</a>
+            </p>
+            <p>
+              Email:
+              <a href="mailto:dj22listwin@gmail.com">dj22listwin@gmail.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="w-full max-w-md">
+        <HeroMedia asset={portrait} />
+      </div>
+    </div>
+  </section>
+
+  <section class="grid gap-6 md:grid-cols-2">
+    <article class="rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60">
+      <h2 class="text-2xl font-semibold text-ink">Education</h2>
+      <ul class="mt-4 space-y-2 text-ink/70">
+        <li>Bachelor of Science, Electrical Engineering — University of Saskatchewan</li>
+        <li>Doctorate of Law (Honorary), 2001 — University of Saskatchewan</li>
+      </ul>
+    </article>
+    <article class="rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60">
+      <h2 class="text-2xl font-semibold text-ink">Personal</h2>
+      <p class="mt-4 text-ink/70">
+        Married with children and grandchildren; resort owner in Belize; PADI® SCUBA Dive Master &amp; Rescue Diver with
+        30+ years experience; private pilot; train conductor.
+      </p>
+    </article>
+  </section>
+
+  <section class="space-y-6">
+    <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-8">
+      <h2 class="text-2xl font-semibold text-ink">Board Experience</h2>
+      <p class="mt-3 text-ink/70">
+        Serving companies from growth-stage to public markets with a focus on networking, data, and healthtech.
+      </p>
+    </div>
+    <div class="space-y-5">
+      {boardAssets.map((group) => (
+        <LogoGrid title={group.label} assets={group.items} columns={4} />
+      ))}
+    </div>
+  </section>
+
+  <section class="grid gap-6 md:grid-cols-2">
+    <article class="rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60">
+      <h2 class="text-2xl font-semibold text-ink">Chief Executive Officer</h2>
+      <p class="mt-2 text-sm text-ink/70">Operating roles leading companies through product, go-to-market, and exits.</p>
+      <div class="mt-4">
+        <LogoGrid assets={ceoExperience?.items.slice(0, 5) ?? []} columns={3} />
+      </div>
+    </article>
+    <article class="rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60">
+      <h2 class="text-2xl font-semibold text-ink">Executive Leadership</h2>
+      <ul class="mt-4 list-disc space-y-2 pl-6 text-ink/70">
+        <li>Cisco Systems — Led $12B/year business units and Wall Street relations</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="space-y-6">
+    <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-8">
+      <h2 class="text-2xl font-semibold text-ink">Investments</h2>
+      <p class="mt-3 text-ink/70">
+        Select investments across seed, venture, private, and public stages.
+      </p>
+    </div>
+    <div class="space-y-5">
+      {investmentAssets.map((group) => (
+        <LogoGrid title={group.label} assets={group.items} columns={4} />
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-6">
+    <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-8">
+      <h2 class="text-2xl font-semibold text-ink">Philanthropy & Academia</h2>
+      <p class="mt-3 text-ink/70">
+        Ongoing work with early detection research, children’s health, and university programs.
+      </p>
+    </div>
+    <div class="space-y-5">
+      {philanthropyAssets.map((group) => (
+        <LogoGrid title={group.label} assets={group.items} columns={4} />
+      ))}
+    </div>
+  </section>
+
+  <section class="rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60">
+    <h2 class="text-2xl font-semibold text-ink">Skills &amp; Focus</h2>
+    <ul class="mt-4 list-disc space-y-2 pl-6 text-ink/70">
+      <li>Deep knowledge of Internet and data center products, technology, and markets</li>
+      <li>Cancer molecular diagnostics domain expertise and market insight</li>
+      <li>Track record of acquiring, selling, and integrating dozens of companies</li>
+      <li>Venture Partner at Rally Ventures</li>
+      <li>Technology Partner at Sequoia Capital</li>
+      <li>Founder of Listwin Ventures</li>
+    </ul>
+  </section>
+</BaseLayout>

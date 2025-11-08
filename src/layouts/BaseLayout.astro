@@ -1,0 +1,162 @@
+---
+import "../styles/global.css";
+import { investmentAssets } from '../data/assets';
+import { getEntityDetails, getDetailPath } from '../data/entityDetails';
+
+const {
+  title = "Listwin Ventures",
+  description = "Technology investing, leadership, and philanthropy from Don Listwin."
+} = Astro.props;
+
+const entityDetails = getEntityDetails();
+const detailBySlug = new Map(entityDetails.map((detail) => [detail.slug, detail]));
+
+const workItems = entityDetails.filter((detail) => detail.slug === 'carbon-robotics');
+
+const investmentSections = investmentAssets
+  .map((group) => {
+    const items = group.items
+      .map((asset) => detailBySlug.get(asset.id))
+      .filter((detail) => detail && detail.slug !== 'carbon-robotics');
+    return { label: group.label, items };
+  })
+  .filter((section) => section.items.length > 0);
+
+const exitSlugs = ['openwave', 'joyent', 'isilon', 'plumgrid', 'teradici'];
+const exitItems = exitSlugs.map((slug) => detailBySlug.get(slug)).filter(Boolean);
+if (exitItems.length) {
+  investmentSections.push({ label: 'Exits', items: exitItems });
+}
+
+investmentSections.push({
+  label: 'Philanthropic',
+  items: [],
+  links: [{ label: 'Explore community projects →', href: '#exploits' }]
+});
+
+const communityItems = entityDetails.filter((detail) => detail.categories.includes('philanthropy'));
+
+const prettify = (name: string) => name.replace(/\s+(logo|crest|lockup)$/i, '');
+
+const dropdowns = [
+  { label: 'Work', items: workItems },
+  { label: 'Investments', sections: investmentSections },
+  { label: 'Community Projects', items: communityItems },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="stylesheet" href="/assets/css/skin.css" />
+    <link rel="stylesheet" href="/assets/css/theme.css" />
+  </head>
+  <body class="min-h-screen bg-fog text-ink">
+    <div class="flex min-h-screen flex-col">
+      <header class="sticky top-0 z-40 border-b border-white/60 bg-white/80 backdrop-blur">
+        <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+            <a href="/" class="flex items-center gap-3 text-xl font-semibold tracking-tight text-ink">
+              <img src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp" alt="Listwin Ventures" class="h-10 w-auto" loading="lazy" />
+              <span class="sr-only">Listwin Ventures</span>
+            </a>
+          <button
+            type="button"
+            class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:hidden"
+            data-nav-toggle
+            aria-expanded="false"
+            aria-controls="primary-navigation"
+          >
+            Menu
+          </button>
+          <nav
+            id="primary-navigation"
+            data-nav-menu
+            class="hidden w-full flex-col gap-4 text-sm sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6"
+          >
+            <a class="font-medium text-ink/80 transition hover:text-brand" href="/">
+              Home
+            </a>
+            {dropdowns.map((dropdown) => (
+              <details class="relative group" key={dropdown.label}>
+                <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
+                  {dropdown.label}
+                  <span aria-hidden="true" class="text-xs text-ink/50">&#9662;</span>
+                </summary>
+                <div class="mt-2 hidden flex-col gap-2 rounded-2xl bg-white/95 p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:left-0 sm:mt-3 sm:min-w-[240px]">
+                  {dropdown.sections ? (
+                    dropdown.sections.map((section) => (
+                      <div class="space-y-2" key={section.label}>
+                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">{section.label}</p>
+                        {section.items.map((item) => (
+                          <a class="block transition hover:text-brand" href={getDetailPath(item.slug)}>
+                            {prettify(item.name)}
+                          </a>
+                        ))}
+                        {section.links &&
+                          section.links.map((link) => (
+                            <a class="block text-brand transition hover:text-brand-soft" href={link.href}>
+                              {link.label}
+                            </a>
+                          ))}
+                      </div>
+                    ))
+                  ) : (
+                    dropdown.items.map((item) => (
+                      <a class="transition hover:text-brand" href={getDetailPath(item.slug)}>
+                        {prettify(item.name)}
+                      </a>
+                    ))
+                  )}
+                </div>
+              </details>
+            ))}
+            <a class="font-medium text-ink/80 transition hover:text-brand" href="#contact">
+              Contact
+            </a>
+          </nav>
+        </div>
+      </header>
+      <main class="flex-1">
+        <div class="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
+          <slot />
+        </div>
+      </main>
+      <footer class="border-t border-white/60 bg-white/80">
+        <div class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-ink/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <span>&copy; {new Date().getFullYear()} Listwin Ventures. All rights reserved.</span>
+          <div class="flex flex-wrap gap-6">
+            <a class="hover:text-brand" href="/privacy-policy">Privacy</a>
+            <a class="hover:text-brand" href="/cookie-policy">Cookies</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script is:inline>
+      const toggle = document.querySelector("[data-nav-toggle]");
+      const menu = document.querySelector("[data-nav-menu]");
+      if (toggle && menu) {
+        toggle.addEventListener("click", () => {
+          const isOpen = menu.classList.toggle("hidden");
+          toggle.setAttribute("aria-expanded", (!isOpen).toString());
+        });
+        if (window.matchMedia("(min-width: 640px)").matches) {
+          menu.classList.remove("hidden");
+          toggle.setAttribute("aria-expanded", "true");
+        }
+        window.addEventListener("resize", () => {
+          if (window.matchMedia("(min-width: 640px)").matches) {
+            menu.classList.remove("hidden");
+            toggle.setAttribute("aria-expanded", "true");
+          } else {
+            menu.classList.add("hidden");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

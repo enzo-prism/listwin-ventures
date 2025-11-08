@@ -1,0 +1,45 @@
+---
+import type { VisualAsset } from '../data/assets';
+
+export interface Props {
+  asset: VisualAsset;
+  rounded?: boolean;
+  shadow?: boolean;
+  className?: string;
+  linkHref?: string | null;
+  showCaption?: boolean;
+}
+
+const { asset, rounded = true, shadow = true, className = '', linkHref = undefined, showCaption = true } = Astro.props;
+
+const resolvedLink = linkHref === null ? undefined : linkHref ?? asset.href;
+const isExternal = resolvedLink ? !linkHref && !!asset.href : false;
+---
+
+<figure
+  class={`w-full flex flex-col items-center gap-3 rounded-apple bg-white/90 p-4 text-center text-sm text-ink/70 shadow-panel ring-1 ring-white/60 ${className}`}
+>
+  {resolvedLink ? (
+    <a
+      href={resolvedLink}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+      class={`${rounded ? 'overflow-hidden rounded-[28px]' : ''} block`}
+    >
+      <img
+        src={asset.path}
+        alt={asset.alt}
+        loading="lazy"
+        class={`w-full object-contain ${shadow ? 'shadow-panel' : ''}`}
+      />
+    </a>
+  ) : (
+    <img
+      src={asset.path}
+      alt={asset.alt}
+      loading="lazy"
+      class={`w-full object-contain ${rounded ? 'rounded-[28px]' : ''} ${shadow ? 'shadow-panel' : ''}`}
+    />
+  )}
+  {showCaption && <figcaption class="text-xs uppercase tracking-[0.25em] text-ink/50">{asset.name}</figcaption>}
+</figure>

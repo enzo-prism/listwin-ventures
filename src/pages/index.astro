@@ -1,0 +1,410 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LogoGrid from '../components/LogoGrid.astro';
+import HeroMedia from '../components/HeroMedia.astro';
+import { heroAssets, investmentAssets, philanthropyAssets } from '../data/assets';
+import { getDetailPath } from '../data/entityDetails';
+
+const pageTitle = 'Home';
+const pageDescription =
+  'Technology investor, CEO, philanthropist, and longtime operator Don Listwin shares his work across leadership, investing, and philanthropy.';
+
+const carbonRoboticsDetailPath = getDetailPath('carbon-robotics');
+const carbonRoboticsAsset = investmentAssets
+  .flatMap((group) => group.items)
+  .find((asset) => asset.id === 'carbon-robotics');
+const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
+
+const linkTargets = {
+  openwave: getDetailPath('openwave'),
+  rapidai: getDetailPath('rapidai'),
+  calix: getDetailPath('calix'),
+  canary: getDetailPath('canary-foundation'),
+  sequoia: getDetailPath('sequoia'),
+  rally: getDetailPath('rally'),
+  belizekids: getDetailPath('belizekids'),
+  stanford: getDetailPath('stanford'),
+  canaryChallenge: getDetailPath('canary-challenge'),
+};
+
+const exploitThemes = [
+  {
+    kicker: 'BIG EVENTS',
+    heading: 'Creating Awareness and Driving Impact',
+    description:
+      'Large-scale initiatives and events that raised global awareness for poverty relief and early cancer detection.',
+    cards: [
+      {
+        title: 'NetAid',
+        description:
+          'NETAID was an anti-poverty initiative co-founded by the United Nations Development Programme and Cisco Systems with a 1999 concert and simultaneous digital events spanning 40+ countries.',
+        tag: 'netaid',
+      },
+      {
+        title: 'San Jose Grand Prix',
+        description:
+          'SAN JOSE GRAND PRIX brought Champ Car racing to Silicon Valley, amplifying Canary Foundation’s mission and the importance of early cancer detection.',
+        tag: 'sjgp',
+      },
+    ],
+  },
+  {
+    kicker: 'BIG IDEA',
+    heading: 'Advancing Early Cancer Detection',
+    description: 'Institutions and conferences accelerating breakthroughs from lab to clinic.',
+    cards: [
+      {
+        title: 'Canary Foundation',
+        description:
+          'Founded in 2004 as the world’s first nonprofit solely dedicated to funding, discovering, and developing tests for early cancer detection.',
+        tag: 'canary-foundation',
+        link: linkTargets.canary,
+      },
+      {
+        title: 'Canary Center at Stanford',
+        description:
+          'A world-class research facility focused on minimally invasive diagnostics and imaging strategies for detecting cancers at curable stages.',
+        tag: 'canary-center',
+        link: linkTargets.stanford,
+      },
+      {
+        title: 'Canary Challenge',
+        description:
+          'An annual fully supported bike ride whose proceeds benefited the Stanford Cancer Institute and Canary Center to advance cancer research and supportive care.',
+        tag: 'canary-challenge',
+        link: linkTargets.canaryChallenge,
+      },
+      {
+        title: 'Early Detection of Cancer Conference',
+        description:
+          'A cross-disciplinary conference series investing in early detection research, screening accuracy, and the biology of early-stage cancers.',
+        tag: 'cancer-conference',
+      },
+    ],
+  },
+  {
+    kicker: 'BIG LOVE',
+    heading: 'Helping Communities in Belize',
+    description: 'Health, education, and conservation programs delivering lasting change across Belize.',
+    cards: [
+      {
+        title: 'Belize Vision Clinic',
+        description:
+          'Partnering with BCVI and Stanford Medicine, this clinic provides comprehensive eye care for San Pedro residents through BelizeKids.org.',
+        tag: 'vision-clinic',
+        link: linkTargets.belizekids,
+      },
+      {
+        title: 'San Pedro Roman Catholic Primary School',
+        description:
+          'Expanded with new classrooms, electrical upgrades, and refreshed facilities to support 700+ students.',
+        tag: 'catholic',
+      },
+      {
+        title: 'New Horizon SDA Primary School',
+        description:
+          'Added classrooms, shaded palapa space, and infrastructure repairs to serve more than 500 students.',
+        tag: 'adventist',
+      },
+      {
+        title: 'Hol Chan Marine Reserve + SP Tour Guide Association',
+        description:
+          'Created “no-take” zones, installed mooring buoys, and supported sustainable tourism to protect Belize’s reef.',
+        tag: 'hol-chan',
+      },
+      {
+        title: 'Dolla’ a Dive & COVID Food Drive',
+        description:
+          'Grassroots campaigns with local dive shops and guides raising funds for healthcare and families during tourism shutdowns.',
+        tag: 'community-relief',
+      },
+      {
+        title: 'Boca Del Rio Park Playground',
+        description:
+          'Renovated beachfront park with palapas, playground equipment, and sports upgrades for families.',
+        tag: 'boca',
+      },
+    ],
+  },
+  {
+    kicker: 'BIG FUN',
+    heading: 'Creating Delight',
+    description: 'Spaces designed for connection, reflection, and memorable gatherings.',
+    cards: [
+      {
+        title: 'Canary Cove',
+        description:
+          'A private resort on Ambergris Caye bringing family, friends, and business teams together in Belize.',
+        tag: 'canary-cove',
+      },
+      {
+        title: 'Chelsea & Woodside Railroad',
+        description:
+          'A backyard railroad experience complete with Don as train conductor to delight kids of all ages.',
+        tag: 'railroad',
+      },
+    ],
+  },
+];
+
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section class="space-y-6 rounded-apple bg-white/95 p-6 text-center shadow-panel ring-1 ring-white/60 sm:p-10">
+    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Don Listwin</p>
+    <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Technology investor, CEO, philanthropist</h1>
+    <p class="text-ink/70">
+      Building enduring companies across networking, data, and health while backing founders who pair engineering rigor with human impact.
+    </p>
+    <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+      <a
+        class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
+        href="/my-cv"
+      >
+        View full CV
+      </a>
+      <a
+        class="inline-flex items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand"
+        href="#investments"
+      >
+        Explore portfolio
+      </a>
+    </div>
+    <div class="space-y-3 rounded-[32px] border border-ink/10 bg-fog/60 px-6 py-5 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/60">New investment</p>
+      <p class="text-lg font-semibold text-ink">Carbon Robotics</p>
+      <a
+        class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-soft hover:text-white"
+        href={carbonRoboticsDetailPath ?? '#'}
+      >
+        Discover the Carbon Robotics thesis
+      </a>
+    </div>
+  </section>
+
+  <section id="my-story" class="space-y-6">
+    <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <div class="grid gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-center">
+        <div class="space-y-4">
+          <p class="text-sm font-semibold uppercase tracking-wide text-ink/60">My Story</p>
+          <p>
+            I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a
+            public company—<a href={linkTargets.openwave}>OpenWave</a>—that created the mobile internet. Since then, I created
+            Listwin Ventures which has invested in dozens of other leading technology companies. I founded the
+            <a href={linkTargets.canary}>Canary Foundation</a> in 2002—the world's largest research entity to focus on early cancer
+            technology. Most recently, I was the CEO of <a href={linkTargets.rapidai}>RapidAI</a>, and I currently serve on six boards
+            including as Lead Independent Director at <a href={linkTargets.calix}>Calix</a>. Additionally, I serve as a technology
+            partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
+          </p>
+        </div>
+        {portrait && <HeroMedia asset={portrait} showCaption={false} />}
+      </div>
+    </div>
+    <div class="rounded-apple border border-white/80 bg-white/90 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <div class="space-y-4">
+        <p>
+          With a focus on developing networking and data center technologies for the Internet, I began my career in 1980 at
+          Develcon in Canada, marketing data switching technology for the mini-computer era. In the mid-1980s, I relocated to
+          Silicon Valley and joined Cisco Systems in 1990. During a 10-year tenure at Cisco, I built the IBM business unit, the
+          Access business unit, and the Service Provider line of business—overseeing business totaling more than $12 billion in
+          annual revenue. In 2000, I became CEO of <a href={linkTargets.openwave}>Openwave</a>, which invented much of the early
+          mobile Internet technology.
+        </p>
+        <p>
+          After 25 years of senior leadership operating experience, I founded the <a href={linkTargets.canary}>Canary Foundation</a>
+          in 2002 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. The
+          <a href={linkTargets.canary}>Canary Foundation</a> is the world’s first non-profit organization focused solely on the
+          funding, discovery, and development of tests for early cancer detection. I continue to be deeply involved with other
+          cancer-related organizations. In 2009, I was appointed to the National Cancer Institute’s Board of Scientific Advisors. I
+          am a member of the Stanford Advisory Board for the Canary Center for Cancer Early Detection at
+          <a href={linkTargets.stanford}>Stanford</a> and in 2018 I was honored to be awarded the Dean's Medal—the highest honor
+          bestowed by the School of Medicine to individuals whose contributions have significantly advanced the mission of
+          <a href={linkTargets.stanford}>Stanford Medicine</a>. I am also an adjunct professor in Radiology at
+          <a href={linkTargets.stanford}>Stanford University</a>.
+        </p>
+        <p>
+          From 2018–2021, I served as CEO of <a href={linkTargets.rapidai}>RapidAI</a>— the worldwide leader in cerebrovascular imaging analysis, delivering the
+          proven software tools that healthcare professionals around the world use to successfully identify and treat more stroke
+          patients than ever before.
+        </p>
+        <p>
+          I live part-time in Belize where I scuba dive daily and work on restoring and protecting the barrier reef. In 2010, my
+          wife and I created the non-profit <a href={linkTargets.belizekids}>BelizeKids.org</a> to support local community and
+          education initiatives and have created a partnership with <a href={linkTargets.stanford}>Stanford</a> to deliver eye care
+          to the local community.
+        </p>
+        <p>
+          A native of Canada, I hold a B.S. degree in Electrical Engineering and an Honorary Doctorate of Law from the University of
+          Saskatchewan, Canada where I continue to actively support student entrepreneurs.
+        </p>
+        <div class="pt-2">
+          <a
+            class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
+            href="/oral-history"
+          >
+            Learn more about Don’s story
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="recent-work" class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-3">
+      <p class="text-sm font-semibold uppercase tracking-wide text-ink/60">Recent work</p>
+      <h2 class="text-2xl font-semibold text-ink">Carbon Robotics</h2>
+      <p class="text-ink/70">
+        Carbon Robotics is revolutionizing agriculture with AI and robotics to reduce costs and increase yields. Amid labor
+        challenges, rising input costs, and increasing concerns about herbicide use, growers worldwide are seeking smarter,
+        more efficient ways to farm. Carbon Robotics addresses these needs by delivering advanced AI robotic laser weeders and
+        tractor autonomy that drives efficiencies to the global community.
+      </p>
+      <a
+        class="inline-flex items-center gap-2 text-sm font-semibold text-brand"
+        href={carbonRoboticsDetailPath ?? '#'}
+      >
+        Explore the Carbon Robotics detail →
+      </a>
+    </div>
+    {carbonRoboticsAsset && <HeroMedia asset={carbonRoboticsAsset} rounded={false} linkHref={carbonRoboticsDetailPath} />}
+  </section>
+
+  <section id="investments" class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+      <div class="space-y-4">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Investments</p>
+        <h2 class="text-3xl font-semibold text-ink">Technology and business development</h2>
+        <p class="text-lg text-ink/70">For new technologies.</p>
+        <p class="text-ink/70">
+          I partner with founders shipping new infrastructure, neurovascular AI, edge compute, and data platforms—helping
+          them navigate enterprise design partners, operating discipline, and long-term business development.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Seed → Growth</span>
+          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Operator-led diligence</span>
+          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Hands-on go-to-market</span>
+        </div>
+        <a
+          class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
+          href="mailto:dj22listwin@gmail.com"
+        >
+          Share your deck
+        </a>
+      </div>
+      <div class="rounded-[32px] border border-white/70 bg-white/90 p-6 text-ink/80 shadow-panel">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Current theses</p>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li>• Autonomous systems that merge robotics, AI, and field data (e.g., Carbon Robotics).</li>
+          <li>• Neurovascular and imaging software that changes treatment guidelines.</li>
+          <li>• Cloud infrastructure that abstracts complexity for telecom, edge, and AI workloads.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="space-y-5">
+      {investmentAssets.map((group) => (
+        <LogoGrid title={group.label} assets={group.items} columns={5} />
+      ))}
+    </div>
+  </section>
+
+  <section id="exploits" class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+      <div class="space-y-4">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Exploits</p>
+        <h2 class="text-3xl font-semibold text-ink">Community development projects</h2>
+        <p class="text-lg text-ink/70">
+          Canary Foundation, <a href={linkTargets.belizekids} class="text-brand">BelizeKids.org</a>, and long-standing
+          partnerships with <a href={linkTargets.stanford} class="text-brand">Stanford Medicine</a> expand early cancer
+          detection, eye care, and entrepreneurship training across Belize and North America.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Early detection research</span>
+          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">Belize field clinics</span>
+          <span class="rounded-full border border-brand/30 px-4 py-2 text-sm text-brand">STEM & reef stewardship</span>
+        </div>
+        <a
+          class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
+          href={linkTargets.belizekids ?? '#'}
+        >
+          Visit BelizeKids.org
+        </a>
+      </div>
+      <div class="rounded-[32px] border border-white/70 bg-white/90 p-6 text-ink/80 shadow-panel">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Impact snapshots</p>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li>• Canary Foundation labs translating biomarkers into clinical standards.</li>
+          <li>• BelizeKids.org mobile clinics delivering eye care and STEM labs on the islands.</li>
+          <li>• Stanford partnerships that pair residents and researchers with community programs.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="space-y-10">
+      {exploitThemes.map((theme) => (
+        <div class="space-y-4" key={theme.kicker}>
+          <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/60">{theme.kicker}</p>
+            <h3 class="text-xl font-semibold text-ink">{theme.heading}</h3>
+            {theme.description && <p class="text-sm text-ink/70">{theme.description}</p>}
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            {theme.cards.map((card) => (
+              <article
+                class="space-y-2 rounded-[28px] border border-white/70 bg-white/90 p-5 text-sm text-ink/75 shadow-panel"
+                key={card.title}
+              >
+                {card.tag && <span class="text-xs font-semibold uppercase tracking-[0.3em] text-brand">{card.tag}</span>}
+                <h4 class="text-lg font-semibold text-ink">{card.title}</h4>
+                <p>{card.description}</p>
+                {card.link && (
+                  <a class="text-brand transition hover:text-brand-soft" href={card.link}>
+                    Learn more →
+                  </a>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="space-y-5">
+      {philanthropyAssets.map((group) => (
+        <LogoGrid title={group.label} assets={group.items} columns={4} />
+      ))}
+    </div>
+  </section>
+
+  <section id="contact" class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <p class="text-sm font-semibold uppercase tracking-wide text-ink/60">Contact</p>
+    <h2 class="text-2xl font-semibold text-ink">Let’s build the next chapter</h2>
+    <p class="text-ink/70">
+      Whether you’re scaling infrastructure, launching a healthtech product, or expanding a community initiative, I’m
+      always open to conversations that blend engineering rigor with human impact.
+    </p>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="space-y-2 rounded-[28px] border border-white/80 bg-fog/70 p-5 text-ink/80">
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">Phone</p>
+        <a class="text-lg font-semibold" href="tel:+16508149966">(650) 814-9966</a>
+        <p class="text-sm">Reach out for board opportunities, investments, or speaking.</p>
+      </div>
+      <div class="space-y-2 rounded-[28px] border border-white/80 bg-fog/70 p-5 text-ink/80">
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">Email</p>
+        <a class="text-lg font-semibold" href="mailto:dj22listwin@gmail.com">dj22listwin@gmail.com</a>
+        <p class="text-sm">Share a brief on your company, research, or community project.</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-4">
+      <a
+        class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-soft"
+        href="mailto:dj22listwin@gmail.com"
+      >
+        Send a note
+      </a>
+      <a
+        class="inline-flex items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand"
+        href="/oral-history"
+      >
+        Learn more about my story
+      </a>
+    </div>
+  </section>
+</BaseLayout>

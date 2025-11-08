@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroMedia from '../../components/HeroMedia.astro';
+import { getEntityDetails, type EntityDetail } from '../../data/entityDetails';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const details = getEntityDetails();
+  return details.map((detail) => ({
+    params: { slug: detail.slug },
+    props: { detail },
+  }));
+}
+
+const { detail } = Astro.props as { detail: EntityDetail };
+const title = `${detail.name} — Portfolio Detail`;
+const categoryLabels: Record<string, string> = {
+  board: 'Board',
+  investment: 'Investment',
+  philanthropy: 'Philanthropy',
+  hero: 'Spotlight',
+};
+---
+
+<BaseLayout title={title} description={detail.summary}>
+  <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+      <div class="space-y-4">
+        <div class="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+          {detail.categories.map((category) => (
+            <span class="rounded-full border border-ink/10 px-3 py-1 text-ink/70" key={category}>
+              {categoryLabels[category] ?? category}
+            </span>
+          ))}
+        </div>
+        <h1 class="font-display text-3xl font-semibold text-ink sm:text-4xl">{detail.name}</h1>
+        <p class="text-ink/70">{detail.summary}</p>
+        <ul class="list-disc space-y-2 pl-6 text-sm text-ink/70">
+          {detail.highlights.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        {detail.externalUrl && (
+          <a
+            class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
+            href={detail.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit official site
+          </a>
+        )}
+      </div>
+      <div>
+        <HeroMedia asset={detail.asset} linkHref={null} />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+import type { VisualAsset } from '../data/assets';
+import { getDetailPath } from '../data/entityDetails';
+
+export interface Props {
+  title?: string;
+  assets: VisualAsset[];
+  columns?: number;
+}
+
+const { title, assets, columns = 4 } = Astro.props;
+
+const colClass = (() => {
+  const md = Math.min(Math.max(columns, 2), 4);
+  const lg = Math.min(Math.max(columns, 2), 6);
+  const map: Record<number, string> = {
+    2: 'md:grid-cols-2',
+    3: 'md:grid-cols-3',
+    4: 'md:grid-cols-4',
+  };
+  const mapLg: Record<number, string> = {
+    2: 'lg:grid-cols-2',
+    3: 'lg:grid-cols-3',
+    4: 'lg:grid-cols-4',
+    5: 'lg:grid-cols-5',
+    6: 'lg:grid-cols-6',
+  };
+  return `${map[md] ?? 'md:grid-cols-4'} ${mapLg[lg] ?? 'lg:grid-cols-4'}`;
+})();
+---
+
+<section class="space-y-4 rounded-apple bg-white/90 p-5 shadow-panel ring-1 ring-white/60 sm:p-6">
+  {title && <h3 class="text-lg font-semibold text-ink">{title}</h3>}
+  <div class={`grid gap-4 sm:grid-cols-2 ${colClass}`}>
+    {assets.map((asset) => (
+      <figure
+        key={asset.id}
+        class="flex h-full flex-col items-center gap-3 rounded-[28px] border border-white/70 bg-white px-4 py-5 text-center text-sm text-ink/70 transition hover:-translate-y-0.5 hover:border-brand/40"
+      >
+        {(() => {
+          const detailPath = getDetailPath(asset.id);
+          const linkHref = detailPath ?? asset.href;
+          if (linkHref) {
+            return (
+              <a
+                href={linkHref}
+                target={detailPath ? undefined : '_blank'}
+                rel={detailPath ? undefined : 'noopener noreferrer'}
+                class="transition hover:scale-105"
+              >
+                <img
+                  src={asset.path}
+                  alt={asset.alt}
+                  loading="lazy"
+                  class="h-16 w-auto max-w-[160px] object-contain"
+                />
+              </a>
+            );
+          }
+          return (
+            <img
+              src={asset.path}
+              alt={asset.alt}
+              loading="lazy"
+              class="h-16 w-auto max-w-[160px] object-contain"
+            />
+          );
+        })()}
+        <figcaption>{asset.name}</figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
