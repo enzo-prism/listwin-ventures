@@ -96,14 +96,78 @@ const navItems = [
             data-nav-menu
             class="hidden w-full flex-col gap-4 rounded-3xl bg-white/95 p-5 text-sm text-ink shadow-panel ring-1 ring-ink/5 sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6 sm:rounded-none sm:bg-transparent sm:p-0 sm:text-ink sm:shadow-none sm:ring-0"
           >
-            {navItems.map((item, index) => {
-              if (!item.type) {
-                return (
-                  <a class="font-medium text-ink/80 transition hover:text-brand" href={item.href} key={item.label}>
-                    {item.label}
-                  </a>
-                );
-              }
+            <div class="flex flex-col gap-4 sm:hidden">
+              <a class="w-full rounded-2xl border border-ink/10 bg-fog/40 px-4 py-3 text-base font-semibold text-ink/80" href="/">
+                Home
+              </a>
+              {[
+                { type: 'work', label: 'Work' },
+                { type: 'investments', label: 'Investments' },
+                { type: 'community', label: 'Community' },
+                { type: 'stories', label: 'Stories' },
+              ].map((menu) => (
+                <details class="rounded-2xl border border-ink/10 bg-white px-4 py-2" data-dropdown>
+                  <summary class="flex list-none cursor-pointer items-center justify-between text-base font-semibold text-ink/80">
+                    {menu.label}
+                    <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+                      &#9662;
+                    </span>
+                  </summary>
+                  <div class="mt-3 space-y-2 text-sm text-ink/80">
+                    {menu.type === 'work' &&
+                      workHighlights.map((highlight) => (
+                        <a class="block rounded-xl border border-ink/5 bg-fog/40 px-3 py-2" href={highlight.href}>
+                          <span class="block text-sm font-semibold text-ink">{highlight.label}</span>
+                          <span class="block text-xs text-ink/60">{highlight.description}</span>
+                        </a>
+                      ))}
+                    {menu.type === 'investments' &&
+                      investmentSections.map((section) => (
+                        <div class="rounded-xl border border-ink/5 bg-fog/20 p-3">
+                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
+                          <div class="mt-2 space-y-1">
+                            {section.items.map((sectionItem) => (
+                              <a class="block rounded-lg px-3 py-1 hover:bg-brand/10 hover:text-brand" href={getDetailPath(sectionItem.slug)}>
+                                {prettify(sectionItem.name)}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    {menu.type === 'community' &&
+                      communityLinks.map((link) => (
+                        <a class="block rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                          {prettify(link.label)}
+                        </a>
+                      ))}
+                    {menu.type === 'stories' &&
+                      storyLinks.map((link) => (
+                        <a class="block rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                          {link.label}
+                        </a>
+                      ))}
+                  </div>
+                </details>
+              ))}
+              <a
+                class="inline-flex items-center justify-center rounded-full border border-ink/20 px-4 py-3 text-base font-semibold text-ink transition hover:border-brand hover:text-brand"
+                href="/contact"
+              >
+                Contact
+              </a>
+              <p class="border-t border-ink/10 pt-4 text-xs uppercase tracking-[0.3em] text-ink/50">
+                Built with founders, operators, and community partners.
+              </p>
+            </div>
+            <div class="hidden w-full flex-col gap-4 text-sm sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6">
+              {navItems.map((item, index) => {
+                if (!item.type) {
+                  return (
+                    <a class="font-medium text-ink/80 transition hover:text-brand" href={item.href} key={item.label}>
+                      {item.label}
+                    </a>
+                  );
+                }
 
               if (item.type === 'investments') {
                 return (
@@ -208,16 +272,14 @@ const navItems = [
                 );
               }
 
-              return null;
-            })}
-            <a
-              class="inline-flex items-center justify-center rounded-full border border-ink/20 px-4 py-2 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand sm:ml-4"
-              href="/contact"
-            >
-              Contact
-            </a>
-            <div class="border-t border-ink/10 pt-4 text-xs uppercase tracking-[0.3em] text-ink/50 sm:hidden">
-              Built with founders, operators, and community partners.
+                return null;
+              })}
+              <a
+                class="inline-flex items-center justify-center rounded-full border border-ink/20 px-4 py-2 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand sm:ml-4"
+                href="/contact"
+              >
+                Contact
+              </a>
             </div>
           </nav>
         </div>
