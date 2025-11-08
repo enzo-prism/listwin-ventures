@@ -10,7 +10,7 @@ structural changes.
 listwinventures-rebuild/
   public/                  # legacy CSS + uploads (large media ignored via .gitignore)
   src/
-    components/            # HeroMedia, LogoGrid, etc.
+    components/            # HeroMedia, LogoGrid, CompanyCarousel, etc.
     data/                  # assets.ts (media) + entityDetails.ts (portfolio metadata)
     layouts/               # BaseLayout.astro (sticky nav + dropdowns)
     pages/                 # Astro routes (home, contact form, oral history, BelizeKids, exploit detail, company detail)
@@ -49,7 +49,7 @@ mobile nav expands into a full-width card with all sections stacked.
 After the hero and “My Story” modules, the homepage is limited to three key sections:
 
 1. **Recent Work** – Carbon Robotics spotlight (copy + CTA + media).
-2. **Investments** – hero text plus stage-specific grids.
+2. **Investments** – hero text plus stage-specific carousels (Seed, Private, Exits, Venture, Public).
 3. **Exploits** – themed cards that now link to `/exploits/[slug]` for long-form writeups.
 
 The standalone contact section was removed; all inquiries route through `/contact`.
