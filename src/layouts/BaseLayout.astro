@@ -331,7 +331,10 @@ const navItems = [
       }
 
       const revealElements = document.querySelectorAll("[data-reveal]");
-      if ("IntersectionObserver" in window && revealElements.length) {
+      const isMobile = window.matchMedia("(max-width: 640px)").matches;
+      if (isMobile || !("IntersectionObserver" in window)) {
+        revealElements.forEach((el) => el.classList.add("is-visible"));
+      } else if (revealElements.length) {
         const observer = new IntersectionObserver(
           (entries, obs) => {
             entries.forEach((entry) => {
@@ -344,8 +347,6 @@ const navItems = [
           { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
         );
         revealElements.forEach((el) => observer.observe(el));
-      } else {
-        revealElements.forEach((el) => el.classList.add("is-visible"));
       }
 
       const typingEl = document.getElementById("hero-typing");
