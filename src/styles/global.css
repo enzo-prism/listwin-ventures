@@ -43,17 +43,19 @@ img {
   will-change: opacity, transform;
 }
 
-[class~="typing-line"] {
+.typing-line {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  min-width: 18ch;
+  width: var(--typing-width, 22ch);
+  min-width: var(--typing-width, 22ch);
 }
 
 @media (min-width: 640px) {
-  [class~="typing-line"] {
-    min-width: 20ch;
+  .typing-line {
+    width: var(--typing-width, 24ch);
+    min-width: var(--typing-width, 24ch);
   }
 }
 
