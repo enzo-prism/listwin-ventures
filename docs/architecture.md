@@ -14,7 +14,7 @@ listwinventures-rebuild/
     data/                  # assets.ts (media) + entityDetails.ts (portfolio metadata)
     layouts/               # BaseLayout.astro (sticky nav + dropdowns)
     pages/                 # Astro routes (home, contact form, oral history, BelizeKids, exploit detail, company detail)
-    styles/global.css      # Tailwind entry point + Apple-inspired theming
+    styles/global.css      # Tailwind entry point + Apple-inspired theming + shared .btn utility
   docs/                    # this file
 ```
 

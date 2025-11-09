@@ -7,12 +7,7 @@ const pageDescription = 'Share your project or investment opportunity with Listw
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/60">Get in touch</p>
-    <h1 class="font-display text-3xl font-semibold text-ink sm:text-4xl">Contact Listwin Ventures</h1>
-    <p class="text-ink/70">
-      Share an overview of your company, partnership idea, or community initiative and we’ll follow up directly. The more context
-      you provide, the faster we can connect you with the right resources.
-    </p>
+    <h1 class="font-display text-3xl font-semibold text-ink sm:text-4xl">Contact</h1>
     <form class="space-y-6" name="contact" method="post" data-netlify="true">
       <input type="hidden" name="form-name" value="contact" />
       <div class="grid gap-4 md:grid-cols-2">
@@ -62,11 +57,7 @@ const pageDescription = 'Share your project or investment opportunity with Listw
         />
       </label>
       <div class="flex flex-wrap justify-between gap-3">
-        <p class="text-xs uppercase tracking-[0.3em] text-ink/60">We typically respond within a week.</p>
-        <button
-          type="submit"
-          class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-soft"
-        >
+        <button type="submit" class="btn btn-brand">
           Send message
         </button>
       </div>

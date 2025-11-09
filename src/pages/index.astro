@@ -5,6 +5,7 @@ import HeroMedia from '../components/HeroMedia.astro';
 import { heroAssets, investmentAssets } from '../data/assets';
 import { getDetailPath, getEntityDetails, type EntityDetail } from '../data/entityDetails';
 import { getExploitPath } from '../data/exploitDetails';
+import { Icon } from 'astro-icon/components';
 
 const pageTitle = 'Home';
 const pageDescription =
@@ -17,8 +18,16 @@ const carbonRoboticsAsset = investmentAssets
 const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
 const entityDetails = getEntityDetails();
 const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail) => [detail.slug, detail]));
+const hiddenInvestmentCarouselSlugs = new Set(['cradle']);
 const exitSlugs = ['robin', 'teradici'];
 const exitItems = exitSlugs.map((slug) => entityDetailMap.get(slug)).filter((detail): detail is EntityDetail => Boolean(detail));
+
+const sectionIconNames = {
+  story: 'heroicons-outline:book-open',
+  work: 'tabler:compass',
+  investments: 'tabler:chart-line',
+  exploits: 'tabler:heart-handshake',
+};
 
 const investmentCarousels = investmentAssets.reduce((acc, group) => {
   if (group.label === 'Frontier') return acc;
@@ -26,7 +35,7 @@ const investmentCarousels = investmentAssets.reduce((acc, group) => {
     label: group.label,
     items: group.items
       .map((asset) => entityDetailMap.get(asset.id))
-      .filter((detail): detail is EntityDetail => Boolean(detail)),
+      .filter((detail): detail is EntityDetail => detail !== undefined && !hiddenInvestmentCarouselSlugs.has(detail.slug)),
   });
   if (group.label === 'Private' && exitItems.length) {
     acc.push({ label: 'Exits', items: exitItems });
@@ -263,10 +272,7 @@ const exploitThemes = [
     >
       <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">New investment</p>
       <p class="text-lg font-semibold text-white">Carbon Robotics</p>
-      <a
-        class="inline-flex items-center justify-center rounded-full bg-white/90 px-6 py-3 text-sm font-semibold text-ink transition hover:bg-white"
-        href={carbonRoboticsDetailPath ?? '#'}
-      >
+      <a class="btn btn-ink" href={carbonRoboticsDetailPath ?? '#'}>
         Learn more
       </a>
     </div>
@@ -276,7 +282,12 @@ const exploitThemes = [
     <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
       <div class="grid gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-center">
         <div class="space-y-4">
-          <p class="text-sm font-semibold uppercase tracking-wide text-ink/60">My Story</p>
+          <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
+            <span class="section-icon" aria-hidden="true">
+              <Icon name={sectionIconNames.story} width="16" height="16" />
+            </span>
+            My Story
+          </p>
           <p>
             I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a
             public company—<a href={linkTargets.openwave}>OpenWave</a>—that created the mobile internet. Since then, I created
@@ -328,12 +339,9 @@ const exploitThemes = [
           Saskatchewan, Canada where I continue to actively support student entrepreneurs.
         </p>
         <div class="pt-2">
-          <a
-            class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
-            href="/oral-history"
-          >
-            Learn more about Don’s story
-          </a>
+      <a class="btn btn-ink" href="/oral-history">
+        Learn more about Don’s story
+      </a>
         </div>
       </div>
     </div>
@@ -341,8 +349,15 @@ const exploitThemes = [
 
   <section id="recent-work" class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-3">
-      <p class="text-sm font-semibold uppercase tracking-wide text-ink/60">Recent work</p>
+      <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
+        <span class="section-icon" aria-hidden="true">
+          <Icon name={sectionIconNames.work} width="16" height="16" />
+        </span>
+        Recent work
+      </p>
       <h2 class="text-2xl font-semibold text-ink">Carbon Robotics</h2>
+      <p class="text-base font-semibold text-ink/70">Lead Independent Director, Carbon Robotics</p>
+      <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">EXPANDING, POSITIONING, LEADING</p>
       <p class="text-ink/70">
         Carbon Robotics is revolutionizing agriculture with AI and robotics to reduce costs and increase yields. Amid labor
         challenges, rising input costs, and increasing concerns about herbicide use, growers worldwide are seeking smarter,
@@ -354,7 +369,7 @@ const exploitThemes = [
           Explore the Carbon Robotics detail →
         </a>
         <a
-          class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-soft hover:text-white"
+          class="btn btn-brand"
           href="https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board"
           target="_blank"
           rel="noopener noreferrer"
@@ -368,8 +383,12 @@ const exploitThemes = [
 
   <section id="investments" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-4">
-      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">TECHNOLOGY AND BUSINESS DEVELOPMENT</p>
-      <h2 class="text-3xl font-semibold text-ink">For New Technologies</h2>
+      <p class="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.35em] text-ink/70">
+        <span class="section-icon" aria-hidden="true">
+          <Icon name={sectionIconNames.investments} width="16" height="16" />
+        </span>
+        TECHNOLOGY AND BUSINESS DEVELOPMENT &middot; FOR NEW TECHNOLOGIES
+      </p>
       <p class="text-lg font-semibold text-ink">My Investments</p>
       <p class="text-ink/70">
         My investments range from seed through sizable stakes in public entities.
@@ -383,7 +402,7 @@ const exploitThemes = [
     </div>
     <div class="space-y-8">
       {investmentCarousels.map((group) => (
-        <CompanyCarousel title={group.label} items={group.items} />
+        <CompanyCarousel title={group.label} items={group.items} hideImages={group.label === 'Venture'} />
       ))}
     </div>
   </section>
@@ -391,12 +410,14 @@ const exploitThemes = [
   <section id="exploits" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="grid gap-8 lg:grid-cols-[1.2fr]">
       <div class="space-y-4">
-        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">Exploits</p>
+        <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">
+          <span class="section-icon" aria-hidden="true">
+            <Icon name={sectionIconNames.exploits} width="16" height="16" />
+          </span>
+          Exploits
+        </p>
         <h2 class="text-3xl font-semibold text-ink">Community development projects</h2>
-        <a
-          class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
-          href={linkTargets.belizekids ?? '#'}
-        >
+        <a class="btn btn-ink" href={linkTargets.belizekids ?? '#'}>
           Visit BelizeKids.org
         </a>
       </div>
@@ -431,10 +452,10 @@ const exploitThemes = [
                   <h4 class="text-lg font-semibold text-ink">{card.title}</h4>
                   <p>{card.description}</p>
                   <a
-                    class={`inline-flex items-center justify-center rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] transition ${
+                    class={`btn btn-ink text-xs uppercase tracking-[0.3em] ${
                       buttonDisabled
                         ? 'cursor-not-allowed border-ink/20 text-ink/40'
-                        : 'border-ink/30 text-ink group-hover:border-brand group-hover:bg-brand group-hover:text-white'
+                        : ''
                     }`}
                     href={buttonDisabled ? '#' : buttonHref}
                     aria-disabled={buttonDisabled}

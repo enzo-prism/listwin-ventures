@@ -46,6 +46,7 @@ the related media.
 - `src/pages/` – Astro page routing (hero/homepage, legal pages, BelizeKids spotlight, oral history, contact form, exploit detail pages, etc.).
 - `src/layouts/BaseLayout.astro` – Global shell (sticky nav, dropdown menus, frosted glass header/footer).
 - `src/components/CompanyCarousel.astro`, `LogoGrid.astro`, and `HeroMedia.astro` – reusable media primitives that render the homepage carousels, legacy grids, and hero imagery.
+- `src/components/Button` (global `.btn` utility via `src/styles/global.css`) – shared white-fill/colored-outline button styling consumed across all pages for consistent hover states.
 - `src/data/assets.ts` – legacy media mapping plus grouped board/investment/philanthropy collections.
 - `src/data/entityDetails.ts` – canonical portfolio metadata powering `/company/[slug]` pages and the nav dropdowns.
 - `src/data/exploitDetails.ts` – structured content for the Exploits cards and `/exploits/[slug]` pages (events, Belize initiatives, retreats).

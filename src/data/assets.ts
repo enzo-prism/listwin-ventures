@@ -119,11 +119,10 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Venture',
     items: [
-      make('bdc', '2018/05/bdc.png', 'BDC logo', 'https://www.bdc.ca/'),
-      make('c100', '2018/05/c100.png', 'C100 logo', 'https://www.c100.org/'),
+      make('hwvp', 'https://www.hummerwinblad.com/wp-content/themes/hwvpfoundation/dist/images/hwvp-logo.svg', 'HWVP logo', 'https://www.hummerwinblad.com/'),
       make('rally', '2018/05/rally.png', 'Rally Ventures logo', 'https://rallyventures.com/'),
-      make('legacy', '2018/05/cc.png', 'Legacy Ventures logo', 'https://www.legacy-ventures.com/'),
       make('sequoia', '2018/05/stanford.png', 'Sequoia partner network logo', 'https://www.sequoiacap.com/'),
+      make('telesoft', 'https://telesoftpartners.com/wp-content/uploads/2015/01/telesoft-logo.png', 'TeleSoft Partners logo', 'https://telesoftpartners.com/'),
     ],
   },
   {

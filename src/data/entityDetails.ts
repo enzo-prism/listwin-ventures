@@ -57,22 +57,6 @@ const content: Record<string, DetailContent> = {
       'Scholarships, maker labs, and dive expeditions help local students pursue technology careers.',
     ],
   },
-  bdc: {
-    summary:
-      'BDC (Business Development Bank of Canada) finances and mentors Canadian entrepreneurs, with deep reach into regional innovation hubs.',
-    highlights: [
-      'Partnering with BDC connects Canadian founders in Don’s network to growth capital and export support.',
-      'BDC’s evergreen mandate makes it a resilient co-investor for long-horizon infrastructure bets.',
-    ],
-  },
-  c100: {
-    summary:
-      'C100 is a nonprofit network of Canadian founders and operators in Silicon Valley, accelerating mentorship and capital for Canada-built startups.',
-    highlights: [
-      'Don contributes operating lessons from Cisco and RapidAI to C100 cohorts and summits.',
-      'The group bridges Canadian universities, venture firms, and Bay Area leadership.',
-    ],
-  },
   calix: {
     summary:
       'Calix is a leading provider of next generation fiber optic based broadband solutions.',
@@ -129,6 +113,13 @@ const content: Record<string, DetailContent> = {
       'Customers use D-Wave quantum solutions for logistics, cybersecurity, and drug discovery research.',
     ],
   },
+  hwvp: {
+    summary: 'HWVP invests in early-stage enterprise software companies.',
+    highlights: [
+      'Partners closely with founders to navigate product-market fit, hiring, and customer success.',
+      'Brings decades of operational knowledge to help enterprise startups scale responsibly.',
+    ],
+  },
   etek: {
     summary:
       'ETEK Dynamics supplied networking and broadband access equipment during the first wave of internet build-outs.',
@@ -159,14 +150,6 @@ const content: Record<string, DetailContent> = {
     highlights: [
       'Don joined as a director during Joyent’s expansion into enterprise cloud and hybrid deployments.',
       'The company’s innovations in containers and real-time apps influenced today’s developer stacks.',
-    ],
-  },
-  legacy: {
-    summary:
-      'Legacy Ventures is a hospitality and investment platform that convenes business leaders around philanthropy and venture partnerships.',
-    highlights: [
-      'Provides relationship capital for boards and founders within Don’s portfolio.',
-      'Blends investing with charitable initiatives, aligning with Don’s philanthropic ethos.',
     ],
   },
   lucile: {
@@ -220,10 +203,10 @@ const content: Record<string, DetailContent> = {
   },
   rally: {
     summary:
-      'Rally Ventures is a venture capital firm backing technical founders in enterprise software, data, and security.',
+      'Rally Ventures I–V invests exclusively in early-stage business technology companies.',
     highlights: [
+      'Empowers entrepreneurs building products that modern enterprises actually deploy.',
       'Don is a Venture Partner, helping diligence infrastructure deals and mentor founders.',
-      'Rally’s operator-first approach aligns with Don’s roll-up-your-sleeves ethos.',
     ],
   },
   rapidai: {
@@ -267,7 +250,7 @@ const content: Record<string, DetailContent> = {
   },
   sequoia: {
     summary:
-      'Sequoia Capital is a global venture firm behind enduring technology companies across consumer, enterprise, and health.',
+      'Sequoia helps daring founders build legendary companies across consumer, enterprise, and health.',
     highlights: [
       'Don serves as a Technology Partner, advising portfolio teams on go-to-market and scaling.',
       'Sequoia’s scout and expert networks amplify Don’s reach in next-gen infrastructure.',
@@ -279,6 +262,14 @@ const content: Record<string, DetailContent> = {
     highlights: [
       'Joint labs blend bioengineering with clinical trials for early diagnostics.',
       'BelizeKids programs host Stanford residents for field training in Belize.',
+    ],
+  },
+  telesoft: {
+    summary:
+      'TeleSoft Partners provides entrepreneurs with capital, knowledge, contacts, and expertise.',
+    highlights: [
+      'Hands-on investing model pairs founders with proven operators and customer introductions.',
+      'Supports teams from concept through global deployment with flexible, multi-stage capital.',
     ],
   },
   teradici: {
@@ -324,8 +315,6 @@ const content: Record<string, DetailContent> = {
 const requiredSlugs = Array.from(new Set([
   'awarex',
   'belizekids',
-  'bdc',
-  'c100',
   'calix',
   'carbon-robotics',
   'canary-foundation',
@@ -335,9 +324,9 @@ const requiredSlugs = Array.from(new Set([
   'dwave',
   'etek',
   'genologics',
+  'hwvp',
   'isilon',
   'joyent',
-  'legacy',
   'lucile',
   'moffitt',
   'nih',
@@ -352,6 +341,7 @@ const requiredSlugs = Array.from(new Set([
   'saskatchewan',
   'sequoia',
   'stanford',
+  'telesoft',
   'teradici',
   'uberflip',
   'vida',

@@ -76,22 +76,12 @@ const galleryAssets = [carbonFieldAsset].filter(Boolean) as VisualAsset[];
       {(detail.externalUrl || pressReleaseUrl) && (
         <div class="flex flex-wrap justify-center gap-3">
           {detail.externalUrl && (
-            <a
-              class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-semibold text-white transition hover:bg-ink/80"
-              href={detail.externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a class="btn btn-ink" href={detail.externalUrl} target="_blank" rel="noopener noreferrer">
               Visit official site
             </a>
           )}
           {pressReleaseUrl && (
-            <a
-              class="inline-flex items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand"
-              href={pressReleaseUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a class="btn btn-ink" href={pressReleaseUrl} target="_blank" rel="noopener noreferrer">
               Read press release
             </a>
           )}

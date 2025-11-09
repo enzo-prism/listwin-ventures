@@ -13,11 +13,13 @@ const detailBySlug = new Map(entityDetails.map((detail) => [detail.slug, detail]
 
 const workItems = entityDetails.filter((detail) => detail.slug === 'carbon-robotics');
 
+const hiddenInvestmentNavSlugs = new Set(['carbon-robotics', 'cradle']);
+
 const investmentSections = investmentAssets
   .map((group) => {
     const items = group.items
       .map((asset) => detailBySlug.get(asset.id))
-      .filter((detail) => detail && detail.slug !== 'carbon-robotics');
+      .filter((detail) => detail && !hiddenInvestmentNavSlugs.has(detail.slug));
     return { label: group.label, items };
   })
   .filter((section) => section.items.length > 0);
@@ -84,7 +86,7 @@ const navItems = [
             </a>
           <button
             type="button"
-            class="inline-flex items-center rounded-full border border-brand bg-white px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:hidden"
+            class="btn btn-brand px-4 py-2 sm:hidden"
             data-nav-toggle
             aria-expanded="false"
             aria-controls="primary-navigation"
@@ -149,10 +151,7 @@ const navItems = [
                   </div>
                 </details>
               ))}
-              <a
-                class="inline-flex items-center justify-center rounded-full border border-ink/20 px-4 py-3 text-base font-semibold text-ink transition hover:border-brand hover:text-brand"
-                href="/contact"
-              >
+              <a class="btn btn-ink w-full text-base" href="/contact">
                 Contact
               </a>
               <p class="border-t border-ink/10 pt-4 text-xs uppercase tracking-[0.3em] text-ink/50">
@@ -274,10 +273,7 @@ const navItems = [
 
                 return null;
               })}
-              <a
-                class="inline-flex items-center justify-center rounded-full border border-ink/20 px-4 py-2 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand sm:ml-4"
-                href="/contact"
-              >
+              <a class="btn btn-ink px-4 py-2 sm:ml-4" href="/contact">
                 Contact
               </a>
             </div>
