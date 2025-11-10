@@ -33,12 +33,12 @@ listwinventures-rebuild/
 
 `BaseLayout.astro` renders a responsive navigation system:
 
-1. **Work** – curated spotlight cards (currently Carbon Robotics + BelizeKids.org). Update the
+1. **New** – curated spotlight cards (currently Carbon Robotics + BelizeKids.org). Update the
    `workHighlights` array in the layout when swapping focus projects.
 2. **Investments** – mega-menu grouped by stage (`investmentAssets` + `entityDetails`). Exits sit in
    their own group at the end.
 3. **Community** – philanthropy slugs pulled from `entityDetails`.
-4. **Stories** – quick links to the oral-history interview and the on-page “My Story”.
+4. **About** – quick links to the oral-history interview and the on-page “My Story”.
 5. **Contact** – persistent CTA linking to `/contact`.
 
 The dropdown carets animate, the desktop mega-menu stays right-aligned to prevent overflow, and the
@@ -53,6 +53,13 @@ After the hero and “My Story” modules, the homepage is limited to three key 
 3. **Exploits** – themed cards that now link to `/exploits/[slug]` for long-form writeups.
 
 The standalone contact section was removed; all inquiries route through `/contact`.
+
+## Company Detail Pages
+
+- `src/pages/company/[slug].astro` consumes `getEntityDetails()` to prerender every portfolio slug. Keep `entityDetails.ts` as the single source of truth for copy/highlights.
+- Some slugs (currently Sequoia, HWVP, and TeleSoft) intentionally hide the hero logo to avoid duplicating brand assets. Update the `hideHeroMedia` list in the page component if the design changes.
+- Carbon Robotics includes an inline “Latest News” card stack managed by the `carbonNews` object in the same file. Refresh that block whenever there is a funding or product update so the detail page stays current.
+- Extra media (e.g., the Carbon Robotics field footage) is defined near the top of the file. Add new entries there so `galleryAssets` and `carbonVideos` stay organized.
 
 ## Development Workflow
 

@@ -67,18 +67,20 @@ To add or update a company:
 
 The navigation dropdowns pull from the same detail list. Company names now render in only one dropdown:
 
-- Work – currently Carbon Robotics only.
+- New – currently Carbon Robotics only (driven by `workHighlights` in the layout).
 - Investments – grouped by stage, plus an Exits group.
 - Community Projects – philanthropic entities.
+- Some company routes intentionally hide the hero logo (Sequoia, HWVP, TeleSoft). Update the `hideHeroMedia` array inside `src/pages/company/[slug].astro` if you change that behaviour.
+- The Carbon Robotics detail page owns a “Latest News” block (`carbonNews` in the same file); refresh it whenever there is a notable funding or product announcement.
 
 ## Navigation
 
 `src/layouts/BaseLayout.astro` now renders a responsive navigation system with distinct menus:
 
-- **Work** – curated spotlight cards for current focus areas (Carbon Robotics, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
+- **New** – curated spotlight cards for current focus areas (Carbon Robotics, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
 - **Investments** – mega-menu fed by `investmentAssets`/`entityDetails` (Seed, Private, Exits inserted between Private/Venture, then Venture, Public).
 - **Community** – philanthropy slugs sourced from `entityDetails`.
-- **Stories** – links to the oral-history interview and the on-page “My Story” anchor.
+- **About** – links to the oral-history interview and the on-page “My Story” anchor.
 - **Contact** – dedicated `/contact` page with a Netlify-backed form (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
 
 All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
