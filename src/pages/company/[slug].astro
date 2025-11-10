@@ -43,19 +43,41 @@ const carbonVideos = isCarbonRobotics
     ]
   : [];
 const galleryAssets = [carbonFieldAsset].filter(Boolean) as VisualAsset[];
+const hideHeroMedia = ['sequoia', 'hwvp', 'telesoft'].includes(detail.slug);
+const hideCategoryLabel = detail.slug === 'sequoia';
+const carbonNews = isCarbonRobotics
+  ? {
+      title: 'Carbon Robotics Raises $20M, Teases New “AI Robot” for Farms',
+      summary:
+        'Fresh capital from a Giant Ventures–led Series D-2 extension brings total funding to $177M as Carbon Robotics prepares an AI-powered field robot that goes beyond weeding.',
+      details: [
+        'New product: an unrevealed AI robot slated to debut in ~9 months, leveraging the same computer vision + machine learning platform used in the LaserWeeder family.',
+        'Existing lineup: LaserWeeder G2 for precision weed destruction and the Autonomous Tractor Kit (ATK) retrofit that turns conventional tractors autonomous.',
+        'CEO Paul Mikesell (Isilon Systems co-founder) says the proprietary targeting system keeps high-powered lasers locked on weeds—something competitors underestimate.',
+        'Operations span ~260 employees with manufacturing in Richland, WA and the Netherlands; equipment already runs in 14 countries with fast revenue growth.',
+        'Technology edge: a shared “large plant model” aggregates data from every farm so each deployed unit benefits from global updates.',
+        'Funding: $20M Series D-2 from UK-based Giant Ventures pushes lifetime financing to $177M, fueling expansion toward a broader AI robotics platform.',
+      ],
+      kicker: 'Latest News',
+    }
+  : null;
 ---
 
 <BaseLayout title={title} description={detail.summary}>
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-6 text-center">
-      <div class="flex flex-wrap justify-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
-        <span class="rounded-full border border-ink/10 px-3 py-1 text-ink/70">
-          {categoryLabels[detail.categories[0]] ?? detail.categories[0]}
-        </span>
-      </div>
-      <div class="mx-auto flex max-w-md flex-col items-center space-y-4">
-        <HeroMedia asset={detail.asset} linkHref={null} showCaption={false} />
-      </div>
+      {!hideCategoryLabel && (
+        <div class="flex flex-wrap justify-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+          <span class="rounded-full border border-ink/10 px-3 py-1 text-ink/70">
+            {categoryLabels[detail.categories[0]] ?? detail.categories[0]}
+          </span>
+        </div>
+      )}
+      {!hideHeroMedia && (
+        <div class="mx-auto flex max-w-md flex-col items-center space-y-4">
+          <HeroMedia asset={detail.asset} linkHref={null} showCaption={false} />
+        </div>
+      )}
       {isCarbonRobotics && carbonVideos[0] && (
         <div class="mx-auto w-full max-w-5xl">
           <video
@@ -90,6 +112,23 @@ const galleryAssets = [carbonFieldAsset].filter(Boolean) as VisualAsset[];
     </div>
 
   </section>
+
+  {carbonNews && (
+    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <div class="space-y-3">
+        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">{carbonNews.kicker}</p>
+        <h2 class="text-2xl font-semibold text-ink">{carbonNews.title}</h2>
+        <p class="text-ink/70">{carbonNews.summary}</p>
+      </div>
+      <ul class="space-y-3 text-sm text-ink/75">
+        {carbonNews.details.map((detail) => (
+          <li key={detail} class="rounded-[24px] border border-ink/10 bg-white/90 px-4 py-3 shadow">
+            {detail}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   {galleryAssets.length > 0 && (
     <section class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">

@@ -59,10 +59,10 @@ const communityLinks = communityItems.map((item) => ({
 
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Work', type: 'work' },
+  { label: 'New', type: 'work' },
   { label: 'Investments', type: 'investments' },
   { label: 'Community', type: 'community' },
-  { label: 'Stories', type: 'stories' },
+  { label: 'About', type: 'stories' },
 ];
 ---
 
@@ -80,8 +80,13 @@ const navItems = [
     <div class="flex min-h-screen flex-col">
       <header class="sticky top-0 z-40 border-b border-white/60 bg-white/80 backdrop-blur">
         <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-            <a href="/" class="flex items-center gap-3 text-xl font-semibold tracking-tight text-ink">
-              <img src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp" alt="Listwin Ventures" class="h-10 w-auto" loading="lazy" />
+            <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-ink">
+              <img
+                src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp"
+                alt="Listwin Ventures"
+                class="h-10 w-auto transition-opacity duration-200 group-hover:opacity-80"
+                loading="lazy"
+              />
               <span class="sr-only">Listwin Ventures</span>
             </a>
           <button
@@ -102,12 +107,12 @@ const navItems = [
               <a class="w-full rounded-2xl border border-ink/10 bg-fog/40 px-4 py-3 text-base font-semibold text-ink/80" href="/">
                 Home
               </a>
-              {[
-                { type: 'work', label: 'Work' },
-                { type: 'investments', label: 'Investments' },
-                { type: 'community', label: 'Community' },
-                { type: 'stories', label: 'Stories' },
-              ].map((menu) => (
+                  {[
+                    { type: 'work', label: 'New' },
+                    { type: 'investments', label: 'Investments' },
+                    { type: 'community', label: 'Community' },
+                    { type: 'stories', label: 'About' },
+                  ].map((menu) => (
                 <details class="rounded-2xl border border-ink/10 bg-white px-4 py-2" data-dropdown>
                   <summary class="flex list-none cursor-pointer items-center justify-between text-base font-semibold text-ink/80">
                     {menu.label}
