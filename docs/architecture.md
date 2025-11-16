@@ -33,8 +33,9 @@ listwinventures-rebuild/
 
 `BaseLayout.astro` renders a responsive navigation system:
 
-1. **New** – curated spotlight cards (currently Carbon Robotics + BelizeKids.org). Update the
-   `workHighlights` array in the layout when swapping focus projects.
+1. **New** – curated spotlight cards (currently Carbon Robotics, 4AG, BelizeKids.org). Update the
+   `workHighlights` array in the layout when swapping focus projects and include an icon name so the
+   dropdown visuals stay consistent.
 2. **Investments** – mega-menu grouped by stage (`investmentAssets` + `entityDetails`). Exits sit in
    their own group at the end.
 3. **Community** – philanthropy slugs pulled from `entityDetails`.
@@ -43,6 +44,10 @@ listwinventures-rebuild/
 
 The dropdown carets animate, the desktop mega-menu stays right-aligned to prevent overflow, and the
 mobile nav expands into a full-width card with all sections stacked.
+
+- All nav entries leverage `astro-icon`. Keep the icon maps (`navItems`, `workHighlights`,
+  `investmentIcons`, `communityLinks`, `storyLinks`) in `BaseLayout.astro` updated whenever you add
+  or rename items so the grey→green hover treatment remains aligned across desktop and mobile.
 
 ## Homepage Sections
 
@@ -53,6 +58,12 @@ After the hero and “My Story” modules, the homepage is limited to three key 
 3. **Exploits** – themed cards that now link to `/exploits/[slug]` for long-form writeups.
 
 The standalone contact section was removed; all inquiries route through `/contact`.
+
+### Initiative Pages
+
+- `/4ag` lives at `src/pages/4ag.astro` and captures 4AG Robotics’ story using only facts pulled
+  from their public site. When adding similar initiative pages, reuse the same BaseLayout-driven
+  structure and add the initiative to `workHighlights` so it surfaces under “New”.
 
 ## Company Detail Pages
 
