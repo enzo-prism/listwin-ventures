@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroMedia from '../components/HeroMedia.astro';
+import { getDetailPath, getEntityDetails } from '../data/entityDetails';
+
+const pageTitle = 'GenoLogics — LIMS for the Genomics Era';
+const pageDescription =
+  'The story behind GenoLogics, the laboratory information management platform that powered translational genomics labs before joining Illumina.';
+
+const genologicsDetail = getEntityDetails().find((detail) => detail.slug === 'genologics');
+const officialDetailHref = genologicsDetail ? getDetailPath('genologics') : null;
+
+const timeline = [
+  {
+    label: '2003–2005',
+    title: 'Origins in proteomics labs',
+    description:
+      'GenoLogics built configurable lab information management software (LIMS) so translational researchers could tie together instruments, SOPs, and growing volumes of proteomics data.',
+  },
+  {
+    label: '2006–2010',
+    title: 'NGS acceleration',
+    description:
+      'Next-generation sequencing took off and the platform evolved to coordinate sample prep, run planning, and QC reporting so research hospitals could scale their programs.',
+  },
+  {
+    label: '2012–2015',
+    title: 'Acquisition by Illumina',
+    description:
+      'Illumina acquired GenoLogics in 2015 to deliver tighter workflows between the sequencer hardware, BaseSpace, and the labs driving precision-medicine advances.',
+  },
+];
+
+const focusAreas = [
+  {
+    title: 'Full-stack LIMS',
+    description:
+      'Role-based dashboards and API hooks kept wet-lab teams, bioinformaticians, and leadership in sync without forcing custom software builds.',
+  },
+  {
+    title: 'Clinic-ready compliance',
+    description:
+      'Configurable SOP templating, audit trails, and validation tooling let CLIA/CAP labs move from pilot studies to regulated diagnostics faster.',
+  },
+  {
+    title: 'Acquirer integration',
+    description:
+      'Bringing GenoLogics into Illumina ensured new chemistries and automation hardware shipped with cloud workflows that were proven in the field.',
+  },
+];
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-4 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Exit spotlight</p>
+      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{pageTitle}</h1>
+      <p class="mx-auto max-w-3xl text-base text-ink/70">{pageDescription}</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        {officialDetailHref && (
+          <a class="btn btn-ink" href={officialDetailHref}>
+            View company detail
+          </a>
+        )}
+        <a class="btn btn-brand" href="/contact">
+          Share a genomics workflow idea
+        </a>
+      </div>
+    </div>
+    {genologicsDetail && (
+      <HeroMedia asset={genologicsDetail.asset} rounded={false} showCaption={false} className="mx-auto max-w-md" />
+    )}
+    <div class="grid gap-5 md:grid-cols-3">
+      {focusAreas.map((area) => (
+        <article key={area.title} class="space-y-2 rounded-[28px] border border-ink/10 bg-fog/70 p-5 text-left">
+          <h2 class="text-lg font-semibold text-ink">{area.title}</h2>
+          <p class="text-sm text-ink/70">{area.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-2 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Momentum</p>
+      <h2 class="text-3xl font-semibold text-ink">A timeline from lab benches to Illumina</h2>
+      <p class="text-base text-ink/70">
+        GenoLogics scaled with the exact needs of translational researchers, ending with an acquisition that made Illumina’s
+        workflows even more turnkey for hospital-grade programs.
+      </p>
+    </div>
+    <div class="space-y-4">
+      {timeline.map((entry) => (
+        <article key={entry.title} class="rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow-panel">
+          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">{entry.label}</p>
+          <h3 class="text-xl font-semibold text-ink">{entry.title}</h3>
+          <p class="text-sm text-ink/70">{entry.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="rounded-apple bg-brand text-white shadow-panel ring-1 ring-brand/40">
+    <div class="space-y-4 p-6 sm:p-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/60">Why it matters now</p>
+      <h2 class="text-3xl font-semibold">Precision-medicine labs still need builders</h2>
+      <p class="max-w-3xl text-base text-white/85">
+        GenoLogics validated Don’s thesis: pairing disciplined software operators with bioengineering unlocks durable value.
+        If you are building the next LIMS, diagnostics workflow, or data router for clinical genomics, reach out.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a class="btn btn-ink bg-white text-brand" href="/contact">
+          Contact Listwin Ventures
+        </a>
+        <a class="btn btn-ink bg-transparent text-white ring-1 ring-white/70 hover:bg-white/10" href="/company/genologics">
+          Read portfolio entry
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -90,6 +90,14 @@ img {
     transition: none !important;
   }
 }
+
+[data-nav-link] {
+  @apply font-medium text-ink/70 no-underline hover:text-brand;
+}
+
+[data-nav-icon] {
+  @apply h-4 w-4 text-ink/50 transition group-hover:text-brand;
+}
 [data-dropdown] summary span[data-dropdown-caret] {
   transform: rotate(0deg);
 }

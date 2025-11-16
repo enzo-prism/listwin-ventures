@@ -15,7 +15,39 @@ export default defineConfig({
     icon({
       include: {
         'heroicons-outline': ['book-open', 'academic-cap', 'heart', 'light-bulb'],
-        tabler: ['compass', 'chart-line', 'heart-handshake', 'network', 'rocket', 'sparkles']
+        tabler: [
+          'compass',
+          'chart-line',
+          'heart-handshake',
+          'network',
+          'rocket',
+          'sparkles',
+          'briefcase',
+          'chart-bar',
+          'school',
+          'heart',
+          'hospital',
+          'building-bank',
+          'building-church',
+          'shield-heart',
+          'book',
+          'user-heart',
+          'device-analytics',
+          'stethoscope',
+          'brain',
+          'cloud-computing',
+          'dna',
+          'lungs',
+          'wifi',
+          'server',
+          'database',
+          'layers-linked',
+          'apps',
+          'device-desktop-analytics',
+          'users-group',
+          'bulb',
+          'home'
+        ]
       }
     })
   ]

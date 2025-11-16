@@ -156,7 +156,7 @@ const content: Record<string, DetailContent> = {
     summary:
       'Lucile Packard Children’s Hospital at Stanford delivers pediatric and obstetric care alongside world-class research.',
     highlights: [
-      'BelizeKids and Canary Foundation programs collaborate with Lucile Packard clinicians.',
+      'BelizeKids.org and Canary Foundation programs collaborate with Lucile Packard clinicians.',
       'A key partner for early detection trials and international training exchanges.',
     ],
   },
@@ -258,10 +258,10 @@ const content: Record<string, DetailContent> = {
   },
   stanford: {
     summary:
-      'Stanford Medicine partners with Don through the Canary Center for Cancer Early Detection and BelizeKids medical missions.',
+      'Stanford Medicine partners with Don through the Canary Center for Cancer Early Detection and BelizeKids.org medical missions.',
     highlights: [
       'Joint labs blend bioengineering with clinical trials for early diagnostics.',
-      'BelizeKids programs host Stanford residents for field training in Belize.',
+      'BelizeKids.org programs host Stanford residents for field training in Belize.',
     ],
   },
   telesoft: {

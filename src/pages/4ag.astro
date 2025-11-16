@@ -1,0 +1,201 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pageTitle = '4AG — Fourth-Generation Agriculture';
+const pageDescription = '4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale.';
+
+const initiativeGoals = [
+  {
+    title: 'Purpose-built harvesters',
+    description:
+      'Vision-guided robots clamp onto standard Dutch shelving and automate Agaricus mushroom picking without forcing farms to rebuild their infrastructure.',
+  },
+  {
+    title: 'Round-the-clock labour relief',
+    description:
+      'Machines climb four-metre shelving, handle back-breaking stretches, and harvest 24/7 so labour shortages stop crippling production capacity.',
+  },
+  {
+    title: 'Data-rich autonomy',
+    description:
+      'Each pass captures crop data that AI uses to decide what to thin, what to harvest, and when—raising yields beyond what human pickers can consistently achieve.',
+  },
+];
+
+const engagementPhases = [
+  {
+    title: '1. Retrofit and roll',
+    description:
+      'Robots attach directly to existing mushroom shelves, travel between rooms, and start harvesting immediately—no civil works required.',
+    notes: [
+      'Transportable rigs cover multiple grow rooms per farm.',
+      'Bulk box packing today with a punnet robot in development.',
+      'Standardized shelving from Canada to China keeps installs fast.',
+    ],
+  },
+  {
+    title: '2. Autonomy + AI loop',
+    description:
+      'Vision systems thin poor mushrooms, pick only specimens that meet customer specs, and feed a vast amount of data back into decision models.',
+    notes: [
+      'Robots trim, pack, and stage mushrooms at the front of each room.',
+      'AI determines which mushrooms to thin, which to harvest, and when.',
+      'Goal: surpass top human pickers on yield and quality consistency.',
+    ],
+  },
+  {
+    title: '3. Global scale-out',
+    description:
+      'Deployed across Canada, Ireland, Australia, and soon the Netherlands and United States, with more farms entering the queue as production ramps.',
+    notes: [
+      'Completed installs on Highline, Monaghan, South Mill Champs, Banken, and a farm in Oceania.',
+      'Live across three farms already, with more robots going operational this year.',
+      'North America, Europe, and Australia first; Asia follows as labour economics converge.',
+    ],
+  },
+];
+
+const supportStack = [
+  {
+    title: 'Mushroom-native culture',
+    detail:
+      'Teams proudly say “we are mushroom farmers” because every robot is tuned for yield, quality, and value on Agaricus beds.',
+  },
+  {
+    title: 'Investor bench strength',
+    detail:
+      'Backed by Astanor Ventures, Cibus Capital, Voyager Capital, InBC, Emmertech, BDC Industrial Innovation Fund, Stray Dog Capital, Seraph Group, and private investors.',
+  },
+  {
+    title: 'Category momentum',
+    detail:
+      'CAD $40M Series B (July 29, 2025) fuels manufacturing, service, and global rollout so more farms can automate faster.',
+  },
+];
+
+const marketFocus = [
+  {
+    title: 'Labour shortages',
+    detail:
+      '4AG says labour shortages are “crippling production capabilities,” with 24-hour harvests, four-metre climbs, and back-breaking work making it hard to keep staff.',
+  },
+  {
+    title: 'Standardized infrastructure',
+    detail:
+      'Modern farms already use similar shelving and climate setups, letting robots retrofit “from Canada to China” with minimal custom engineering.',
+  },
+  {
+    title: 'Market rollout plan',
+    detail:
+      'North America, Europe, and Australia produce ~900K tonnes of mushrooms annually, so they come first. Asia—especially China’s 70% share—follows once economics align.',
+  },
+];
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-4 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Initiative</p>
+      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{pageTitle}</h1>
+      <p class="mx-auto max-w-3xl text-base text-ink/70">{pageDescription}</p>
+      <p class="mx-auto max-w-3xl text-sm text-ink/60">
+        Their site says labour shortages are “crippling production capabilities,” so 4AG deploys autonomous harvesters that work
+        24/7, climb four-metre shelving, and keep demand from going to waste.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a class="btn btn-brand" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">
+          Visit 4AG.ai
+        </a>
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {initiativeGoals.map((goal) => (
+        <article
+          key={goal.title}
+          class="space-y-3 rounded-[28px] border border-ink/10 bg-fog/60 p-4 text-left shadow-panel"
+        >
+          <h2 class="text-lg font-semibold text-ink">{goal.title}</h2>
+          <p class="text-sm text-ink/70">{goal.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Engagement Model</p>
+      <h2 class="text-3xl font-semibold text-ink">Field cadence, not theory</h2>
+      <p class="text-base text-ink/70">
+        4AG embeds with mushroom growers and their rack suppliers through three repeating phases. Each pass sharpens the
+        autonomy, data, and service playbook needed to keep farms harvesting.
+      </p>
+    </div>
+    <div class="space-y-6">
+      {engagementPhases.map((phase) => (
+        <article key={phase.title} class="space-y-3 rounded-[28px] border border-ink/10 bg-white/90 p-5 shadow-panel">
+          <div class="space-y-1">
+            <h3 class="text-xl font-semibold text-ink">{phase.title}</h3>
+            <p class="text-sm text-ink/70">{phase.description}</p>
+          </div>
+          <ul class="space-y-2 text-sm text-ink/70">
+            {phase.notes.map((note) => (
+              <li key={note} class="rounded-2xl border border-ink/5 bg-fog/60 px-4 py-2">
+                {note}
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Support Stack</p>
+      <h2 class="text-3xl font-semibold text-ink">What partners receive</h2>
+      <p class="text-base text-ink/70">
+        Every pilot taps into Don’s mix of venture backing, philanthropic reach, and trusted collaborators.
+        That blend keeps experiments well-resourced without losing sight of on-the-ground realities.
+      </p>
+    </div>
+    <div class="grid gap-4 md:grid-cols-3">
+      {supportStack.map((item) => (
+        <article key={item.title} class="space-y-2 rounded-[26px] border border-ink/10 bg-fog/60 p-4">
+          <h3 class="text-lg font-semibold text-ink">{item.title}</h3>
+          <p class="text-sm text-ink/70">{item.detail}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Why mushrooms need robots</p>
+      <h2 class="text-3xl font-semibold text-ink">Labour, infrastructure, and market pull</h2>
+      <p class="text-base text-ink/70">
+        Everything on 4AG’s site points to a single conclusion: mushroom demand is soaring, labour is scarce, and standardized
+        facilities let autonomy scale quickly.
+      </p>
+    </div>
+    <div class="grid gap-4 md:grid-cols-3">
+      {marketFocus.map((item) => (
+        <article key={item.title} class="space-y-2 rounded-[26px] border border-ink/10 bg-fog/60 p-4">
+          <h3 class="text-lg font-semibold text-ink">{item.title}</h3>
+          <p class="text-sm text-ink/70">{item.detail}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="rounded-apple bg-brand text-white shadow-panel ring-1 ring-brand/40">
+    <div class="space-y-4 p-6 sm:p-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">Next Step</p>
+      <h2 class="text-3xl font-semibold">Bring 4AG to your acreage</h2>
+      <p class="max-w-3xl text-base text-white/80">
+        Run Agaricus houses in North America, Europe, or Australia and wrestling with labour? 4AG’s robots retrofit into your racks
+        and keep production running. Learn more about active deployments and funding announcements at
+        <a class="font-semibold underline hover:text-white" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">4AG.ai</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

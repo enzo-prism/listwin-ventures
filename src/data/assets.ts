@@ -48,7 +48,7 @@ export const boardAssets: AssetGroup[] = [
     type: 'board',
     label: 'Current Boards',
     items: [
-      make('belizekids', '2018/05/belize.png', 'BelizeKids logo', 'https://belizekids.org/'),
+      make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
       make('awarex', '2020/05/awarex.png', 'AwareX logo', 'https://www.awarex.com/'),
       make('calix', '2018/05/calix.png', 'Calix logo', 'https://www.calix.com/'),
@@ -67,7 +67,7 @@ export const boardAssets: AssetGroup[] = [
       make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
       make('sana', '2018/05/sana.png', 'Sana Security logo'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
-      make('belizekids', '2018/05/belize.png', 'BelizeKids logo', 'https://belizekids.org/'),
+      make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
     ],
   },
   {
@@ -101,7 +101,6 @@ export const investmentAssets: AssetGroup[] = [
     items: [
       make('uberflip', '2018/05/uberflip.png', 'Uberflip', 'https://www.uberflip.com/'),
       make('vida', '2022/05/vida.png', 'VIDA lung health', 'https://www.vidalung.ai/'),
-      make('zededa', '2020/05/zededa.png', 'Zededa', 'https://zededa.com/'),
       make('cradle', '2019/07/cradle.png', 'Cradle Genomics logo', 'https://www.cradlegenomics.com/'),
     ],
   },
@@ -112,7 +111,7 @@ export const investmentAssets: AssetGroup[] = [
       make('awarex', '2020/05/awarex.png', 'AwareX logo', 'https://www.awarex.com/'),
       make('clarius', '2020/05/clarius-02.png', 'Clarius Mobile Health logo', 'https://clarius.com/'),
       make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
-      make('teradici', '2018/05/teradici.png', 'Teradici logo', 'https://www.teradici.com/'),
+      make('zededa', '2020/05/zededa.png', 'Zededa', 'https://zededa.com/'),
     ],
   },
   {
@@ -121,7 +120,7 @@ export const investmentAssets: AssetGroup[] = [
     items: [
       make('hwvp', 'https://www.hummerwinblad.com/wp-content/themes/hwvpfoundation/dist/images/hwvp-logo.svg', 'HWVP logo', 'https://www.hummerwinblad.com/'),
       make('rally', '2018/05/rally.png', 'Rally Ventures logo', 'https://rallyventures.com/'),
-      make('sequoia', '2018/05/stanford.png', 'Sequoia partner network logo', 'https://www.sequoiacap.com/'),
+      make('sequoia', '2018/05/stanford.png', 'Sequoia tech partner logo', 'https://www.sequoiacap.com/'),
       make('telesoft', 'https://telesoftpartners.com/wp-content/uploads/2015/01/telesoft-logo.png', 'TeleSoft Partners logo', 'https://telesoftpartners.com/'),
     ],
   },
@@ -130,14 +129,13 @@ export const investmentAssets: AssetGroup[] = [
     label: 'Public',
     items: [
       make('calix', '2018/05/calix.png', 'Calix logo', 'https://www.calix.com/'),
-      make('poet', '2020/05/poet-02.png', 'POET Technologies logo', 'https://poet-technologies.com/'),
     ],
   },
   {
     type: 'investment',
     label: 'Philanthropic',
     items: [
-      make('belizekids', '2018/05/belize.png', 'BelizeKids', 'https://belizekids.org/'),
+      make('belizekids', '2018/05/belize.png', 'BelizeKids.org', 'https://belizekids.org/'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation', 'https://www.canaryfoundation.org/'),
     ],
   },
@@ -148,7 +146,7 @@ export const philanthropyAssets: AssetGroup[] = [
     type: 'philanthropy',
     label: 'Philanthropy & Academia',
     items: [
-      make('belizekids', '2018/05/belize.png', 'BelizeKids logo', 'https://belizekids.org/'),
+      make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
       make('lucile', '2019/03/lucile.png', 'Lucile Packard Children’s Hospital logo'),
       make('moffitt', '2018/05/moffitt.png', 'Moffitt Cancer Center logo'),
@@ -164,7 +162,7 @@ export const belizeKidsGallery: VisualAsset[] = [
   make(
     'belizekids-community-health',
     'https://i.imgur.com/N1PGdy7.jpg',
-    'BelizeKids volunteer team preparing supplies for community clinics',
+    'BelizeKids.org volunteer team preparing supplies for community clinics',
     'https://belizekids.org/',
   ),
   make('belizekids-classroom', 'https://i.imgur.com/lx4GcRr.jpg', 'Hands-on STEM workshop with Belizean students'),

@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { investmentAssets } from '../data/assets';
 import { getEntityDetails, getDetailPath } from '../data/entityDetails';
+import { Icon } from 'astro-icon/components';
 
 const {
   title = "Listwin Ventures",
@@ -24,13 +25,11 @@ const investmentSections = investmentAssets
   })
   .filter((section) => section.items.length > 0);
 
-const exitSlugs = ['openwave', 'joyent', 'isilon', 'plumgrid', 'teradici'];
+const exitSlugs = ['openwave', 'genologics', 'joyent', 'isilon', 'plumgrid', 'teradici'];
 const exitItems = exitSlugs.map((slug) => detailBySlug.get(slug)).filter(Boolean);
 if (exitItems.length) {
   investmentSections.push({ label: 'Exits', items: exitItems });
 }
-
-const communityItems = entityDetails.filter((detail) => detail.categories.includes('philanthropy'));
 
 const prettify = (name: string) => name.replace(/\s+(logo|crest|lockup)$/i, '');
 
@@ -39,31 +38,64 @@ const workHighlights = [
     label: 'Carbon Robotics',
     description: 'AI-driven laser weeding and farm autonomy.',
     href: getDetailPath('carbon-robotics'),
+    icon: 'tabler:rocket',
+  },
+  {
+    label: '4AG',
+    description: '4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale.',
+    href: '/4ag',
+    icon: 'tabler:sparkles',
   },
   {
     label: 'BelizeKids.org',
     description: 'STEM, clinics, and conservation programs across Belize.',
     href: '/belizekids',
+    icon: 'tabler:heart-handshake',
   },
 ];
 
-const storyLinks = [
-  { label: 'Interviews', href: '/oral-history' },
-  { label: 'My Story', href: '/#my-story' },
-];
+const communityLinks = [
+  { slug: 'belizekids', icon: 'tabler:heart' },
+  { slug: 'canary-foundation', icon: 'tabler:shield-heart' },
+  { slug: 'lucile', icon: 'tabler:hospital' },
+  { slug: 'nih', icon: 'tabler:building-bank' },
+  { slug: 'stanford', icon: 'tabler:school' },
+  { slug: 'saskatchewan', icon: 'tabler:building-church' },
+]
+  .map(({ slug, icon }) => {
+    const detail = detailBySlug.get(slug);
+    return detail ? { label: detail.name, href: getDetailPath(detail.slug), icon } : null;
+  })
+  .filter((item): item is { label: string; href: string; icon: string } => Boolean(item));
 
-const communityLinks = communityItems.map((item) => ({
-  label: item.name,
-  href: getDetailPath(item.slug),
-}));
+const storyLinks = [
+  { label: 'Interviews', href: '/oral-history', icon: 'tabler:book' },
+  { label: 'My Story', href: '/#my-story', icon: 'tabler:user-heart' },
+];
 
 const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'New', type: 'work' },
-  { label: 'Investments', type: 'investments' },
-  { label: 'Community', type: 'community' },
-  { label: 'About', type: 'stories' },
+  { label: 'Home', href: '/', icon: 'tabler:home' },
+  { label: 'New', type: 'work', icon: 'tabler:sparkles' },
+  { label: 'Investments', type: 'investments', icon: 'tabler:briefcase' },
+  { label: 'Community', type: 'community', icon: 'tabler:users-group' },
+  { label: 'About', type: 'stories', icon: 'heroicons-outline:book-open' },
 ];
+
+const investmentIcons: Record<string, string> = {
+  uberflip: 'tabler:bulb',
+  vida: 'tabler:lungs',
+  cradle: 'tabler:dna',
+  awarex: 'tabler:device-analytics',
+  clarius: 'tabler:stethoscope',
+  rapidai: 'tabler:brain',
+  zededa: 'tabler:cloud-computing',
+  openwave: 'tabler:wifi',
+  genologics: 'tabler:apps',
+  joyent: 'tabler:server',
+  isilon: 'tabler:database',
+  plumgrid: 'tabler:layers-linked',
+  teradici: 'tabler:device-desktop-analytics',
+};
 ---
 
 <!DOCTYPE html>
@@ -104,18 +136,27 @@ const navItems = [
             class="hidden w-full flex-col gap-4 rounded-3xl bg-white/95 p-5 text-sm text-ink shadow-panel ring-1 ring-ink/5 sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6 sm:rounded-none sm:bg-transparent sm:p-0 sm:text-ink sm:shadow-none sm:ring-0"
           >
             <div class="flex flex-col gap-4 sm:hidden">
-              <a class="w-full rounded-2xl border border-ink/10 bg-fog/40 px-4 py-3 text-base font-semibold text-ink/80" href="/">
-                Home
-              </a>
-                  {[
-                    { type: 'work', label: 'New' },
-                    { type: 'investments', label: 'Investments' },
-                    { type: 'community', label: 'Community' },
-                    { type: 'stories', label: 'About' },
-                  ].map((menu) => (
+              {navItems
+                .filter((item) => !item.type)
+                .map((item) => (
+                  <a
+                    data-nav-link
+                    class="group flex w-full items-center gap-2 rounded-2xl border border-ink/10 bg-fog/40 px-4 py-3 text-base font-semibold"
+                    href={item.href}
+                  >
+                    {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
+                    {item.label}
+                  </a>
+                ))}
+              {navItems
+                .filter((item) => item.type)
+                .map((menu) => (
                 <details class="rounded-2xl border border-ink/10 bg-white px-4 py-2" data-dropdown>
-                  <summary class="flex list-none cursor-pointer items-center justify-between text-base font-semibold text-ink/80">
-                    {menu.label}
+                  <summary class="group flex list-none cursor-pointer items-center justify-between text-base font-semibold text-ink/70 transition hover:text-brand">
+                    <span class="flex items-center gap-2">
+                      {menu.icon && <Icon aria-hidden="true" name={menu.icon} data-nav-icon />}
+                      {menu.label}
+                    </span>
                     <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
                       &#9662;
                     </span>
@@ -123,9 +164,12 @@ const navItems = [
                   <div class="mt-3 space-y-2 text-sm text-ink/80">
                     {menu.type === 'work' &&
                       workHighlights.map((highlight) => (
-                        <a class="block rounded-xl border border-ink/5 bg-fog/40 px-3 py-2" href={highlight.href}>
-                          <span class="block text-sm font-semibold text-ink">{highlight.label}</span>
-                          <span class="block text-xs text-ink/60">{highlight.description}</span>
+                        <a data-nav-link class="flex items-start gap-3 rounded-xl border border-ink/5 bg-fog/40 px-3 py-2 text-ink/70 transition hover:text-brand" href={highlight.href}>
+                          {highlight.icon && <Icon aria-hidden="true" name={highlight.icon} class="mt-1" data-nav-icon />}
+                          <span>
+                            <span class="block text-sm font-semibold text-ink/80">{highlight.label}</span>
+                            <span class="block text-xs text-ink/60">{highlight.description}</span>
+                          </span>
                         </a>
                       ))}
                     {menu.type === 'investments' &&
@@ -134,7 +178,7 @@ const navItems = [
                           <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
                           <div class="mt-2 space-y-1">
                             {section.items.map((sectionItem) => (
-                              <a class="block rounded-lg px-3 py-1 hover:bg-brand/10 hover:text-brand" href={getDetailPath(sectionItem.slug)}>
+                              <a data-nav-link class="block rounded-lg px-3 py-1 text-ink/70 transition hover:bg-brand/10 hover:text-brand" href={getDetailPath(sectionItem.slug)}>
                                 {prettify(sectionItem.name)}
                               </a>
                             ))}
@@ -143,13 +187,15 @@ const navItems = [
                       ))}
                     {menu.type === 'community' &&
                       communityLinks.map((link) => (
-                        <a class="block rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
                           {prettify(link.label)}
                         </a>
                       ))}
                     {menu.type === 'stories' &&
                       storyLinks.map((link) => (
-                        <a class="block rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
                           {link.label}
                         </a>
                       ))}
@@ -167,7 +213,8 @@ const navItems = [
               {navItems.map((item, index) => {
                 if (!item.type) {
                   return (
-                    <a class="font-medium text-ink/80 transition hover:text-brand" href={item.href} key={item.label}>
+                    <a data-nav-link class="group inline-flex items-center gap-2 font-medium text-ink/70 transition hover:text-brand" href={item.href} key={item.label}>
+                      {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
                       {item.label}
                     </a>
                   );
@@ -176,8 +223,11 @@ const navItems = [
               if (item.type === 'investments') {
                 return (
                   <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
-                      {item.label}
+                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
+                      <span class="flex items-center gap-2">
+                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
+                        {item.label}
+                      </span>
                       <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
                         &#9662;
                       </span>
@@ -189,9 +239,11 @@ const navItems = [
                           <div class="space-y-1.5">
                             {section.items.map((sectionItem) => (
                               <a
-                                class="block rounded-xl px-3 py-1.5 text-ink/80 transition hover:bg-brand/10 hover:text-brand"
+                                data-nav-link
+                                class="group flex items-center gap-2 rounded-xl px-3 py-1.5 text-ink/70 transition hover:bg-brand/10 hover:text-brand"
                                 href={getDetailPath(sectionItem.slug)}
                               >
+                                <Icon aria-hidden="true" name={investmentIcons[sectionItem.slug] ?? 'tabler:briefcase'} data-nav-icon />
                                 {prettify(sectionItem.name)}
                               </a>
                             ))}
@@ -206,8 +258,11 @@ const navItems = [
               if (item.type === 'work') {
                 return (
                   <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
-                      {item.label}
+                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
+                      <span class="flex items-center gap-2">
+                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
+                        {item.label}
+                      </span>
                       <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
                         &#9662;
                       </span>
@@ -215,12 +270,16 @@ const navItems = [
                     <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:min-w-[320px]">
                       {workHighlights.map((highlight) => (
                         <a
+                          data-nav-link
                           key={highlight.label}
-                          class="block space-y-1 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-3 text-left transition hover:border-brand hover:bg-brand/10 hover:text-brand"
+                          class="group flex items-start gap-3 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-3 text-left text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand"
                           href={highlight.href}
                         >
-                          <span class="block text-sm font-semibold text-ink">{highlight.label}</span>
-                          <span class="block text-xs text-ink/60">{highlight.description}</span>
+                          {highlight.icon && <Icon aria-hidden="true" name={highlight.icon} class="mt-1" data-nav-icon />}
+                          <span>
+                            <span class="block text-sm font-semibold text-ink">{highlight.label}</span>
+                            <span class="block text-xs text-ink/60">{highlight.description}</span>
+                          </span>
                         </a>
                       ))}
                     </div>
@@ -231,8 +290,11 @@ const navItems = [
               if (item.type === 'community') {
                 return (
                   <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
-                      {item.label}
+                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
+                      <span class="flex items-center gap-2">
+                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
+                        {item.label}
+                      </span>
                       <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
                         &#9662;
                       </span>
@@ -240,10 +302,12 @@ const navItems = [
                     <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:w-[320px]">
                       {communityLinks.map((link) => (
                         <a
+                          data-nav-link
                           key={link.label}
-                          class="block rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-brand hover:bg-brand/10 hover:text-brand"
+                          class="group flex items-center gap-2 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-ink/40 hover:bg-ink/5 hover:text-ink/80"
                           href={link.href}
                         >
+                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
                           {prettify(link.label)}
                         </a>
                       ))}
@@ -255,8 +319,11 @@ const navItems = [
               if (item.type === 'stories') {
                 return (
                   <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="flex list-none cursor-pointer items-center gap-2 font-medium text-ink/80 transition hover:text-brand">
-                      {item.label}
+                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
+                      <span class="flex items-center gap-2">
+                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
+                        {item.label}
+                      </span>
                       <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
                         &#9662;
                       </span>
@@ -264,8 +331,9 @@ const navItems = [
                     <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:w-[260px]">
                       {storyLinks.map((link) => (
                         <a
+                          data-nav-link
                           key={link.label}
-                          class="block rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-brand hover:bg-brand/10 hover:text-brand"
+                          class="block rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-ink/40 hover:bg-ink/5 hover:text-ink/80"
                           href={link.href}
                         >
                           {link.label}
@@ -327,6 +395,30 @@ const navItems = [
           } else {
             menu.classList.add("hidden");
             toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      const dropdowns = Array.from(document.querySelectorAll("[data-dropdown]"));
+      if (dropdowns.length) {
+        const isDesktop = () => window.matchMedia("(min-width: 640px)").matches;
+        const closeOthers = (current) => {
+          dropdowns.forEach((dropdown) => {
+            if (dropdown !== current && dropdown.open) {
+              dropdown.removeAttribute("open");
+            }
+          });
+        };
+        dropdowns.forEach((dropdown) => {
+          dropdown.addEventListener("toggle", () => {
+            if (dropdown.open && isDesktop()) {
+              closeOthers(dropdown);
+            }
+          });
+        });
+        window.addEventListener("resize", () => {
+          if (!isDesktop()) {
+            dropdowns.forEach((dropdown) => dropdown.removeAttribute("open"));
           }
         });
       }

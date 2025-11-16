@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CompanyCarousel from '../components/CompanyCarousel.astro';
 import HeroMedia from '../components/HeroMedia.astro';
 import { heroAssets, investmentAssets } from '../data/assets';
+import type { VisualAsset } from '../data/assets';
 import { getDetailPath, getEntityDetails, type EntityDetail } from '../data/entityDetails';
 import { getExploitPath } from '../data/exploitDetails';
 import { Icon } from 'astro-icon/components';
@@ -19,7 +20,7 @@ const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
 const entityDetails = getEntityDetails();
 const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail) => [detail.slug, detail]));
 const hiddenInvestmentCarouselSlugs = new Set(['cradle']);
-const exitSlugs = ['robin', 'teradici'];
+const exitSlugs = ['openwave', 'genologics', 'joyent', 'isilon', 'plumgrid', 'teradici'];
 const exitItems = exitSlugs.map((slug) => entityDetailMap.get(slug)).filter((detail): detail is EntityDetail => Boolean(detail));
 
 const sectionIconNames = {
@@ -102,10 +103,6 @@ const cardMedia: Record<
     path: '/assets/uploads/2020/09/hol-chan-768x606.jpg',
     alt: 'Hol Chan Marine Reserve waters and tour boats near the reef',
   },
-  'community-relief': {
-    path: '/assets/uploads/2020/09/dolla-dive-768x576.jpg',
-    alt: "Volunteers organizing the Dolla' a Dive and COVID food drive supplies",
-  },
   boca: {
     path: '/assets/uploads/2020/09/boca-768x545.jpg',
     alt: 'Families enjoying the renovated Boca Del Rio Park playground',
@@ -119,6 +116,61 @@ const cardMedia: Record<
     alt: 'Chelsea & Woodside backyard railroad with Don Listwin driving the train',
   },
 };
+
+const carbonPressReleaseUrl =
+  'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board';
+
+const fourAgHeroAsset: VisualAsset = {
+  id: '4ag',
+  name: '4AG field deployments',
+  path: 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp',
+  alt: '4AG pilot featuring the LaserWeeder operating at sunset in a field',
+};
+
+const recentWorkCards = [
+  {
+    title: 'Carbon Robotics',
+    role: 'Lead Independent Director, Carbon Robotics',
+    description:
+      'Carbon Robotics is revolutionizing agriculture with AI-guided laser weeding and tractor autonomy so growers can cut inputs, fight labor shortages, and capture agronomic data every pass.',
+    media: carbonRoboticsAsset ?? null,
+    mediaHref: carbonRoboticsDetailPath,
+    actions: [
+      {
+        label: 'Explore the Carbon Robotics detail →',
+        href: carbonRoboticsDetailPath ?? '#',
+        kind: 'link',
+      },
+      {
+        label: 'Read the press release',
+        href: carbonPressReleaseUrl,
+        kind: 'button',
+        buttonVariant: 'brand',
+        external: true,
+      },
+    ],
+  },
+  {
+    title: '4AG',
+    role: 'Autonomous mushroom harvesting robots',
+    description: '4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale.',
+    media: null,
+    actions: [
+      {
+        label: 'Explore the 4AG initiative',
+        href: '/4ag',
+        kind: 'link',
+      },
+      {
+        label: 'Visit 4AG.ai',
+        href: 'https://4ag.ai',
+        kind: 'button',
+        buttonVariant: 'ink',
+        external: true,
+      },
+    ],
+  },
+];
 
 const exploitThemes = [
   {
@@ -211,13 +263,6 @@ const exploitThemes = [
         link: getExploitPath('hol-chan'),
       },
       {
-        title: 'Dolla’ a Dive & COVID Food Drive',
-        description:
-          'Grassroots campaigns with local dive shops and guides raising funds for healthcare and families during tourism shutdowns.',
-        tag: 'community-relief',
-        link: getExploitPath('community-relief'),
-      },
-      {
         title: 'Boca Del Rio Park Playground',
         description:
           'Renovated beachfront park with palapas, playground equipment, and sports upgrades for families.',
@@ -293,7 +338,7 @@ const exploitThemes = [
             public company—<a href={linkTargets.openwave}>OpenWave</a>—that created the mobile internet. Since then, I created
             Listwin Ventures which has invested in dozens of other leading technology companies. I founded the
             <a href={linkTargets.canary}>Canary Foundation</a> in 2002—the world's largest research entity to focus on early cancer
-            technology. Most recently, I was the CEO of <a href={linkTargets.rapidai}>RapidAI</a>, and I currently serve on six boards
+            technology. Most recently, I was the CEO of <a href={linkTargets.rapidai}>RapidAI</a>, and I currently serve on three boards
             including as Lead Independent Director at <a href={linkTargets.calix}>Calix</a>. Additionally, I serve as a technology
             partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
           </p>
@@ -324,18 +369,18 @@ const exploitThemes = [
           <a href={linkTargets.stanford}>Stanford University</a>.
         </p>
         <p>
-          From 2018–2021, I served as CEO of <a href={linkTargets.rapidai}>RapidAI</a>— the worldwide leader in cerebrovascular imaging analysis, delivering the
-          proven software tools that healthcare professionals around the world use to successfully identify and treat more stroke
-          patients than ever before.
+          From 2018–2021, I served as CEO of <a href={linkTargets.rapidai}>RapidAI</a>— the worldwide leader in cerebrovascular
+          imaging analysis, delivering the proven software tools that healthcare professionals around the world use to successfully
+          identify and treat more stroke patients than ever before.
         </p>
         <p>
-          I live part-time in Belize where I scuba dive daily and work on restoring and protecting the barrier reef. In 2010, my
-          wife and I created the non-profit <a href={linkTargets.belizekids}>BelizeKids.org</a> to support local community and
-          education initiatives and have created a partnership with <a href={linkTargets.stanford}>Stanford</a> to deliver eye care
-          to the local community.
+          I live part-time in Belize where I scuba dive daily and work on restoring and protecting the barrier reef. In 2010, my wife
+          and I created the non-profit <a href={linkTargets.belizekids}>BelizeKids.org</a> to support local community and education
+          initiatives and have created a partnership with <a href={linkTargets.stanford}>Stanford</a> to deliver eye care to the local
+          community.
         </p>
         <p>
-          A native of Canada, I hold a B.S. degree in Electrical Engineering and an Honorary Doctorate of Law from the University of
+          A native of Canada, I hold a B.S. degree in Electrical Engineering and an Honorary Doctor of Law from the University of
           Saskatchewan, Canada where I continue to actively support student entrepreneurs.
         </p>
         <div class="pt-2">
@@ -348,37 +393,55 @@ const exploitThemes = [
   </section>
 
   <section id="recent-work" class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-3">
-      <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
-        <span class="section-icon" aria-hidden="true">
-          <Icon name={sectionIconNames.work} width="16" height="16" />
-        </span>
-        Recent work
-      </p>
-      <h2 class="text-2xl font-semibold text-ink">Carbon Robotics</h2>
-      <p class="text-base font-semibold text-ink/70">Lead Independent Director, Carbon Robotics</p>
-      <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">EXPANDING, POSITIONING, LEADING</p>
-      <p class="text-ink/70">
-        Carbon Robotics is revolutionizing agriculture with AI and robotics to reduce costs and increase yields. Amid labor
-        challenges, rising input costs, and increasing concerns about herbicide use, growers worldwide are seeking smarter,
-        more efficient ways to farm. Carbon Robotics addresses these needs by delivering advanced AI robotic laser weeders and
-        tractor autonomy that drives efficiencies to the global community.
-      </p>
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <a class="inline-flex items-center gap-2 text-sm font-semibold text-brand" href={carbonRoboticsDetailPath ?? '#'}>
-          Explore the Carbon Robotics detail →
-        </a>
-        <a
-          class="btn btn-brand"
-          href="https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Read the press release
-        </a>
-      </div>
+    <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
+      <span class="section-icon" aria-hidden="true">
+        <Icon name={sectionIconNames.work} width="16" height="16" />
+      </span>
+      Recent work
+    </p>
+    <div class="grid gap-6 lg:grid-cols-2">
+      {recentWorkCards.map((card) => (
+        <article key={card.title} class="space-y-4 rounded-apple border border-white/70 bg-white/90 p-5 shadow-panel">
+          <div class="space-y-2">
+            <h3 class="text-2xl font-semibold text-ink">{card.title}</h3>
+            <p class="text-sm font-semibold text-ink/70">{card.role}</p>
+            <p class="text-sm text-ink/70">{card.description}</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            {card.actions.map((action) => {
+              if (action.kind === 'link') {
+                return (
+                  <a
+                    key={action.label}
+                    class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:text-brand-soft"
+                    href={action.href}
+                    target={action.external ? '_blank' : undefined}
+                    rel={action.external ? 'noopener noreferrer' : undefined}
+                  >
+                    {action.label}
+                  </a>
+                );
+              }
+              const variant = action.buttonVariant === 'ink' ? 'btn-ink' : 'btn-brand';
+              return (
+                <a
+                  key={action.label}
+                  class={`btn ${variant}`}
+                  href={action.href}
+                  target={action.external ? '_blank' : undefined}
+                  rel={action.external ? 'noopener noreferrer' : undefined}
+                >
+                  {action.label}
+                </a>
+              );
+            })}
+          </div>
+          {card.media && (
+            <HeroMedia asset={card.media} rounded={false} showCaption={false} linkHref={card.mediaHref ?? undefined} />
+          )}
+        </article>
+      ))}
     </div>
-    {carbonRoboticsAsset && <HeroMedia asset={carbonRoboticsAsset} rounded={false} linkHref={carbonRoboticsDetailPath} />}
   </section>
 
   <section id="investments" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
