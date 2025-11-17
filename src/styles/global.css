@@ -118,6 +118,16 @@ button[data-nav-toggle][aria-expanded="true"] {
   transform: rotate(180deg);
 }
 
+body.mobile-nav-open {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.mobile-nav-panel {
+  top: var(--mobile-nav-top, 5.5rem);
+  max-height: calc(100vh - var(--mobile-nav-top, 5.5rem) - 1rem);
+}
+
 .section-icon {
   display: inline-flex;
   align-items: center;

@@ -110,7 +110,7 @@ const investmentIcons: Record<string, string> = {
   </head>
   <body class="min-h-screen bg-fog text-ink">
     <div class="flex min-h-screen flex-col">
-      <header class="sticky top-0 z-40 border-b border-white/60 bg-white/80 backdrop-blur">
+      <header class="z-40 border-b border-white/60 bg-white/80 backdrop-blur sm:sticky sm:top-0">
         <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
             <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-ink">
               <img
@@ -125,90 +125,17 @@ const investmentIcons: Record<string, string> = {
             type="button"
             class="btn btn-brand px-4 py-2 sm:hidden"
             data-nav-toggle
+            data-open-label="Close"
+            data-closed-label="Menu"
             aria-expanded="false"
-            aria-controls="primary-navigation"
+            aria-controls="mobile-navigation"
           >
             Menu
           </button>
           <nav
-            id="primary-navigation"
-            data-nav-menu
-            class="hidden w-full flex-col gap-4 rounded-3xl bg-white/95 p-5 text-sm text-ink shadow-panel ring-1 ring-ink/5 sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6 sm:rounded-none sm:bg-transparent sm:p-0 sm:text-ink sm:shadow-none sm:ring-0"
+            aria-label="Primary"
+            class="hidden w-full flex-col gap-4 text-sm sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6"
           >
-            <div class="flex flex-col gap-4 sm:hidden">
-              {navItems
-                .filter((item) => !item.type)
-                .map((item) => (
-                  <a
-                    data-nav-link
-                    class="group flex w-full items-center gap-2 rounded-2xl border border-ink/10 bg-fog/40 px-4 py-3 text-base font-semibold"
-                    href={item.href}
-                  >
-                    {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
-                    {item.label}
-                  </a>
-                ))}
-              {navItems
-                .filter((item) => item.type)
-                .map((menu) => (
-                <details class="rounded-2xl border border-ink/10 bg-white px-4 py-2" data-dropdown>
-                  <summary class="group flex list-none cursor-pointer items-center justify-between text-base font-semibold text-ink/70 transition hover:text-brand">
-                    <span class="flex items-center gap-2">
-                      {menu.icon && <Icon aria-hidden="true" name={menu.icon} data-nav-icon />}
-                      {menu.label}
-                    </span>
-                    <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-                      &#9662;
-                    </span>
-                  </summary>
-                  <div class="mt-3 space-y-2 text-sm text-ink/80">
-                    {menu.type === 'work' &&
-                      workHighlights.map((highlight) => (
-                        <a data-nav-link class="flex items-start gap-3 rounded-xl border border-ink/5 bg-fog/40 px-3 py-2 text-ink/70 transition hover:text-brand" href={highlight.href}>
-                          {highlight.icon && <Icon aria-hidden="true" name={highlight.icon} class="mt-1" data-nav-icon />}
-                          <span>
-                            <span class="block text-sm font-semibold text-ink/80">{highlight.label}</span>
-                            <span class="block text-xs text-ink/60">{highlight.description}</span>
-                          </span>
-                        </a>
-                      ))}
-                    {menu.type === 'investments' &&
-                      investmentSections.map((section) => (
-                        <div class="rounded-xl border border-ink/5 bg-fog/20 p-3">
-                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
-                          <div class="mt-2 space-y-1">
-                            {section.items.map((sectionItem) => (
-                              <a data-nav-link class="block rounded-lg px-3 py-1 text-ink/70 transition hover:bg-brand/10 hover:text-brand" href={getDetailPath(sectionItem.slug)}>
-                                {prettify(sectionItem.name)}
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    {menu.type === 'community' &&
-                      communityLinks.map((link) => (
-                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
-                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
-                          {prettify(link.label)}
-                        </a>
-                      ))}
-                    {menu.type === 'stories' &&
-                      storyLinks.map((link) => (
-                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
-                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
-                          {link.label}
-                        </a>
-                      ))}
-                  </div>
-                </details>
-              ))}
-              <a class="btn btn-ink w-full text-base" href="/contact">
-                Contact
-              </a>
-              <p class="border-t border-ink/10 pt-4 text-xs uppercase tracking-[0.3em] text-ink/50">
-                Built with founders, operators, and community partners.
-              </p>
-            </div>
             <div class="hidden w-full flex-col gap-4 text-sm sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6">
               {navItems.map((item, index) => {
                 if (!item.type) {
@@ -353,6 +280,94 @@ const investmentIcons: Record<string, string> = {
           </nav>
         </div>
       </header>
+      <div
+        data-nav-menu
+        class="fixed inset-0 z-30 hidden sm:hidden"
+        aria-hidden="true"
+      >
+        <div class="absolute inset-0 bg-ink/50 backdrop-blur-sm" data-nav-overlay></div>
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile"
+          data-mobile-panel
+          class="mobile-nav-panel absolute inset-x-4 bottom-4 flex flex-col gap-4 rounded-3xl bg-white/95 p-5 text-sm text-ink shadow-panel ring-1 ring-ink/5"
+        >
+          <div class="flex flex-1 flex-col gap-4 overflow-y-auto pr-1">
+            {navItems
+              .filter((item) => !item.type)
+              .map((item) => (
+                <a
+                  data-nav-link
+                  class="group flex w-full items-center gap-2 rounded-2xl border border-ink/10 bg-fog/40 px-4 py-3 text-base font-semibold"
+                  href={item.href}
+                >
+                  {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
+                  {item.label}
+                </a>
+              ))}
+            {navItems
+              .filter((item) => item.type)
+              .map((menu) => (
+                <details class="rounded-2xl border border-ink/10 bg-white px-4 py-2" data-dropdown>
+                  <summary class="group flex list-none cursor-pointer items-center justify-between text-base font-semibold text-ink/70 transition hover:text-brand">
+                    <span class="flex items-center gap-2">
+                      {menu.icon && <Icon aria-hidden="true" name={menu.icon} data-nav-icon />}
+                      {menu.label}
+                    </span>
+                    <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+                      &#9662;
+                    </span>
+                  </summary>
+                  <div class="mt-3 max-h-[60vh] space-y-2 overflow-y-auto pr-1 text-sm text-ink/80">
+                    {menu.type === 'work' &&
+                      workHighlights.map((highlight) => (
+                        <a data-nav-link class="flex items-start gap-3 rounded-xl border border-ink/5 bg-fog/40 px-3 py-2 text-ink/70 transition hover:text-brand" href={highlight.href}>
+                          {highlight.icon && <Icon aria-hidden="true" name={highlight.icon} class="mt-1" data-nav-icon />}
+                          <span>
+                            <span class="block text-sm font-semibold text-ink/80">{highlight.label}</span>
+                            <span class="block text-xs text-ink/60">{highlight.description}</span>
+                          </span>
+                        </a>
+                      ))}
+                    {menu.type === 'investments' &&
+                      investmentSections.map((section) => (
+                        <div class="rounded-xl border border-ink/5 bg-fog/20 p-3">
+                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
+                          <div class="mt-2 space-y-1">
+                            {section.items.map((sectionItem) => (
+                              <a data-nav-link class="block rounded-lg px-3 py-1 text-ink/70 transition hover:bg-brand/10 hover:text-brand" href={getDetailPath(sectionItem.slug)}>
+                                {prettify(sectionItem.name)}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    {menu.type === 'community' &&
+                      communityLinks.map((link) => (
+                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
+                          {prettify(link.label)}
+                        </a>
+                      ))}
+                    {menu.type === 'stories' &&
+                      storyLinks.map((link) => (
+                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
+                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
+                          {link.label}
+                        </a>
+                      ))}
+                  </div>
+                </details>
+              ))}
+            <a class="btn btn-ink w-full text-base" href="/contact">
+              Contact
+            </a>
+            <p class="border-t border-ink/10 pt-4 text-xs uppercase tracking-[0.3em] text-ink/50">
+              Built with founders, operators, and community partners.
+            </p>
+          </div>
+        </nav>
+      </div>
       <main class="flex-1">
         <div class="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
           <slot />
@@ -378,23 +393,84 @@ const investmentIcons: Record<string, string> = {
     </div>
     <script is:inline>
       const toggle = document.querySelector("[data-nav-toggle]");
-      const menu = document.querySelector("[data-nav-menu]");
-      if (toggle && menu) {
-        toggle.addEventListener("click", () => {
-          const isOpen = menu.classList.toggle("hidden");
-          toggle.setAttribute("aria-expanded", (!isOpen).toString());
-        });
-        if (window.matchMedia("(min-width: 640px)").matches) {
-          menu.classList.remove("hidden");
-          toggle.setAttribute("aria-expanded", "true");
+      const mobileMenu = document.querySelector("[data-nav-menu]");
+      const mobilePanel = mobileMenu?.querySelector("[data-mobile-panel]");
+      const mobileOverlay = mobileMenu?.querySelector("[data-nav-overlay]");
+      const headerEl = document.querySelector("header");
+      const mobileNavLinks = mobileMenu ? Array.from(mobileMenu.querySelectorAll("a[data-nav-link]")) : [];
+      const desktopBreakpoint = window.matchMedia("(min-width: 640px)");
+      const closedLabelText = toggle?.dataset.closedLabel ?? toggle?.textContent?.trim() ?? "Menu";
+      const openLabelText = toggle?.dataset.openLabel ?? "Close";
+
+      const updatePanelOffset = () => {
+        if (!mobilePanel || !headerEl) return;
+        const { bottom } = headerEl.getBoundingClientRect();
+        mobilePanel.style.setProperty("--mobile-nav-top", `${bottom + 16}px`);
+      };
+
+      const setMobileMenuState = (open) => {
+        if (!toggle || !mobileMenu) return;
+        mobileMenu.classList.toggle("hidden", !open);
+        mobileMenu.setAttribute("aria-hidden", (!open).toString());
+        toggle.setAttribute("aria-expanded", open.toString());
+        toggle.textContent = open ? openLabelText : closedLabelText;
+        document.body.classList.toggle("mobile-nav-open", open);
+        if (open) {
+          updatePanelOffset();
         }
-        window.addEventListener("resize", () => {
-          if (window.matchMedia("(min-width: 640px)").matches) {
-            menu.classList.remove("hidden");
-            toggle.setAttribute("aria-expanded", "true");
+      };
+
+      const closeMobileMenu = (focusToggle = false) => {
+        if (!mobileMenu || mobileMenu.classList.contains("hidden")) return;
+        setMobileMenuState(false);
+        if (focusToggle && toggle) {
+          toggle.focus();
+        }
+      };
+
+      const openMobileMenu = () => {
+        if (!mobileMenu) return;
+        setMobileMenuState(true);
+      };
+
+      if (toggle && mobileMenu) {
+        mobileMenu.setAttribute("aria-hidden", "true");
+
+        toggle.addEventListener("click", () => {
+          if (mobileMenu.classList.contains("hidden")) {
+            openMobileMenu();
           } else {
-            menu.classList.add("hidden");
+            closeMobileMenu();
+          }
+        });
+
+        mobileOverlay?.addEventListener("click", () => closeMobileMenu());
+        mobileNavLinks.forEach((link) => link.addEventListener("click", () => closeMobileMenu()));
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeMobileMenu(true);
+          }
+        });
+
+        const handleBreakpointChange = (event) => {
+          if (event.matches) {
+            closeMobileMenu();
+            toggle.textContent = closedLabelText;
             toggle.setAttribute("aria-expanded", "false");
+            document.body.classList.remove("mobile-nav-open");
+          }
+        };
+
+        if (typeof desktopBreakpoint.addEventListener === "function") {
+          desktopBreakpoint.addEventListener("change", handleBreakpointChange);
+        } else if (typeof desktopBreakpoint.addListener === "function") {
+          desktopBreakpoint.addListener(handleBreakpointChange);
+        }
+
+        window.addEventListener("resize", () => {
+          if (!mobileMenu.classList.contains("hidden")) {
+            updatePanelOffset();
           }
         });
       }
