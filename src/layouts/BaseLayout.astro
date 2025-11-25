@@ -9,6 +9,51 @@ const {
   description = "Technology investing, leadership, and philanthropy from Don Listwin."
 } = Astro.props;
 
+const siteUrl = 'https://listwinventures.com';
+const logoUrl = 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}#organization`,
+      name: 'Listwin Ventures',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: logoUrl,
+      },
+      description,
+      sameAs: [],
+      founder: {
+        '@id': `${siteUrl}#person`,
+      },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}#person`,
+      name: 'Don Listwin',
+      url: siteUrl,
+      jobTitle: 'Founder & Managing Partner',
+      description: 'Technology investor, CEO, philanthropist, and longtime operator.',
+      worksFor: {
+        '@id': `${siteUrl}#organization`,
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}#website`,
+      url: siteUrl,
+      name: 'Listwin Ventures',
+      description,
+      publisher: {
+        '@id': `${siteUrl}#organization`,
+      },
+    },
+  ],
+};
+
 const entityDetails = getEntityDetails();
 const detailBySlug = new Map(entityDetails.map((detail) => [detail.slug, detail]));
 
@@ -107,6 +152,7 @@ const investmentIcons: Record<string, string> = {
     <meta name="description" content={description} />
     <link rel="stylesheet" href="/assets/css/skin.css" />
     <link rel="stylesheet" href="/assets/css/theme.css" />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="min-h-screen bg-fog text-ink">
     <div class="flex min-h-screen flex-col">

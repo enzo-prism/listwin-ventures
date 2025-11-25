@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BackgroundVideo from '../components/BackgroundVideo.astro';
 
 const pageTitle = '4AG — Fourth-Generation Agriculture';
 const pageDescription = '4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale.';
@@ -90,34 +91,127 @@ const marketFocus = [
       'North America, Europe, and Australia produce ~900K tonnes of mushrooms annually, so they come first. Asia—especially China’s 70% share—follows once economics align.',
   },
 ];
+
+const carouselImages = [
+  {
+    src: 'https://agfundernews.com/wp-content/uploads/2023/11/CoverRealFinalSahara.jpg',
+    alt: '4AG Sahara harvester concept staged for a greenhouse deployment',
+  },
+  {
+    src: 'https://techcouver.com/wp-content/uploads/2023/11/4ag-robot-1.png',
+    alt: '4AG autonomous harvester operating inside mushroom shelving',
+  },
+  {
+    src: 'https://www.britishcolumbia.ca/wp-content/uploads/RS4628_TechBrew-9.jpg',
+    alt: '4AG robotics demo on stage at a TechBrew event',
+  },
+  {
+    src: 'https://agfundernews.com/wp-content/uploads/2025/07/4AG-Robotics-mushroom-harvesting-Image-credit-4AG-Robotics.jpg',
+    alt: '4AG mushroom harvesting rig in production with articulated arms',
+  },
+  {
+    src: 'https://www.vmcdn.ca/f/files/biv/images/business/4ag-robotics.jpg%3Bw%3D960',
+    alt: '4AG robot traversing stacked mushroom beds in a grow room',
+  },
+  {
+    src: 'https://techcouver.com/wp-content/uploads/2023/11/4ag-robot-1.png',
+    alt: '4AG autonomous harvester operating inside mushroom shelving',
+  },
+];
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-4 text-center">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Initiative</p>
-      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{pageTitle}</h1>
-      <p class="mx-auto max-w-3xl text-base text-ink/70">{pageDescription}</p>
-      <p class="mx-auto max-w-3xl text-sm text-ink/60">
-        Their site says labour shortages are “crippling production capabilities,” so 4AG deploys autonomous harvesters that work
-        24/7, climb four-metre shelving, and keep demand from going to waste.
-      </p>
-      <div class="flex flex-wrap justify-center gap-3">
-        <a class="btn btn-brand" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">
-          Visit 4AG.ai
-        </a>
+  <BackgroundVideo
+    src="https://4ag.ai/wp-content/uploads/2025/01/header-output.mp4"
+    overlayClass="bg-white/85 backdrop-blur-[2px]"
+    class="rounded-apple shadow-panel ring-1 ring-white/60"
+  >
+    <div class="space-y-8 p-6 sm:p-10">
+      <div class="space-y-4 text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Initiative</p>
+        <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{pageTitle}</h1>
+        <p class="mx-auto max-w-3xl text-base text-ink/70">{pageDescription}</p>
+        <p class="mx-auto max-w-3xl text-sm text-ink/60">
+          Their site says labour shortages are “crippling production capabilities,” so 4AG deploys autonomous harvesters that work
+          24/7, climb four-metre shelving, and keep demand from going to waste.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a class="btn btn-brand" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">
+            Visit 4AG.ai
+          </a>
+        </div>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {initiativeGoals.map((goal) => (
+          <article
+            key={goal.title}
+            class="space-y-3 rounded-[28px] border border-ink/10 bg-fog/70 p-4 text-left shadow-panel backdrop-blur-[1px]"
+          >
+            <h2 class="text-lg font-semibold text-ink">{goal.title}</h2>
+            <p class="text-sm text-ink/70">{goal.description}</p>
+          </article>
+        ))}
       </div>
     </div>
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {initiativeGoals.map((goal) => (
-        <article
-          key={goal.title}
-          class="space-y-3 rounded-[28px] border border-ink/10 bg-fog/60 p-4 text-left shadow-panel"
-        >
-          <h2 class="text-lg font-semibold text-ink">{goal.title}</h2>
-          <p class="text-sm text-ink/70">{goal.description}</p>
-        </article>
-      ))}
+  </BackgroundVideo>
+
+  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-2 text-center sm:text-left">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Deployments</p>
+      <h2 class="text-3xl font-semibold text-ink">Field looks like this</h2>
+      <p class="text-base text-ink/70">
+        Real robots in real rooms—see the Sahara prototype, live rigs, and events across North America and Europe.
+      </p>
+    </div>
+    <div data-4ag-carousel class="space-y-4">
+      <div class="relative">
+        <div class="overflow-hidden rounded-[28px] border border-white/70 bg-white/60 shadow-panel ring-1 ring-white/60">
+          <div
+            data-4ag-carousel-track
+            class="flex touch-pan-y transition-transform duration-500 ease-out will-change-transform"
+            aria-live="polite"
+            style="transform: translateX(0%);"
+          >
+            {carouselImages.map((image) => (
+              <figure class="relative w-full flex-[0_0_100%]" key={image.src}>
+                <img src={image.src} alt={image.alt} class="h-[280px] w-full object-cover sm:h-[380px] lg:h-[460px]" loading="lazy" />
+                <figcaption class="sr-only">{image.alt}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+        <div class="pointer-events-none absolute inset-0 hidden items-center justify-between px-3 sm:flex">
+          <button
+            type="button"
+            data-4ag-carousel-prev
+            class="pointer-events-auto rounded-full bg-white/90 p-2.5 text-ink shadow-lg ring-1 ring-ink/10 transition hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            aria-label="Previous image"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            data-4ag-carousel-next
+            class="pointer-events-auto rounded-full bg-white/90 p-2.5 text-ink shadow-lg ring-1 ring-ink/10 transition hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            aria-label="Next image"
+          >
+            →
+          </button>
+        </div>
+      </div>
+      <div class="flex justify-center gap-2">
+        {carouselImages.map((_, index) => (
+          <button
+            type="button"
+            data-4ag-carousel-dot={index}
+            class={`h-2.5 w-2.5 rounded-full border border-white/60 bg-ink/20 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
+              index === 0 ? 'bg-brand ring-2 ring-brand/30' : ''
+            }`}
+            aria-label={`Jump to image ${index + 1}`}
+            aria-current={index === 0 ? 'true' : 'false'}
+          />
+        ))}
+      </div>
     </div>
   </section>
 
@@ -198,4 +292,75 @@ const marketFocus = [
       </p>
     </div>
   </section>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const carousels = document.querySelectorAll('[data-4ag-carousel]');
+      carousels.forEach((carousel) => {
+        const track = carousel.querySelector('[data-4ag-carousel-track]');
+        if (!track) return;
+        const slides = Array.from(track.children);
+        if (!slides.length) return;
+        const prev = carousel.querySelector('[data-4ag-carousel-prev]');
+        const next = carousel.querySelector('[data-4ag-carousel-next]');
+        const dots = Array.from(carousel.querySelectorAll('[data-4ag-carousel-dot]'));
+        let index = 0;
+
+        const clampIndex = (value) => {
+          const total = slides.length;
+          return ((value % total) + total) % total;
+        };
+
+        const setIndex = (nextIndex) => {
+          index = clampIndex(nextIndex);
+          track.style.transform = `translateX(-${index * 100}%)`;
+          dots.forEach((dot, dotIndex) => {
+            const isActive = dotIndex === index;
+            dot.classList.toggle('bg-brand', isActive);
+            dot.classList.toggle('bg-ink/20', !isActive);
+            dot.classList.toggle('ring-2', isActive);
+            dot.classList.toggle('ring-brand/30', isActive);
+            dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+          });
+        };
+
+        prev?.addEventListener('click', () => setIndex(index - 1));
+        next?.addEventListener('click', () => setIndex(index + 1));
+        dots.forEach((dot, dotIndex) => {
+          dot.addEventListener('click', () => setIndex(dotIndex));
+        });
+
+        // enable swipe on touch devices
+        let startX = null;
+        let isPointerDown = false;
+        track.addEventListener('pointerdown', (event) => {
+          isPointerDown = true;
+          startX = event.clientX;
+        });
+        track.addEventListener('pointerup', (event) => {
+          isPointerDown = false;
+          if (startX === null) return;
+          const delta = event.clientX - startX;
+          if (Math.abs(delta) > 40) {
+            setIndex(delta > 0 ? index - 1 : index + 1);
+          }
+          startX = null;
+        });
+        ['pointerleave', 'pointercancel', 'pointerout'].forEach((eventName) => {
+          track.addEventListener(eventName, () => {
+            startX = null;
+            isPointerDown = false;
+          });
+        });
+
+        // allow track to scroll on small screens by dragging horizontally
+        track.addEventListener('pointermove', (event) => {
+          if (!isPointerDown || startX === null) return;
+          event.preventDefault();
+        });
+
+        setIndex(0);
+      });
+    });
+  </script>
 </BaseLayout>

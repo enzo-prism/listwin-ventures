@@ -1,0 +1,28 @@
+---
+interface Props {
+  src: string;
+  poster?: string;
+  overlayClass?: string;
+  class?: string;
+}
+
+const { src, poster, overlayClass = 'bg-white/80', class: className = '' } = Astro.props;
+---
+
+<section class={`relative overflow-hidden ${className}`}>
+  <video
+    class="absolute inset-0 h-full w-full object-cover"
+    src={src}
+    poster={poster}
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    aria-hidden="true"
+  />
+  <div class={`absolute inset-0 ${overlayClass}`} aria-hidden="true"></div>
+  <div class="relative">
+    <slot />
+  </div>
+</section>
