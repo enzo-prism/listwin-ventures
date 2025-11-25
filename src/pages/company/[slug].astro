@@ -15,7 +15,11 @@ export async function getStaticPaths() {
 }
 
 const { detail } = Astro.props as { detail: EntityDetail };
-const title = `${detail.name} — Portfolio Detail`;
+const pageTitle = `${detail.name} — Portfolio Detail | Listwin Ventures`;
+const pageDescription =
+  detail.summary && detail.summary.trim().length
+    ? detail.summary
+    : `${detail.name} portfolio overview with Listwin Ventures.`;
 const categoryLabels: Record<string, string> = {
   board: 'Board',
   investment: 'Investment',
@@ -63,7 +67,7 @@ const carbonNews = isCarbonRobotics
   : null;
 ---
 
-<BaseLayout title={title} description={detail.summary}>
+<BaseLayout title={pageTitle} description={pageDescription}>
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-6 text-center">
       {!hideCategoryLabel && (
@@ -93,7 +97,7 @@ const carbonNews = isCarbonRobotics
       )}
       <div class="space-y-2">
         <h1 class="font-display text-3xl font-semibold text-ink sm:text-4xl">{detail.name}</h1>
-        <p class="text-base text-ink/70">{detail.summary}</p>
+        <p class="text-base text-ink/70">{pageDescription}</p>
       </div>
       {(detail.externalUrl || pressReleaseUrl) && (
         <div class="flex flex-wrap justify-center gap-3">
