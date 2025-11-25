@@ -153,6 +153,18 @@ const investmentIcons: Record<string, string> = {
     <link rel="stylesheet" href="/assets/css/skin.css" />
     <link rel="stylesheet" href="/assets/css/theme.css" />
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R6NTCMFK3"></script>
+    <script is:inline>
+      {(() => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-5R6NTCMFK3');
+      })()}
+    </script>
     <!-- Hotjar Tracking Code for Listwin Ventures -->
     <script is:inline>
       {(function (h, o, t, j, a, r) {
