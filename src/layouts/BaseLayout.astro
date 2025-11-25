@@ -10,7 +10,9 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://listwinventures.com';
+const pageUrl = Astro.url?.href ?? siteUrl;
 const logoUrl = 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp';
+const openGraphImage = `${siteUrl}/assets/uploads/OpenGraph.png`;
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -150,6 +152,21 @@ const investmentIcons: Record<string, string> = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta property="og:site_name" content="Listwin Ventures" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={openGraphImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={openGraphImage} />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/uploads/Favicon%201.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/uploads/Favicon%202.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/uploads/Favicon%203.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/uploads/Favicon%204.png" />
+    <link rel="apple-touch-icon" href="/assets/uploads/Favicon%204.png" />
     <link rel="stylesheet" href="/assets/css/skin.css" />
     <link rel="stylesheet" href="/assets/css/theme.css" />
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
