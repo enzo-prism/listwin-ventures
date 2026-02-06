@@ -16,9 +16,25 @@ const resolvedLink = linkHref === null ? undefined : linkHref ?? asset.href;
 const isExternal = resolvedLink ? !linkHref && !!asset.href : false;
 const usesDarkFrame = asset.id === 'carbon-robotics';
 const figureToneClass = usesDarkFrame ? 'bg-ink text-white/80 ring-white/20' : 'bg-white/90 text-ink/70 ring-white/60';
-const captionToneClass = usesDarkFrame ? 'text-white/60' : 'text-ink/50';
-const isLogoAsset = /\b(logo|lockup|crest)\b/i.test(asset.alt);
-const showMediaCaption = showCaption && !isLogoAsset;
+	const captionToneClass = usesDarkFrame ? 'text-white/60' : 'text-ink/50';
+	const isLogoAsset = /\b(logo|lockup|crest)\b/i.test(asset.alt);
+	const showMediaCaption = showCaption && !isLogoAsset;
+
+	const inferImageDimensionsFromPath = (
+	  path: string,
+	  fallback: { width: number; height: number },
+	): { width: number; height: number } => {
+	  const match = path.match(/-(\d+)x(\d+)\.(?:png|jpe?g|webp)(?:\?|$)/i);
+	  if (match) {
+	    return { width: Number(match[1]), height: Number(match[2]) };
+	  }
+	  return fallback;
+	};
+
+	const dimensions = inferImageDimensionsFromPath(
+	  asset.path,
+	  isLogoAsset ? { width: 320, height: 128 } : { width: 1200, height: 900 },
+	);
 ---
 
 <figure
@@ -31,20 +47,24 @@ const showMediaCaption = showCaption && !isLogoAsset;
       rel={isExternal ? 'noopener noreferrer' : undefined}
       class={`${rounded ? 'overflow-hidden rounded-[28px]' : ''} block`}
     >
-      <img
-        src={asset.path}
-        alt={asset.alt}
-        loading="lazy"
-        class={`w-full object-contain ${shadow ? 'shadow-panel' : ''}`}
-      />
+	      <img
+	        src={asset.path}
+	        alt={asset.alt}
+	        width={dimensions.width}
+	        height={dimensions.height}
+	        loading="lazy"
+	        class={`w-full object-contain ${shadow ? 'shadow-panel' : ''}`}
+	      />
     </a>
   ) : (
-    <img
-      src={asset.path}
-      alt={asset.alt}
-      loading="lazy"
-      class={`w-full object-contain ${rounded ? 'rounded-[28px]' : ''} ${shadow ? 'shadow-panel' : ''}`}
-    />
+	    <img
+	      src={asset.path}
+	      alt={asset.alt}
+	      width={dimensions.width}
+	      height={dimensions.height}
+	      loading="lazy"
+	      class={`w-full object-contain ${rounded ? 'rounded-[28px]' : ''} ${shadow ? 'shadow-panel' : ''}`}
+	    />
   )}
   {showMediaCaption && (
     <figcaption class={`text-xs uppercase tracking-[0.25em] ${captionToneClass}`}>{asset.name}</figcaption>

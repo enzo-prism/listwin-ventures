@@ -56,13 +56,13 @@ const linkTargets = {
   canaryChallenge: getDetailPath('canary-challenge'),
 };
 
-const cardMedia: Record<
-  string,
-  {
-    path: string;
-    alt: string;
-  }
-> = {
+	const cardMedia: Record<
+	  string,
+	  {
+	    path: string;
+	    alt: string;
+	  }
+	> = {
   netaid: {
     path: '/assets/uploads/2020/09/netaid-768x598.jpg',
     alt: 'NetAid concert with performers raising funds for anti-poverty initiatives',
@@ -111,11 +111,20 @@ const cardMedia: Record<
     path: '/assets/uploads/2020/12/caaray-cove-01-768x511.jpg',
     alt: 'Canary Cove beachfront villas and dock on Ambergris Caye',
   },
-  railroad: {
-    path: '/assets/uploads/2020/12/railroad-768x576.jpg',
-    alt: 'Chelsea & Woodside backyard railroad with Don Listwin driving the train',
-  },
-};
+	  railroad: {
+	    path: '/assets/uploads/2020/12/railroad-768x576.jpg',
+	    alt: 'Chelsea & Woodside backyard railroad with Don Listwin driving the train',
+	  },
+	};
+
+	const inferImageDimensionsFromPath = (path: string): { width: number; height: number } => {
+	  const match = path.match(/-(\d+)x(\d+)\.(?:png|jpe?g|webp)(?:\?|$)/i);
+	  if (match) {
+	    return { width: Number(match[1]), height: Number(match[2]) };
+	  }
+	  // Reasonable default for WP-style photos when size isn't encoded in the filename.
+	  return { width: 768, height: 576 };
+	};
 
 const carbonPressReleaseUrl =
   'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board';
@@ -298,13 +307,13 @@ const exploitThemes = [
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 text-center shadow-panel ring-1 ring-white/60 sm:p-10">
-    <p class="mx-auto flex items-center justify-center text-[0.6rem] font-semibold uppercase tracking-[0.4em] text-ink/50 sm:text-xs">
-      <span class="sr-only">Roles:</span>
-      <span class="typing-line">
-        <span id="hero-typing" class="text-[0.78rem] text-ink/70 sm:text-sm"></span>
-        <span class="inline-block h-3 w-[2px] animate-pulse bg-brand align-middle sm:h-4" aria-hidden="true"></span>
-      </span>
-    </p>
+	    <p class="mx-auto flex items-center justify-center text-[0.6rem] font-semibold uppercase tracking-[0.4em] text-ink/50 sm:text-xs">
+	      <span class="sr-only">Roles:</span>
+	      <span class="typing-line">
+	        <span id="hero-typing" class="text-[0.78rem] text-ink/70 sm:text-sm"></span>
+	        <span class="inline-block h-3 w-[2px] animate-pulse bg-brand align-middle motion-reduce:animate-none sm:h-4" aria-hidden="true"></span>
+	      </span>
+	    </p>
     <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Don Listwin</h1>
     <p class="text-ink/70">
       Building enduring companies across networking, data, and health while backing founders who pair engineering rigor with human
@@ -349,12 +358,12 @@ const exploitThemes = [
     <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
       <div class="grid gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-center">
         <div class="space-y-4">
-          <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
-            <span class="section-icon" aria-hidden="true">
-              <Icon name={sectionIconNames.story} width="16" height="16" />
-            </span>
-            My Story
-          </p>
+	          <h2 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
+	            <span class="section-icon" aria-hidden="true">
+	              <Icon name={sectionIconNames.story} width="16" height="16" />
+	            </span>
+	            My Story
+	          </h2>
           <p>
             I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a
             public company—<a href={linkTargets.openwave}>OpenWave</a>—that created the mobile internet. Since then, I created
@@ -414,13 +423,13 @@ const exploitThemes = [
     </div>
   </section>
 
-  <section id="recent-work" class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
-      <span class="section-icon" aria-hidden="true">
-        <Icon name={sectionIconNames.work} width="16" height="16" />
-      </span>
-      Recent work
-    </p>
+	  <section id="recent-work" class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+	    <h2 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
+	      <span class="section-icon" aria-hidden="true">
+	        <Icon name={sectionIconNames.work} width="16" height="16" />
+	      </span>
+	      Recent work
+	    </h2>
     <div class="grid gap-6 lg:grid-cols-2">
       {recentWorkCards.map((card) => (
         <article key={card.title} class="space-y-4 rounded-apple border border-white/70 bg-white/90 p-5 shadow-panel">
@@ -466,15 +475,15 @@ const exploitThemes = [
     </div>
   </section>
 
-  <section id="investments" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-4">
-      <p class="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.35em] text-ink/70">
-        <span class="section-icon" aria-hidden="true">
-          <Icon name={sectionIconNames.investments} width="16" height="16" />
-        </span>
-        TECHNOLOGY AND BUSINESS DEVELOPMENT &middot; FOR NEW TECHNOLOGIES
-      </p>
-      <p class="text-lg font-semibold text-ink">My Investments</p>
+	  <section id="investments" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+	    <div class="space-y-4">
+	      <p class="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.35em] text-ink/70">
+	        <span class="section-icon" aria-hidden="true">
+	          <Icon name={sectionIconNames.investments} width="16" height="16" />
+	        </span>
+	        TECHNOLOGY AND BUSINESS DEVELOPMENT &middot; FOR NEW TECHNOLOGIES
+	      </p>
+	      <h2 class="text-lg font-semibold text-ink">My Investments</h2>
       <p class="text-ink/70">
         My investments range from seed through sizable stakes in public entities.
       </p>
@@ -515,25 +524,28 @@ const exploitThemes = [
             <h3 class="text-xl font-semibold text-ink">{theme.heading}</h3>
           </div>
           <div class="grid gap-4 md:grid-cols-2">
-            {theme.cards.map((card, cardIndex) => {
-              const media = card.tag ? cardMedia[card.tag] : undefined;
-              const buttonHref = card.link ?? '#';
-              const buttonDisabled = !card.link;
-              return (
+	            {theme.cards.map((card, cardIndex) => {
+	              const media = card.tag ? cardMedia[card.tag] : undefined;
+	              const mediaDimensions = media ? inferImageDimensionsFromPath(media.path) : null;
+	              const buttonHref = card.link ?? '#';
+	              const buttonDisabled = !card.link;
+	              return (
                 <article
                   data-reveal
                   style={`--reveal-delay:${cardIndex * 80}ms;`}
                   class="group space-y-3 rounded-[28px] border border-white/70 bg-white/90 p-5 text-sm text-ink/75 shadow-panel transition hover:-translate-y-1 hover:border-brand/40 hover:shadow-xl"
                   key={card.title}
                 >
-                  {media && (
-                    <img
-                      src={media.path}
-                      alt={media.alt}
-                      loading="lazy"
-                      class="w-full rounded-[24px] border border-white/70"
-                    />
-                  )}
+	                  {media && (
+	                    <img
+	                      src={media.path}
+	                      alt={media.alt}
+	                      width={mediaDimensions?.width ?? 768}
+	                      height={mediaDimensions?.height ?? 576}
+	                      loading="lazy"
+	                      class="w-full rounded-[24px] border border-white/70"
+	                    />
+	                  )}
                   <h4 class="text-lg font-semibold text-ink">{card.title}</h4>
                   <p>{card.description}</p>
                   <a

@@ -19,14 +19,21 @@ const galleryImages = belizeKidsGallery.slice(0, Math.max(0, belizeKidsGallery.l
       </div>
     </div>
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {galleryImages.map((asset) => (
-        <div
-          key={asset.id}
-          class="overflow-hidden rounded-[32px] border border-white/70 bg-white/70 shadow-panel"
-        >
-          <img src={asset.path} alt={asset.alt} loading="lazy" class="aspect-[4/3] w-full object-cover" />
-        </div>
-      ))}
+	      {galleryImages.map((asset) => (
+	        <div
+	          key={asset.id}
+	          class="overflow-hidden rounded-[32px] border border-white/70 bg-white/70 shadow-panel"
+	        >
+	          <img
+	            src={asset.path}
+	            alt={asset.alt}
+	            width="1200"
+	            height="900"
+	            loading="lazy"
+	            class="aspect-[4/3] w-full object-cover"
+	          />
+	        </div>
+	      ))}
     </div>
   </section>
 </BaseLayout>
