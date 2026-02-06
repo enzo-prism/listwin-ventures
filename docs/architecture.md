@@ -8,15 +8,22 @@ structural changes.
 
 ```
 listwinventures-rebuild/
-  public/                  # legacy CSS + uploads (large media ignored via .gitignore)
+  public/                  # legacy CSS (kept for reference; not loaded) + uploads (large media ignored via .gitignore)
+  playwright.config.ts     # Playwright config for responsive smoke tests
   src/
     components/            # HeroMedia, LogoGrid, CompanyCarousel, etc.
     data/                  # assets.ts + entityDetails.ts + exploitDetails.ts + press.ts (content catalogs)
     layouts/               # BaseLayout.astro (sticky nav + dropdowns)
     pages/                 # Astro routes (home, contact form, oral history, BelizeKids.org, exploit detail, company detail)
     styles/global.css      # Tailwind entry point + Apple-inspired theming + shared .btn utility
+  tests/                   # Playwright smoke tests (responsive overflow checks)
   docs/                    # this file
 ```
+
+## CSS Strategy
+
+- `src/styles/global.css` is the only global stylesheet entry point (Tailwind base/components/utilities + shared site styles).
+- Legacy WordPress stylesheets remain under `public/assets/css/` for reference only and are not loaded by `BaseLayout.astro`.
 
 ## Data Sources
 
@@ -102,10 +109,17 @@ npm install
 npm run dev       # http://localhost:8080
 npm run build
 npm run preview   # run after build to inspect /dist
+npm run test:e2e   # Playwright responsive smoke tests (multi-viewport)
 ```
 
 Tailwind + Astro support hot reload. When editing data catalogs, run `npm run build` to ensure the
 company detail routes still pre-render correctly.
+
+### Responsive QA (Playwright)
+
+- First-time setup may require downloading browsers: `npx playwright install`
+- CI builds that do not run `npm run test:e2e` can skip browser downloads by setting
+  `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`.
 
 ## Documentation Expectations
 
