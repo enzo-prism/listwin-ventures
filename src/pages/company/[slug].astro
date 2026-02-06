@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroMedia from '../../components/HeroMedia.astro';
 import { getEntityDetails, type EntityDetail } from '../../data/entityDetails';
 import type { VisualAsset } from '../../data/assets';
+import { getRelatedPressItems, isExternalUrl, type PressItem } from '../../data/press';
 
 export const prerender = true;
 
@@ -49,6 +50,20 @@ const carbonVideos = isCarbonRobotics
 const galleryAssets = [carbonFieldAsset].filter(Boolean) as VisualAsset[];
 const hideHeroMedia = ['sequoia', 'hwvp', 'telesoft'].includes(detail.slug);
 const hideCategoryLabel = detail.slug === 'sequoia';
+const relatedPress = getRelatedPressItems(detail.slug);
+const formatPublished = (item: PressItem) => {
+  if (item.publishedIso) {
+    const date = new Date(item.publishedIso);
+    // Use UTC for date-only strings (YYYY-MM-DD) to avoid local timezone shifting the day.
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    }).format(date);
+  }
+  return item.publishedLabel ?? '';
+};
 const carbonNews = isCarbonRobotics
   ? {
       title: 'Carbon Robotics Raises $20M, Teases New “AI Robot” for Farms',
@@ -117,6 +132,19 @@ const carbonNews = isCarbonRobotics
 
   </section>
 
+  {detail.highlights.length > 0 && (
+    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <h2 class="text-2xl font-semibold text-ink">Highlights</h2>
+      <ul class="space-y-3 text-sm text-ink/75">
+        {detail.highlights.map((highlight) => (
+          <li key={highlight} class="rounded-[24px] border border-ink/10 bg-white/90 px-4 py-3 shadow">
+            {highlight}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
   {carbonNews && (
     <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
       <div class="space-y-3">
@@ -131,6 +159,48 @@ const carbonNews = isCarbonRobotics
           </li>
         ))}
       </ul>
+    </section>
+  )}
+
+  {relatedPress.length > 0 && (
+    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div class="space-y-1">
+          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">References</p>
+          <h2 class="text-2xl font-semibold text-ink">Related reading</h2>
+        </div>
+        <a class="text-sm font-semibold text-brand transition hover:text-brand-soft" href="/press">
+          View all press →
+        </a>
+      </div>
+      <div class="grid gap-5 md:grid-cols-2">
+        {relatedPress.map((item) => {
+          const external = isExternalUrl(item.url);
+          const published = formatPublished(item);
+          return (
+            <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
+              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">
+                {item.publisher}
+                {published ? ` • ${published}` : ''}
+              </p>
+              <div class="space-y-1">
+                <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
+                <p class="text-sm text-ink/70">{item.summary}</p>
+              </div>
+              <div class="pt-1">
+                <a
+                  class="btn btn-ink px-4 py-2"
+                  href={item.url}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                >
+                  Read
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </section>
   )}
 
