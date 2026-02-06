@@ -50,6 +50,7 @@ the related media.
 - `src/data/assets.ts` – legacy media mapping plus grouped board/investment/philanthropy collections.
 - `src/data/entityDetails.ts` – canonical portfolio metadata powering `/company/[slug]` pages and the nav dropdowns.
 - `src/data/exploitDetails.ts` – structured content for the Exploits cards and `/exploits/[slug]` pages (events, Belize initiatives, retreats).
+- `src/data/press.ts` – curated press + reference links powering `/press` and the “Related reading” blocks on company detail pages.
 - `public/assets/` – static uploads, legacy CSS, and any new media (note the large-file exclusions above).
 - `docs/architecture.md` – ground truth for the design system, section structure, and data flow.
 - `archive/` – frozen WordPress exports for historical reference (do not edit).
@@ -67,7 +68,7 @@ To add or update a company:
 
 The navigation dropdowns pull from the same detail list. Company names now render in only one dropdown:
 
-- New – currently Carbon Robotics only (driven by `workHighlights` in the layout).
+- New – curated spotlight cards (driven by `workHighlights` in the layout).
 - Investments – grouped by stage, plus an Exits group.
 - Community Projects – philanthropic entities.
 - Some company routes intentionally hide the hero logo (Sequoia, HWVP, TeleSoft). Update the `hideHeroMedia` array inside `src/pages/company/[slug].astro` if you change that behaviour.
@@ -77,13 +78,25 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 
 `src/layouts/BaseLayout.astro` now renders a responsive navigation system with distinct menus:
 
-- **New** – curated spotlight cards for current focus areas (Carbon Robotics, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
+- **New** – curated spotlight cards for current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
 - **Investments** – mega-menu fed by `investmentAssets`/`entityDetails` (Seed, Private, Exits inserted between Private/Venture, then Venture, Public).
 - **Community** – philanthropy slugs sourced from `entityDetails`.
-- **About** – links to the oral-history interview and the on-page “My Story” anchor.
+- **About** – links to the oral-history interview, the on-page “My Story” anchor, and the Press library.
 - **Contact** – dedicated `/contact` page with a Netlify-backed form (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
 
 All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
+
+### Icons (astro-icon allowlist)
+
+This project uses `astro-icon` in allowlist mode. If you reference a new icon name anywhere, add it
+to the `icon({ include: ... })` list in `astro.config.mjs` or `npm run build` will fail.
+
+## Press & References
+
+- `/press` is backed by `src/data/press.ts`.
+- Add `relatedSlugs: ['openwave']` (etc.) on a press item to surface it automatically on the matching `/company/[slug]` page.
+- Prefer `publishedIso: 'YYYY-MM-DD'` when the publish date is known; otherwise use `publishedLabel`.
+- Set `featured: true` to pin an item into the Featured section on `/press`.
 
 ## Next Steps
 

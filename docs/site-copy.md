@@ -10,29 +10,28 @@
 
 #### "New" dropdown content
 - "Carbon Robotics" — "AI-driven laser weeding and farm autonomy." (link to Carbon Robotics detail)
+- "4AG" — "4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale." (link to /4ag)
 - "BelizeKids.org" — "STEM, clinics, and conservation programs across Belize." (link to /belizekids)
 
 #### "Investments" dropdown sections
-- **Seed**: "Uberflip", "VIDA lung health", "Zededa".
-- **Private**: "AwareX", "Clarius Mobile Health", "RapidAI", "Teradici".
-- **Venture**: "HWVP", "Rally Ventures", "Sequoia partner network", "TeleSoft Partners".
+- **Seed**: "Uberflip", "VIDA lung health", "Cradle Genomics".
+- **Private**: "AwareX", "Clarius Mobile Health", "RapidAI", "Zededa".
+- **Venture**: "HWVP", "Rally Ventures", "Sequoia tech partner", "TeleSoft Partners".
 - **Public**: "Calix", "POET Technologies".
-- **Philanthropic**: "BelizeKids.org", "Canary Foundation".
-- **Exits**: "Openwave", "Joyent", "Isilon Systems", "PLUMgrid", "Teradici".
+- **Exits**: "Openwave", "GenoLogics", "Joyent", "Isilon Systems", "PLUMgrid", "Teradici".
 
 #### "Community" dropdown links
 - "BelizeKids.org"
 - "Canary Foundation"
 - "Lucile Packard Children’s Hospital"
-- "Moffitt Cancer Center"
 - "National Institutes of Health"
 - "Stanford Medicine"
 - "University of Saskatchewan"
-- "Canary Challenge"
 
 #### "About" dropdown links
-- "Interviews"
+- "Interview"
 - "My Story"
+- "Press"
 
 ### Footer (all pages)
 - Logo alt text: "Listwin Ventures".
