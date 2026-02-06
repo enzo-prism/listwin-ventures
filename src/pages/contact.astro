@@ -11,51 +11,58 @@ const pageDescription = 'Share your project or investment opportunity with Listw
     <form class="space-y-6" name="contact" method="post" data-netlify="true">
       <input type="hidden" name="form-name" value="contact" />
       <div class="grid gap-4 md:grid-cols-2">
-        <label class="space-y-2 text-sm text-ink/70">
-          <span class="font-semibold text-ink">First name</span>
-          <input
-            class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink outline-none ring-0 transition focus:border-brand"
-            type="text"
-            name="firstName"
-            required
-          />
-        </label>
-        <label class="space-y-2 text-sm text-ink/70">
-          <span class="font-semibold text-ink">Last name</span>
-          <input
-            class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink outline-none ring-0 transition focus:border-brand"
-            type="text"
-            name="lastName"
-            required
-          />
-        </label>
-      </div>
-      <label class="space-y-2 text-sm text-ink/70">
-        <span class="font-semibold text-ink">Organization name</span>
-        <input
-          class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink outline-none ring-0 transition focus:border-brand"
-          type="text"
-          name="organization"
-          required
-        />
-      </label>
-      <label class="space-y-2 text-sm text-ink/70">
-        <span class="font-semibold text-ink">Email address</span>
-        <input
-          class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink outline-none ring-0 transition focus:border-brand"
-          type="email"
-          name="email"
-          required
-        />
-      </label>
-      <label class="space-y-2 text-sm text-ink/70">
-        <span class="font-semibold text-ink">Message</span>
-        <textarea
-          class="min-h-[160px] w-full rounded-[24px] border border-ink/10 bg-white/70 px-4 py-3 text-ink outline-none ring-0 transition focus:border-brand"
-          name="message"
-          required
-        />
-      </label>
+	        <label class="space-y-2 text-sm text-ink/70">
+	          <span class="font-semibold text-ink">First name</span>
+	          <input
+	            class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink transition focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-fog"
+	            type="text"
+	            name="firstName"
+	            autocomplete="given-name"
+	            required
+	          />
+	        </label>
+	        <label class="space-y-2 text-sm text-ink/70">
+	          <span class="font-semibold text-ink">Last name</span>
+	          <input
+	            class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink transition focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-fog"
+	            type="text"
+	            name="lastName"
+	            autocomplete="family-name"
+	            required
+	          />
+	        </label>
+	      </div>
+	      <label class="space-y-2 text-sm text-ink/70">
+	        <span class="font-semibold text-ink">Organization name</span>
+	        <input
+	          class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink transition focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-fog"
+	          type="text"
+	          name="organization"
+	          autocomplete="organization"
+	          required
+	        />
+	      </label>
+	      <label class="space-y-2 text-sm text-ink/70">
+	        <span class="font-semibold text-ink">Email address</span>
+	        <input
+	          class="w-full rounded-[20px] border border-ink/10 bg-white/70 px-4 py-3 text-ink transition focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-fog"
+	          type="email"
+	          name="email"
+	          autocomplete="email"
+	          inputmode="email"
+	          autocapitalize="none"
+	          spellcheck="false"
+	          required
+	        />
+	      </label>
+	      <label class="space-y-2 text-sm text-ink/70">
+	        <span class="font-semibold text-ink">Message</span>
+	        <textarea
+	          class="min-h-[160px] w-full rounded-[24px] border border-ink/10 bg-white/70 px-4 py-3 text-ink transition focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 focus-visible:ring-offset-fog"
+	          name="message"
+	          required
+	        />
+	      </label>
       <div class="flex flex-wrap justify-between gap-3">
         <button type="submit" class="btn btn-brand">
           Send message

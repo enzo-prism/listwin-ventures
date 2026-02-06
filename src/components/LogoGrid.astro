@@ -28,18 +28,30 @@ const colClass = (() => {
   return `${map[md] ?? 'md:grid-cols-4'} ${mapLg[lg] ?? 'lg:grid-cols-4'}`;
 })();
 
-const usesDarkBackground = (assetId: string) => assetId === 'carbon-robotics';
+	const usesDarkBackground = (assetId: string) => assetId === 'carbon-robotics';
+
+	const inferImageDimensionsFromPath = (
+	  path: string,
+	  fallback: { width: number; height: number },
+	): { width: number; height: number } => {
+	  const match = path.match(/-(\d+)x(\d+)\.(?:png|jpe?g|webp)(?:\?|$)/i);
+	  if (match) {
+	    return { width: Number(match[1]), height: Number(match[2]) };
+	  }
+	  return fallback;
+	};
 ---
 
 <section class="space-y-4 rounded-apple bg-white/90 p-5 shadow-panel ring-1 ring-white/60 sm:p-6">
   {title && <h3 class="text-lg font-semibold text-ink">{title}</h3>}
   <div class={`grid gap-4 sm:grid-cols-2 ${colClass}`}>
-    {assets.map((asset, index) => {
-      const darkBackground = usesDarkBackground(asset.id);
-      const figureToneClass = darkBackground
-        ? 'border-brand/40 bg-ink text-white/80'
-        : 'border-white/70 bg-white text-ink/70';
-      return (
+	    {assets.map((asset, index) => {
+	      const darkBackground = usesDarkBackground(asset.id);
+	      const dimensions = inferImageDimensionsFromPath(asset.path, { width: 320, height: 128 });
+	      const figureToneClass = darkBackground
+	        ? 'border-brand/40 bg-ink text-white/80'
+	        : 'border-white/70 bg-white text-ink/70';
+	      return (
         <figure
           key={asset.id}
           data-reveal
@@ -57,22 +69,26 @@ const usesDarkBackground = (assetId: string) => assetId === 'carbon-robotics';
                   rel={detailPath ? undefined : 'noopener noreferrer'}
                   class="transition hover:scale-105"
                 >
-                  <img
-                    src={asset.path}
-                    alt={asset.alt}
-                    loading="lazy"
-                    class="h-16 w-auto max-w-[160px] object-contain"
-                  />
-                </a>
+	                  <img
+	                    src={asset.path}
+	                    alt={asset.alt}
+	                    width={dimensions.width}
+	                    height={dimensions.height}
+	                    loading="lazy"
+	                    class="h-16 w-auto max-w-[160px] object-contain"
+	                  />
+	                </a>
               );
             }
             return (
-              <img
-                src={asset.path}
-                alt={asset.alt}
-                loading="lazy"
-                class="h-16 w-auto max-w-[160px] object-contain"
-              />
+	              <img
+	                src={asset.path}
+	                alt={asset.alt}
+	                width={dimensions.width}
+	                height={dimensions.height}
+	                loading="lazy"
+	                class="h-16 w-auto max-w-[160px] object-contain"
+	              />
             );
           })()}
         </figure>

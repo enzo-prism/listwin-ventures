@@ -39,7 +39,7 @@ listwinventures-rebuild/
 2. **Investments** – mega-menu grouped by stage (`investmentAssets` + `entityDetails`). Exits sit in
    their own group at the end.
 3. **Community** – philanthropy slugs pulled from `entityDetails`.
-4. **About** – quick links to the oral-history interview and the on-page “My Story”.
+4. **About** – quick links to the oral-history interview, the on-page “My Story”, and the Press library.
 5. **Contact** – persistent CTA linking to `/contact`.
 
 The dropdown carets animate, the desktop mega-menu stays right-aligned to prevent overflow, and the

@@ -11,6 +11,21 @@ a {
   @apply font-semibold text-brand underline-offset-4 transition hover:text-brand-soft hover:underline;
 }
 
+[data-nav-link]:focus-visible,
+[data-dropdown] > summary:focus-visible {
+  @apply outline-none ring-2 ring-brand/50 ring-offset-2 ring-offset-fog;
+}
+
+section[id] {
+  scroll-margin-top: 6.5rem;
+}
+
+@media (min-width: 640px) {
+  section[id] {
+    scroll-margin-top: 7.5rem;
+  }
+}
+
 ::selection {
   @apply bg-brand/80 text-white;
 }
