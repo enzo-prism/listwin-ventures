@@ -164,15 +164,14 @@ const investmentIcons: Record<string, string> = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={openGraphImage} />
 	    <link rel="icon" type="image/png" sizes="16x16" href="/assets/uploads/Favicon%201.png" />
-	    <link rel="icon" type="image/png" sizes="32x32" href="/assets/uploads/Favicon%202.png" />
-	    <link rel="icon" type="image/png" sizes="48x48" href="/assets/uploads/Favicon%203.png" />
-	    <link rel="icon" type="image/png" sizes="512x512" href="/assets/uploads/Favicon%204.png" />
-	    <link rel="apple-touch-icon" href="/assets/uploads/Favicon%204.png" />
-	    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
-	    <link rel="stylesheet" href="/assets/css/skin.css" />
-	    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R6NTCMFK3"></script>
+		    <link rel="icon" type="image/png" sizes="32x32" href="/assets/uploads/Favicon%202.png" />
+		    <link rel="icon" type="image/png" sizes="48x48" href="/assets/uploads/Favicon%203.png" />
+		    <link rel="icon" type="image/png" sizes="512x512" href="/assets/uploads/Favicon%204.png" />
+		    <link rel="apple-touch-icon" href="/assets/uploads/Favicon%204.png" />
+		    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+		    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+	    <!-- Google tag (gtag.js) -->
+	    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R6NTCMFK3"></script>
     <script is:inline>
       {(() => {
         window.dataLayer = window.dataLayer || [];
@@ -198,21 +197,21 @@ const investmentIcons: Record<string, string> = {
         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
         a.appendChild(r);
       })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')}
-    </script>
-  </head>
-	  <body class="min-h-screen bg-fog text-ink">
-	    <a
-	      href="#main-content"
-	      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink focus:shadow-panel focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-brand"
-	    >
+	    </script>
+	  </head>
+		  <body class="min-h-screen min-h-[100dvh] bg-fog text-ink font-sans">
+		    <a
+		      href="#main-content"
+		      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink focus:shadow-panel focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-brand"
+		    >
 	      Skip to content
-	    </a>
-	    <div class="flex min-h-screen flex-col">
-      <header class="z-40 border-b border-white/60 bg-white/80 backdrop-blur sm:sticky sm:top-0">
-        <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-	            <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-ink">
-	              <img
-	                src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp"
+		    </a>
+		    <div class="flex min-h-screen flex-col">
+	      <header class="z-40 border-b border-white/60 bg-white/80 backdrop-blur md:sticky md:top-0">
+	        <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+		            <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-ink">
+		              <img
+		                src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp"
 	                alt="Listwin Ventures"
 	                width="300"
 	                height="120"
@@ -220,28 +219,28 @@ const investmentIcons: Record<string, string> = {
 	                loading="eager"
 	                fetchpriority="high"
 	              />
-	              <span class="sr-only">Listwin Ventures</span>
-	            </a>
-          <button
-            type="button"
-            class="btn btn-brand px-4 py-2 sm:hidden"
-            data-nav-toggle
-            data-open-label="Close"
-            data-closed-label="Menu"
-            aria-expanded="false"
-            aria-controls="mobile-navigation"
+		              <span class="sr-only">Listwin Ventures</span>
+		            </a>
+	          <button
+	            type="button"
+	            class="btn btn-brand px-4 py-2 md:hidden"
+	            data-nav-toggle
+	            data-open-label="Close"
+	            data-closed-label="Menu"
+	            aria-expanded="false"
+	            aria-controls="mobile-navigation"
           >
             Menu
           </button>
-          <nav
-            aria-label="Primary"
-            class="hidden w-full flex-col gap-4 text-sm sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6"
-          >
-            <div class="hidden w-full flex-col gap-4 text-sm sm:flex sm:w-auto sm:flex-row sm:items-center sm:gap-6">
-              {navItems.map((item, index) => {
-                if (!item.type) {
-                  return (
-                    <a data-nav-link class="group inline-flex items-center gap-2 font-medium text-ink/70 transition hover:text-brand" href={item.href} key={item.label}>
+	          <nav
+	            aria-label="Primary"
+	            class="hidden w-full flex-col gap-4 text-sm md:flex md:w-auto md:flex-row md:items-center md:gap-6"
+	          >
+	            <div class="hidden w-full flex-col gap-4 text-sm md:flex md:w-auto md:flex-row md:items-center md:gap-6">
+	              {navItems.map((item, index) => {
+	                if (!item.type) {
+	                  return (
+	                    <a data-nav-link class="group inline-flex items-center gap-2 font-medium text-ink/70 transition hover:text-brand" href={item.href} key={item.label}>
                       {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
                       {item.label}
                     </a>
@@ -256,17 +255,17 @@ const investmentIcons: Record<string, string> = {
                         {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
                         {item.label}
                       </span>
-                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-                        &#9662;
-                      </span>
-                    </summary>
-                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:min-w-[260px] sm:w-[720px] sm:flex-row sm:flex-wrap sm:gap-5 sm:p-6">
-                      {investmentSections.map((section) => (
-                        <div class="w-full space-y-3 rounded-2xl border border-ink/5 bg-fog/30 p-4 sm:w-[calc(50%-10px)]" key={section.label}>
-                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
-                          <div class="space-y-1.5">
-                            {section.items.map((sectionItem) => (
-                              <a
+	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+	                        &#9662;
+	                      </span>
+	                    </summary>
+	                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:min-w-[260px] md:w-[min(520px,calc(100vw-2rem))] md:gap-5 md:p-6 lg:w-[720px] lg:flex-row lg:flex-wrap">
+	                      {investmentSections.map((section) => (
+	                        <div class="w-full space-y-3 rounded-2xl border border-ink/5 bg-fog/30 p-4 lg:w-[calc(50%-10px)]" key={section.label}>
+	                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
+	                          <div class="space-y-1.5">
+	                            {section.items.map((sectionItem) => (
+	                              <a
                                 data-nav-link
                                 class="group flex items-center gap-2 rounded-xl px-3 py-1.5 text-ink/70 transition hover:bg-brand/10 hover:text-brand"
                                 href={getDetailPath(sectionItem.slug)}
@@ -291,15 +290,15 @@ const investmentIcons: Record<string, string> = {
                         {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
                         {item.label}
                       </span>
-                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-                        &#9662;
-                      </span>
-                    </summary>
-                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:min-w-[320px]">
-                      {workHighlights.map((highlight) => (
-                        <a
-                          data-nav-link
-                          key={highlight.label}
+	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+	                        &#9662;
+	                      </span>
+	                    </summary>
+	                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:w-[min(360px,calc(100vw-2rem))]">
+	                      {workHighlights.map((highlight) => (
+	                        <a
+	                          data-nav-link
+	                          key={highlight.label}
                           class="group flex items-start gap-3 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-3 text-left text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand"
                           href={highlight.href}
                         >
@@ -323,15 +322,15 @@ const investmentIcons: Record<string, string> = {
                         {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
                         {item.label}
                       </span>
-                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-                        &#9662;
-                      </span>
-                    </summary>
-                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:w-[320px]">
-                      {communityLinks.map((link) => (
-                        <a
-                          data-nav-link
-                          key={link.label}
+	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+	                        &#9662;
+	                      </span>
+	                    </summary>
+	                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:w-[min(360px,calc(100vw-2rem))]">
+	                      {communityLinks.map((link) => (
+	                        <a
+	                          data-nav-link
+	                          key={link.label}
                           class="group flex items-center gap-2 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-ink/40 hover:bg-ink/5 hover:text-ink/80"
                           href={link.href}
                         >
@@ -352,15 +351,15 @@ const investmentIcons: Record<string, string> = {
                         {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
                         {item.label}
                       </span>
-                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-                        &#9662;
-                      </span>
-                    </summary>
-                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex sm:absolute sm:right-0 sm:mt-3 sm:w-[260px]">
-                      {storyLinks.map((link) => (
-                        <a
-                          data-nav-link
-                          key={link.label}
+	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
+	                        &#9662;
+	                      </span>
+	                    </summary>
+	                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:w-[min(320px,calc(100vw-2rem))]">
+	                      {storyLinks.map((link) => (
+	                        <a
+	                          data-nav-link
+	                          key={link.label}
                           class="block rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-ink/40 hover:bg-ink/5 hover:text-ink/80"
                           href={link.href}
                         >
@@ -381,13 +380,13 @@ const investmentIcons: Record<string, string> = {
           </nav>
         </div>
       </header>
-      <div
-        data-nav-menu
-        class="fixed inset-0 z-30 hidden sm:hidden"
-        aria-hidden="true"
-      >
-        <div class="absolute inset-0 bg-ink/50 backdrop-blur-sm" data-nav-overlay></div>
-        <nav
+	      <div
+	        data-nav-menu
+	        class="fixed inset-0 z-30 hidden md:hidden"
+	        aria-hidden="true"
+	      >
+	        <div class="absolute inset-0 bg-ink/50 backdrop-blur-sm" data-nav-overlay></div>
+	        <nav
           id="mobile-navigation"
           aria-label="Mobile"
           data-mobile-panel
@@ -495,15 +494,15 @@ const investmentIcons: Record<string, string> = {
       </footer>
     </div>
     <script is:inline>
-      const toggle = document.querySelector("[data-nav-toggle]");
-      const mobileMenu = document.querySelector("[data-nav-menu]");
-      const mobilePanel = mobileMenu?.querySelector("[data-mobile-panel]");
-      const mobileOverlay = mobileMenu?.querySelector("[data-nav-overlay]");
-      const headerEl = document.querySelector("header");
-      const mobileNavLinks = mobileMenu ? Array.from(mobileMenu.querySelectorAll("a[data-nav-link]")) : [];
-      const desktopBreakpoint = window.matchMedia("(min-width: 640px)");
-      const closedLabelText = toggle?.dataset.closedLabel ?? toggle?.textContent?.trim() ?? "Menu";
-      const openLabelText = toggle?.dataset.openLabel ?? "Close";
+	      const toggle = document.querySelector("[data-nav-toggle]");
+	      const mobileMenu = document.querySelector("[data-nav-menu]");
+	      const mobilePanel = mobileMenu?.querySelector("[data-mobile-panel]");
+	      const mobileOverlay = mobileMenu?.querySelector("[data-nav-overlay]");
+	      const headerEl = document.querySelector("header");
+	      const mobileNavLinks = mobileMenu ? Array.from(mobileMenu.querySelectorAll("a[data-nav-link]")) : [];
+	      const desktopBreakpoint = window.matchMedia("(min-width: 768px)");
+	      const closedLabelText = toggle?.dataset.closedLabel ?? toggle?.textContent?.trim() ?? "Menu";
+	      const openLabelText = toggle?.dataset.openLabel ?? "Close";
 
       const updatePanelOffset = () => {
         if (!mobilePanel || !headerEl) return;
@@ -578,12 +577,12 @@ const investmentIcons: Record<string, string> = {
         });
       }
 
-      const dropdowns = Array.from(document.querySelectorAll("[data-dropdown]"));
-      if (dropdowns.length) {
-        const isDesktop = () => window.matchMedia("(min-width: 640px)").matches;
-        const closeOthers = (current) => {
-          dropdowns.forEach((dropdown) => {
-            if (dropdown !== current && dropdown.open) {
+	      const dropdowns = Array.from(document.querySelectorAll("[data-dropdown]"));
+	      if (dropdowns.length) {
+	        const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
+	        const closeOthers = (current) => {
+	          dropdowns.forEach((dropdown) => {
+	            if (dropdown !== current && dropdown.open) {
               dropdown.removeAttribute("open");
             }
           });
@@ -600,13 +599,13 @@ const investmentIcons: Record<string, string> = {
             dropdowns.forEach((dropdown) => dropdown.removeAttribute("open"));
           }
         });
-      }
+	      }
 
-      const revealElements = document.querySelectorAll("[data-reveal]");
-      const isMobile = window.matchMedia("(max-width: 640px)").matches;
-      if (isMobile || !("IntersectionObserver" in window)) {
-        revealElements.forEach((el) => el.classList.add("is-visible"));
-      } else if (revealElements.length) {
+	      const revealElements = document.querySelectorAll("[data-reveal]");
+	      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+	      if (isMobile || !("IntersectionObserver" in window)) {
+	        revealElements.forEach((el) => el.classList.add("is-visible"));
+	      } else if (revealElements.length) {
         const observer = new IntersectionObserver(
           (entries, obs) => {
             entries.forEach((entry) => {
@@ -643,13 +642,13 @@ const investmentIcons: Record<string, string> = {
 	            measure.style.letterSpacing = wrapperComputed.letterSpacing;
 	            document.body.appendChild(measure);
 	            let maxWidth = 0;
-	            typingPhrases.forEach((phrase) => {
-	              measure.textContent = phrase;
-	              maxWidth = Math.max(maxWidth, measure.getBoundingClientRect().width);
-	            });
-	            measure.remove();
-	            typingWrapper.style.setProperty("--typing-width", `${Math.ceil(maxWidth * 1.5)}px`);
-	          }
+		            typingPhrases.forEach((phrase) => {
+		              measure.textContent = phrase;
+		              maxWidth = Math.max(maxWidth, measure.getBoundingClientRect().width);
+		            });
+		            measure.remove();
+		            typingWrapper.style.setProperty("--typing-width", `${Math.ceil(maxWidth + 24)}px`);
+		          }
 
 	          let phraseIndex = 0;
 	          let charIndex = 1;
