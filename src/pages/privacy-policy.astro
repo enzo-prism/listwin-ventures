@@ -6,22 +6,23 @@ const pageDescription = 'How Listwin Ventures collects, uses, shares, and safegu
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <article class="space-y-6 text-base leading-7 text-ink/80">
-    <header class="space-y-2">
-      <h1 class="text-3xl font-semibold text-ink">Privacy Policy</h1>
-      <p>
-        We value your privacy very highly. Please read this Privacy Policy carefully before using the listwinventures.com
-        website (the “Website”) operated by Listwin Ventures, a Limited Liability Company formed in California, United States
-        (“us, we, our”), as this Privacy Policy contains important information regarding your privacy and how we may use the
-        information we collect about you.
-      </p>
-      <p>
-        Your access to or use of the Website is conditional upon your acceptance of and compliance with this Privacy Policy. This
-        Privacy Policy applies to everyone, including but not limited to visitors, users, and others, who wish to access or use the
-        Website. By accessing or using the Website, you agree to be bound by this Privacy Policy. If you disagree with any part of
-        this Privacy Policy, you do not have our permission to access or use the Website.
-      </p>
-    </header>
+  <section class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <article class="mx-auto max-w-3xl space-y-6 text-base leading-7 text-ink/80 [overflow-wrap:anywhere]">
+      <header class="space-y-2">
+        <h1 class="text-3xl font-semibold text-ink">Privacy Policy</h1>
+        <p>
+          We value your privacy very highly. Please read this Privacy Policy carefully before using the listwinventures.com
+          website (the “Website”) operated by Listwin Ventures, a Limited Liability Company formed in California, United States
+          (“us, we, our”), as this Privacy Policy contains important information regarding your privacy and how we may use the
+          information we collect about you.
+        </p>
+        <p>
+          Your access to or use of the Website is conditional upon your acceptance of and compliance with this Privacy Policy. This
+          Privacy Policy applies to everyone, including but not limited to visitors, users, and others, who wish to access or use the
+          Website. By accessing or using the Website, you agree to be bound by this Privacy Policy. If you disagree with any part of
+          this Privacy Policy, you do not have our permission to access or use the Website.
+        </p>
+      </header>
 
     <section class="space-y-3">
       <h2 class="text-2xl font-semibold text-ink">What information we collect and store</h2>
@@ -73,7 +74,10 @@ const pageDescription = 'How Listwin Ventures collects, uses, shares, and safegu
       <h2 class="text-2xl font-semibold text-ink">Analytics programs</h2>
       <p>
         This Website uses Google Analytics to collect information about you and your behaviors. If you would like to opt-out of
-        Google Analytics, please visit <a class="text-brand underline" href="https://tools.google.com/dlpage/gaoptout/">https://tools.google.com/dlpage/gaoptout/</a>.
+        Google Analytics, please visit the{' '}
+        <a class="text-brand underline" href="https://tools.google.com/dlpage/gaoptout/">
+          Google Analytics opt-out tool
+        </a>.
       </p>
     </section>
 
@@ -174,5 +178,6 @@ const pageDescription = 'How Listwin Ventures collects, uses, shares, and safegu
         <a class="text-brand underline" href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>.
       </p>
     </section>
-  </article>
+    </article>
+  </section>
 </BaseLayout>

@@ -166,12 +166,12 @@ const carouselImages = [
     <div data-4ag-carousel class="space-y-4">
       <div class="relative">
         <div class="overflow-hidden rounded-[28px] border border-white/70 bg-white/60 shadow-panel ring-1 ring-white/60">
-          <div
-            data-4ag-carousel-track
-            class="flex touch-pan-y transition-transform duration-500 ease-out will-change-transform"
-            aria-live="polite"
-            style="transform: translateX(0%);"
-          >
+	          <div
+	            data-4ag-carousel-track
+	            class="flex touch-pan-y transition-transform duration-500 ease-out will-change-transform motion-reduce:transition-none"
+	            aria-live="polite"
+	            style="transform: translateX(0%);"
+	          >
 	            {carouselImages.map((image) => (
 	              <figure class="relative w-full flex-[0_0_100%]" key={image.src}>
 	                <img
@@ -205,22 +205,28 @@ const carouselImages = [
             →
           </button>
         </div>
-      </div>
-      <div class="flex justify-center gap-2">
-        {carouselImages.map((_, index) => (
-          <button
-            type="button"
-            data-4ag-carousel-dot={index}
-            class={`h-2.5 w-2.5 rounded-full border border-white/60 bg-ink/20 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
-              index === 0 ? 'bg-brand ring-2 ring-brand/30' : ''
-            }`}
-            aria-label={`Jump to image ${index + 1}`}
-            aria-current={index === 0 ? 'true' : 'false'}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
+	      </div>
+	      <div class="flex justify-center gap-1">
+	        {carouselImages.map((_, index) => (
+	          <button
+	            type="button"
+	            data-4ag-carousel-dot={index}
+	            class="grid h-11 w-11 place-items-center rounded-full transition hover:bg-ink/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+	            aria-label={`Jump to image ${index + 1}`}
+	            aria-current={index === 0 ? 'true' : 'false'}
+	          >
+	            <span
+	              data-4ag-carousel-dot-indicator
+	              aria-hidden="true"
+	              class={`h-2.5 w-2.5 rounded-full border border-white/60 transition ${
+	                index === 0 ? 'bg-brand ring-2 ring-brand/30' : 'bg-ink/20'
+	              }`}
+	            ></span>
+	          </button>
+	        ))}
+	      </div>
+	    </div>
+	  </section>
 
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-3">
@@ -318,18 +324,21 @@ const carouselImages = [
           return ((value % total) + total) % total;
         };
 
-        const setIndex = (nextIndex) => {
-          index = clampIndex(nextIndex);
-          track.style.transform = `translateX(-${index * 100}%)`;
-          dots.forEach((dot, dotIndex) => {
-            const isActive = dotIndex === index;
-            dot.classList.toggle('bg-brand', isActive);
-            dot.classList.toggle('bg-ink/20', !isActive);
-            dot.classList.toggle('ring-2', isActive);
-            dot.classList.toggle('ring-brand/30', isActive);
-            dot.setAttribute('aria-current', isActive ? 'true' : 'false');
-          });
-        };
+	        const setIndex = (nextIndex) => {
+	          index = clampIndex(nextIndex);
+	          track.style.transform = `translateX(-${index * 100}%)`;
+	          dots.forEach((dot, dotIndex) => {
+	            const isActive = dotIndex === index;
+	            const indicator = dot.querySelector('[data-4ag-carousel-dot-indicator]');
+	            if (indicator) {
+	              indicator.classList.toggle('bg-brand', isActive);
+	              indicator.classList.toggle('bg-ink/20', !isActive);
+	              indicator.classList.toggle('ring-2', isActive);
+	              indicator.classList.toggle('ring-brand/30', isActive);
+	            }
+	            dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+	          });
+	        };
 
         prev?.addEventListener('click', () => setIndex(index - 1));
         next?.addEventListener('click', () => setIndex(index + 1));

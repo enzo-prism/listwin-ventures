@@ -7,6 +7,9 @@ dist/
 *.log
 .DS_Store
 .env
+test-results/
+playwright-report/
+.playwright/
 public/assets/uploads/termageddon-maxmind/
 public/assets/uploads/2025/06/
 *.mp4

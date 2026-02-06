@@ -10,102 +10,108 @@ const zevxLogo = heroAssets.find((asset) => asset.id === 'zevx');
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <article class="space-y-6">
-    <h1 class="text-3xl font-semibold">
-      ZEVX Closes $20M+ Funding Round, Appoints Don Listwin as CEO
-    </h1>
-    {zevxLogo && <HeroMedia asset={zevxLogo} rounded={false} shadow={false} className="max-w-xs" />}
+  <section class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <article class="mx-auto max-w-3xl space-y-6 text-base leading-7 text-ink/80 [overflow-wrap:anywhere]">
+      <header class="space-y-5">
+        <h1 class="text-3xl font-semibold text-ink">
+          ZEVX Closes $20M+ Funding Round, Appoints Don Listwin as CEO
+        </h1>
+        {zevxLogo && <HeroMedia asset={zevxLogo} rounded={false} shadow={false} className="max-w-xs" />}
 
-    <section class="space-y-2 text-sm text-slate-600">
-      <p class="font-semibold uppercase">For Immediate Release</p>
-      <p>
-        <strong>Contact:</strong><br />
-        Peter Evers, ZEVX<br />
-        <a href="tel:+14153883680">(415) 388-3680</a><br />
-        <a href="mailto:pevers@zevx.com">pevers@zevx.com</a>
-      </p>
-    </section>
+        <section class="space-y-2 text-sm text-ink/70">
+          <p class="font-semibold uppercase tracking-[0.2em] text-ink/60">For Immediate Release</p>
+          <p>
+            <strong>Contact:</strong><br />
+            Peter Evers, ZEVX<br />
+            <a href="tel:+14153883680">(415) 388-3680</a><br />
+            <a href="mailto:pevers@zevx.com">pevers@zevx.com</a>
+          </p>
+        </section>
+      </header>
 
-    <section class="space-y-4">
-      <p>
-        <strong>GILBERT, AZ &mdash; February 16, 2023</strong> &mdash; ZEVX®, Inc., the worldwide
-        leader in intelligent EV power system delivery, today announced closing over $20M in the first
-        tranche of a funding round led by Reynolds Capital. In addition, the company announced the
-        appointment of Don Listwin as CEO, Kevin J. Kennedy as Chairman and independent Board member,
-        as well as David L. Shimek and Sidney Haider, of The Reynolds and Reynolds Company, as new
-        Board members.
-      </p>
-      <p>
-        With others participating, today&apos;s funding tranche was led by Reynolds Capital. Reynolds
-        Capital is the investment arm of The Reynolds and Reynolds Company, the leading provider of
-        automobile dealership software, services, and forms to help dealerships deliver better
-        business results and transform the customer experience.
-      </p>
-      <p>
-        ZEVX is a rapid innovator in battery electric power systems and data intelligence for
-        e-mobility applications. The company has a series of premier battery electric powertrain and
-        power system products that quickly migrate Class 2-6 commercial fleet assets and auxiliary
-        power tools to zero carbon. ZEVX's platinum service mission starts with customers, operating
-        through a deep partner network using existing automotive service infrastructure and tier 1
-        fleet management companies (FMCs).
-      </p>
-      <p>
-        Don Listwin joins ZEVX as CEO after serving as Executive Chairman. He spent a decade at Cisco
-        Systems, where he served as executive vice president building several multi-billion-dollar
-        lines of business, and previously held CEO roles with Sana Security, Openwave Systems, and
-        RapidAI. Prior ZEVX CEO and Co-Founder Carolyn Maury has assumed the roles of CFO and CAO.
-      </p>
-      <blockquote class="border-l-4 border-emerald-500 pl-4 text-slate-700">
-        “As the world begins to embrace the massive overall move toward EV technology, ZEVX is leading
-        the transformation of commercial fleets of all sizes toward electric and zero carbon,” said Don
-        Listwin, CEO of ZEVX. “To my mind there is no more impactful and promising business to be in
-        right now. This new round of funding, with the addition of proven difference makers on the
-        Board and the Executive Team, just adds to the momentum ZEVX has already achieved.”
-      </blockquote>
-      <p>
-        ZEVX welcomes three new members to its Board of Directors. Kevin J. Kennedy joins as Chairman
-        and independent Board member. With an MS and a PhD in engineering, Kennedy has held prior roles
-        as CEO of Avaya and JDS Uniphase Corporation, among others. David L. Shimek, Senior Vice
-        President of Corporate Development at The Reynolds and Reynolds Company, and Sidney Haider,
-        founder of AddOnAuto and Senior Vice President of Mergers and Acquisitions for The Reynolds and
-        Reynolds Company, also join the board.
-      </p>
-      <blockquote class="border-l-4 border-emerald-500 pl-4 text-slate-700">
-        “We always look to invest in difference makers focusing on technology innovations that fill
-        proven market needs and have the potential to open new opportunities for the automotive retail
-        industry,” said David L. Shimek, Senior Vice President of Corporate Development at The Reynolds
-        and Reynolds Company. “We’re encouraged by ZEVX’s bright future and capability to drive
-        existing truck fleets toward a cleaner and more economical future. And we're excited to
-        contribute to ZEVX’s growth and direction, as it fills a niche not being met in the
-        marketplace today.”
-      </blockquote>
-      <p>
-        For more product and services information, visit
-        <a href="https://zevx.com/" target="_blank" rel="noopener">zevx.com</a>.
-      </p>
-    </section>
+      <section class="space-y-4">
+        <p>
+          <strong>GILBERT, AZ &mdash; February 16, 2023</strong> &mdash; ZEVX®, Inc., the worldwide
+          leader in intelligent EV power system delivery, today announced closing over $20M in the first
+          tranche of a funding round led by Reynolds Capital. In addition, the company announced the
+          appointment of Don Listwin as CEO, Kevin J. Kennedy as Chairman and independent Board member,
+          as well as David L. Shimek and Sidney Haider, of The Reynolds and Reynolds Company, as new
+          Board members.
+        </p>
+        <p>
+          With others participating, today&apos;s funding tranche was led by Reynolds Capital. Reynolds
+          Capital is the investment arm of The Reynolds and Reynolds Company, the leading provider of
+          automobile dealership software, services, and forms to help dealerships deliver better
+          business results and transform the customer experience.
+        </p>
+        <p>
+          ZEVX is a rapid innovator in battery electric power systems and data intelligence for
+          e-mobility applications. The company has a series of premier battery electric powertrain and
+          power system products that quickly migrate Class 2-6 commercial fleet assets and auxiliary
+          power tools to zero carbon. ZEVX's platinum service mission starts with customers, operating
+          through a deep partner network using existing automotive service infrastructure and tier 1
+          fleet management companies (FMCs).
+        </p>
+        <p>
+          Don Listwin joins ZEVX as CEO after serving as Executive Chairman. He spent a decade at Cisco
+          Systems, where he served as executive vice president building several multi-billion-dollar
+          lines of business, and previously held CEO roles with Sana Security, Openwave Systems, and
+          RapidAI. Prior ZEVX CEO and Co-Founder Carolyn Maury has assumed the roles of CFO and CAO.
+        </p>
+        <blockquote class="rounded-[18px] border border-brand/20 bg-brand/5 px-5 py-4 text-ink/80">
+          “As the world begins to embrace the massive overall move toward EV technology, ZEVX is leading
+          the transformation of commercial fleets of all sizes toward electric and zero carbon,” said Don
+          Listwin, CEO of ZEVX. “To my mind there is no more impactful and promising business to be in
+          right now. This new round of funding, with the addition of proven difference makers on the
+          Board and the Executive Team, just adds to the momentum ZEVX has already achieved.”
+        </blockquote>
+        <p>
+          ZEVX welcomes three new members to its Board of Directors. Kevin J. Kennedy joins as Chairman
+          and independent Board member. With an MS and a PhD in engineering, Kennedy has held prior roles
+          as CEO of Avaya and JDS Uniphase Corporation, among others. David L. Shimek, Senior Vice
+          President of Corporate Development at The Reynolds and Reynolds Company, and Sidney Haider,
+          founder of AddOnAuto and Senior Vice President of Mergers and Acquisitions for The Reynolds and
+          Reynolds Company, also join the board.
+        </p>
+        <blockquote class="rounded-[18px] border border-brand/20 bg-brand/5 px-5 py-4 text-ink/80">
+          “We always look to invest in difference makers focusing on technology innovations that fill
+          proven market needs and have the potential to open new opportunities for the automotive retail
+          industry,” said David L. Shimek, Senior Vice President of Corporate Development at The Reynolds
+          and Reynolds Company. “We’re encouraged by ZEVX’s bright future and capability to drive
+          existing truck fleets toward a cleaner and more economical future. And we're excited to
+          contribute to ZEVX’s growth and direction, as it fills a niche not being met in the
+          marketplace today.”
+        </blockquote>
+        <p>
+          For more product and services information, visit{' '}
+          <a href="https://zevx.com/" target="_blank" rel="noopener noreferrer">
+            zevx.com
+          </a>.
+        </p>
+      </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold">About ZEVX</h2>
-      <p>
-        ZEVX® is the worldwide leader in delivering intelligent EV systems powering commercial class 2
-        to 6 vehicles, power takeoff, reefer refrigeration, and EV infrastructure such as charging
-        stations. ZEVX has a series of battery electric powertrain and power system products that
-        quickly migrate commercial fleet assets to zero carbon. ZEVX supports customers through a deep
-        partner network using existing automotive service infrastructure, providing rapid adoption via
-        installation partners and advanced data intelligence to optimize the carbon transition.
-      </p>
-    </section>
+      <section class="space-y-3">
+        <h2 class="text-2xl font-semibold text-ink">About ZEVX</h2>
+        <p>
+          ZEVX® is the worldwide leader in delivering intelligent EV systems powering commercial class 2
+          to 6 vehicles, power takeoff, reefer refrigeration, and EV infrastructure such as charging
+          stations. ZEVX has a series of battery electric powertrain and power system products that
+          quickly migrate commercial fleet assets to zero carbon. ZEVX supports customers through a deep
+          partner network using existing automotive service infrastructure, providing rapid adoption via
+          installation partners and advanced data intelligence to optimize the carbon transition.
+        </p>
+      </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold">About Reynolds Capital</h2>
-      <p>
-        Reynolds Capital invests in early stage businesses positioned to shape the future of the
-        automotive industry with innovative and groundbreaking technologies. Whether in data science,
-        artificial intelligence, cybersecurity, or beyond, Reynolds Capital fosters opportunities that
-        create new value in transportation. The firm, headquartered in Houston, Texas, is the
-        investment arm of The Reynolds and Reynolds Company.
-      </p>
-    </section>
-  </article>
+      <section class="space-y-3">
+        <h2 class="text-2xl font-semibold text-ink">About Reynolds Capital</h2>
+        <p>
+          Reynolds Capital invests in early stage businesses positioned to shape the future of the
+          automotive industry with innovative and groundbreaking technologies. Whether in data science,
+          artificial intelligence, cybersecurity, or beyond, Reynolds Capital fosters opportunities that
+          create new value in transportation. The firm, headquartered in Houston, Texas, is the
+          investment arm of The Reynolds and Reynolds Company.
+        </p>
+      </section>
+    </article>
+  </section>
 </BaseLayout>

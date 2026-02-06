@@ -11,7 +11,7 @@ listwinventures-rebuild/
   public/                  # legacy CSS + uploads (large media ignored via .gitignore)
   src/
     components/            # HeroMedia, LogoGrid, CompanyCarousel, etc.
-    data/                  # assets.ts (media) + entityDetails.ts (portfolio metadata)
+    data/                  # assets.ts + entityDetails.ts + exploitDetails.ts + press.ts (content catalogs)
     layouts/               # BaseLayout.astro (sticky nav + dropdowns)
     pages/                 # Astro routes (home, contact form, oral history, BelizeKids.org, exploit detail, company detail)
     styles/global.css      # Tailwind entry point + Apple-inspired theming + shared .btn utility
@@ -26,6 +26,8 @@ listwinventures-rebuild/
   the `/company/[slug]` routes and navigation dropdowns.
 - **`src/data/exploitDetails.ts`** – drives the Exploits cards and `/exploits/[slug]` pages
   (NetAid, San Jose Grand Prix, Belize initiatives, Canary Cove, etc.).
+- **`src/data/press.ts`** – curated third-party articles, interviews, and press releases. It powers
+  `/press` plus the “Related reading” blocks on matching company pages.
 - **`public/assets/uploads/`** – static media. Large items (GeoLite DB, Carbon Robotics videos,
   `*.mp4`) are ignored by git; copy them from the secure archive if you need them locally.
 
@@ -70,7 +72,28 @@ The standalone contact section was removed; all inquiries route through `/contac
 - `src/pages/company/[slug].astro` consumes `getEntityDetails()` to prerender every portfolio slug. Keep `entityDetails.ts` as the single source of truth for copy/highlights.
 - Some slugs (currently Sequoia, HWVP, and TeleSoft) intentionally hide the hero logo to avoid duplicating brand assets. Update the `hideHeroMedia` list in the page component if the design changes.
 - Carbon Robotics includes an inline “Latest News” card stack managed by the `carbonNews` object in the same file. Refresh that block whenever there is a funding or product update so the detail page stays current.
+- Company pages render “Related reading” by matching `detail.slug` against `relatedSlugs` inside `src/data/press.ts`.
 - Extra media (e.g., the Carbon Robotics field footage) is defined near the top of the file. Add new entries there so `galleryAssets` and `carbonVideos` stay organized.
+
+## Press & References
+
+- `/press` lives at `src/pages/press.astro` and is backed by `src/data/press.ts`.
+- Use `relatedSlugs` to connect a press item to one or more `/company/[slug]` pages.
+- Prefer `publishedIso: 'YYYY-MM-DD'` when known. Use `publishedLabel` if the exact date is unknown.
+- Set `featured: true` to pin an item into the Featured section on `/press`.
+- Keep copy original: link out to third-party sources; do not mirror full articles.
+
+## Icons (astro-icon allowlist)
+
+`astro-icon` is configured in allowlist mode via `astro.config.mjs`.
+
+If you reference a new icon name anywhere (navigation, Press page, etc.), you must add it to the
+`icon({ include: ... })` list or `npm run build` will fail.
+
+## Sitemap
+
+- `src/pages/sitemap.xml.ts` builds `sitemap.xml` from a `staticRoutes` list plus the company and exploit slugs.
+- When adding a new top-level static page (example: `/press`), also add it to `staticRoutes`.
 
 ## Development Workflow
 
