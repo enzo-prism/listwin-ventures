@@ -201,7 +201,8 @@ test.describe('Visual regression', () => {
           test(`${route} (related reading)`, async ({ page }) => {
             await page.goto(route, { waitUntil: 'domcontentloaded' });
             await stabilizePage(page);
-            const related = page.getByRole('heading', { name: 'Related reading' });
+            const title = route === '/company/canary-foundation' ? 'External coverage' : 'Related reading';
+            const related = page.getByRole('heading', { name: title });
             await related.scrollIntoViewIfNeeded();
             await page.waitForTimeout(100);
             await snapshot(page, `${slugify(route)}-related-${viewport.width}x${viewport.height}.png`);

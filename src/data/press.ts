@@ -146,7 +146,7 @@ const pressItems: PressItem[] = [
     kind: 'article',
     section: 'cancer-early-detection',
     tags: ['recognition', 'canary-foundation', 'research'],
-    relatedSlugs: ['canary-foundation'],
+    relatedSlugs: ['canary-foundation', 'stanford'],
   },
   {
     id: 'prnewswire-canary-foundation-gifts-2012-08-22',
@@ -173,7 +173,7 @@ const pressItems: PressItem[] = [
     kind: 'press-release',
     section: 'cancer-early-detection',
     tags: ['press-release', 'dream-team', 'research'],
-    relatedSlugs: ['canary-foundation'],
+    relatedSlugs: ['canary-foundation', 'stanford'],
   },
   {
     id: 'cisco-departure-2000-08-08',
@@ -212,6 +212,7 @@ const pressItems: PressItem[] = [
     kind: 'article',
     section: 'technology-leadership',
     tags: ['cisco', 'leadership', 'industry'],
+    relatedSlugs: ['openwave'],
   },
   {
     id: 'wsj-ex-executive-big-push-cancer',
@@ -267,3 +268,6 @@ export const getPressItems = () =>
 
 export const getRelatedPressItems = (slug: string, limit = 4) =>
   getPressItems().filter((item) => item.relatedSlugs?.includes(slug)).slice(0, limit);
+
+export const getRelatedPressCount = (slug: string) =>
+  getPressItems().filter((item) => item.relatedSlugs?.includes(slug)).length;

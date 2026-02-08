@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroMedia from '../../components/HeroMedia.astro';
 import { getEntityDetails, type EntityDetail } from '../../data/entityDetails';
 import type { VisualAsset } from '../../data/assets';
-import { getRelatedPressItems, isExternalUrl, type PressItem } from '../../data/press';
+import { getRelatedPressCount, getRelatedPressItems, isExternalUrl, type PressItem } from '../../data/press';
 
 export const prerender = true;
 
@@ -50,7 +50,11 @@ const carbonVideos = isCarbonRobotics
 const galleryAssets = [carbonFieldAsset].filter(Boolean) as VisualAsset[];
 const hideHeroMedia = ['sequoia', 'hwvp', 'telesoft'].includes(detail.slug);
 const hideCategoryLabel = detail.slug === 'sequoia';
-const relatedPress = getRelatedPressItems(detail.slug);
+const isExternalCoveragePage = ['canary-foundation', 'stanford'].includes(detail.slug);
+const expandRelatedPress = isExternalCoveragePage || detail.slug === 'openwave';
+const relatedPressCount = getRelatedPressCount(detail.slug);
+const relatedPress = getRelatedPressItems(detail.slug, expandRelatedPress ? 20 : 4);
+const relatedReadingTitle = isExternalCoveragePage ? 'External coverage' : 'Related reading';
 const formatPublished = (item: PressItem) => {
   if (item.publishedIso) {
     const date = new Date(item.publishedIso);
@@ -167,7 +171,12 @@ const carbonNews = isCarbonRobotics
       <div class="flex flex-wrap items-end justify-between gap-3">
         <div class="space-y-1">
           <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">References</p>
-          <h2 class="text-2xl font-semibold text-ink">Related reading</h2>
+          <h2 class="text-2xl font-semibold text-ink">{relatedReadingTitle}</h2>
+          {!expandRelatedPress && relatedPressCount > relatedPress.length && (
+            <p class="text-sm text-ink/60">
+              Showing {relatedPress.length} of {relatedPressCount}.
+            </p>
+          )}
         </div>
         <a class="text-sm font-semibold text-brand transition hover:text-brand-soft" href="/press">
           View all press →
