@@ -14,6 +14,13 @@ const rest = pressItems.filter((item) => !item.featured);
 const cancerEarlyDetection = rest.filter((item) => item.section === 'cancer-early-detection');
 const technologyLeadership = rest.filter((item) => item.section === 'technology-leadership');
 const ungrouped = rest.filter((item) => !item.section);
+const browseAllAnchor = cancerEarlyDetection.length
+  ? '#cancer-early-detection'
+  : technologyLeadership.length
+    ? '#technology-leadership'
+    : ungrouped.length
+      ? '#library'
+      : '#featured';
 
 const kindLabels: Record<PressKind, string> = {
   article: 'Article',
@@ -54,7 +61,41 @@ const formatPublished = (item: PressItem) => {
       <p class="mx-auto max-w-3xl text-base text-ink/70">
         A curated list of third-party coverage and primary references tied to Don’s operating history and current work.
       </p>
-    </div>
+      <div class="flex flex-wrap justify-center gap-2 pt-3">
+        {featured.length > 0 && (
+          <a
+            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
+            href="#featured"
+          >
+            Featured
+          </a>
+        )}
+        {cancerEarlyDetection.length > 0 && (
+          <a
+            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
+            href="#cancer-early-detection"
+          >
+            Cancer Early Detection
+          </a>
+        )}
+        {technologyLeadership.length > 0 && (
+          <a
+            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
+            href="#technology-leadership"
+          >
+            Technology Leadership
+          </a>
+        )}
+	        {ungrouped.length > 0 && (
+	          <a
+	            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
+	            href="#library"
+	          >
+	            More
+	          </a>
+	        )}
+	      </div>
+	    </div>
 
     <div class="grid gap-4 md:grid-cols-3">
       <article class="rounded-[28px] border border-ink/10 bg-fog/60 p-5">
@@ -81,12 +122,30 @@ const formatPublished = (item: PressItem) => {
     </div>
   </section>
 
-  {featured.length > 0 && (
-    <section data-reveal class="space-y-6 rounded-apple bg-brand/10 p-6 shadow-panel ring-1 ring-brand/20 sm:p-10">
-      <div class="space-y-2">
-        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Featured</p>
-        <h2 class="text-3xl font-semibold text-ink">Start here</h2>
-      </div>
+	  {featured.length > 0 && (
+	    <section
+	      id="featured"
+	      data-reveal
+	      class="space-y-6 rounded-apple bg-brand/10 p-6 shadow-panel ring-1 ring-brand/20 sm:p-10"
+	    >
+	      <div class="space-y-3">
+	        <div class="flex flex-wrap items-end justify-between gap-3">
+	          <div class="space-y-2">
+	            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Featured</p>
+	            <h2 class="text-3xl font-semibold text-ink">Start here</h2>
+	          </div>
+	          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+	            {featured.length} featured • {pressItems.length} total links
+	          </p>
+	        </div>
+	        <p class="text-sm text-ink/70">
+	          Featured highlights only. Browse topic sections and the full library below for the complete set of links.
+	        </p>
+	        <a class="btn btn-ink px-4 py-2" href={browseAllAnchor}>
+	          Browse all links
+	          <span aria-hidden="true">↓</span>
+	        </a>
+	      </div>
       <div class="grid gap-6 md:grid-cols-2">
         {featured.map((item) => {
           const external = isExternalUrl(item.url);
@@ -267,12 +326,19 @@ const formatPublished = (item: PressItem) => {
     </section>
   )}
 
-  {ungrouped.length > 0 && (
-    <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="space-y-2">
-        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">All links</p>
-        <h2 class="text-3xl font-semibold text-ink">Library</h2>
-      </div>
+	  {ungrouped.length > 0 && (
+	    <section
+	      id="library"
+	      data-reveal
+	      class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10"
+	    >
+	      <div class="space-y-2">
+	        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">More</p>
+	        <h2 class="text-3xl font-semibold text-ink">Additional links</h2>
+	        <p class="text-sm text-ink/70">
+	          Other sources and internal releases that don’t fit neatly into the two topic sections above.
+	        </p>
+	      </div>
       <div class="grid gap-5 md:grid-cols-2">
         {ungrouped.map((item) => {
         const external = isExternalUrl(item.url);
