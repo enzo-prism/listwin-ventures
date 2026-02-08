@@ -8,9 +8,26 @@ export interface Props {
   className?: string;
   linkHref?: string | null;
   showCaption?: boolean;
+  /**
+   * Defaults to "lazy". Use "eager" for above-the-fold/LCP images.
+   */
+  loading?: 'lazy' | 'eager';
+  /**
+   * Optional hint for above-the-fold images.
+   */
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
-const { asset, rounded = true, shadow = true, className = '', linkHref = undefined, showCaption = true } = Astro.props;
+const {
+  asset,
+  rounded = true,
+  shadow = true,
+  className = '',
+  linkHref = undefined,
+  showCaption = true,
+  loading = 'lazy',
+  fetchpriority = undefined,
+} = Astro.props;
 
 const resolvedLink = linkHref === null ? undefined : linkHref ?? asset.href;
 const isExternal = resolvedLink ? !linkHref && !!asset.href : false;
@@ -52,7 +69,8 @@ const figureToneClass = usesDarkFrame ? 'bg-ink text-white/80 ring-white/20' : '
 	        alt={asset.alt}
 	        width={dimensions.width}
 	        height={dimensions.height}
-	        loading="lazy"
+	        loading={loading}
+	        fetchpriority={fetchpriority}
 	        class={`w-full object-contain ${shadow ? 'shadow-panel' : ''}`}
 	      />
     </a>
@@ -62,7 +80,8 @@ const figureToneClass = usesDarkFrame ? 'bg-ink text-white/80 ring-white/20' : '
 	      alt={asset.alt}
 	      width={dimensions.width}
 	      height={dimensions.height}
-	      loading="lazy"
+	      loading={loading}
+	      fetchpriority={fetchpriority}
 	      class={`w-full object-contain ${rounded ? 'rounded-[28px]' : ''} ${shadow ? 'shadow-panel' : ''}`}
 	    />
   )}

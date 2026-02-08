@@ -11,6 +11,8 @@ export default defineConfig({
   reporter: process.env.CI ? 'github' : 'list',
   use: {
     baseURL: 'http://127.0.0.1:8081',
+    colorScheme: 'light',
+    reducedMotion: 'reduce',
     trace: 'on-first-retry',
   },
   webServer: {
@@ -34,4 +36,3 @@ export default defineConfig({
     },
   ],
 });
-

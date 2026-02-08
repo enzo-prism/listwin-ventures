@@ -11,6 +11,10 @@ const pressItems = getPressItems();
 const featured = pressItems.filter((item) => item.featured);
 const rest = pressItems.filter((item) => !item.featured);
 
+const cancerEarlyDetection = rest.filter((item) => item.section === 'cancer-early-detection');
+const technologyLeadership = rest.filter((item) => item.section === 'technology-leadership');
+const ungrouped = rest.filter((item) => !item.section);
+
 const kindLabels: Record<PressKind, string> = {
   article: 'Article',
   interview: 'Interview',
@@ -139,13 +143,138 @@ const formatPublished = (item: PressItem) => {
     </section>
   )}
 
-  <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-2">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">All links</p>
-      <h2 class="text-3xl font-semibold text-ink">Library</h2>
-    </div>
-    <div class="grid gap-5 md:grid-cols-2">
-      {rest.map((item) => {
+  {cancerEarlyDetection.length > 0 && (
+    <section
+      id="cancer-early-detection"
+      data-reveal
+      class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10"
+    >
+      <div class="space-y-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Topic</p>
+        <h2 class="text-3xl font-semibold text-ink">Cancer Early Detection</h2>
+        <p class="text-sm text-ink/70">
+          Canary Foundation work, institutional partnerships, and award coverage anchored by primary sources.
+        </p>
+      </div>
+      <div class="grid gap-5 md:grid-cols-2">
+        {cancerEarlyDetection.map((item) => {
+          const external = isExternalUrl(item.url);
+          const published = formatPublished(item);
+          const icon = kindIcons[item.kind] ?? 'tabler:link';
+          return (
+            <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+                  <Icon aria-hidden="true" name={icon} width="16" height="16" />
+                  {kindLabels[item.kind] ?? 'Link'}
+                </p>
+                <p class="text-xs font-semibold text-ink/50">
+                  {item.publisher}
+                  {published ? ` • ${published}` : ''}
+                </p>
+              </div>
+              <div class="space-y-1">
+                <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
+                <p class="text-sm text-ink/70">{item.summary}</p>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <div class="flex flex-wrap gap-2">
+                  {(item.tags ?? []).slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      class="rounded-full border border-ink/10 bg-fog/50 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-ink/60"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <a
+                  class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:text-brand-soft"
+                  href={item.url}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                >
+                  Open link
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  {technologyLeadership.length > 0 && (
+    <section
+      id="technology-leadership"
+      data-reveal
+      class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10"
+    >
+      <div class="space-y-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Topic</p>
+        <h2 class="text-3xl font-semibold text-ink">Technology Leadership</h2>
+        <p class="text-sm text-ink/70">
+          Leadership transitions and operating context from industry press and primary announcements.
+        </p>
+      </div>
+      <div class="grid gap-5 md:grid-cols-2">
+        {technologyLeadership.map((item) => {
+          const external = isExternalUrl(item.url);
+          const published = formatPublished(item);
+          const icon = kindIcons[item.kind] ?? 'tabler:link';
+          return (
+            <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+                  <Icon aria-hidden="true" name={icon} width="16" height="16" />
+                  {kindLabels[item.kind] ?? 'Link'}
+                </p>
+                <p class="text-xs font-semibold text-ink/50">
+                  {item.publisher}
+                  {published ? ` • ${published}` : ''}
+                </p>
+              </div>
+              <div class="space-y-1">
+                <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
+                <p class="text-sm text-ink/70">{item.summary}</p>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <div class="flex flex-wrap gap-2">
+                  {(item.tags ?? []).slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      class="rounded-full border border-ink/10 bg-fog/50 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-ink/60"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <a
+                  class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:text-brand-soft"
+                  href={item.url}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                >
+                  Open link
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  {ungrouped.length > 0 && (
+    <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <div class="space-y-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">All links</p>
+        <h2 class="text-3xl font-semibold text-ink">Library</h2>
+      </div>
+      <div class="grid gap-5 md:grid-cols-2">
+        {ungrouped.map((item) => {
         const external = isExternalUrl(item.url);
         const published = formatPublished(item);
         const icon = kindIcons[item.kind] ?? 'tabler:link';
@@ -185,14 +314,15 @@ const formatPublished = (item: PressItem) => {
                 Open link
                 <span aria-hidden="true">→</span>
               </a>
-            </div>
-          </article>
-        );
-      })}
-    </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
 
-    <p class="pt-2 text-xs text-ink/50">
-      External content is owned by its publishers. This page links out for reference and context; it does not mirror full articles.
-    </p>
-  </section>
+      <p class="pt-2 text-xs text-ink/50">
+        External content is owned by its publishers. This page links out for reference and context; it does not mirror full articles.
+      </p>
+    </section>
+  )}
 </BaseLayout>
