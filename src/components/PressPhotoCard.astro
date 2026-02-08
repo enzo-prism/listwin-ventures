@@ -1,0 +1,57 @@
+---
+import { isExternalUrl, type PressItem } from '../data/press';
+
+const { item } = Astro.props as { item: PressItem };
+const photo = item.photo;
+
+if (!photo) {
+  throw new Error('PressPhotoCard requires a press item with photo metadata.');
+}
+
+const linkUrl = photo.kind === 'external' ? photo.url : photo.sourceUrl;
+const linkLabel = photo.kind === 'external' ? photo.label : 'View source';
+const external = isExternalUrl(linkUrl);
+---
+
+<article class="space-y-4 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
+  {photo.kind === 'hosted' ? (
+    <img
+      src={photo.src}
+      alt={photo.alt}
+      width="1200"
+      height="900"
+      loading="lazy"
+      class="aspect-[4/3] w-full rounded-[24px] border border-ink/10 object-cover"
+    />
+  ) : (
+    <div class="flex min-h-[140px] items-center justify-center rounded-[24px] border border-dashed border-ink/20 bg-fog/60 px-4 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">External photo</p>
+    </div>
+  )}
+  <div class="space-y-2">
+    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">{item.publisher}</p>
+    <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
+    <p class="text-sm text-ink/70">{item.summary}</p>
+    {photo.kind === 'hosted' && (
+      <p class="text-xs text-ink/60">
+        {photo.credit} (
+        <a class="underline hover:text-ink" href={photo.licenseUrl} target="_blank" rel="noopener noreferrer">
+          {photo.licenseLabel}
+        </a>
+        ) via{' '}
+        <a class="underline hover:text-ink" href={photo.sourceUrl} target="_blank" rel="noopener noreferrer">
+          Wikimedia Commons
+        </a>
+      </p>
+    )}
+    <a
+      class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:text-brand-soft"
+      href={linkUrl}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+    >
+      {linkLabel}
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>

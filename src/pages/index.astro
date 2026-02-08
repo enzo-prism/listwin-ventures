@@ -6,6 +6,7 @@ import { heroAssets, investmentAssets } from '../data/assets';
 import type { VisualAsset } from '../data/assets';
 import { getDetailPath, getEntityDetails, type EntityDetail } from '../data/entityDetails';
 import { getExploitPath } from '../data/exploitDetails';
+import { getPressItems, isExternalUrl, type PressItem } from '../data/press';
 import { Icon } from 'astro-icon/components';
 
 const pageTitle = 'Home';
@@ -22,6 +23,18 @@ const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail)
 const hiddenInvestmentCarouselSlugs = new Set(['cradle']);
 const exitSlugs = ['openwave', 'genologics', 'joyent', 'isilon', 'plumgrid', 'teradici'];
 const exitItems = exitSlugs.map((slug) => entityDetailMap.get(slug)).filter((detail): detail is EntityDetail => Boolean(detail));
+const pressItems = getPressItems();
+const verifiedLinkIds = [
+  'stanford-medicine-deans-medal-2018-11-01',
+  'stanford-medicine-profile-don-listwin',
+  'stanford-canary-center-history',
+];
+const verifiedLinks = verifiedLinkIds
+  .map((id) => pressItems.find((item) => item.id === id))
+  .filter((item): item is PressItem => Boolean(item));
+const portraitPressItem = pressItems.find((item) => item.photo?.kind === 'hosted');
+const hostedPortrait =
+  portraitPressItem && portraitPressItem.photo?.kind === 'hosted' ? portraitPressItem.photo : null;
 
 const sectionIconNames = {
   story: 'heroicons-outline:book-open',
@@ -353,6 +366,61 @@ const exploitThemes = [
       </div>
     </div>
   </section>
+
+  {hostedPortrait && (
+    <section data-reveal class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+      <div class="grid gap-6 lg:grid-cols-[auto_1fr] lg:items-center">
+        <div class="flex items-center gap-4">
+          <img
+            src={hostedPortrait.src}
+            alt={hostedPortrait.alt}
+            width="220"
+            height="220"
+            loading="lazy"
+            class="h-28 w-28 rounded-[24px] border border-ink/10 object-cover sm:h-32 sm:w-32"
+          />
+          <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Verified</p>
+            <h2 class="text-2xl font-semibold text-ink">Recognition & portraits</h2>
+            <p class="text-sm text-ink/70">
+              Primary-source links that corroborate Don’s Stanford honors and academic affiliations.
+            </p>
+            <p class="text-xs text-ink/60">
+              {hostedPortrait.credit} (
+              <a class="underline hover:text-ink" href={hostedPortrait.licenseUrl} target="_blank" rel="noopener noreferrer">
+                {hostedPortrait.licenseLabel}
+              </a>
+              ) via{' '}
+              <a class="underline hover:text-ink" href={hostedPortrait.sourceUrl} target="_blank" rel="noopener noreferrer">
+                Wikimedia Commons
+              </a>
+            </p>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex flex-wrap gap-3">
+            {verifiedLinks.map((item) => {
+              const external = isExternalUrl(item.url);
+              return (
+                <a
+                  key={item.id}
+                  class="btn btn-ink px-4 py-2"
+                  href={item.url}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                >
+                  {item.title}
+                </a>
+              );
+            })}
+          </div>
+          <a class="text-sm font-semibold text-brand transition hover:text-brand-soft" href="/press">
+            See Press & References →
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
 
   <section id="my-story" data-reveal class="space-y-6">
     <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
