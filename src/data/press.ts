@@ -1,6 +1,27 @@
 export type PressKind = 'article' | 'interview' | 'press-release' | 'video' | 'reference';
 
-export type PressSection = 'cancer-early-detection' | 'technology-leadership';
+export type PressSection =
+  | 'cancer-early-detection'
+  | 'technology-leadership'
+  | 'recognition-academic'
+  | 'global-health-belizekids'
+  | 'boards-operator-roles';
+
+export type PressPhoto =
+  | {
+      kind: 'hosted';
+      src: string;
+      alt: string;
+      credit: string;
+      licenseLabel: string;
+      licenseUrl: string;
+      sourceUrl: string;
+    }
+  | {
+      kind: 'external';
+      url: string;
+      label: string;
+    };
 
 export type PressItem = {
   id: string;
@@ -20,10 +41,15 @@ export type PressItem = {
    * Fallback display label when the exact day/month is unknown (ex: "2018").
    */
   publishedLabel?: string;
+  /**
+   * Set when the content is evergreen (no fixed publish date).
+   */
+  isEvergreen?: boolean;
   quote?: string;
   tags?: string[];
   relatedSlugs?: string[];
   featured?: boolean;
+  photo?: PressPhoto;
 };
 
 const pressItems: PressItem[] = [
@@ -58,6 +84,81 @@ const pressItems: PressItem[] = [
     featured: true,
   },
   {
+    id: 'stanford-medicine-deans-medal-2018-11-01',
+    title: "Three Awarded School of Medicine’s Highest Honor",
+    publisher: 'Stanford Medicine',
+    publishedIso: '2018-11-01',
+    url: 'https://med.stanford.edu/news/all-news/2018/11/three-awarded-stanford-school-of-medicines-highest-honor.html',
+    summary:
+      'Stanford Medicine announcement recognizing Dean’s Medal recipients, honoring Don Listwin’s contributions to early detection and Belize partnership work.',
+    kind: 'article',
+    section: 'recognition-academic',
+    tags: ['stanford', 'recognition', 'deans-medal', 'early-detection', 'belize'],
+    relatedSlugs: ['stanford', 'canary-foundation', 'nih', 'belizekids'],
+    featured: true,
+    photo: {
+      kind: 'external',
+      label: 'View Stanford photo',
+      url: 'https://med.stanford.edu/news/all-news/2018/11/three-awarded-stanford-school-of-medicines-highest-honor.html',
+    },
+  },
+  {
+    id: 'stanford-medicine-profile-don-listwin',
+    title: 'Dr. Don Listwin',
+    publisher: 'Stanford Medicine',
+    url: 'https://med.stanford.edu/profiles/don-listwin',
+    summary:
+      'Stanford Medicine profile for Don Listwin highlighting the Canary Center for Cancer Early Detection and philanthropic leadership.',
+    kind: 'reference',
+    section: 'recognition-academic',
+    isEvergreen: true,
+    tags: ['stanford', 'profile', 'canary-center', 'canary-foundation'],
+    relatedSlugs: ['stanford', 'canary-foundation'],
+    photo: {
+      kind: 'external',
+      label: 'View Stanford headshot',
+      url: 'https://med.stanford.edu/profiles/don-listwin',
+    },
+  },
+  {
+    id: 'stanford-radiology-directory',
+    title: 'People Directory Listing',
+    publisher: 'Stanford Radiology (Stanford Medicine)',
+    url: 'https://med.stanford.edu/radiology/people.html',
+    summary:
+      'Stanford Radiology directory listing showing academic affiliation and department roles.',
+    kind: 'reference',
+    section: 'recognition-academic',
+    isEvergreen: true,
+    tags: ['stanford', 'radiology', 'directory', 'canary-center'],
+    relatedSlugs: ['stanford', 'canary-foundation'],
+    photo: {
+      kind: 'external',
+      label: 'View directory headshot',
+      url: 'https://med.stanford.edu/radiology/people.html',
+    },
+  },
+  {
+    id: 'wikimedia-financial-times-portrait-2010',
+    title: 'Don Listwin Portrait (Financial Times, CC BY 2.0)',
+    publisher: 'Wikimedia Commons',
+    url: 'https://commons.wikimedia.org/wiki/File:Dave_Brule,_Don_Listwin,_Steve_Malkenson_and_Allison_Rouse_(5084378892).jpg',
+    summary:
+      'Licensed Financial Times photo of Don Listwin hosted on Wikimedia Commons with CC BY 2.0 reuse terms.',
+    kind: 'reference',
+    tags: ['portrait', 'photo', 'wikimedia', 'cc-by'],
+    photo: {
+      kind: 'hosted',
+      src: '/assets/press/don-listwin-ft-2010.svg',
+      alt: 'Don Listwin on stage during a Financial Times panel with fellow speakers',
+      credit: 'Photo: Financial Times',
+      licenseLabel: 'CC BY 2.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by/2.0',
+      sourceUrl:
+        'https://commons.wikimedia.org/wiki/File:Dave_Brule,_Don_Listwin,_Steve_Malkenson_and_Allison_Rouse_(5084378892).jpg',
+    },
+  },
+  {
     id: 'stanford-medicine-canary-center-2009-06-09',
     title: 'Foundation to Back Early Cancer Detection Center',
     publisher: 'Stanford Medicine',
@@ -82,6 +183,87 @@ const pressItems: PressItem[] = [
     section: 'cancer-early-detection',
     tags: ['canary-center', 'stanford', 'reference'],
     relatedSlugs: ['canary-foundation', 'stanford'],
+    photo: {
+      kind: 'external',
+      label: 'View Canary Center photo',
+      url: 'https://med.stanford.edu/canarycenter/history.html',
+    },
+  },
+  {
+    id: 'stanford-ophthalmology-belize-vision-clinic-2021',
+    title: 'Stanford Belize Vision Clinic: Training the Next Generation of Global Ophthalmologists',
+    publisher: 'Stanford Ophthalmology (Byers Eye Institute)',
+    publishedIso: '2021-01-01',
+    publishedLabel: '2021',
+    url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport_2021/Belize-update.html',
+    summary:
+      'Annual report story spotlighting Belize vision clinic training and the BelizeKIDS partnership with Stanford Ophthalmology.',
+    kind: 'reference',
+    section: 'global-health-belizekids',
+    tags: ['belizekids', 'global-health', 'ophthalmology', 'philanthropy'],
+    relatedSlugs: ['belizekids'],
+    photo: {
+      kind: 'external',
+      label: 'View story photos',
+      url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport_2021/Belize-update.html',
+    },
+  },
+  {
+    id: 'stanford-ophthalmology-paths-clinical-care-2023',
+    title: 'The Paths to Clinical Care',
+    publisher: 'Stanford Ophthalmology (Byers Eye Institute)',
+    publishedIso: '2023-01-01',
+    publishedLabel: '2023',
+    url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport2023/the-paths-to-clinical-care.html',
+    summary:
+      'Global reach report highlighting the Belize vision clinic founded with BelizeKIDS support and Stanford partners.',
+    kind: 'reference',
+    section: 'global-health-belizekids',
+    tags: ['belizekids', 'global-health', 'ophthalmology'],
+    relatedSlugs: ['belizekids'],
+    photo: {
+      kind: 'external',
+      label: 'View story photos',
+      url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport2023/the-paths-to-clinical-care.html',
+    },
+  },
+  {
+    id: 'stanford-ophthalmology-global-training-2024',
+    title: 'Making a Mark With Global Training',
+    publisher: 'Stanford Ophthalmology (Byers Eye Institute)',
+    publishedIso: '2024-01-01',
+    publishedLabel: '2024',
+    url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport2024/global-training.html',
+    summary:
+      'Annual report feature on global training programs that reference the Belize clinic founded with Don Listwin and Hilary Valentine.',
+    kind: 'reference',
+    section: 'global-health-belizekids',
+    tags: ['belizekids', 'global-health', 'ophthalmology'],
+    relatedSlugs: ['belizekids'],
+    photo: {
+      kind: 'external',
+      label: 'View story photos',
+      url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport2024/global-training.html',
+    },
+  },
+  {
+    id: 'stanford-ophthalmology-going-global-2019',
+    title: 'Going Global',
+    publisher: 'Stanford Ophthalmology (Byers Eye Institute)',
+    publishedIso: '2019-01-01',
+    publishedLabel: '2019',
+    url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport/Going_global.html',
+    summary:
+      'Annual report story referencing BelizeKIDS and Stanford’s ongoing global clinic work.',
+    kind: 'reference',
+    section: 'global-health-belizekids',
+    tags: ['belizekids', 'global-health', 'ophthalmology'],
+    relatedSlugs: ['belizekids'],
+    photo: {
+      kind: 'external',
+      label: 'View story photos',
+      url: 'https://med.stanford.edu/ophthalmology/news-and-media/annual-reports/annualreport/Going_global.html',
+    },
   },
   {
     id: 'stanford-medicine-canary-pledge-2007-05-30',
@@ -176,6 +358,50 @@ const pressItems: PressItem[] = [
     relatedSlugs: ['canary-foundation', 'stanford'],
   },
   {
+    id: '4ag-board-appointment-2025-10-15',
+    title: '4AG Robotics Appoints Don Listwin to Board of Directors',
+    publisher: 'Newswire (CNW Group) / 4AG Robotics',
+    publishedIso: '2025-10-15',
+    url: 'https://www.newswire.ca/news-releases/4ag-robotics-appoints-don-listwin-to-board-of-directors-809181691.html',
+    summary:
+      'Board appointment announcement naming Don Listwin to 4AG Robotics’ board alongside leadership and growth updates.',
+    kind: 'press-release',
+    section: 'boards-operator-roles',
+    tags: ['4ag', 'robotics', 'board', 'operator'],
+    relatedSlugs: ['4ag'],
+    photo: {
+      kind: 'external',
+      label: 'View headshot on source',
+      url: 'https://www.newswire.ca/news-releases/4ag-robotics-appoints-don-listwin-to-board-of-directors-809181691.html',
+    },
+  },
+  {
+    id: 'clarius-leadership-appointments-2022-03-10',
+    title: 'Accelerate Growth With Leadership Appointments and Strategic Investment',
+    publisher: 'Clarius',
+    publishedIso: '2022-03-10',
+    url: 'https://clarius.com/press/clarius-mobile-health-to-accelerate-growth-with-leadership-appointments-and-strategic-investment/',
+    summary:
+      'Clarius announcement naming Don Listwin as incoming chair while detailing leadership appointments and strategic investment.',
+    kind: 'press-release',
+    section: 'boards-operator-roles',
+    tags: ['clarius', 'digital-health', 'chair', 'board'],
+    relatedSlugs: ['clarius'],
+  },
+  {
+    id: 'teradici-getting-to-know-don-listwin-2016-08-10',
+    title: 'Inside Teradici: Getting to Know Don Listwin, Chairman',
+    publisher: 'Teradici (HP Anyware)',
+    publishedIso: '2016-08-10',
+    url: 'https://connect.teradici.com/blog/inside-teradici-getting-to-know-don-listwin-chairman',
+    summary:
+      'Q&A with Don Listwin on leadership, cloud computing, and his investment perspective in networking and software.',
+    kind: 'interview',
+    section: 'technology-leadership',
+    tags: ['teradici', 'leadership', 'cloud', 'interview'],
+    relatedSlugs: ['teradici', 'genologics', 'openwave'],
+  },
+  {
     id: 'cisco-departure-2000-08-08',
     title: 'Cisco Systems, Inc. Announces Departure of Don Listwin',
     publisher: 'Cisco Newsroom',
@@ -265,6 +491,8 @@ export const isExternalUrl = (url: string) => /^https?:\/\//i.test(url);
 
 export const getPressItems = () =>
   [...pressItems].sort((a, b) => scoreFeatured(b) - scoreFeatured(a) || scoreDate(b) - scoreDate(a));
+
+export const getPressPhotoItems = () => getPressItems().filter((item) => Boolean(item.photo));
 
 export const getRelatedPressItems = (slug: string, limit = 4) =>
   getPressItems().filter((item) => item.relatedSlugs?.includes(slug)).slice(0, limit);

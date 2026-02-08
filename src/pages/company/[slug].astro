@@ -56,6 +56,8 @@ const relatedPressCount = getRelatedPressCount(detail.slug);
 const relatedPress = getRelatedPressItems(detail.slug, expandRelatedPress ? 20 : 4);
 const relatedReadingTitle = isExternalCoveragePage ? 'External coverage' : 'Related reading';
 const formatPublished = (item: PressItem) => {
+  if (item.isEvergreen) return 'Evergreen';
+  if (item.publishedLabel) return item.publishedLabel;
   if (item.publishedIso) {
     const date = new Date(item.publishedIso);
     // Use UTC for date-only strings (YYYY-MM-DD) to avoid local timezone shifting the day.
@@ -66,7 +68,7 @@ const formatPublished = (item: PressItem) => {
       day: 'numeric',
     }).format(date);
   }
-  return item.publishedLabel ?? '';
+  return '';
 };
 const carbonNews = isCarbonRobotics
   ? {
