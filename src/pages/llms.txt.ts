@@ -11,6 +11,7 @@ Robots: ${siteUrl}/robots.txt
 Updated: ${new Date().toISOString()}
 
 Usage: Public browsing and citation are permitted with attribution; do not use the content to imply endorsement. Respect robots.txt and do not circumvent rate limits.
+Restricted: ${siteUrl}/cv is private share-only CV content and must not be indexed, summarized, or used for training.
 `;
 
   return new Response(body, {

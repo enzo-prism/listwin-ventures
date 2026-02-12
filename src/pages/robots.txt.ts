@@ -5,6 +5,7 @@ const siteUrl = (import.meta.env.SITE_URL as string | undefined)?.replace(/\/$/,
 export const GET: APIRoute = () => {
   const body = `User-agent: *
 Allow: /
+Disallow: /cv
 Disallow: /home-old
 
 Sitemap: ${siteUrl}/sitemap.xml

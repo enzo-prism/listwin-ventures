@@ -101,6 +101,8 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 
 - `src/pages/sitemap.xml.ts` builds `sitemap.xml` from a `staticRoutes` list plus the company and exploit slugs.
 - When adding a new top-level static page (example: `/press`), also add it to `staticRoutes`.
+- `/cv` is intentionally excluded from `staticRoutes` and is not linked in navigation; it is a private share-only CV page.
+- Crawlers are blocked from `/cv` in `src/pages/robots.txt.ts` and `src/pages/llms.txt.ts`.
 
 ## Development Workflow
 

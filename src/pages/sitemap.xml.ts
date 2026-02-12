@@ -9,6 +9,7 @@ const staticRoutes = [
   '/4ag',
   '/belizekids',
   '/contact',
+  // '/cv' is intentionally unlisted and excluded from indexing.
   '/cookie-policy',
   '/genologics',
   '/oral-history',

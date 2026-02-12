@@ -3,6 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const routes = [
   '/',
   '/press',
+  '/cv',
   '/contact',
   '/4ag',
   '/belizekids',
