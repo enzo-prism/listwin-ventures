@@ -121,6 +121,18 @@
 
   .typing-line {
     @apply inline-flex max-w-full items-center justify-center gap-2 overflow-hidden whitespace-nowrap;
+    width: min(var(--typing-width, 22ch), 100%);
+    min-width: 0;
+  }
+
+  #hero-typing {
+    @apply inline-block whitespace-nowrap;
+  }
+
+  @media (min-width: 640px) {
+    .typing-line {
+      width: min(var(--typing-width, 24ch), 100%);
+    }
   }
 
   .video-frame {
