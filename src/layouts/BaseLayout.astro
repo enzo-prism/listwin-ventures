@@ -284,16 +284,17 @@ const navItems = [
         if (typingWrapper) {
           const typingComputed = window.getComputedStyle(typingEl);
           const wrapperComputed = window.getComputedStyle(typingWrapper);
+          const cursorEl = typingWrapper.querySelector('[aria-hidden="true"]');
           const measure = document.createElement('span');
 
           measure.style.position = 'absolute';
           measure.style.visibility = 'hidden';
           measure.style.pointerEvents = 'none';
           measure.style.whiteSpace = 'nowrap';
-          measure.style.fontSize = typingComputed.fontSize;
-          measure.style.fontFamily = typingComputed.fontFamily;
-          measure.style.fontWeight = typingComputed.fontWeight;
-          measure.style.letterSpacing = wrapperComputed.letterSpacing;
+          measure.style.font = typingComputed.font;
+          measure.style.letterSpacing = typingComputed.letterSpacing;
+          measure.style.textTransform = typingComputed.textTransform;
+          measure.style.textRendering = typingComputed.textRendering;
 
           document.body.appendChild(measure);
           let maxWidth = 0;
@@ -303,7 +304,11 @@ const navItems = [
           });
           measure.remove();
 
-          typingWrapper.style.setProperty('--typing-width', `${Math.ceil(maxWidth + 24)}px`);
+          const gapWidth = Number.parseFloat(wrapperComputed.columnGap || wrapperComputed.gap || '0') || 0;
+          const cursorWidth = cursorEl ? cursorEl.getBoundingClientRect().width : 2;
+          const safetyPadding = 8;
+          const totalWidth = Math.ceil(maxWidth + gapWidth + cursorWidth + safetyPadding);
+          typingWrapper.style.setProperty('--typing-width', `${totalWidth}px`);
         }
 
         let phraseIndex = 0;
