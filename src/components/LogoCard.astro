@@ -11,7 +11,7 @@ const { asset, href, class: className = '' } = Astro.props;
 const resolvedHref = href ?? asset.href;
 ---
 
-<figure class={`rounded-[1.6rem] border border-border/70 bg-card p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-panel ${className}`.trim()}>
+<figure class={`relative rounded-[1.6rem] border border-border/70 bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_16px_34px_rgba(15,23,42,0.16)] focus-within:-translate-y-0.5 focus-within:border-primary/35 focus-within:shadow-[0_16px_34px_rgba(15,23,42,0.16)] ${className}`.trim()}>
   {resolvedHref ? (
     <a href={resolvedHref} target={resolvedHref.startsWith('http') ? '_blank' : undefined} rel={resolvedHref.startsWith('http') ? 'noopener noreferrer' : undefined}>
       <img src={asset.path} alt={asset.alt} width="320" height="128" loading="lazy" class="mx-auto h-14 w-auto object-contain" />
