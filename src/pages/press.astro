@@ -1,36 +1,16 @@
 ---
+import { buttonVariants } from '@/components/ui/button';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PressLinkCard from '../components/PressLinkCard.astro';
 import PressPhotoCard from '../components/PressPhotoCard.astro';
-import { Icon } from 'astro-icon/components';
-import { getPressItems, isExternalUrl, type PressItem, type PressKind } from '../data/press';
+import { getPressItems, type PressItem } from '../data/press';
 
 const pageTitle = 'Press & References';
 const pageDescription =
   'Selected articles, interviews, and press releases related to Don Listwin and Listwin Ventures.';
 
 const pressItems = getPressItems();
-const featured = pressItems.filter((item) => item.featured);
-const rest = pressItems.filter((item) => !item.featured);
 
-const recognitionAcademic = rest.filter((item) => item.section === 'recognition-academic');
-const globalHealthBelize = rest.filter((item) => item.section === 'global-health-belizekids');
-const cancerEarlyDetection = rest.filter((item) => item.section === 'cancer-early-detection');
-const boardsOperatorRoles = rest.filter((item) => item.section === 'boards-operator-roles');
-const technologyLeadership = rest.filter((item) => item.section === 'technology-leadership');
-const ungrouped = rest.filter((item) => !item.section);
-const sectionOrder = [
-  { id: 'recognition-academic', count: recognitionAcademic.length },
-  { id: 'global-health-belizekids', count: globalHealthBelize.length },
-  { id: 'cancer-early-detection', count: cancerEarlyDetection.length },
-  { id: 'boards-operator-roles', count: boardsOperatorRoles.length },
-  { id: 'technology-leadership', count: technologyLeadership.length },
-];
-const firstSection = sectionOrder.find((section) => section.count > 0);
-const browseAllAnchor = firstSection
-  ? `#${firstSection.id}`
-  : ungrouped.length
-    ? '#library'
-    : '#featured';
 const photoItemOrder = [
   'wikimedia-financial-times-portrait-2010',
   'stanford-medicine-profile-don-listwin',
@@ -39,25 +19,22 @@ const photoItemOrder = [
   'stanford-radiology-directory',
   '4ag-board-appointment-2025-10-15',
 ];
+
 const photoItems = photoItemOrder
   .map((id) => pressItems.find((item) => item.id === id))
   .filter((item): item is PressItem => Boolean(item && item.photo));
 
-const kindLabels: Record<PressKind, string> = {
-  article: 'Article',
-  interview: 'Interview',
-  'press-release': 'Press release',
-  video: 'Video',
-  reference: 'Reference',
-};
+const photoItemIds = new Set(photoItems.map((item) => item.id));
+const libraryItems = pressItems.filter((item) => !photoItemIds.has(item.id));
+const featured = libraryItems.filter((item) => item.featured);
+const rest = libraryItems.filter((item) => !item.featured);
 
-const kindIcons: Record<PressKind, string> = {
-  article: 'tabler:news',
-  interview: 'tabler:book',
-  'press-release': 'tabler:speakerphone',
-  video: 'tabler:video',
-  reference: 'tabler:link',
-};
+const recognitionAcademic = rest.filter((item) => item.section === 'recognition-academic');
+const globalHealthBelize = rest.filter((item) => item.section === 'global-health-belizekids');
+const cancerEarlyDetection = rest.filter((item) => item.section === 'cancer-early-detection');
+const boardsOperatorRoles = rest.filter((item) => item.section === 'boards-operator-roles');
+const technologyLeadership = rest.filter((item) => item.section === 'technology-leadership');
+const ungrouped = rest.filter((item) => !item.section);
 
 const sections = [
   {
@@ -94,322 +71,126 @@ const sections = [
     items: technologyLeadership,
   },
 ];
-const visibleSections = sections.filter((section) => section.items.length > 0);
 
-const formatPublished = (item: PressItem) => {
-  if (item.isEvergreen) return 'Evergreen';
-  if (item.publishedLabel) return item.publishedLabel;
-  if (item.publishedIso) {
-    const date = new Date(item.publishedIso);
-    // Use UTC for date-only strings (YYYY-MM-DD) to avoid local timezone shifting the day.
-    return new Intl.DateTimeFormat('en-US', {
-      timeZone: 'UTC',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
-  }
-  return '';
-};
+const visibleSections = sections.filter((section) => section.items.length > 0);
+const browseAllAnchor = visibleSections[0] ? `#${visibleSections[0].id}` : ungrouped.length ? '#library' : '#featured';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+  <section class="lv-section">
     <div class="space-y-3 text-center">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Press</p>
-      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Press & References</h1>
-      <p class="mx-auto max-w-3xl text-base text-ink/70">
+      <p class="lv-eyebrow">Press</p>
+      <h1 class="font-display text-4xl font-semibold text-foreground sm:text-5xl">Press & References</h1>
+      <p class="mx-auto max-w-3xl text-base text-muted-foreground">
         A curated list of third-party coverage and primary references tied to Don’s operating history and current work.
       </p>
-      <div class="flex flex-wrap justify-center gap-2 pt-3">
-        {photoItems.length > 0 && (
-          <a
-            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
-            href="#photos"
-          >
-            Photos & Portraits
-          </a>
-        )}
-        {featured.length > 0 && (
-          <a
-            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
-            href="#featured"
-          >
-            Featured
-          </a>
-        )}
+
+      <div class="flex flex-wrap justify-center gap-2 pt-2">
+        {photoItems.length > 0 && <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href="#photos">Photos & Portraits</a>}
+        {featured.length > 0 && <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href="#featured">Featured</a>}
         {visibleSections.map((section) => (
-          <a
-            key={section.id}
-            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
-            href={`#${section.id}`}
-          >
+          <a key={section.id} class={buttonVariants({ variant: 'outline', size: 'sm' })} href={`#${section.id}`}>
             {section.title}
           </a>
         ))}
-	        {ungrouped.length > 0 && (
-	          <a
-	            class="rounded-full border border-ink/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink/70 transition hover:border-ink/30 hover:bg-ink/5"
-	            href="#library"
-	          >
-	            More
-	          </a>
-	        )}
-	      </div>
-	    </div>
+        {ungrouped.length > 0 && <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href="#library">More</a>}
+      </div>
+    </div>
 
     <div class="grid gap-4 md:grid-cols-3">
-      <article class="rounded-[28px] border border-ink/10 bg-fog/60 p-5">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">What this is</p>
-        <p class="mt-2 text-sm text-ink/70">
-          Links for context, due diligence, and deeper reading. External links open in a new tab.
-        </p>
+      <article class="rounded-[1.5rem] border border-border/70 bg-muted/40 p-5">
+        <p class="lv-eyebrow">What this is</p>
+        <p class="mt-2 text-sm text-muted-foreground">Links for context, due diligence, and deeper reading.</p>
       </article>
-      <article class="rounded-[28px] border border-ink/10 bg-fog/60 p-5">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">How it’s used</p>
-        <p class="mt-2 text-sm text-ink/70">
+      <article class="rounded-[1.5rem] border border-border/70 bg-muted/40 p-5">
+        <p class="lv-eyebrow">How it’s used</p>
+        <p class="mt-2 text-sm text-muted-foreground">
           We connect companies and initiatives back to original sources so the website stays grounded in verifiable history.
         </p>
       </article>
-      <article class="rounded-[28px] border border-ink/10 bg-fog/60 p-5">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">Want to add one?</p>
-        <p class="mt-2 text-sm text-ink/70">
-          If you have a missing citation or an updated press link, send it through the contact form.
-        </p>
-        <a class="mt-4 btn btn-brand w-full" href="/contact">
-          Share a link
-        </a>
+      <article class="rounded-[1.5rem] border border-border/70 bg-muted/40 p-5">
+        <p class="lv-eyebrow">Want to add one?</p>
+        <p class="mt-2 text-sm text-muted-foreground">If you have a missing citation or updated link, send it through contact.</p>
+        <a class={`mt-4 w-full ${buttonVariants({ variant: 'default', size: 'sm' })}`} href="/contact">Share a link</a>
       </article>
     </div>
   </section>
 
   {photoItems.length > 0 && (
-    <section
-      id="photos"
-      data-reveal
-      class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10"
-    >
+    <section id="photos" class="lv-section">
       <div class="space-y-2">
-        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Photos & Portraits</p>
-        <h2 class="text-3xl font-semibold text-ink">Photos & Portraits</h2>
-        <p class="text-sm text-ink/70">
-          Licensed imagery plus external links to portraits hosted by their original publishers.
-        </p>
+        <p class="lv-eyebrow">Photos & Portraits</p>
+        <h2 class="lv-heading">Photos & Portraits</h2>
+        <p class="text-sm text-muted-foreground">Licensed imagery plus external links to portraits hosted by their publishers.</p>
       </div>
       <div class="grid gap-5 md:grid-cols-2">
         {photoItems.map((item) => (
           <PressPhotoCard item={item} key={item.id} />
         ))}
       </div>
-      <p class="text-xs text-ink/50">
+      <p class="text-xs text-muted-foreground">
         External portraits remain hosted by their publishers. We only re-host imagery with explicit reuse permission.
       </p>
     </section>
   )}
 
-	  {featured.length > 0 && (
-	    <section
-	      id="featured"
-	      data-reveal
-	      class="space-y-6 rounded-apple bg-brand/10 p-6 shadow-panel ring-1 ring-brand/20 sm:p-10"
-	    >
-	      <div class="space-y-3">
-	        <div class="flex flex-wrap items-end justify-between gap-3">
-	          <div class="space-y-2">
-	            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Featured</p>
-	            <h2 class="text-3xl font-semibold text-ink">Start here</h2>
-	          </div>
-	          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
-	            {featured.length} featured • {pressItems.length} total links
-	          </p>
-	        </div>
-	        <p class="text-sm text-ink/70">
-	          Featured highlights only. Browse topic sections and the full library below for the complete set of links.
-	        </p>
-	        <a class="btn btn-ink px-4 py-2" href={browseAllAnchor}>
-	          Browse all links
-	          <span aria-hidden="true">↓</span>
-	        </a>
-	      </div>
+  {featured.length > 0 && (
+    <section id="featured" class="lv-section bg-primary/[0.08] ring-primary/20">
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-end justify-between gap-3">
+          <div class="space-y-2">
+            <p class="lv-eyebrow">Featured</p>
+            <h2 class="lv-heading">Start here</h2>
+          </div>
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            {featured.length} featured • {pressItems.length} total links
+          </p>
+        </div>
+        <p class="text-sm text-muted-foreground">
+          Featured highlights only. Browse topic sections and the full library below for the complete set of links.
+        </p>
+        <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href={browseAllAnchor}>Browse all links</a>
+      </div>
       <div class="grid gap-6 md:grid-cols-2">
-        {featured.map((item) => {
-          const external = isExternalUrl(item.url);
-          const published = formatPublished(item);
-          const icon = kindIcons[item.kind] ?? 'tabler:link';
-          return (
-            <article
-              key={item.id}
-              class="group space-y-4 rounded-[32px] border border-ink/10 bg-white/90 p-6 shadow-panel transition hover:border-ink/30"
-            >
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
-                  <Icon aria-hidden="true" name={icon} width="16" height="16" />
-                  {kindLabels[item.kind] ?? 'Link'}
-                </p>
-                <p class="text-xs font-semibold text-ink/50">
-                  {item.publisher}
-                  {published ? ` • ${published}` : ''}
-                </p>
-              </div>
-              <div class="space-y-2">
-                <h3 class="text-2xl font-semibold text-ink">{item.title}</h3>
-                <p class="text-sm text-ink/70">{item.summary}</p>
-                {item.quote && (
-                  <blockquote class="rounded-[24px] border border-ink/10 bg-fog/60 px-4 py-3 text-sm text-ink/70">
-                    “{item.quote}”
-                  </blockquote>
-                )}
-              </div>
-              <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
-                <div class="flex flex-wrap gap-2">
-                  {(item.tags ?? []).slice(0, 4).map((tag) => (
-                    <span
-                      key={tag}
-                      class="rounded-full border border-ink/10 bg-white/70 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-ink/60"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  class="btn btn-ink px-4 py-2"
-                  href={item.url}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                >
-                  Read
-                </a>
-              </div>
-            </article>
-          );
-        })}
+        {featured.map((item) => (
+          <PressLinkCard item={item} variant="featured" showQuote={true} showTags={true} key={item.id} />
+        ))}
       </div>
     </section>
   )}
 
   {visibleSections.map((section) => (
-    <section
-      key={section.id}
-      id={section.id}
-      data-reveal
-      class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10"
-    >
+    <section key={section.id} id={section.id} class="lv-section">
       <div class="space-y-2">
-        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Topic</p>
-        <h2 class="text-3xl font-semibold text-ink">{section.title}</h2>
-        <p class="text-sm text-ink/70">{section.description}</p>
+        <p class="lv-eyebrow">Topic</p>
+        <h2 class="lv-heading">{section.title}</h2>
+        <p class="text-sm text-muted-foreground">{section.description}</p>
       </div>
       <div class="grid gap-5 md:grid-cols-2">
-        {section.items.map((item) => {
-          const external = isExternalUrl(item.url);
-          const published = formatPublished(item);
-          const icon = kindIcons[item.kind] ?? 'tabler:link';
-          return (
-            <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
-                  <Icon aria-hidden="true" name={icon} width="16" height="16" />
-                  {kindLabels[item.kind] ?? 'Link'}
-                </p>
-                <p class="text-xs font-semibold text-ink/50">
-                  {item.publisher}
-                  {published ? ` • ${published}` : ''}
-                </p>
-              </div>
-              <div class="space-y-1">
-                <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
-                <p class="text-sm text-ink/70">{item.summary}</p>
-              </div>
-              <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
-                <div class="flex flex-wrap gap-2">
-                  {(item.tags ?? []).slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      class="rounded-full border border-ink/10 bg-fog/50 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-ink/60"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:text-brand-soft"
-                  href={item.url}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                >
-                  Open link
-                  <span aria-hidden="true">→</span>
-                </a>
-              </div>
-            </article>
-          );
-        })}
+        {section.items.map((item) => (
+          <PressLinkCard item={item} variant="standard" showTags={true} key={item.id} />
+        ))}
       </div>
     </section>
   ))}
 
-	  {ungrouped.length > 0 && (
-	    <section
-	      id="library"
-	      data-reveal
-	      class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10"
-	    >
-	      <div class="space-y-2">
-	        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">More</p>
-	        <h2 class="text-3xl font-semibold text-ink">Additional links</h2>
-	        <p class="text-sm text-ink/70">
-	          Other sources and internal releases that don’t fit neatly into the two topic sections above.
-	        </p>
-	      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {ungrouped.map((item) => {
-        const external = isExternalUrl(item.url);
-        const published = formatPublished(item);
-        const icon = kindIcons[item.kind] ?? 'tabler:link';
-        return (
-          <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
-                <Icon aria-hidden="true" name={icon} width="16" height="16" />
-                {kindLabels[item.kind] ?? 'Link'}
-              </p>
-              <p class="text-xs font-semibold text-ink/50">
-                {item.publisher}
-                {published ? ` • ${published}` : ''}
-              </p>
-            </div>
-            <div class="space-y-1">
-              <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
-              <p class="text-sm text-ink/70">{item.summary}</p>
-            </div>
-            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
-              <div class="flex flex-wrap gap-2">
-                {(item.tags ?? []).slice(0, 3).map((tag) => (
-                  <span
-                    key={tag}
-                    class="rounded-full border border-ink/10 bg-fog/50 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-ink/60"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <a
-                class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:text-brand-soft"
-                href={item.url}
-                target={external ? '_blank' : undefined}
-                rel={external ? 'noopener noreferrer' : undefined}
-              >
-                Open link
-                <span aria-hidden="true">→</span>
-              </a>
-              </div>
-            </article>
-          );
-        })}
+  {ungrouped.length > 0 && (
+    <section id="library" class="lv-section">
+      <div class="space-y-2">
+        <p class="lv-eyebrow">More</p>
+        <h2 class="lv-heading">Additional links</h2>
+        <p class="text-sm text-muted-foreground">
+          Other sources and internal releases that do not fit neatly into the topic sections above.
+        </p>
       </div>
-
-      <p class="pt-2 text-xs text-ink/50">
-        External content is owned by its publishers. This page links out for reference and context; it does not mirror full articles.
+      <div class="grid gap-5 md:grid-cols-2">
+        {ungrouped.map((item) => (
+          <PressLinkCard item={item} variant="standard" showTags={true} key={item.id} />
+        ))}
+      </div>
+      <p class="pt-2 text-xs text-muted-foreground">
+        External content is owned by its publishers. This page links out for reference and context; it does not mirror full
+        articles.
       </p>
     </section>
   )}

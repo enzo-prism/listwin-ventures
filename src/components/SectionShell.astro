@@ -1,0 +1,19 @@
+---
+interface Props {
+  id?: string;
+  tone?: 'default' | 'muted' | 'brand';
+  class?: string;
+}
+
+const { id, tone = 'default', class: className = '' } = Astro.props;
+
+const toneMap = {
+  default: 'bg-card/95',
+  muted: 'bg-gradient-to-br from-muted/60 via-card/95 to-muted/40',
+  brand: 'bg-primary/[0.08] ring-primary/20',
+} as const;
+---
+
+<section id={id} class={`lv-section ${toneMap[tone]} ${className}`.trim()}>
+  <slot />
+</section>

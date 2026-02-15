@@ -489,6 +489,22 @@ const scoreDate = (item: PressItem) => {
 
 export const isExternalUrl = (url: string) => /^https?:\/\//i.test(url);
 
+export const formatPressPublished = (item: PressItem) => {
+  if (item.isEvergreen) return 'Evergreen';
+  if (item.publishedLabel) return item.publishedLabel;
+  if (item.publishedIso) {
+    const date = new Date(item.publishedIso);
+    // Use UTC for date-only strings (YYYY-MM-DD) to avoid local timezone shifting the day.
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    }).format(date);
+  }
+  return '';
+};
+
 export const getPressItems = () =>
   [...pressItems].sort((a, b) => scoreFeatured(b) - scoreFeatured(a) || scoreDate(b) - scoreDate(a));
 

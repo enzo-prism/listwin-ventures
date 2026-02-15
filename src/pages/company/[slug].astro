@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroMedia from '../../components/HeroMedia.astro';
+import RelatedPressSection from '../../components/RelatedPressSection.astro';
 import { getEntityDetails, type EntityDetail } from '../../data/entityDetails';
 import type { VisualAsset } from '../../data/assets';
-import { getRelatedPressCount, getRelatedPressItems, isExternalUrl, type PressItem } from '../../data/press';
+import { getRelatedPressCount, getRelatedPressItems } from '../../data/press';
 
 export const prerender = true;
 
@@ -55,21 +56,10 @@ const expandRelatedPress = isExternalCoveragePage || detail.slug === 'openwave';
 const relatedPressCount = getRelatedPressCount(detail.slug);
 const relatedPress = getRelatedPressItems(detail.slug, expandRelatedPress ? 20 : 4);
 const relatedReadingTitle = isExternalCoveragePage ? 'External coverage' : 'Related reading';
-const formatPublished = (item: PressItem) => {
-  if (item.isEvergreen) return 'Evergreen';
-  if (item.publishedLabel) return item.publishedLabel;
-  if (item.publishedIso) {
-    const date = new Date(item.publishedIso);
-    // Use UTC for date-only strings (YYYY-MM-DD) to avoid local timezone shifting the day.
-    return new Intl.DateTimeFormat('en-US', {
-      timeZone: 'UTC',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
-  }
-  return '';
-};
+const relatedPressCountNote =
+  !expandRelatedPress && relatedPressCount > relatedPress.length
+    ? `Showing ${relatedPress.length} of ${relatedPressCount}.`
+    : undefined;
 const carbonNews = isCarbonRobotics
   ? {
       title: 'Carbon Robotics Raises $20M, Teases New “AI Robot” for Farms',
@@ -168,52 +158,7 @@ const carbonNews = isCarbonRobotics
     </section>
   )}
 
-  {relatedPress.length > 0 && (
-    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="flex flex-wrap items-end justify-between gap-3">
-        <div class="space-y-1">
-          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">References</p>
-          <h2 class="text-2xl font-semibold text-ink">{relatedReadingTitle}</h2>
-          {!expandRelatedPress && relatedPressCount > relatedPress.length && (
-            <p class="text-sm text-ink/60">
-              Showing {relatedPress.length} of {relatedPressCount}.
-            </p>
-          )}
-        </div>
-        <a class="text-sm font-semibold text-brand transition hover:text-brand-soft" href="/press">
-          View all press →
-        </a>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {relatedPress.map((item) => {
-          const external = isExternalUrl(item.url);
-          const published = formatPublished(item);
-          return (
-            <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
-              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">
-                {item.publisher}
-                {published ? ` • ${published}` : ''}
-              </p>
-              <div class="space-y-1">
-                <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
-                <p class="text-sm text-ink/70">{item.summary}</p>
-              </div>
-              <div class="pt-1">
-                <a
-                  class="btn btn-ink px-4 py-2"
-                  href={item.url}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                >
-                  Read
-                </a>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-    </section>
-  )}
+  <RelatedPressSection items={relatedPress} title={relatedReadingTitle} countNote={relatedPressCountNote} />
 
   {galleryAssets.length > 0 && (
     <section class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">

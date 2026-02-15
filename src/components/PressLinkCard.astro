@@ -1,0 +1,90 @@
+---
+import { Icon } from 'astro-icon/components';
+import { buttonVariants } from '@/components/ui/button';
+import { formatPressPublished, isExternalUrl, type PressItem, type PressKind } from '../data/press';
+
+type PressLinkCardVariant = 'featured' | 'standard' | 'related';
+
+const {
+  item,
+  variant = 'standard',
+  showTags = variant !== 'related',
+  showQuote = variant === 'featured',
+  ctaLabel,
+} = Astro.props as {
+  item: PressItem;
+  variant?: PressLinkCardVariant;
+  showTags?: boolean;
+  showQuote?: boolean;
+  ctaLabel?: string;
+};
+
+const kindLabels: Record<PressKind, string> = {
+  article: 'Article',
+  interview: 'Interview',
+  'press-release': 'Press release',
+  video: 'Video',
+  reference: 'Reference',
+};
+
+const kindIcons: Record<PressKind, string> = {
+  article: 'tabler:news',
+  interview: 'tabler:book',
+  'press-release': 'tabler:speakerphone',
+  video: 'tabler:video',
+  reference: 'tabler:link',
+};
+
+const icon = kindIcons[item.kind] ?? 'tabler:link';
+const kindLabel = kindLabels[item.kind] ?? 'Link';
+const published = formatPressPublished(item);
+const external = isExternalUrl(item.url);
+const resolvedCtaLabel = ctaLabel ?? (item.kind === 'reference' ? 'Open link' : 'Read');
+const visibleTags = showTags ? (item.tags ?? []).slice(0, variant === 'featured' ? 4 : 3) : [];
+const titleClass =
+  variant === 'featured'
+    ? 'text-[1.7rem] leading-tight sm:text-[1.95rem]'
+    : 'text-[1.4rem] leading-tight sm:text-[1.7rem]';
+---
+
+<article class="rounded-[1.8rem] border border-border/70 bg-card/95 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-panel">
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <p class="inline-flex items-center gap-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+      <Icon aria-hidden="true" name={icon} width="16" height="16" />
+      {kindLabel}
+    </p>
+    <p class="text-xs font-semibold text-muted-foreground">
+      {item.publisher}
+      {published ? ` • ${published}` : ''}
+    </p>
+  </div>
+
+  <div class="mt-4 space-y-2">
+    <h3 class={`font-semibold text-foreground ${titleClass}`}>{item.title}</h3>
+    <p class="text-sm text-muted-foreground">{item.summary}</p>
+    {showQuote && item.quote && (
+      <blockquote class="rounded-2xl border border-border/80 bg-muted/45 px-4 py-3 text-sm text-foreground/80">
+        “{item.quote}”
+      </blockquote>
+    )}
+  </div>
+
+  <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex flex-wrap gap-2">
+      {visibleTags.map((tag) => (
+        <span key={tag} class="rounded-full border border-border/70 bg-muted/50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          {tag}
+        </span>
+      ))}
+    </div>
+
+    <a
+      class={buttonVariants({ variant: 'outline', size: 'sm' })}
+      href={item.url}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+    >
+      {resolvedCtaLabel}
+    </a>
+  </div>
+</article>

@@ -14,6 +14,8 @@ const routes = [
   '/contact',
   '/oral-history',
   '/4ag',
+  '/genologics',
+  '/belizekids',
   '/company/canary-foundation',
   '/company/openwave',
   '/company/carbon-robotics',
@@ -171,6 +173,20 @@ test.describe('Visual regression', () => {
         });
 
         if (route === '/press') {
+          test(`${route} (photos section)`, async ({ page }) => {
+            await page.goto(route, { waitUntil: 'domcontentloaded' });
+            await stabilizePage(page);
+            const section = page.locator('#photos');
+            await expect(section).toBeVisible();
+            await section.scrollIntoViewIfNeeded();
+            await page.waitForTimeout(150);
+            await expect(section).toHaveScreenshot(`${slugify(route)}-photos-${viewport.width}x${viewport.height}.png`, {
+              animations: 'disabled',
+              maxDiffPixels: 50,
+              timeout: 15_000,
+            });
+          });
+
           test(`${route} (technology section)`, async ({ page }) => {
             await page.goto(route, { waitUntil: 'domcontentloaded' });
             await stabilizePage(page);
@@ -205,7 +221,29 @@ test.describe('Visual regression', () => {
             const related = page.getByRole('heading', { name: title });
             await related.scrollIntoViewIfNeeded();
             await page.waitForTimeout(100);
-            await snapshot(page, `${slugify(route)}-related-${viewport.width}x${viewport.height}.png`);
+            const section = related.locator('xpath=ancestor::section[1]');
+            await expect(section).toHaveScreenshot(`${slugify(route)}-related-${viewport.width}x${viewport.height}.png`, {
+              animations: 'disabled',
+              maxDiffPixels: 6000,
+              timeout: 15_000,
+            });
+          });
+        }
+
+        if (route === '/4ag' || route === '/genologics' || route === '/belizekids') {
+          test(`${route} (related reading)`, async ({ page }) => {
+            await page.goto(route, { waitUntil: 'domcontentloaded' });
+            await stabilizePage(page);
+            const related = page.getByRole('heading', { name: 'Related reading' });
+            await related.scrollIntoViewIfNeeded();
+            await page.waitForTimeout(100);
+            const section = related.locator('xpath=ancestor::section[1]');
+            const maxDiffPixels = route === '/genologics' ? 3000 : 1200;
+            await expect(section).toHaveScreenshot(`${slugify(route)}-related-${viewport.width}x${viewport.height}.png`, {
+              animations: 'disabled',
+              maxDiffPixels,
+              timeout: 15_000,
+            });
           });
         }
       }

@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
-import solid from '@astrojs/solid-js';
+import react from '@astrojs/react';
 import icon from 'astro-icon';
 
 export default defineConfig({
@@ -11,7 +11,7 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false
     }),
-    solid(),
+    react(),
     icon({
       include: {
         'heroicons-outline': ['book-open', 'academic-cap', 'heart', 'light-bulb'],

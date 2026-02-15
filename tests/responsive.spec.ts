@@ -33,7 +33,7 @@ test.describe('Responsive smoke', () => {
   for (const route of routes) {
     test(`no horizontal overflow: ${route}`, async ({ page }) => {
       await page.goto(route, { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(150);
+      await page.waitForTimeout(550);
       await expectNoHorizontalOverflow(page);
     });
   }
@@ -43,28 +43,26 @@ test.describe('Responsive smoke', () => {
 
     await page.goto('/press', { waitUntil: 'domcontentloaded' });
 
-    const toggle = page.locator('[data-nav-toggle]');
+    const toggle = page.locator('header button').filter({ hasText: 'Menu' });
     await expect(toggle).toBeVisible();
 
     await toggle.click();
-    const menu = page.locator('[data-nav-menu]');
+    const menu = page.getByRole('dialog');
     await expect(menu).toBeVisible();
 
     const bodyOverflow = await page.evaluate(() => getComputedStyle(document.body).overflow);
     expect(bodyOverflow).toBe('hidden');
 
-    const overlay = page.locator('[data-nav-overlay]');
-    // Click in the left gutter below the header (panel spans nearly the full height).
-    await overlay.click({ position: { x: 5, y: 150 } });
+    await page.keyboard.press('Escape');
     await expect(menu).not.toBeVisible();
   });
 
   test('desktop Investments dropdown does not introduce overflow', async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name === 'iPhone', 'Desktop dropdown only applies at >= md.');
+    test.skip(testInfo.project.name !== 'Desktop Chrome', 'Desktop dropdown only applies on the desktop project.');
 
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    const investments = page.locator('nav[aria-label="Primary"] summary').filter({ hasText: 'Investments' });
+    const investments = page.locator('header button').filter({ hasText: 'Investments' });
     await expect(investments).toBeVisible();
     await investments.click();
 

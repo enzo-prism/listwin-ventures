@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroMedia from '../components/HeroMedia.astro';
+import RelatedPressSection from '../components/RelatedPressSection.astro';
 import { getDetailPath, getEntityDetails } from '../data/entityDetails';
-import { getRelatedPressItems, isExternalUrl, type PressItem } from '../data/press';
+import { getRelatedPressItems } from '../data/press';
 
 const pageTitle = 'GenoLogics — LIMS for the Genomics Era';
 const pageDescription =
@@ -11,21 +12,6 @@ const pageDescription =
 const genologicsDetail = getEntityDetails().find((detail) => detail.slug === 'genologics');
 const officialDetailHref = genologicsDetail ? getDetailPath('genologics') : null;
 const relatedPress = getRelatedPressItems('genologics');
-const formatPublished = (item: PressItem) => {
-  if (item.isEvergreen) return 'Evergreen';
-  if (item.publishedLabel) return item.publishedLabel;
-  if (item.publishedIso) {
-    const date = new Date(item.publishedIso);
-    // Use UTC for date-only strings (YYYY-MM-DD) to avoid local timezone shifting the day.
-    return new Intl.DateTimeFormat('en-US', {
-      timeZone: 'UTC',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
-  }
-  return '';
-};
 
 const timeline = [
   {
@@ -97,47 +83,7 @@ const focusAreas = [
     </div>
   </section>
 
-  {relatedPress.length > 0 && (
-    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="flex flex-wrap items-end justify-between gap-3">
-        <div class="space-y-1">
-          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">References</p>
-          <h2 class="text-2xl font-semibold text-ink">Related reading</h2>
-        </div>
-        <a class="text-sm font-semibold text-brand transition hover:text-brand-soft" href="/press">
-          View all press →
-        </a>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {relatedPress.map((item) => {
-          const external = isExternalUrl(item.url);
-          const published = formatPublished(item);
-          return (
-            <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
-              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">
-                {item.publisher}
-                {published ? ` • ${published}` : ''}
-              </p>
-              <div class="space-y-1">
-                <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
-                <p class="text-sm text-ink/70">{item.summary}</p>
-              </div>
-              <div class="pt-1">
-                <a
-                  class="btn btn-ink px-4 py-2"
-                  href={item.url}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                >
-                  Read
-                </a>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-    </section>
-  )}
+  <RelatedPressSection items={relatedPress} />
 
   <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-2 text-center">

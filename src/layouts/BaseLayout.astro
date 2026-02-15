@@ -1,17 +1,18 @@
 ---
-import "../styles/global.css";
+import '../styles/global.css';
+import SiteNavigation from '../components/SiteNavigation';
 import { investmentAssets } from '../data/assets';
 import { getEntityDetails, getDetailPath } from '../data/entityDetails';
-import { Icon } from 'astro-icon/components';
 
 const {
-  title = "Listwin Ventures",
-  description = "Technology investing, leadership, and philanthropy from Don Listwin."
+  title = 'Listwin Ventures',
+  description = 'Technology investing, leadership, and philanthropy from Don Listwin.',
 } = Astro.props;
 
 const siteUrl = 'https://listwinventures.com';
 const pageUrl = Astro.url?.href ?? siteUrl;
-const logoUrl = 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp';
+const logoUrl =
+  'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp';
 const openGraphImage = `${siteUrl}/assets/uploads/OpenGraph.png`;
 
 const structuredData = {
@@ -59,24 +60,8 @@ const structuredData = {
 const entityDetails = getEntityDetails();
 const detailBySlug = new Map(entityDetails.map((detail) => [detail.slug, detail]));
 
-const workItems = entityDetails.filter((detail) => detail.slug === 'carbon-robotics');
-
 const hiddenInvestmentNavSlugs = new Set(['carbon-robotics', 'cradle']);
-
-const investmentSections = investmentAssets
-  .map((group) => {
-    const items = group.items
-      .map((asset) => detailBySlug.get(asset.id))
-      .filter((detail) => detail && !hiddenInvestmentNavSlugs.has(detail.slug));
-    return { label: group.label, items };
-  })
-  .filter((section) => section.items.length > 0);
-
 const exitSlugs = ['openwave', 'genologics', 'joyent', 'isilon', 'plumgrid', 'teradici'];
-const exitItems = exitSlugs.map((slug) => detailBySlug.get(slug)).filter(Boolean);
-if (exitItems.length) {
-  investmentSections.push({ label: 'Exits', items: exitItems });
-}
 
 const prettify = (name: string) => name.replace(/\s+(logo|crest|lockup)$/i, '');
 
@@ -84,66 +69,98 @@ const workHighlights = [
   {
     label: 'Carbon Robotics',
     description: 'AI-driven laser weeding and farm autonomy.',
-    href: getDetailPath('carbon-robotics'),
-    icon: 'tabler:rocket',
+    href: getDetailPath('carbon-robotics') ?? '/',
+    icon: 'rocket',
   },
   {
     label: '4AG',
-    description: '4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale.',
+    description: 'Autonomous mushroom cultivation and harvesting robotics.',
     href: '/4ag',
-    icon: 'tabler:sparkles',
+    icon: 'sparkles',
   },
   {
     label: 'BelizeKids.org',
     description: 'STEM, clinics, and conservation programs across Belize.',
     href: '/belizekids',
-    icon: 'tabler:heart-handshake',
+    icon: 'community',
   },
 ];
 
+const investmentSections = investmentAssets
+  .map((group) => {
+    const items = group.items
+      .map((asset) => detailBySlug.get(asset.id))
+      .filter((detail) => detail && !hiddenInvestmentNavSlugs.has(detail.slug))
+      .map((detail) => ({
+        label: prettify(detail.name),
+        href: getDetailPath(detail.slug),
+      }));
+
+    return { label: group.label, items };
+  })
+  .filter((section) => section.items.length > 0);
+
+const exitItems = exitSlugs
+  .map((slug) => detailBySlug.get(slug))
+  .filter(Boolean)
+  .map((detail) => ({
+    label: prettify(detail.name),
+    href: getDetailPath(detail.slug),
+  }));
+
+if (exitItems.length) {
+  investmentSections.push({ label: 'Exits', items: exitItems });
+}
+
 const communityLinks = [
-  { slug: 'belizekids', icon: 'tabler:heart' },
-  { slug: 'canary-foundation', icon: 'tabler:shield-heart' },
-  { slug: 'lucile', icon: 'tabler:hospital' },
-  { slug: 'nih', icon: 'tabler:building-bank' },
-  { slug: 'stanford', icon: 'tabler:school' },
-  { slug: 'saskatchewan', icon: 'tabler:building-church' },
+  { slug: 'belizekids', icon: 'heart' },
+  { slug: 'canary-foundation', icon: 'shield' },
+  { slug: 'lucile', icon: 'hospital' },
+  { slug: 'nih', icon: 'bank' },
+  { slug: 'stanford', icon: 'school' },
+  { slug: 'saskatchewan', icon: 'church' },
 ]
   .map(({ slug, icon }) => {
     const detail = detailBySlug.get(slug);
-    return detail ? { label: detail.name, href: getDetailPath(detail.slug), icon } : null;
+    return detail
+      ? {
+          label: prettify(detail.name),
+          href: getDetailPath(detail.slug),
+          icon,
+        }
+      : null;
   })
   .filter((item): item is { label: string; href: string; icon: string } => Boolean(item));
 
 const storyLinks = [
-  { label: 'Interview', href: '/oral-history', icon: 'tabler:book' },
-  { label: 'My Story', href: '/#my-story', icon: 'tabler:user-heart' },
-  { label: 'Press', href: '/press', icon: 'tabler:news' },
+  { label: 'Interview', href: '/oral-history', icon: 'about' },
+  { label: 'My Story', href: '/#my-story', icon: 'user' },
+  { label: 'Press', href: '/press', icon: 'news' },
 ];
 
 const navItems = [
-  { label: 'Home', href: '/', icon: 'tabler:home' },
-  { label: 'New', type: 'work', icon: 'tabler:sparkles' },
-  { label: 'Investments', type: 'investments', icon: 'tabler:briefcase' },
-  { label: 'Community', type: 'community', icon: 'tabler:users-group' },
-  { label: 'About', type: 'stories', icon: 'heroicons-outline:book-open' },
+  { label: 'Home', href: '/', icon: 'home' },
+  {
+    label: 'New',
+    icon: 'sparkles',
+    sections: [{ label: 'Current Focus', items: workHighlights }],
+  },
+  {
+    label: 'Investments',
+    icon: 'briefcase',
+    sections: investmentSections,
+  },
+  {
+    label: 'Community',
+    icon: 'users',
+    sections: [{ label: 'Projects & Partnerships', items: communityLinks }],
+  },
+  {
+    label: 'About',
+    icon: 'about',
+    sections: [{ label: 'Story', items: storyLinks }],
+  },
 ];
-
-const investmentIcons: Record<string, string> = {
-  uberflip: 'tabler:bulb',
-  vida: 'tabler:lungs',
-  cradle: 'tabler:dna',
-  awarex: 'tabler:device-analytics',
-  clarius: 'tabler:stethoscope',
-  rapidai: 'tabler:brain',
-  zededa: 'tabler:cloud-computing',
-  openwave: 'tabler:wifi',
-  genologics: 'tabler:apps',
-  joyent: 'tabler:server',
-  isilon: 'tabler:database',
-  plumgrid: 'tabler:layers-linked',
-  teradici: 'tabler:device-desktop-analytics',
-};
 ---
 
 <!DOCTYPE html>
@@ -163,15 +180,14 @@ const investmentIcons: Record<string, string> = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={openGraphImage} />
-	    <link rel="icon" type="image/png" sizes="16x16" href="/assets/uploads/Favicon%201.png" />
-		    <link rel="icon" type="image/png" sizes="32x32" href="/assets/uploads/Favicon%202.png" />
-		    <link rel="icon" type="image/png" sizes="48x48" href="/assets/uploads/Favicon%203.png" />
-		    <link rel="icon" type="image/png" sizes="512x512" href="/assets/uploads/Favicon%204.png" />
-		    <link rel="apple-touch-icon" href="/assets/uploads/Favicon%204.png" />
-		    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
-		    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-	    <!-- Google tag (gtag.js) -->
-	    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R6NTCMFK3"></script>
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/uploads/Favicon%201.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/uploads/Favicon%202.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/uploads/Favicon%203.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/uploads/Favicon%204.png" />
+    <link rel="apple-touch-icon" href="/assets/uploads/Favicon%204.png" />
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R6NTCMFK3"></script>
     <script is:inline>
       {(() => {
         window.dataLayer = window.dataLayer || [];
@@ -182,7 +198,6 @@ const investmentIcons: Record<string, string> = {
         gtag('config', 'G-5R6NTCMFK3');
       })()}
     </script>
-    <!-- Hotjar Tracking Code for Listwin Ventures -->
     <script is:inline>
       {(function (h, o, t, j, a, r) {
         h.hj =
@@ -197,496 +212,60 @@ const investmentIcons: Record<string, string> = {
         r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
         a.appendChild(r);
       })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')}
-	    </script>
-	  </head>
-		  <body class="min-h-screen min-h-[100dvh] bg-fog text-ink font-sans">
-		    <a
-		      href="#main-content"
-		      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink focus:shadow-panel focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-brand"
-		    >
-	      Skip to content
-		    </a>
-		    <div class="flex min-h-screen flex-col">
-	      <header class="z-40 border-b border-white/60 bg-white/80 backdrop-blur md:sticky md:top-0">
-	        <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-		            <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-ink">
-		              <img
-		                src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp"
-	                alt="Listwin Ventures"
-	                width="300"
-	                height="120"
-	                class="h-10 w-auto transition-opacity duration-200 group-hover:opacity-80"
-	                loading="eager"
-	                fetchpriority="high"
-	              />
-		              <span class="sr-only">Listwin Ventures</span>
-		            </a>
-	          <button
-	            type="button"
-	            class="btn btn-brand px-4 py-2 md:hidden"
-	            data-nav-toggle
-	            data-open-label="Close"
-	            data-closed-label="Menu"
-	            aria-expanded="false"
-	            aria-controls="mobile-navigation"
-          >
-            Menu
-          </button>
-	          <nav
-	            aria-label="Primary"
-	            class="hidden w-full flex-col gap-4 text-sm md:flex md:w-auto md:flex-row md:items-center md:gap-6"
-	          >
-	            <div class="hidden w-full flex-col gap-4 text-sm md:flex md:w-auto md:flex-row md:items-center md:gap-6">
-	              {navItems.map((item, index) => {
-	                if (!item.type) {
-	                  return (
-	                    <a data-nav-link class="group inline-flex items-center gap-2 font-medium text-ink/70 transition hover:text-brand" href={item.href} key={item.label}>
-                      {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
-                      {item.label}
-                    </a>
-                  );
-                }
+    </script>
+  </head>
+  <body>
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-card focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-foreground"
+    >
+      Skip to content
+    </a>
 
-              if (item.type === 'investments') {
-                return (
-                  <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
-                      <span class="flex items-center gap-2">
-                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
-                        {item.label}
-                      </span>
-	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-	                        &#9662;
-	                      </span>
-	                    </summary>
-	                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:min-w-[260px] md:w-[min(520px,calc(100vw-2rem))] md:gap-5 md:p-6 lg:w-[720px] lg:flex-row lg:flex-wrap">
-	                      {investmentSections.map((section) => (
-	                        <div class="w-full space-y-3 rounded-2xl border border-ink/5 bg-fog/30 p-4 lg:w-[calc(50%-10px)]" key={section.label}>
-	                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
-	                          <div class="space-y-1.5">
-	                            {section.items.map((sectionItem) => (
-	                              <a
-                                data-nav-link
-                                class="group flex items-center gap-2 rounded-xl px-3 py-1.5 text-ink/70 transition hover:bg-brand/10 hover:text-brand"
-                                href={getDetailPath(sectionItem.slug)}
-                              >
-                                <Icon aria-hidden="true" name={investmentIcons[sectionItem.slug] ?? 'tabler:briefcase'} data-nav-icon />
-                                {prettify(sectionItem.name)}
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </details>
-                );
-              }
-
-              if (item.type === 'work') {
-                return (
-                  <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
-                      <span class="flex items-center gap-2">
-                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
-                        {item.label}
-                      </span>
-	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-	                        &#9662;
-	                      </span>
-	                    </summary>
-	                    <div class="mt-2 hidden flex-col gap-4 rounded-3xl bg-white p-5 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:w-[min(360px,calc(100vw-2rem))]">
-	                      {workHighlights.map((highlight) => (
-	                        <a
-	                          data-nav-link
-	                          key={highlight.label}
-                          class="group flex items-start gap-3 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-3 text-left text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand"
-                          href={highlight.href}
-                        >
-                          {highlight.icon && <Icon aria-hidden="true" name={highlight.icon} class="mt-1" data-nav-icon />}
-                          <span>
-                            <span class="block text-sm font-semibold text-ink">{highlight.label}</span>
-                            <span class="block text-xs text-ink/60">{highlight.description}</span>
-                          </span>
-                        </a>
-                      ))}
-                    </div>
-                  </details>
-                );
-              }
-
-              if (item.type === 'community') {
-                return (
-                  <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
-                      <span class="flex items-center gap-2">
-                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
-                        {item.label}
-                      </span>
-	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-	                        &#9662;
-	                      </span>
-	                    </summary>
-	                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:w-[min(360px,calc(100vw-2rem))]">
-	                      {communityLinks.map((link) => (
-	                        <a
-	                          data-nav-link
-	                          key={link.label}
-                          class="group flex items-center gap-2 rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-ink/40 hover:bg-ink/5 hover:text-ink/80"
-                          href={link.href}
-                        >
-                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
-                          {prettify(link.label)}
-                        </a>
-                      ))}
-                    </div>
-                  </details>
-                );
-              }
-
-              if (item.type === 'stories') {
-                return (
-                  <details class="relative group" key={item.label} data-dropdown>
-                    <summary class="group flex list-none cursor-pointer items-center gap-2 font-medium text-ink/70 transition hover:text-brand">
-                      <span class="flex items-center gap-2">
-                        {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
-                        {item.label}
-                      </span>
-	                      <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-	                        &#9662;
-	                      </span>
-	                    </summary>
-	                    <div class="mt-2 hidden flex-col gap-2 rounded-3xl bg-white p-4 text-sm text-ink shadow-panel ring-1 ring-slate-200 group-open:flex md:absolute md:right-0 md:mt-3 md:w-[min(320px,calc(100vw-2rem))]">
-	                      {storyLinks.map((link) => (
-	                        <a
-	                          data-nav-link
-	                          key={link.label}
-                          class="block rounded-2xl border border-ink/5 bg-fog/40 px-4 py-2 transition hover:border-ink/40 hover:bg-ink/5 hover:text-ink/80"
-                          href={link.href}
-                        >
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  </details>
-                );
-              }
-
-                return null;
-              })}
-              <a class="btn btn-ink px-4 py-2 sm:ml-4" href="/contact">
-                Contact
-              </a>
-            </div>
-          </nav>
+    <div class="flex min-h-screen flex-col">
+      <header class="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
+        <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+          <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-foreground no-underline">
+            <img
+              src={logoUrl}
+              alt="Listwin Ventures"
+              width="300"
+              height="120"
+              class="h-10 w-auto transition-opacity duration-200 group-hover:opacity-80"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <span class="sr-only">Listwin Ventures</span>
+          </a>
+          <SiteNavigation client:load items={navItems} contactHref="/contact" />
         </div>
       </header>
-	      <div
-	        data-nav-menu
-	        class="fixed inset-0 z-30 hidden md:hidden"
-	        aria-hidden="true"
-	      >
-	        <div class="absolute inset-0 bg-ink/50 backdrop-blur-sm" data-nav-overlay></div>
-	        <nav
-          id="mobile-navigation"
-          aria-label="Mobile"
-          data-mobile-panel
-          class="mobile-nav-panel absolute inset-x-4 bottom-4 flex flex-col gap-4 rounded-3xl bg-white/95 p-5 text-sm text-ink shadow-panel ring-1 ring-ink/5"
-        >
-          <div class="flex flex-1 flex-col gap-4 overflow-y-auto pr-1">
-            {navItems
-              .filter((item) => !item.type)
-              .map((item) => (
-                <a
-                  data-nav-link
-                  class="group flex w-full items-center gap-2 rounded-2xl border border-ink/10 bg-fog/40 px-4 py-3 text-base font-semibold"
-                  href={item.href}
-                >
-                  {item.icon && <Icon aria-hidden="true" name={item.icon} data-nav-icon />}
-                  {item.label}
-                </a>
-              ))}
-            {navItems
-              .filter((item) => item.type)
-              .map((menu) => (
-                <details class="rounded-2xl border border-ink/10 bg-white px-4 py-2" data-dropdown>
-                  <summary class="group flex list-none cursor-pointer items-center justify-between text-base font-semibold text-ink/70 transition hover:text-brand">
-                    <span class="flex items-center gap-2">
-                      {menu.icon && <Icon aria-hidden="true" name={menu.icon} data-nav-icon />}
-                      {menu.label}
-                    </span>
-                    <span aria-hidden="true" class="text-xs text-ink/50 transition-transform duration-200" data-dropdown-caret>
-                      &#9662;
-                    </span>
-                  </summary>
-                  <div class="mt-3 max-h-[60vh] space-y-2 overflow-y-auto pr-1 text-sm text-ink/80">
-                    {menu.type === 'work' &&
-                      workHighlights.map((highlight) => (
-                        <a data-nav-link class="flex items-start gap-3 rounded-xl border border-ink/5 bg-fog/40 px-3 py-2 text-ink/70 transition hover:text-brand" href={highlight.href}>
-                          {highlight.icon && <Icon aria-hidden="true" name={highlight.icon} class="mt-1" data-nav-icon />}
-                          <span>
-                            <span class="block text-sm font-semibold text-ink/80">{highlight.label}</span>
-                            <span class="block text-xs text-ink/60">{highlight.description}</span>
-                          </span>
-                        </a>
-                      ))}
-                    {menu.type === 'investments' &&
-                      investmentSections.map((section) => (
-                        <div class="rounded-xl border border-ink/5 bg-fog/20 p-3">
-                          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/60">{section.label}</p>
-                          <div class="mt-2 space-y-1">
-                            {section.items.map((sectionItem) => (
-                              <a data-nav-link class="block rounded-lg px-3 py-1 text-ink/70 transition hover:bg-brand/10 hover:text-brand" href={getDetailPath(sectionItem.slug)}>
-                                {prettify(sectionItem.name)}
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    {menu.type === 'community' &&
-                      communityLinks.map((link) => (
-                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
-                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
-                          {prettify(link.label)}
-                        </a>
-                      ))}
-                    {menu.type === 'stories' &&
-                      storyLinks.map((link) => (
-                        <a data-nav-link class="flex items-center gap-2 rounded-xl border border-ink/5 bg-fog/20 px-3 py-2 text-ink/70 transition hover:border-brand hover:bg-brand/10 hover:text-brand" href={link.href}>
-                          <Icon aria-hidden="true" name={link.icon} data-nav-icon />
-                          {link.label}
-                        </a>
-                      ))}
-                  </div>
-                </details>
-              ))}
-            <a class="btn btn-ink w-full text-base" href="/contact">
-              Contact
-            </a>
-            <p class="border-t border-ink/10 pt-4 text-xs uppercase tracking-[0.3em] text-ink/50">
-              Built with founders, operators, and community partners.
-            </p>
-          </div>
-        </nav>
-      </div>
-	      <main id="main-content" class="flex-1" tabindex="-1">
-	        <div class="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
-	          <slot />
-	        </div>
-	      </main>
-      <footer class="border-t border-white/60 bg-white/80">
-        <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm text-ink/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-	          <div class="flex items-center gap-3">
-	            <img
-	              src="https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp"
-	              alt="Listwin Ventures"
-	              width="300"
-	              height="120"
-	              class="h-8 w-auto"
-	              loading="lazy"
-	            />
+
+      <main id="main-content" class="flex-1" tabindex="-1">
+        <div class="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
+          <slot />
+        </div>
+      </main>
+
+      <footer class="border-t border-border/70 bg-card/80">
+        <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <div class="flex items-center gap-3">
+            <img
+              src={logoUrl}
+              alt="Listwin Ventures"
+              width="300"
+              height="120"
+              class="h-8 w-auto"
+              loading="lazy"
+            />
             <span>&copy; {new Date().getFullYear()} Listwin Ventures. All rights reserved.</span>
           </div>
-          <div class="flex flex-wrap gap-6">
-            <a class="hover:text-brand" href="/privacy-policy">Privacy</a>
-            <a class="hover:text-brand" href="/cookie-policy">Cookies</a>
+          <div class="flex flex-wrap gap-5">
+            <a href="/privacy-policy" class="text-muted-foreground no-underline hover:text-foreground">Privacy</a>
+            <a href="/cookie-policy" class="text-muted-foreground no-underline hover:text-foreground">Cookies</a>
           </div>
         </div>
       </footer>
     </div>
-    <script is:inline>
-	      const toggle = document.querySelector("[data-nav-toggle]");
-	      const mobileMenu = document.querySelector("[data-nav-menu]");
-	      const mobilePanel = mobileMenu?.querySelector("[data-mobile-panel]");
-	      const mobileOverlay = mobileMenu?.querySelector("[data-nav-overlay]");
-	      const headerEl = document.querySelector("header");
-	      const mobileNavLinks = mobileMenu ? Array.from(mobileMenu.querySelectorAll("a[data-nav-link]")) : [];
-	      const desktopBreakpoint = window.matchMedia("(min-width: 768px)");
-	      const closedLabelText = toggle?.dataset.closedLabel ?? toggle?.textContent?.trim() ?? "Menu";
-	      const openLabelText = toggle?.dataset.openLabel ?? "Close";
-
-      const updatePanelOffset = () => {
-        if (!mobilePanel || !headerEl) return;
-        const { bottom } = headerEl.getBoundingClientRect();
-        mobilePanel.style.setProperty("--mobile-nav-top", `${bottom + 16}px`);
-      };
-
-      const setMobileMenuState = (open) => {
-        if (!toggle || !mobileMenu) return;
-        mobileMenu.classList.toggle("hidden", !open);
-        mobileMenu.setAttribute("aria-hidden", (!open).toString());
-        toggle.setAttribute("aria-expanded", open.toString());
-        toggle.textContent = open ? openLabelText : closedLabelText;
-        document.body.classList.toggle("mobile-nav-open", open);
-        if (open) {
-          updatePanelOffset();
-        }
-      };
-
-      const closeMobileMenu = (focusToggle = false) => {
-        if (!mobileMenu || mobileMenu.classList.contains("hidden")) return;
-        setMobileMenuState(false);
-        if (focusToggle && toggle) {
-          toggle.focus();
-        }
-      };
-
-      const openMobileMenu = () => {
-        if (!mobileMenu) return;
-        setMobileMenuState(true);
-      };
-
-      if (toggle && mobileMenu) {
-        mobileMenu.setAttribute("aria-hidden", "true");
-
-        toggle.addEventListener("click", () => {
-          if (mobileMenu.classList.contains("hidden")) {
-            openMobileMenu();
-          } else {
-            closeMobileMenu();
-          }
-        });
-
-        mobileOverlay?.addEventListener("click", () => closeMobileMenu());
-        mobileNavLinks.forEach((link) => link.addEventListener("click", () => closeMobileMenu()));
-
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape") {
-            closeMobileMenu(true);
-          }
-        });
-
-        const handleBreakpointChange = (event) => {
-          if (event.matches) {
-            closeMobileMenu();
-            toggle.textContent = closedLabelText;
-            toggle.setAttribute("aria-expanded", "false");
-            document.body.classList.remove("mobile-nav-open");
-          }
-        };
-
-        if (typeof desktopBreakpoint.addEventListener === "function") {
-          desktopBreakpoint.addEventListener("change", handleBreakpointChange);
-        } else if (typeof desktopBreakpoint.addListener === "function") {
-          desktopBreakpoint.addListener(handleBreakpointChange);
-        }
-
-        window.addEventListener("resize", () => {
-          if (!mobileMenu.classList.contains("hidden")) {
-            updatePanelOffset();
-          }
-        });
-      }
-
-	      const dropdowns = Array.from(document.querySelectorAll("[data-dropdown]"));
-	      if (dropdowns.length) {
-	        const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
-	        const closeOthers = (current) => {
-	          dropdowns.forEach((dropdown) => {
-	            if (dropdown !== current && dropdown.open) {
-              dropdown.removeAttribute("open");
-            }
-          });
-        };
-        dropdowns.forEach((dropdown) => {
-          dropdown.addEventListener("toggle", () => {
-            if (dropdown.open && isDesktop()) {
-              closeOthers(dropdown);
-            }
-          });
-        });
-        window.addEventListener("resize", () => {
-          if (!isDesktop()) {
-            dropdowns.forEach((dropdown) => dropdown.removeAttribute("open"));
-          }
-        });
-	      }
-
-	      const revealElements = document.querySelectorAll("[data-reveal]");
-	      const isMobile = window.matchMedia("(max-width: 767px)").matches;
-	      if (isMobile || !("IntersectionObserver" in window)) {
-	        revealElements.forEach((el) => el.classList.add("is-visible"));
-	      } else if (revealElements.length) {
-        const observer = new IntersectionObserver(
-          (entries, obs) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("is-visible");
-                obs.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
-        );
-        revealElements.forEach((el) => observer.observe(el));
-      }
-
-	      const typingEl = document.getElementById("hero-typing");
-	      const typingPhrases = ["Technology investor", "CEO", "Philanthropist"];
-	      if (typingEl && typingPhrases.length) {
-	        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-	        if (prefersReducedMotion) {
-	          typingEl.textContent = typingPhrases[0];
-	        } else {
-	          const typingWrapper = document.querySelector(".typing-line");
-	          if (typingWrapper) {
-	            const computed = window.getComputedStyle(typingEl);
-	            const wrapperComputed = window.getComputedStyle(typingWrapper);
-	            const measure = document.createElement("span");
-	            measure.style.position = "absolute";
-	            measure.style.visibility = "hidden";
-	            measure.style.pointerEvents = "none";
-	            measure.style.whiteSpace = "nowrap";
-	            measure.style.fontSize = computed.fontSize;
-	            measure.style.fontFamily = computed.fontFamily;
-	            measure.style.fontWeight = computed.fontWeight;
-	            measure.style.letterSpacing = wrapperComputed.letterSpacing;
-	            document.body.appendChild(measure);
-	            let maxWidth = 0;
-		            typingPhrases.forEach((phrase) => {
-		              measure.textContent = phrase;
-		              maxWidth = Math.max(maxWidth, measure.getBoundingClientRect().width);
-		            });
-		            measure.remove();
-		            typingWrapper.style.setProperty("--typing-width", `${Math.ceil(maxWidth + 24)}px`);
-		          }
-
-	          let phraseIndex = 0;
-	          let charIndex = 1;
-	          let deleting = false;
-	          const typeSpeed = 90;
-	          const eraseSpeed = 60;
-	          const holdTime = 1200;
-
-	          const typeLoop = () => {
-	            const currentPhrase = typingPhrases[phraseIndex];
-	            if (!deleting) {
-	              typingEl.textContent = currentPhrase.substring(0, charIndex);
-	              charIndex++;
-	              if (charIndex > currentPhrase.length) {
-	                setTimeout(() => {
-	                  deleting = true;
-	                  charIndex = currentPhrase.length;
-	                  typeLoop();
-	                }, holdTime);
-	                return;
-	              }
-	            } else {
-	              typingEl.textContent = currentPhrase.substring(0, Math.max(1, charIndex));
-	              charIndex--;
-	              if (charIndex <= 1) {
-	                deleting = false;
-	                phraseIndex = (phraseIndex + 1) % typingPhrases.length;
-	                charIndex = 1;
-	                setTimeout(typeLoop, typeSpeed);
-	                return;
-	              }
-	            }
-	            setTimeout(typeLoop, deleting ? eraseSpeed : typeSpeed);
-	          };
-
-	          typeLoop();
-	        }
-	      }
-	    </script>
   </body>
 </html>

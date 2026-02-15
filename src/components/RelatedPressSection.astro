@@ -1,0 +1,42 @@
+---
+import { buttonVariants } from '@/components/ui/button';
+import PressLinkCard from './PressLinkCard.astro';
+import type { PressItem } from '../data/press';
+
+const {
+  items,
+  title = 'Related reading',
+  eyebrow = 'References',
+  viewAllHref = '/press',
+  viewAllLabel = 'View all press',
+  countNote,
+} = Astro.props as {
+  items: PressItem[];
+  title?: string;
+  eyebrow?: string;
+  viewAllHref?: string;
+  viewAllLabel?: string;
+  countNote?: string;
+};
+---
+
+{items.length > 0 && (
+  <section class="lv-section">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div class="space-y-1">
+        <p class="lv-eyebrow">{eyebrow}</p>
+        <h2 class="lv-heading">{title}</h2>
+        {countNote && <p class="text-sm text-muted-foreground">{countNote}</p>}
+      </div>
+      <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href={viewAllHref}>
+        {viewAllLabel}
+      </a>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2">
+      {items.map((item) => (
+        <PressLinkCard item={item} variant="related" key={item.id} />
+      ))}
+    </div>
+  </section>
+)}

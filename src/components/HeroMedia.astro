@@ -32,8 +32,8 @@ const {
 const resolvedLink = linkHref === null ? undefined : linkHref ?? asset.href;
 const isExternal = resolvedLink ? !linkHref && !!asset.href : false;
 const usesDarkFrame = asset.id === 'carbon-robotics';
-const figureToneClass = usesDarkFrame ? 'bg-ink text-white/80 ring-white/20' : 'bg-white/90 text-ink/70 ring-white/60';
-	const captionToneClass = usesDarkFrame ? 'text-white/60' : 'text-ink/50';
+const figureToneClass = usesDarkFrame ? 'bg-foreground text-background ring-border/20' : 'bg-card/95 text-foreground ring-border/70';
+	const captionToneClass = usesDarkFrame ? 'text-background/60' : 'text-muted-foreground';
 	const isLogoAsset = /\b(logo|lockup|crest)\b/i.test(asset.alt);
 	const showMediaCaption = showCaption && !isLogoAsset;
 
@@ -55,7 +55,7 @@ const figureToneClass = usesDarkFrame ? 'bg-ink text-white/80 ring-white/20' : '
 ---
 
 <figure
-  class={`w-full flex flex-col items-center gap-3 rounded-apple p-4 text-center text-sm shadow-panel ring-1 ${figureToneClass} ${className}`}
+  class={`w-full flex flex-col items-center gap-3 rounded-[var(--radius-xl)] p-4 text-center text-sm shadow-panel ring-1 ${figureToneClass} ${className}`}
 >
   {resolvedLink ? (
     <a

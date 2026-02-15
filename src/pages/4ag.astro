@@ -1,26 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BackgroundVideo from '../components/BackgroundVideo.astro';
-import { getRelatedPressItems, isExternalUrl, type PressItem } from '../data/press';
+import RelatedPressSection from '../components/RelatedPressSection.astro';
+import FourAgCarousel from '../components/FourAgCarousel';
+import { getRelatedPressItems } from '../data/press';
 
 const pageTitle = '4AG — Fourth-Generation Agriculture';
 const pageDescription = '4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale.';
 const relatedPress = getRelatedPressItems('4ag');
-const formatPublished = (item: PressItem) => {
-  if (item.isEvergreen) return 'Evergreen';
-  if (item.publishedLabel) return item.publishedLabel;
-  if (item.publishedIso) {
-    const date = new Date(item.publishedIso);
-    // Use UTC for date-only strings (YYYY-MM-DD) to avoid local timezone shifting the day.
-    return new Intl.DateTimeFormat('en-US', {
-      timeZone: 'UTC',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
-  }
-  return '';
-};
 
 const initiativeGoals = [
   {
@@ -172,47 +159,7 @@ const carouselImages = [
     </div>
   </BackgroundVideo>
 
-  {relatedPress.length > 0 && (
-    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="flex flex-wrap items-end justify-between gap-3">
-        <div class="space-y-1">
-          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">References</p>
-          <h2 class="text-2xl font-semibold text-ink">Related reading</h2>
-        </div>
-        <a class="text-sm font-semibold text-brand transition hover:text-brand-soft" href="/press">
-          View all press →
-        </a>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {relatedPress.map((item) => {
-          const external = isExternalUrl(item.url);
-          const published = formatPublished(item);
-          return (
-            <article key={item.id} class="space-y-3 rounded-[30px] border border-ink/10 bg-white/90 p-5 shadow">
-              <p class="text-xs font-semibold uppercase tracking-[0.35em] text-ink/50">
-                {item.publisher}
-                {published ? ` • ${published}` : ''}
-              </p>
-              <div class="space-y-1">
-                <h3 class="text-xl font-semibold text-ink">{item.title}</h3>
-                <p class="text-sm text-ink/70">{item.summary}</p>
-              </div>
-              <div class="pt-1">
-                <a
-                  class="btn btn-ink px-4 py-2"
-                  href={item.url}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                >
-                  Read
-                </a>
-              </div>
-            </article>
-          );
-        })}
-      </div>
-    </section>
-  )}
+  <RelatedPressSection items={relatedPress} />
 
   <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-2 text-center sm:text-left">
@@ -222,69 +169,7 @@ const carouselImages = [
         Real robots in real rooms—see the Sahara prototype, live rigs, and events across North America and Europe.
       </p>
     </div>
-    <div data-4ag-carousel class="space-y-4">
-      <div class="relative">
-        <div class="overflow-hidden rounded-[28px] border border-white/70 bg-white/60 shadow-panel ring-1 ring-white/60">
-	          <div
-	            data-4ag-carousel-track
-	            class="flex touch-pan-y transition-transform duration-500 ease-out will-change-transform motion-reduce:transition-none"
-	            aria-live="polite"
-	            style="transform: translateX(0%);"
-	          >
-	            {carouselImages.map((image) => (
-	              <figure class="relative w-full flex-[0_0_100%]" key={image.src}>
-	                <img
-	                  src={image.src}
-	                  alt={image.alt}
-	                  width="1600"
-	                  height="900"
-	                  class="h-[280px] w-full object-cover sm:h-[380px] lg:h-[460px]"
-	                  loading="lazy"
-	                />
-	                <figcaption class="sr-only">{image.alt}</figcaption>
-	              </figure>
-	            ))}
-          </div>
-        </div>
-        <div class="pointer-events-none absolute inset-0 hidden items-center justify-between px-3 sm:flex">
-          <button
-            type="button"
-            data-4ag-carousel-prev
-            class="pointer-events-auto rounded-full bg-white/90 p-2.5 text-ink shadow-lg ring-1 ring-ink/10 transition hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-            aria-label="Previous image"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            data-4ag-carousel-next
-            class="pointer-events-auto rounded-full bg-white/90 p-2.5 text-ink shadow-lg ring-1 ring-ink/10 transition hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-            aria-label="Next image"
-          >
-            →
-          </button>
-        </div>
-	      </div>
-	      <div class="flex justify-center gap-1">
-	        {carouselImages.map((_, index) => (
-	          <button
-	            type="button"
-	            data-4ag-carousel-dot={index}
-	            class="grid h-11 w-11 place-items-center rounded-full transition hover:bg-ink/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-	            aria-label={`Jump to image ${index + 1}`}
-	            aria-current={index === 0 ? 'true' : 'false'}
-	          >
-	            <span
-	              data-4ag-carousel-dot-indicator
-	              aria-hidden="true"
-	              class={`h-2.5 w-2.5 rounded-full border border-white/60 transition ${
-	                index === 0 ? 'bg-brand ring-2 ring-brand/30' : 'bg-ink/20'
-	              }`}
-	            ></span>
-	          </button>
-	        ))}
-	      </div>
-	    </div>
+    <FourAgCarousel client:idle images={carouselImages} />
 	  </section>
 
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
@@ -365,77 +250,4 @@ const carouselImages = [
     </div>
   </section>
 
-  <script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
-      const carousels = document.querySelectorAll('[data-4ag-carousel]');
-      carousels.forEach((carousel) => {
-        const track = carousel.querySelector('[data-4ag-carousel-track]');
-        if (!track) return;
-        const slides = Array.from(track.children);
-        if (!slides.length) return;
-        const prev = carousel.querySelector('[data-4ag-carousel-prev]');
-        const next = carousel.querySelector('[data-4ag-carousel-next]');
-        const dots = Array.from(carousel.querySelectorAll('[data-4ag-carousel-dot]'));
-        let index = 0;
-
-        const clampIndex = (value) => {
-          const total = slides.length;
-          return ((value % total) + total) % total;
-        };
-
-	        const setIndex = (nextIndex) => {
-	          index = clampIndex(nextIndex);
-	          track.style.transform = `translateX(-${index * 100}%)`;
-	          dots.forEach((dot, dotIndex) => {
-	            const isActive = dotIndex === index;
-	            const indicator = dot.querySelector('[data-4ag-carousel-dot-indicator]');
-	            if (indicator) {
-	              indicator.classList.toggle('bg-brand', isActive);
-	              indicator.classList.toggle('bg-ink/20', !isActive);
-	              indicator.classList.toggle('ring-2', isActive);
-	              indicator.classList.toggle('ring-brand/30', isActive);
-	            }
-	            dot.setAttribute('aria-current', isActive ? 'true' : 'false');
-	          });
-	        };
-
-        prev?.addEventListener('click', () => setIndex(index - 1));
-        next?.addEventListener('click', () => setIndex(index + 1));
-        dots.forEach((dot, dotIndex) => {
-          dot.addEventListener('click', () => setIndex(dotIndex));
-        });
-
-        // enable swipe on touch devices
-        let startX = null;
-        let isPointerDown = false;
-        track.addEventListener('pointerdown', (event) => {
-          isPointerDown = true;
-          startX = event.clientX;
-        });
-        track.addEventListener('pointerup', (event) => {
-          isPointerDown = false;
-          if (startX === null) return;
-          const delta = event.clientX - startX;
-          if (Math.abs(delta) > 40) {
-            setIndex(delta > 0 ? index - 1 : index + 1);
-          }
-          startX = null;
-        });
-        ['pointerleave', 'pointercancel', 'pointerout'].forEach((eventName) => {
-          track.addEventListener(eventName, () => {
-            startX = null;
-            isPointerDown = false;
-          });
-        });
-
-        // allow track to scroll on small screens by dragging horizontally
-        track.addEventListener('pointermove', (event) => {
-          if (!isPointerDown || startX === null) return;
-          event.preventDefault();
-        });
-
-        setIndex(0);
-      });
-    });
-  </script>
 </BaseLayout>
