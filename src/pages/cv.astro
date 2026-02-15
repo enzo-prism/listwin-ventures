@@ -46,6 +46,34 @@ const botDirectives = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
         padding: 2.25rem 1.5rem;
       }
 
+      .print-toolbar {
+        margin: 0 auto 0.75rem;
+        max-width: 680px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .print-button {
+        border: 1px solid #1f2937;
+        border-radius: 999px;
+        background: #fff;
+        color: #111;
+        font: inherit;
+        font-size: 0.95rem;
+        line-height: 1;
+        padding: 0.55rem 0.95rem;
+        cursor: pointer;
+      }
+
+      .print-button:hover {
+        background: #f1f1f1;
+      }
+
+      .print-button:focus-visible {
+        outline: 2px solid #111;
+        outline-offset: 2px;
+      }
+
       h1 {
         margin: 0 0 0.25rem;
         font-size: clamp(2rem, 3.5vw, 2.5rem);
@@ -98,8 +126,18 @@ const botDirectives = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
       }
 
       @media print {
+        @page {
+          size: letter;
+          margin: 0.55in 0.5in;
+        }
+
         body {
           background: #fff;
+          color: #000;
+          font-size: 10.5pt;
+          line-height: 1.28;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
         }
 
         main {
@@ -108,20 +146,67 @@ const botDirectives = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
           padding: 0;
         }
 
+        .print-toolbar {
+          display: none !important;
+        }
+
         article {
           border: 0;
           max-width: none;
           padding: 0;
         }
 
+        h1 {
+          font-size: 24pt;
+          margin: 0 0 0.18in;
+        }
+
         h2 {
+          margin: 0.17in 0 0.08in;
+          font-size: 14pt;
+          text-underline-offset: 0.09em;
           page-break-after: avoid;
+        }
+
+        h3 {
+          margin: 0.08in 0 0.03in;
+          font-size: 11pt;
+          page-break-after: avoid;
+        }
+
+        p,
+        li {
+          font-size: 10.5pt;
+          margin: 0.03in 0;
+        }
+
+        ul {
+          margin: 0.04in 0 0.08in 0.2in;
+        }
+
+        .skills-continuation {
+          margin-top: 0.06in;
+        }
+
+        section {
+          break-inside: avoid-page;
+          page-break-inside: avoid;
+        }
+
+        a {
+          color: inherit;
+          text-decoration: underline;
         }
       }
     </style>
   </head>
   <body>
     <main>
+      <div class="print-toolbar">
+        <button type="button" class="print-button" onclick="window.print()">
+          Print CV
+        </button>
+      </div>
       <article aria-labelledby="cv-title">
         <header class="contact">
           <h1 id="cv-title">Don Listwin</h1>
