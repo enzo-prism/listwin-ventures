@@ -6,6 +6,6 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<article class={`relative rounded-[1.8rem] border border-border/70 bg-card/95 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_16px_34px_rgba(15,23,42,0.16)] focus-within:-translate-y-0.5 focus-within:border-primary/35 focus-within:shadow-[0_16px_34px_rgba(15,23,42,0.16)] ${className}`.trim()}>
+<article class={`rounded-[1.8rem] border border-border/70 bg-card/95 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:ring-1 hover:ring-primary/15 focus-within:-translate-y-0.5 focus-within:border-primary/25 focus-within:ring-1 focus-within:ring-primary/15 ${className}`.trim()}>
   <slot />
 </article>
