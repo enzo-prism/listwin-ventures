@@ -37,6 +37,8 @@ listwinventures-rebuild/
   `/press` plus the “Related reading” blocks on matching company pages.
 - **`public/assets/uploads/`** – static media. Large items (GeoLite DB, Carbon Robotics videos,
   `*.mp4`) are ignored by git; copy them from the secure archive if you need them locally.
+- **`public/media/oral-history/caltech-2025/`** – interview media placeholders and downloads for
+  `/oral-history-caltech` (episode audio plus transcript files).
 
 ## Navigation & Dropdowns
 
@@ -90,6 +92,19 @@ The standalone contact section was removed; all inquiries route through `/contac
 - Set `featured: true` to pin an item into the Featured section on `/press`.
 - Keep copy original: link out to third-party sources; do not mirror full articles.
 
+## Interview Pages
+
+- `/oral-history` is the 2018 Computer History Museum interview page.
+- `/oral-history-caltech` is the 2025 Caltech Heritage Project interview page.
+- Caltech interview media lives at `public/media/oral-history/caltech-2025/`.
+- `/oral-history-caltech` intentionally uses file-aware rendering:
+  - Full transcript PDF link is always shown (`/media/oral-history/caltech-2025/transcript-full.pdf`).
+  - Full transcript TXT link is only shown when `transcript-full.txt` exists.
+  - Episode audio controls are shown only when the matching `.mp3` exists and has a non-zero file size.
+  - Missing or empty episode audio files show a neutral `Audio coming soon` note.
+- When `/oral-history` CTA layout changes, refresh Desktop visual baselines for the homepage/oral-history snapshot set:
+  - `npx playwright test tests/visual.spec.ts --project="Desktop Chrome" --update-snapshots --grep "(/ \\(top\\)|/oral-history \\(transcript CTA\\))"`
+
 ## Icons (astro-icon allowlist)
 
 `astro-icon` is configured in allowlist mode via `astro.config.mjs`.
@@ -101,6 +116,7 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 
 - `src/pages/sitemap.xml.ts` builds `sitemap.xml` from a `staticRoutes` list plus the company and exploit slugs.
 - When adding a new top-level static page (example: `/press`), also add it to `staticRoutes`.
+- `/oral-history-caltech` is included in `staticRoutes` as the Caltech 2025 interview route.
 - `/cv` is intentionally excluded from `staticRoutes` and is not linked in navigation; it is a private share-only CV page.
 - Crawlers are blocked from `/cv` in `src/pages/robots.txt.ts` and `src/pages/llms.txt.ts`.
 

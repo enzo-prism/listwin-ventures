@@ -44,6 +44,20 @@ When you add a new file under `src/pages/`, also update:
 - `src/pages/sitemap.xml.ts`: add the route to `staticRoutes` so it appears in `sitemap.xml`.
 - `src/pages/robots.txt.ts`: optionally disallow routes that should not be indexed.
 
+### Maintain Interview Pages
+
+- `/oral-history` is the CHM 2018 interview page and now includes a "More interviews" CTA to `/oral-history-caltech`.
+- `/oral-history-caltech` renders a four-episode 2025 series and expects media under
+  `public/media/oral-history/caltech-2025/`.
+- Transcript button behavior on `/oral-history-caltech`:
+  - PDF is always shown at `/media/oral-history/caltech-2025/transcript-full.pdf`.
+  - TXT is conditional and only renders when `/media/oral-history/caltech-2025/transcript-full.txt` exists.
+- Audio behavior on `/oral-history-caltech`:
+  - An episode audio player renders only when the matching `.mp3` exists and has file size > 0.
+  - Otherwise the UI shows `Audio coming soon` (no broken controls).
+- If you change the `/oral-history` CTA section layout, refresh Desktop visual snapshots:
+  - `npx playwright test tests/visual.spec.ts --project="Desktop Chrome" --update-snapshots --grep "(/ \\(top\\)|/oral-history \\(transcript CTA\\))"`
+
 ## Ship Checklist
 
 - `npm run build` passes.

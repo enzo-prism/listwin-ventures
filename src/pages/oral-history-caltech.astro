@@ -1,0 +1,184 @@
+---
+import { existsSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pageTitle = 'Caltech Heritage Project Oral History (2025) — Don Listwin';
+const pageDescription =
+  'A four-session Caltech Heritage Project oral history on Don Listwin’s leadership journey, investing perspective, and systems-building approach to early cancer detection.';
+
+type EpisodeTranscript = {
+  label: string;
+  href: string;
+};
+
+type Episode = {
+  title: string;
+  subtitle: string;
+  audioUrl: string;
+  highlights: string[];
+  transcriptLinks: EpisodeTranscript[];
+};
+
+const publicRoot = fileURLToPath(new URL('../../public', import.meta.url));
+
+const toPublicFilePath = (publicUrl: string) => join(publicRoot, publicUrl.replace(/^\/+/, ''));
+
+const fileExists = (publicUrl: string) => existsSync(toPublicFilePath(publicUrl));
+
+const fileHasContent = (publicUrl: string) => {
+  const filePath = toPublicFilePath(publicUrl);
+  if (!existsSync(filePath)) return false;
+
+  try {
+    return statSync(filePath).size > 0;
+  } catch {
+    return false;
+  }
+};
+
+const transcriptPdfUrl = '/media/oral-history/caltech-2025/transcript-full.pdf';
+const transcriptTxtUrl = '/media/oral-history/caltech-2025/transcript-full.txt';
+const showTranscriptTxt = fileExists(transcriptTxtUrl);
+
+const episodes: Episode[] = [
+  {
+    title: 'Episode 1 — March 25, 2025',
+    subtitle: 'From Cisco to Canary: building early detection as a system',
+    audioUrl: '/media/oral-history/caltech-2025/episode-1-2025-03-25.mp3',
+    highlights: [
+      'Why the “two-step” early detection model matters (biomarker + imaging)',
+      'The leverage strategy: seed dollars that unlock major grant funding',
+      'What progress looks like today—and what still hasn’t broken through',
+    ],
+    transcriptLinks: [],
+  },
+  {
+    title: 'Episode 2 — April 2, 2025',
+    subtitle: 'Origins: family, Canada, and the making of a builder',
+    audioUrl: '/media/oral-history/caltech-2025/episode-2-2025-04-02.mp3',
+    highlights: [
+      'Growing up in Saskatchewan; early work ethic and entrepreneurship',
+      'Engineering education and early networking sales/product lessons',
+      'How early personal experiences shaped later leadership instincts',
+    ],
+    transcriptLinks: [],
+  },
+  {
+    title: 'Episode 3 — April 7, 2025',
+    subtitle: 'Cisco years: product rigor, acquisitions, and the internet boom',
+    audioUrl: '/media/oral-history/caltech-2025/episode-3-2025-04-07.mp3',
+    highlights: [
+      'Product management under hypergrowth: engineering vs sales vs customers',
+      'The IBM interoperability push as a market unlock',
+      'Scaling lines of business and what it takes to go from $100M → $250M → billions',
+    ],
+    transcriptLinks: [],
+  },
+  {
+    title: 'Episode 4 — April 28, 2025',
+    subtitle: 'Loss, purpose, and the next decade of early detection',
+    audioUrl: '/media/oral-history/caltech-2025/episode-4-2025-04-28.mp3',
+    highlights: [
+      'His mother’s ovarian cancer story as the catalyst',
+      'Why diagnostics economics are still broken—and how that affects adoption',
+      'The forward bet: molecular imaging + ultrasound + AI as the next frontier',
+    ],
+    transcriptLinks: [],
+  },
+];
+
+const episodesWithMedia = episodes.map((episode) => ({
+  ...episode,
+  hasAudio: fileHasContent(episode.audioUrl),
+  availableTranscriptLinks: episode.transcriptLinks.filter((link) => fileExists(link.href)),
+}));
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <div class="space-y-3 text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Interview</p>
+      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Caltech Heritage Project Oral History (2025)</h1>
+      <p class="text-ink/70">
+        A four-part oral history recorded March–April 2025 with David Zierler (Caltech Heritage Project). Don Listwin
+        traces the arc from building Cisco’s growth engine to leading Openwave through the dot-com collapse—and then
+        rebuilding his life around early cancer detection through the Canary Foundation.
+      </p>
+    </div>
+  </section>
+
+  <section class="space-y-6 rounded-apple bg-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <h2 class="text-2xl font-semibold text-ink">What this series covers</h2>
+    <ul class="list-disc space-y-2 pl-5 text-ink/75">
+      <li>Building markets, not just products: Cisco-era lessons on platform shifts, distribution, and customer-pulled roadmaps</li>
+      <li>The pivot from tech to science: why early detection became the mission, and what “team science” fixes</li>
+      <li>The Canary model: seed funding → early data → leverage into major grants (and why milestones matter)</li>
+      <li>Why imaging is the next big bet: biomarker + confirmatory imaging as a practical path to action</li>
+      <li>AI’s near-term impact: imaging + pathology as the first domains where algorithms reliably outperform variability</li>
+    </ul>
+  </section>
+
+  <section class="space-y-6 rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <h2 class="text-2xl font-semibold text-ink">Listen + download</h2>
+    <div class="flex flex-wrap gap-3">
+      <a class="btn btn-ink" href={transcriptPdfUrl}>
+        Download full transcript (PDF)
+      </a>
+      {showTranscriptTxt && (
+        <a class="btn btn-ink" href={transcriptTxtUrl}>
+          Download full transcript (TXT)
+        </a>
+      )}
+    </div>
+  </section>
+
+  <section class="space-y-6 rounded-apple bg-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <h2 class="text-2xl font-semibold text-ink">Episodes</h2>
+    <div class="space-y-4">
+      {episodesWithMedia.map((episode) => (
+        <article class="space-y-4 rounded-[28px] border border-white/80 bg-white/90 p-5 text-ink/75 shadow" key={episode.title}>
+          <div class="space-y-2">
+            <h3 class="text-xl font-semibold text-ink">{episode.title}</h3>
+            <p class="text-sm font-medium text-ink/65">{episode.subtitle}</p>
+          </div>
+
+          {episode.hasAudio ? (
+            <audio class="w-full" controls preload="metadata">
+              <source src={episode.audioUrl} type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          ) : (
+            <p class="rounded-[18px] border border-ink/15 bg-ink/[0.03] px-4 py-3 text-sm text-ink/60">Audio coming soon</p>
+          )}
+
+          {episode.availableTranscriptLinks.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {episode.availableTranscriptLinks.map((transcriptLink) => (
+                <a class="btn btn-ink" href={transcriptLink.href} key={transcriptLink.href}>
+                  {transcriptLink.label}
+                </a>
+              ))}
+            </div>
+          )}
+
+          <ul class="list-disc space-y-1 pl-5 text-sm">
+            {episode.highlights.map((highlight) => (
+              <li key={highlight}>{highlight}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-4 rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
+    <h2 class="text-2xl font-semibold text-ink">Related links</h2>
+    <div class="flex flex-wrap gap-3">
+      <a class="btn btn-ink" href="/company/canary-foundation">Canary Foundation</a>
+      <a class="btn btn-ink" href="/oral-history">Oral History (Computer History Museum, 2018)</a>
+      <a class="btn btn-ink" href="/press">Press & References</a>
+    </div>
+  </section>
+</BaseLayout>

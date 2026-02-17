@@ -13,6 +13,7 @@ const staticRoutes = [
   '/cookie-policy',
   '/genologics',
   '/oral-history',
+  '/oral-history-caltech',
   '/press',
   '/privacy-policy',
   '/zevx-closes-20m-funding-round-appoints-don-listwin-as-ceo',
