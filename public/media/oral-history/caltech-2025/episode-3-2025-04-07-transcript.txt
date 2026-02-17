@@ -1,0 +1,319 @@
+Okay, this is David Zeiler, director of the Caltech Heritage Project. It is Monday, April 7th, 2025. It is wonderful to be back once again with Don Leshin. Don, great to see you again. Thanks again for joining. Thank you, David. All right, we're going to pick up our conversation, the beginning of your career at Cisco. So let's just do some Cisco History 101. Tell me what you know about the founding of the company and its sort of origin mission.
+Yeah, it was a married couple, Len and Sandy, at Stanford.
+And involved, I don't know in what capacity in the IT organization, but...
+The proliferation of devices after Ethernet and local area networks hit created real problems, predominantly on academic campuses to start, because there was no technology involved to try to isolate traffic. So everything was what's called, you know, a land bridge, and they were, everything was connected to everything. And at some point, that runs out of steam in terms of the technology.
+So we came up with this idea of the internet router, and instead of in layer 2 of the tech stack, which is the MAC level switching, they said, why don't we do it at an IP level or at the protocol level? Because back in that day, there were upwards of 20 different protocols vying to become the protocol, which, as you know, TCP IP ultimately was the winner.
+And they had started building some of those technologies.
+And I believe they were building them out of the company's technology, if you recall, we talked about SBE, who built, back in the day, there were two standard bus systems, VME and multi-bus, that you could buy standard off the shelf. And VME was a Motorola product, and you could buy processor cards and program it and do...
+other things, the other little company I worked for, everyone built processor cards and memory cards, they built network interface cards, Ethernet, token ring, those types of things. So I think they hacked together the very first router, and it sort of worked. And, you know, the in the living room conversation, you know, built it in the living room.
+And then ultimately spun out the company.
+to grow it. I know that Sequoia Capital, as we talked about my father-in-law's company in the beginning, did put an initial $2.5 million into a Series A, and I believe to this day that that was the only money that ever went in the company from any external source. Wow. I'm not even sure they needed it outside of...
+having working capital to kind of move forward with things. So they...
+They left Stanford and they started building these products.
+And this is in the
+You know, I don't know well enough it was not involved, but the late-ish 1980s.
+And because by the time I joined, which was the sort of mid-1990s, the company had already gone public.
+which was, I think, March of 1990, so I missed that opportunity, but...
+I didn't know what the heck an option was anyway, so I just wanted to get out of Dodge, you know, where I was. I was not having any fun.
+and went and interviewed, so we had talked about my colleague Andy Lockhart.
+Called up John Mortgage and said, hey, you know, I went to Stanford and I know networking, and Mortgage took the lunch and Andy got a job in...
+corporate development, business development. Ultimately, he, as you recall, he was the guy that worked with me at Kennedy Space Center. He ultimately got the first job, which was to fly to Tokyo and make Cisco Japan.
+From, you know, a piece of paper. So that was an exciting time for him, and he ended up, you know, having to build the entities and find a small office. And his ultimate job was to hire a leader, and he hired a guy named Tak Matsumoto, who beforehand had built Sun Japan to a very formidable company. So he was a well-known commodity, very well connected. And that turned out well. So Andy got me an interview in product management, and with what ended up being my boss, Doug Hsu. And we talked, and we got along, and he offered me that product management job to do product management for software. And as we talked about earlier, I got the 50% pay cut. Benefits were the same, and then there were these cool things called options, which I don't know what they were worth, but, you know, you could figure it out mathematically, but who knows.
+And I started as the Cisco software product manager. John, if we could just go back, it's such an important point. In the living room, what exactly did they innovate that set them apart from the competition?
+Well, they invented routing versus switching at a, you know, a very simple level that, you know, you can...
+As the box is...
+Looking at all the packets coming through, switches just forward everything. Routers go, oh, should I forward this or not? Is it somewhere else? So the router has a map, if you will, and knows where other things are. So hence came a thing called the routing protocols, which we use for all sorts of things, right? We use them for sending money. We use them for routing airplanes and the like. So they invented that.
+Routing protocol, it was called IGRP.
+But they really were the first, in my mind, people who came up with this idea commercially.
+Now, were you integrated before this with Stanford research at all, or was this sort of your entree to campus and research culture and things like that? Me personally? Yeah. Yeah, no, not at all, not at all. I was plugging away at my little company in Concord and was looking for exit stage left. And so I...
+Outside of, I think, Stanford being an anchor customer in the prototype area, they had both left Stanford to my knowledge, but, you know, I'd fact-check some of those things because I, you know, this is all third party for me. And they were there when I was interviewing, but it had already got acrimonious there when we had talked about the other vice presidents really upset with, in particular, Sandy, the woman in the relationship. And so things were, things were pretty hectic when I was moving in. Now, from the outside looking in at the interview stage, were you aware of Cisco's innovations? Were you aware already of its reputation?
+No, well, I mean, Andy did a good job of helping me understand what it was, and having been in the enterprise campus-based networking world for a long time, and really having hoped to build something even a little bit better than what they built. Remember, we talked about the, a.k.a., the Synaptive smart wiring closet thing. I was well aware of the opportunity, and I had even tried to start when I was at SBE, an FDDI, which was a fiber-based backbone, company with an innovation to double the speed.
+And that just never got, it was with myself and the CFO at the time there, and it just never got off the ground. I clearly would have needed a mentor to help me get going, but no, no real interaction with Stanford in that regard. Now, beyond you, as you said, wanting to get out of Dodge, the willingness to take such a big pay cut, was part of that because you were really excited about where Cisco might be headed, that you saw an upward trajectory here?
+Well, yeah, two things. One, one was I knew the markets. I knew the technologies. I knew the customers. So, you know, the water was warm. I wasn't like I'm dropping into a, you know,
+a drug development company or, you know, something like that.
+And they were growing quite dramatically at the time. So, you know, I think the first year that I joined, they more than doubled in size. So there was a lot of excitement in the company, and of course, there was a lot more excitement because 90% of them had their options gone public. So now everyone had their option spreadsheet. You know, every day you looked at, okay, oh, this piece of paper could be worth...
+$140,000 or, you know, whatever it was. But then, you know, the people were great. It was very intense.
+Very smart people, but, you know, there was a no-suffer-fools culture in there. You know, sort of eat or be eaten. You needed to know your stuff and do it right. Tell me about your initial work. What were your responsibilities?
+Well, I alluded to earlier in our conversation, David, that, you know, it was the, there was no product management. So for people who are reading or listening, product management is the job of trying to help define and shape.
+how your product exists in the marketplace, both the product characteristics, how you try to compete against other people pricing and so forth. So the essence of Cisco's strength for many years...
+was their software. We had a competitor that ultimately emerged from the East Coast in Boston called Wellfleet, and everyone used to say about three years after, I said, I wish we could have the Cisco software and the Wellfleet hardware. Because our hardware was still some of the older clunky stuff. But the guys would write software, you know, adding a security filter for a particular protocol that someone never knew we needed. And they would do that and they would FTP where they would file transfer it to the customer.
+And my job was to run around figuring out what the hell just happened, accumulate the 37 things the engineers did last week, and on the weekend, I'd write a release note to sales.
+and going, hey, here's a new software release, and I would go to engineering management and say, can you guys like bundle these up so I can call it something? It's like 10.2 or whatever. And it's, okay, okay, we'll call it 10.2. And then I'd say, okay, here's feature number one, and here's, you know, the benefit, and does the competition have it, yes or no. So the first part of my career there was running around engineering and trying to figure out what the hell they were doing, trying to write it down for the sales force, because it was all competitive advantage and helped them understand what it was. But, you know, the two giant dominant forces in the company early on were engineering and followed strongly became sales. Marketing and product management was a core real afterthought until finally John Chambers came and said, you know, we need somebody trying to arbitrate because now engineering is fighting with sales and sales is fighting with engineering.
+In product management, do you interface at all with advertisers, advertising, getting the word out there through media? Yes, I mean, remember the four Ps we talked about. Promotion is one of those things, but there was a marketing communication. So the VP of marketing at that time, Kate Muthur, she had MarCom, marketing communications as one group. She had product management, which Doug worked for her, and then she had documentation and training. So those were her three groups. And so she was responsible for
+The group that did outbound marketing. Now, we were supposed to be the content providers to that. A lot of companies put a group in between, they call it product marketing, in between product management and marketing communications. And as far as I'm concerned, it's a total waste of an organization. It's like, you know, if you guys can't talk to each other, well, the next thing you can do is, let's put a fourth organization in place because you don't, you know, like, learn the language. And so the product people were very strong, not as good in the marketing communications, but our company was a service agency. And they'd say, look, here's what we think PR should say. Here's...
+You know, here's the journals we're going to try to get in, and then we would, you know, I probably built a million PowerPoints in my life, and you'd build the PowerPoint deck for the sales force, because we had a great advantage of, to this day Cisco does, a very talented direct sales force, so the interface with the customers was one-on-one.
+Can you explain, Don, the give and take between how Cisco is driving technological development and how it's responding to technological development more generally, and how you deal with that from a product development perspective?
+Well, there were largely anchor customers that...
+dragged you by your hair, right? So Motorola was one, Boeing was another, and Fidelity in the financial services area. And so...
+They had, you know, Boeing in general had made a big commitment to get rid of drafts.
+tables, you know, for building planes, and to go totally online to CAD, computer-aided design. So, you know, there was a hundred things they needed done, probably a thousand things they needed done. And, you know, they ran out of address space. As you know, every end device has its own unique address. Well, it's one thing when you think there's going to be a million of them on the planet. There's probably a million of them in my house right now. So, you know, so you have to innovate on how to do all of those things. So, I would say our biggest real
+Go after the market innovation is when I switched jobs. So I did the software first, and then I'm gonna tell this great story. And then I was asked to do network management.
+And I went, okay, this is another software platform. And so I was just confused. I'd go to people, no one would want to talk to me, and it's like, well, we need to at least fix the infrastructure on the router. So it was very early on, and John Mortgage had not met me.
+
+
+
+He met me and shaking the hand of the photocopier, but he asked me out for lunch. And I said to him, I said, you know, John, after the niceties, I said, John, we don't have a network management strategy, and I've got to get my lunch. So John always wears little glasses like this.
+And he took them off and he looked at me and he said, Son...
+As CEO, I always have a strategy.
+You may not understand it, you may not agree with it, but I have a strategy, I said. I'll stand corrected, sir. What is your strategy? And he said, to do as absolute little as possible without the customers getting pissed off. And I thought, oh, I wish someone had told me before I took this job. This is a job to just get yelled at constantly.
+So I went, okay, I get it now. And so, you know, all we did was put in the basic hooks, APIs, things that someone else could build that software for, and Hewlett-Packard tried, and DEC tried, and a variety of people tried, and they all put tens and tens of millions of dollars into doing, trying to do heterogeneous network management of multiple entities, and it was all a terrible failure.
+So...
+As we began to penetrate more into enterprise, big business, as opposed to just academia and government like NASA or wherever else, IBM, of course, was the big dog. And, you know, the question was...
+Could you add value by integrating some of the IBM stuff?
+And of course, IBM's view from many years ago was, well, you know, anything that comes along, we'll just integrate into IBM SNA architecture, which is their architecture to move stuff around.
+And, uh...
+And we didn't think that was the right thing. And it turned out to be a very good time to try to add.
+Another protocol and another set of technologies. And so notably, it was token ring as opposed to Ethernet, a different physical interface that they were trying to move forward. Far more better technology, but probably three to four times more cost per endpoint. And, you know, some people said, well, we don't want you to integrate our big mainframe. We want you to just, we're now building little token ring networks in departments. Can you help us move that data around without having to put it through the mothership, right? And we said, yeah, we can figure out how to do token ring bridging and routing. And so, you know, we started doing that.
+And Doug said, well, there's maybe more to this than that. Now, I had had some IBM experience with my last company, the Canadian company, where we did emulators and we made a old DEC or a new DEC VT100 terminal look like an old IBM machine. So I knew a 3278 from a 3745 from a whatever, like, I still remember them.
+Solexicet.
+There's probably more we can do here. And during that time in the 90s, we ended up entering into a recession, not unlike this week.
+And so recessions are good selling opportunities. I mean, you get to sell something.
+for only two reasons. You either solve a problem or save some money, or both. And so, you know, now you've got the internet, the CFO goes, well, what the hell is this internet wide area backbone? And what the hell is this IBM wide area backbone? Why can't you have like one of these? So that was the simple economic idea. Can we merge them together? And of course, IBM wanted us to merge to them, and we wanted them to merge to us.
+Early on as we got going, and Doug and I started talking about, well, what's the journey for this?
+He came up with the idea of a multi-phase plan, and so that was his way of saying, here, you know, let's coax the market, tell them that it's not a giant flash cut.
+Of course, the IBM guys were the big dogs in the organization, so you don't want to get on their bad side.
+So I came up with a five-phase plan that had three stakeholder communities. The people, the stakeholder one was the people who ran the local area networks. Stakeholder two were the people who owned the wide area networks. And stakeholder three were the people who did the network management and tried to keep the thing. And so I said, here's a 3x5, and here's what I'm going to do. Stage one, I've already, so I already, you know, I had stage one done. I released it. I released the five-phase plan via marketing. Stage two then was the next step of this, SDLC tunneling, not important. You could plug in terminals and things. And we laid that out.
+Um...
+And at that time, it was me and Joel Vine. There were two of us doing this entire global strategy. Joel was one of the early, early engineers, totally brilliant. You know, he'd write code and post it the same night like everyone else. And so that's when we started getting attention.
+Now, I do remember a story where John Morgan and I, once we were starting to get traction with IBM and we'd done the five-phase plan, and the beauty of a five-phase plan is you can always change phase four and no one even remembers what it was, as long as it looks the same, right? So we were like, yeah, we're just kidding about that. We're going to do this instead of that, but it looked the same and it felt the same.
+And we went to this smaller financial services company in New York and the guy's there, he's...
+30 age or something. He says, I want IBM reliability, and I want IBM network management, and I want IBM this. And John Morgan, he took off his glasses again, he said, well, you don't want us. You want IBM. Straight shooter. And it was a straight shooter, and the call ended, and the sales guy was mortified, and he got the purchase order an hour later for our stuff.
+So, so the IBM stuff really started, that was what in enterprise really started to differentiate us, whereas Wealthy and others never had had that. And so I went out and hired a head of engineering, in concert with engineering because I didn't run it, a head of engineering, a guy named Cliff Meltzer, and then a guy from Nick called Nick Francis. But the rule of fund that I was taught by senior leaders is you can't take people who've been in those organizations for more than 10 years because they're broken and they're bureaucratic. So those were both nine-year guys, I think. They came in and became real anchors. So Nick worked for me, ultimately ended up working for me as we fast-forward.
+And I'd say the one, you know, last interesting thing is that...
+The nirvana was, could you channel attach to an IBM mainframe? So the mainframe has its own, what's called bus and tag architecture, and then it had a front-end processor. And we could attach to the front-end processor, but everybody could, but it was slower and it was really a big IBM router, and we didn't need routing because we were routing, and I think it was Cliff, I'm not sure, who talked about the IBM Fellow program. And IBM Fellows back in that day had about a $25 million budget, and they were there to do things that others weren't doing it, you know. I'm gonna make the next photocopier. Okay, well, no, we're not doing that.
+And we got and met with him, a guy named Bill Bosley, and Bill said, yeah, well, we should build a channel attached router. And I said, well, we'll build it. And he said, well, I'll tell you how to do it.
+And it went, Ellen Hancock was the head of networking at that time, in the running for the next CEO job, and she went to the board to stop it.
+And the board said, Ellen, we've had fellow programs for a hundred years, and this is why we have them.
+And she got told, no.
+And so we ended up doing that, and I remember to this day, we ended up...
+renting an IBM mainframe for our booth and Interop, and man, was there a buzz. And we had a channel attach router moving stuff, you know, from Newfoundland, I'm making stuff up, to the show floor in Vegas. And so that really, that was probably my big career breakthrough early on, and was a very important differentiator versus anybody else in the market. Now orient me in the chronology, this transition where things really start to pick up, your career is going well. What years are we talking about now?
+Well, so I joined August of 1990. I'd say the, I'm guessing now, David, but I'd say the IBM stuff kind of went through '93, '94.
+Ennenn
+And then Doug was leaving. They didn't think Doug was right for the next level of growth. I thought he was fantastic, but, and they did a hire and they hired a guy, which we'll just say was not my favorite hire. And there were two people, there was this guy and Jayshree Ullal, who is now the CEO of
+Oh gosh, giant switching company.
+making billions of dollars.
+He'll come to me.
+um
+Докладывай.
+I'm drawing a line here.
+God, talk about a brain fart.
+Arista
+So Wist is probably only one of the few companies.
+in the history who have really challenged Cisco in some of their core markets. Now, this is much later, this is 2000 plus. But Chuck was the guy's name, came in, and he and I didn't get along. I felt he was very, very astute politically. Let me just leave it at that.
+And...
+And he had hired...
+a number of then product managers, right? So there was a guy, Brent, for the hardware, for the routers itself, and there was a woman Heidi for network management, and...
+And our team was maybe five across with Chuck.
+But I didn't get what I needed. I'll just, you know, leave it at that. Ultimately...
+He ended up leaving the company, and it was essentially a competition between me and Brent, I think, to get the job, and I ended up getting the job as Director of Product Management.
+And that was, you know, mid-90s, and so...
+I was...
+Okay, you know, I'd get in work at 5 a.m. and I'd leave at 8 p.m., and it was a real, real hell because I lived in San Ramon and the office was in Mountain View, and 237 hadn't made the right-hand corner there yet. So, but, you know, it was early days and you worked really hard, and...
+And then Ed Kozel, who is the head of CorpDev at the time, he said, you know, you're gonna fail. And I went, I'm killing myself. And he says, you don't have enough people. And...
+And, you know, you're trying to keep up with an engineering group that's doubling every year, so.
+I went to my boss, who at the time, John Chambers had come in, and then John ended up getting international sales and marketing. He did not get domestic sales. And that's because one of our guys, Terry Yeager, who'd been there forever, said, well, I'm not working for John.
+Ultimately, he did, and John was, as we know historically, was being groomed to become...
+this, you know, the CEO of the company.
+啊,所以
+I'm sorry, David, I lost my train right there. No, it's okay. The stark binary, being told you're going to fail, the distinction between success and failure, I mean, does that, is that really about job security or about how well you're doing? How do you measure these things?
+Well, look, I see now, I'm hoping to join a board right now of a company that's 100 million a year. And as far as that I'm concerned, all the managers are good at 100 million a year, except if you wanna go to 250 a year. So you need managers who know how to get there from here. And my team was fine, but it wasn't good enough for where we were going. So I asked John for more headcount.
+And that's when we brought in a guy named Kevin Kennedy, who was at Bell Labs, and he was running Bell Labs' router program, and Ed knew him. And then we brought in this Nick Francis that I talked about, and we brought in, I brought in like four, I doubled the size of my team.
+And that saved my job because...
+I was a good leader, I still am, I think.
+And I just needed some more horses.
+Eheadigad.
+And you had to get super technical people or engineering.
+Wouldn't listen to you. Like, Kevin had a PhD from MIT and...
+Like you needed to be able to go toe-to-toe with the engineers or they'll just dismiss you and walk out of the room, right?
+And a big part of product management's job is, we did...
+Hundreds of customer presentations a year. And John built a culture at Cisco where...
+I built the first executive briefing center there, and...
+You got measured, so every Monday morning in executive staff.
+One of the charts would go up was, okay, Don did 15 EBCs last week and his score was 4.9 out of 5.
+Hey, Kevin, you only did 12 and your score was 4-8, and here's the area they don't like.
+So a big part of that product management was having to be very technical. Like, we weren't doing PR, right? And. You mean technical just in terms of internal communications? No, I mean in being able to talk to engineering customers and being able to talk to the engineers writing the code. Yeah. Or doing whatever. You had to be able to argue with them, well, this is the way I wanna do this filter thing. And a good one, like Larry Lang, would say, well, that, that'll work, except for you if you did the filter two-stage like this, you'd get a far better outcome. And that's what we ended up building. And those people were powerhouses in terms of, you know, there was the salesperson, and then there were systems engineers that were in the field.
+And they were very good at what they did, but...
+
+
+They knew how to implement what we built, right? They weren't doing the next level of things, and that's what the product managers were doing. And during the history, of course, history, Cisco is well known for its acquisition work, but...
+You know, during that, as that acquisition strategy would start in the future, as Ed would start driving that, as a business unit, you could do a little acquisition. As a line of business, you could do a bigger one, which might be a business unit. And then Ed would go, we're totally missing fiber optics, and I'm going to go and buy a corporate...
+bunk and put it in place there. We had not started that yet.
+The first time we did an acquisition was myself and Mr. Chambers, and we bought a little company called Crescendo, which was Mario Matsuza and Jay Sri and Prem and Luca. And over time, they got called the Italian mafia plus one Indian woman. And they built, and they were building really good switching products.
+And they were building them for smaller businesses. So we had two problems. We didn't know how to build switches because you still needed some, and we had no idea how to go to small, medium business from a distribution perspective. But that one, John and I were in the room.
+And Mario's got a number in his head that he wants.
+And John doesn't wanna give that number. And I come up with this, what I thought was pretty smart at the time. It's standard fare now, but no one knew, like this is 1995. I said, John.
+Stock is forty-six bucks a share.
+Offering two million shares.
+Ninety-two million, because they think his number was a hundred.
+and show them the graph and the chart for the last six months and go, this is going to be worth more. Now back in the day, there was a tax treatment called pooling of interest, where if you put two entities together and you just said the other entity is now part of the big entity, there was no tax implications. So that...
+Two million shares, however it got distributed among that people's company, they didn't have to declare any tax, and it just rolled over into Cisco stock, and that made all of those people very, very wealthy over time. And they were, you know, they were anchors. They built the next level of switching called Catalyst switches in the company, which was a huge, huge success in the enterprise after some fits and starts.
+Don, to clarify, when you're talking, engaging with engineers at a client, a customer on a technical level, are you taking their input back to Cisco and changing your software, your hardware, your development? Yeah, you change your roadmap, you know. Motorola says, well, you do these four filters, and you didn't know about these number five and number six for IBM stuff. I need this. I need you to be able to filter so someone can't send something to this printer. Oh, so, you know, you'd go back. Now, you know, as things got more hectic, now the list's a hundred deep.
+Now this is where in your negotiation with sales, because now they're coming in and the aggressive sales guy is pitching feature number 19 that he wants for his deal, and we're only going to release the next 10 next week. So, you know, you're in this...
+in this battle royale with trying to get engineering to do as much as they can with quality, trying to satisfy sales, and try to keep anchor customers happy. Now on a personal level, I want to pick up the thread, you know, the dramatic decision, you're taking a 50% pay cut. This is a risk. When does this change for you financially personally? When do you really start to personally reap some of the value, the monetary rewards from all of these developments?
+I don't explicitly know, David, but I'm sure I was caught up by the time I became a director. Yeah. Right? You know, the product manager was 75 grand and a half. I think when I got network management, I got like a little bump. We'd get annual bumps. But, you know, more importantly is, you know, we kept getting more options as we went. But the big step was that director. And then the real breakthrough was, you know, when Kate, the VP of marketing, decided to leave and I earned that opportunity. And I remember John Morgan bringing me into his office. And I'd been in a sales meeting and he scolded me for something I did. And he said, you know, this isn't some piss-ant little opportunity, Don.
+This company is going to be important. It's already special, but it's going to be important. So...
+You know, get your big boy pants on and get to work. And is that the point, so I'm trying to just establish the chronology, when do you enter sort of...
+big benefactor territory, when you can think about, even before we get to Canary and, you know, all of that, when do you sort of enter the next stage where you can think about giving yourself on a significant level?
+Oh, I see. Well, let's call it 97, 98. I mean, the early stock I've got, I mean, the stock is company probably did six stock splits. And so my first big...
+Giving was, I gave $2.5 million to my university, and I can look up the date, but I'm thinking it was for an engineering chair.
+Specifically for...
+
+Communication, better communications for students, because at the U of S when I went to engineering school, the guy would pick up a chalk, piece of chalk, stare at the chalkboard, talk to the chalkboard for 45 minutes, right? And you go, well, why didn't you just like put that down and I could have paid to photocopy it, right? So I ended up giving a chair for innovative teaching, which ultimately was very useful in the early years, and then it became known as internet education itself. Somebody else did all of that, and of course, the whole market has changed, but that was my first big...
+And look, anytime, no matter how much money you have, the first million dollar gift.
+You know, you've been taught, at least people my age, since you grew up, that a million dollars was real money. Sure, sure. And, you know, when you're giving it away for the first time, you're looking at yourself in your mirror and going, are you sure you really wanna do this? But it was good. It turned out...
+To be a good thing, I know they've, they've taken that 2.5, I got my report last year, it's worth $6. So I think it helped fund that. I don't know that that chair, I told the new dean, I said, look, I don't think that chair is a proper thing after 20 years. You should take the thing and chat with me and figure out where you wanna point it. Doug, let's overlay, you know, going from the early 90s to the late 90s and all of the developments at Cisco for you personally. Where does that fit within the broader narrative of what we now call the dot-com boom, you know, more and more people coming online personally at home, all of these companies sort of now have a dot-com aspect to their business. What's the impact of that for Cisco? Alternatively, how is Cisco influencing those developments?
+Well, look, I mean, one of the biggest breakthroughs, I think, in terms of...
+Using the tech globally was the mouse, right? I mean, you know, if you've got to clickety-clack, enter, blah, blah, blah, as soon as this thing, my mouse started using the computer when the mouse was available, right? Color screen and the mouse. So that's mid-90s. And all of a sudden, the human interface is useful. Then, you know, Netscape and the rest of these guys start...
+With the browser now making it easy to get to information, and there was back then there was a Silicon Graphics CEO.
+Who was promoting his things as internet servers around the world. We just, I think, candidly, just tried to keep up. Now, during that phase, there were the protocol battles. There were the, you know, DEC had DECnet and IBM had SNA and Novell had their thing and Banyan had their thing. And I remember early on in my, in the 1992, with a consultant and I, we wrote 16 protocol briefs trying to explain to people, you know, why they were all different. And
+Um, you know, and ultimately, ultimately, actually, thanks to DARPA, I digress, but we have TCP IP because there was a big battle between TCP. Ultimately, all the little protocols disappeared, and it was TCP IP. But there was a battle in terms of what the telco companies and people, big military wanted, and there was something called ATM switching. And they said, well, ATM switching is deterministic, and we know when the packet's going to get there, and IP is not. And so DARPA said, yeah, interesting, but...
+Let's do a bake-off.
+And so they did a bake-off. They gave $60 million to two entities, and TCPIP ultimately won, and that's why we have what we do. And of course, it's ridiculous now. We're streaming 16K movies and saying TCPIP wouldn't work. You know, they said you can't make a phone call with it. So, you know, that had progressed. And then Cisco had been helping the military build MILNET.
+And finally Milnet.
+peeled off to be their own network.
+And that's when Al Gore showed up.
+And everyone makes fun of Mr. Gore, but I'm gonna help correct the record because I was involved on the periphery with MILNET. And what he said is not, you know, maybe overstated I invented the internet. He invented .com.
+He said to everybody, we should have commercial entities use this, and academia said they're gonna flood it and kill it. And he said, no, we're gonna charge them.
+And we're gonna charge them for access lines, and that will fund the backbone, and we have the internet as it is in some regards today because of him.
+And so that's when businesses started, you know, getting involved. And probably the big push that we went to extend the internet was not just from Enterprise, but the next step that Kevin Kennedy built was called access routers. So for someone's regional office. So how do you make that go? So that was a big push, turned into a...
+$5 billion product line, Mr. Mortgage, he said, look, this is always a risk for a company, a second product line.
+A different price point, different distribution, we got to get this right.
+And so Kevin and I built this Kevin Success, he built like 16 different platforms.
+A huge success. And then the next, you know, the next thing is, okay, how do you get to the consumer? And that's when all of this ADSL and VDSL and cable, so we built the first cable internet router. And then there was, so there was a whole business unit for consumer access. So in that regard, we innovated along that stack, going from enterprise down to small, medium business, then to consumer. And then ultimately for me,
+We got schooled where the service providers, the AT&Ts, the Verizons, the Deutsche Telekom said, what the hell are you doing trying to sell us enterprise crap into service providers? We don't buy your stuff. We buy stuff made for us, like Bell Labs made and, you know, Nortel Labs and those types of things. So, you know, the market exploded itself with the dot-com stuff started, was really probably, you know, Yahoo, and I mean, here's me telling one I missed pretty badly, went for lunch with Mike Moritz from...
+some square, and he says, I got this...
+Yeah, I think I'll be Yahoo. And I said, oh, interesting. And he said, you know, we're looking for some corporate development money. And I said, OK, well, you know, tell me about it. And he says, well, it does what Yahoo does. And I said, well, how do you make money? And he said,
+we don't know.
+But we'll try to figure it out. And I said, Mike, you might be able to go back to your office and say that because you're a venture capitalist. I sure the hell can't go back to my office and say, we'll just figure it out. So we didn't do the investment, and of course, in hindsight, it was stupid. But, you know, if you think about it, that was the next most important thing, which is...
+which is, can you find something? And then Google came along.
+And fun story there. So Google comes along. I'm in, in the office. Now this is post-2000 though, so, but I gotta tell while I've got it. And I'm in the Sequoia office trying to get, purchase a little company that they have. And Mr. Valentine's there. And I know him not as my father-in-law for, it wouldn't for another 15 years, but he was chairman of the board. So I knew him through that. I, I was VP, had been VP of marketing. And he's, and if he suit, I said, how's everything going?
+And he said, the air is rare from the smell of Google. And no one's done anything for two weeks waiting for this IPO to go out. And of course, everyone in that shop made.
+In aggregate billions on that thing. So that, you know, that was the thing.
+I think it was, well, I still have the little cubit. March 27th.
+2000, Cisco hit the highest market cap. We passed GE and Microsoft for, I don't know, like 24 hours. I think it was $527 billion, which sounds pretty funny when you're starting to talk $2 and $3 trillion these days on these mega cap companies. But that was sort of...
+The beginning of the bubble, the stock.
+in 2000 had hit into the eighties.
+The company had locked out everyone from, I don't know if everyone, but any vice president from trading, which Mr. Morgan always pointed out is we probably made you guys millions over the last five years by not letting you sell. And that's for me when the OpenWave opportunity emerged, and it was very clear Mr. Chambers was going to stay in his CEO chair for 10 plus years, and I was anxious to move on. So that's when I...
+
+
+I moved on.
+Sold all my stock in the fall of 2000, so that's why I joke I was there the right 10 years, 1990 to 2000, and then went to OpenWave, and then the markets, the bubble, the internet bubble cratered in, I think it was March of 2001. And you left Cisco as number two.
+I did. And what was the title?
+Executive Vice President of a bunch of stuff. And it was on the basis that just because of the dynamics of the company, you would never be co-CEO. That wasn't in the cards. Well, uh...
+Yeah, I mean, John retired, I think, 15 years later.
+He did, John, John,
+related very heavily to his role as CEO.
+What were you most proud of in your tenure at Cisco?
+Just being part of the journey with everybody. You know, I was the growth guy. You know, I got the IBM thing right. That's probably the...
+The biggest catalyst to become...
+the number one dog, and then...
+I, in a sort of the...
+Late 1997 or so, it became clear that we were not organized right, to me, that we were functionally organized, engineering, sales, marketing, whatever it was.
+And I pushed John and the board, I said, look, I think we need to go to a line of business.
+And we had an offsite with the exec team, and I said, okay, here's the thing. So I brought in a Sony Walkman, I brought in a boombox, I brought in a three-piece stack home stereo.
+Right? And then I had a picture of Michael Jackson's...
+stage. And I said, consumer, small, medium business, enterprise, service provider. You can't sell that shit to them, and you can't sell those three things to the small, medium business, because he wants to put the CD in and hit play and have a volume button.
+And that was a good...
+a metaphor for people, and people got it. And I said, John, look, we've got to get consumer, I don't know that we can ever play there, but these three we can.
+And I said, look, just reorganize. And I said, I don't care. Just give me one, right? Because the enterprise was the big dog and the service provider was broken. And he said, well, you can have the service provider. And I said, fine.
+And we took a service provider.
+Went to the August sales meeting.
+August, September sales meeting, because our fiscal year was August, and...
+we went and the service provider sales team had missed their number, and it was the first time a sales team in history across the board since the company was started missed a quota.
+Kevin Dinuzio, who had just been hired from Bell Atlantic,
+Join the team to run that sales group, and we were at some little hotel in Silicon Valley, and he had the world's worst champagne for a toast. We're up on the podium, we're about to toast, and I...
+I drink it, and it comes out my nose. It's so bad. Like, sorry, sorry, sorry, I dab, dab, dab. I said, OK, look.
+We're gonna get you products.
+We've got our service provider ready, and we're gonna get them for you this year. And we're gonna double our sales. You're only gonna make a lot of money.
+And when that happens, I'm gonna buy you a Dom Perignon next year.
+And all that happened. I got a very big Dom Perignon built.
+And I did that.
+I think three more years, one billion, two billion, four billion.
+8 billion, and then...
+The year I left...
+It was just around the sales meeting time, and I wanted to go and get them all champagne and say goodbye, but John...
+John thought, okay, no, we don't need...
+Don't need you in the building, Don. You've left the building. So, but John was kind enough where he picked up the...
+$250,000 champagne bill. You get it for the team, and I moved on to OpenWave.
+Don, one thing we haven't talked about in all of this is the regulatory environment, the FCC, the FTC, any other three-letter government agencies. Are you involved in that world or are these early days? Is it still kind of the Wild West?
+No, it's still very early. People just don't understand. I mean, you know, to this day, I can't explain to you taxation by state on the internet, right? I don't know what's going on. I mean, the, you know, the only thing...
+As I said, I was involved in with Milnet, so one more fun story and then I'll move on back to you. We ended up...
+This is late, this has got to be 1999, so I'm very senior, probably 15,000 of the...
+30,000 engineers work in and around, like, we had a business unit structure. They were around 200 to 250 people, and their job was to be number one or number two in a unit. And that was, and if you couldn't get to one or two, you better go buy something, or we better, or just shut it down and go, we can't compete because there's no profit to be had.
+And I can't remember the two-star general's name that came.
+with his entourage to ask us about...
+doing some feature development for their software for MILNET.
+And his attache was this captain, this woman, and we all sit down and I got like 10 guys and he's got 10 people and...
+He turns to the captain, he says,
+Everyone's American, right? And she looks at him like, oh.
+And I said, Yeah, General, I'm sorry to say I hadn't naturalized yet. I said, I'm Canadian.
+And he said, oh, and he looks at her, and for all I know, she was a corporal at the end of the meeting, but if you'll excuse me, and I said, yeah, and I got up and I left the room and he came back in.
+And he said,
+am
+Well, we're going to have to ask you to leave the meeting. And I said, I totally understand and respect that.
+But I said, you understand that it's my budget and I'm the decision maker, and...
+It's just sort of like, I'm paraphrasing, he's sort of like, yes.
+So you know they're going to come out of the room later and tell me what you wanted and see if I want to do it. He said yes. He said, look, as long as an American asks you, it'll be okay. I was like, okay. And it was like, it was nothing. It was like, I don't know, three guys for, I mean, you know, but three guys for two weeks. It's like, absolutely, we'll do this for the military community. But that was, that was, you know, sort of the only regulatory environment we got stuck in.
+You know, I did sell the internet backbone to China.
+And they did ask us to put in
+Sniffing technology to find people's conversations, and we refused to do it. You know, I'm pretty sure, given how good they are at that kind of stuff, they figured it out themselves, but I said no, but it...
+Yeah, it was a five-year sales cycle too. And I was with the deputy minister singing karaoke, which is my absolute least thing. I hope the champagne was better, at least for that. Well, the problem is the damn guy didn't drink on top of it. Like, there's a long story, David. I just about killed myself. But so after, you know, he's getting to know me because the whole thing is if I have a problem, I got to call you. Yeah. You know, the deputy ministers are the guys who do stuff and the ministers, the political arm. And I said, well, Mr. Minister, how long is this going to take to install? And it was the Chinese national backbone. We're selling them like 1,200 of the biggest things we had. He said, maybe, maybe 18 to 20 months.
+and my jaw dropped to the floor.
+He said, Misterliston.
+We have the Red Army. That's all he said. There's no such thing as right of way. If there's a farm there, move your farm left because the fiber optic cable is going right through your living room.
+Wow.
+Don, when you make the dramatic decision to move on from Cisco...
+Obviously, you're a known entity in the industry at this point. Are you getting headhunted? Are you putting out feelers? What's the point of connection for OpenWave?
+No, you know, I was, Ed Gozelligan had started saying, hey, we've got to start getting into software businesses, or at least...
+software businesses that are network adjacent, for example, a call center, very networking-oriented, and we can't just be hardware, you know, all the time.
+And so we started investing in companies, for example, Tipco was one that has been around forever. Another one was called Software.com in Santa Barbara, and I actually sat, so Ed and I sat on boards, as did other people, because I'm sure Ed did.
+a half dozen or more of these investments. Software.com was a large-scale mass email.
+And so AT&T was their first customer because email was brand new and how does it work and so on and so forth. So I had joined the board there.
+And during that conversation, every board meeting, it became increasingly loud about the mobile internet. And the number one thing people want on the mobile internet is not browsing, but they wanna be able to do their email. And so the two companies, one was called software.com, the other was called phone.com.
+Neither of them were the traditional dot-coms. They actually had revenue and software stacks. And those two companies decided to merge, and that became the CEO opportunity. And having known Software.com guys for a long time, and they were the bigger of the two, I said, you know, mobile internet? This is awesome. And so that's, I left and did that. What was the learning curve for you, and what could you bring with you directly from Cisco in terms of your experience or perspective?
+Well, I knew the customers, like the mobile internet was being sold to the service provider customers, so I knew, you know, I knew most all the customers around the world. The technology was...
+another technology stack. It wasn't all that unique. You had to learn about the mobile phone experience. I mean, very early on, I don't, you know, if you ever had a data mobile phone in 2001, like it was, they were terrible. The experience was terrible. It just wasn't ready in any way. I brought a lot of acquisition experience. I brought experience and being able to manage. It was 3,000 people when we merged together. I brought public company experience, financial experience, but we got hammered.
+by the meltdown in the market.
+And so that was a terrible start. And then I laid off 1,500 out of 3,000 people, which was just...
+Gut-wrenching.
+And then 9-11 hit.
+And we had over 200 people stranded globally because they were all out young engineers with, you know, a $200 credit limit on their credit cards installing stuff in Belgium or whatever. And so we got very lucky. We had that whole plane that was coming from Boston that I think ended up going in the Pentagon. We had had people on that plane going to LA.
+for a trade show, and they were showing up day of instead of day before, which was policy to help the marketing people set up. And I screamed at them and I said, You bastards, get off that plane on whatever day that was and go the earlier day. Oh my goodness. That saved like seven employees' lives just serendipitously.
+And then, and then, you know, it turns out that these kids, their community is work.
+It's not church, it's not the neighborhood, right? They're all living in apartments or whatever. And so I really, I walked in and everyone's looking at me like, what should we do?
+40 years old going, I don't know what I should do.
+They said, here's what we're gonna do. We have 212 people stranded. That's the only mission for this company.
+We're going to get two hundred and twelve people home.
+And then we'll go from there.
+I think I quoted some Nietzsche as well, I thought. He grounded about dark holes or something, but I'll find it later. Don, as CEO, what did you learn about yourself, or what did you have to tap into in a way you never did before leading OpenWave, being number one?
+I didn't realize...
+That their whole community was work, and that, you know, I was the pastor. I mean, I didn't...
+So that was more an aha.
+And, of course, once you get the aha and you understand what problem you're trying to solve, then you can say, okay...
+What they need is a job, a mission, right? And so that's kind of how it went. But it was an enormously difficult time. The wheels fell off. My mom at that time, we talked to kind of close the loop there. She had been fighting the ovarian cancer, and I was then up.
+post that apocalypse of the stock market crash.
+and
+And she ended up dying in front of me, and the CFO called literally three minutes later and said, We missed the quarter, and I said, I'm sorry, Ellen, but the nurse is asking me if they can have my mother's eyes, so I'm gonna deal with that first, and then I'll call you back. And
+And I came back home and I was in a staff meeting with everybody and...
+And I melted down. I just complete...
+I mean, it should be under Wikipedia and Meltdown, it should be a video of me just losing my shit. And Kevin Kennedy had joined me, and he saved, I walked out, and he became, not immediately, but he took over the reins till I could...
+could find myself, which took many weeks. Well, Don, in our next conversation, of course, we're going to, because of how formative it is for everything that came after, we'll trace the entire odyssey of your mom's illness and the...
+
+
+the impact on you and the inspiration that it created in you going forward. Just to close the loop for today, at OpenWave...
+How did you get the company back on track? What was the sort of upward trajectory after the recession?
+Well, one big thing is we had a pretty good messaging business that, you know, the internet, the mobile internet was the shiny thing that we had ignored. Hired a really great young guy, Richard Wong, came in to revitalize that. We had customers and product and not much competition. That, that was the one thing.
+And then we just got, I mean, as you know, technology moves and moves and moves, that the handsets finally became getting better. They were usable. But, you know, maybe to end this segment, the stock at one point during a board meeting was trading at 43 cents a share when we had $5 a share of cash in the bank. Whoa.
+Now that's what Stockholders call a vote of non-confidence. I would say. And unfortunately, I was going through my divorce, or I would have bought the whole kit and caboodle. Yeah.
+But...
+It wasn't, you know, I'm, my strength is a momentum player, and without Kevin there, we never would have done it. He just helped us grind it out, you know. He, I finished with a joke, I'm going a little backwards, but when we were, he and I started the service provider business, I was the outside guy, he was the inside guy. And he built this 20-point plan to beat Lucent, who was our primary competitor, right, of AT&T Bell's labs. And...
+And the good news out of it, we joked, was Lucid did 18 out of 20 of them themselves, to themselves, so we only had to do two. So Kevin's the ultimate grinder, and he is the person that I give all the kudos for grinding us out of that hole we were in.
+Vau.
+Well, Don, last question for today, because I also wanna set the stage for your perspective on philanthropy and being in a position to give. After donating to your alma mater, did you sort of expand your purview? Were you giving more to education? Were you interested in healthcare philanthropy before you started thinking about your mom and cancer?
+I'll say it's a good segue. It's kind of where I got reintroduced to my now wife. I was divorced. There was an event.
+For a company, an organization called Room to Read.
+And it was a fundraiser and it was in one of the country clubs nearby, and I got invited by somebody, one of the staff members, to come. I didn't realize Mr. Valentine ended up being there, and his daughter, Hillary, was one of the very early board members. And so they were doing this thing where they give...
+They build libraries in schools internationally. Their first one was in Nepal, and
+I went and I thought, well, this was interesting, and, you know, I'd had some money. And so I donated a school. Now it turns out a third of the guys in the audience worked for me or used to work for me. So I would just like go around and say, hey, David, do you want to do a school or a library? And he'd go, yeah, sure, fine. Finally, the very last guy, his name is Bill. And I go, Bill. And he goes, count me in, Don. And that was the first time Room to Read had raised $100,000 at an event. And John Wood, who's the founder of that organization, wrote a book about it. So chapter 19 is called Count Me In, Don. So I started there. And yes, it's been, we give to many more things, but 80% of my giving has been to cancer. Okay, very good. All right, well, Don, wonderful, as always. Next time, we'll pick up. I want to trace your mom's healthcare journey and all that comes after. So we'll go from there. Yeah, remember, thank you. Recording stopped.
+
+

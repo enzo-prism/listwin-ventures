@@ -16,6 +16,7 @@ type EpisodeTranscript = {
 type Episode = {
   title: string;
   subtitle: string;
+  runtime: string;
   audioUrl: string;
   highlights: string[];
   transcriptLinks: EpisodeTranscript[];
@@ -46,46 +47,54 @@ const episodes: Episode[] = [
   {
     title: 'Episode 1 — March 25, 2025',
     subtitle: 'From Cisco to Canary: building early detection as a system',
+    runtime: '1h 04m',
     audioUrl: '/media/oral-history/caltech-2025/episode-1-2025-03-25.mp3',
     highlights: [
       'Why the “two-step” early detection model matters (biomarker + imaging)',
       'The leverage strategy: seed dollars that unlock major grant funding',
       'What progress looks like today—and what still hasn’t broken through',
+      'How a first $1M gift and later $10M Fred Hutch investment set the early team-science model',
     ],
-    transcriptLinks: [],
+    transcriptLinks: [{ label: 'Episode transcript (TXT)', href: '/media/oral-history/caltech-2025/episode-1-2025-03-25-transcript.txt' }],
   },
   {
     title: 'Episode 2 — April 2, 2025',
     subtitle: 'Origins: family, Canada, and the making of a builder',
+    runtime: '1h 00m',
     audioUrl: '/media/oral-history/caltech-2025/episode-2-2025-04-02.mp3',
     highlights: [
       'Growing up in Saskatchewan; early work ethic and entrepreneurship',
       'Engineering education and early networking sales/product lessons',
       'How early personal experiences shaped later leadership instincts',
+      'A ground-level operating lens built from factory work, field sales, and product management discipline',
     ],
-    transcriptLinks: [],
+    transcriptLinks: [{ label: 'Episode transcript (TXT)', href: '/media/oral-history/caltech-2025/episode-2-2025-04-02-transcript.txt' }],
   },
   {
     title: 'Episode 3 — April 7, 2025',
     subtitle: 'Cisco years: product rigor, acquisitions, and the internet boom',
+    runtime: '1h 04m',
     audioUrl: '/media/oral-history/caltech-2025/episode-3-2025-04-07.mp3',
     highlights: [
       'Product management under hypergrowth: engineering vs sales vs customers',
       'The IBM interoperability push as a market unlock',
       'Scaling lines of business and what it takes to go from $100M → $250M → billions',
+      'How release discipline, roadmap arbitration, and customer signal translated into repeatable growth',
     ],
-    transcriptLinks: [],
+    transcriptLinks: [{ label: 'Episode transcript (TXT)', href: '/media/oral-history/caltech-2025/episode-3-2025-04-07-transcript.txt' }],
   },
   {
     title: 'Episode 4 — April 28, 2025',
     subtitle: 'Loss, purpose, and the next decade of early detection',
+    runtime: '1h 18m',
     audioUrl: '/media/oral-history/caltech-2025/episode-4-2025-04-28.mp3',
     highlights: [
       'His mother’s ovarian cancer story as the catalyst',
       'Why diagnostics economics are still broken—and how that affects adoption',
       'The forward bet: molecular imaging + ultrasound + AI as the next frontier',
+      'A practical thesis: fix care-continuum bottlenecks first, then scale delivery economics',
     ],
-    transcriptLinks: [],
+    transcriptLinks: [{ label: 'Episode transcript (TXT)', href: '/media/oral-history/caltech-2025/episode-4-2025-04-28-transcript.txt' }],
   },
 ];
 
@@ -142,6 +151,7 @@ const episodesWithMedia = episodes.map((episode) => ({
           <div class="space-y-2">
             <h3 class="text-xl font-semibold text-ink">{episode.title}</h3>
             <p class="text-sm font-medium text-ink/65">{episode.subtitle}</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-ink/45">Runtime: {episode.runtime}</p>
           </div>
 
           {episode.hasAudio ? (

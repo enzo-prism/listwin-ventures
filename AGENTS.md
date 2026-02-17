@@ -58,6 +58,21 @@ When you add a new file under `src/pages/`, also update:
 - If you change the `/oral-history` CTA section layout, refresh Desktop visual snapshots:
   - `npx playwright test tests/visual.spec.ts --project="Desktop Chrome" --update-snapshots --grep "(/ \\(top\\)|/oral-history \\(transcript CTA\\))"`
 
+#### Caltech 2025 Source Ingest Notes
+
+- Source drop used: `/Users/enzo/Downloads/Recordings - Don Listwin Interviewed by David Zierler/`
+- Source naming map:
+  - `250325_1184 ...` -> Episode 1 (`2025-03-25`)
+  - `250402_1187 ...` -> Episode 2 (`2025-04-02`)
+  - `250407_1190 ...` -> Episode 3 (`2025-04-07`)
+  - `250428_1207 ...` -> Episode 4 (`2025-04-28`)
+- Current published assets:
+  - MP3 audio in `public/media/oral-history/caltech-2025/episode-*-*.mp3` (converted from WAV using `ffmpeg`, mono 44.1kHz, 64kbps).
+  - Per-episode transcript TXT in `public/media/oral-history/caltech-2025/episode-*-*-transcript.txt`.
+  - Combined transcript downloads:
+    - TXT: `public/media/oral-history/caltech-2025/transcript-full.txt`
+    - PDF: `public/media/oral-history/caltech-2025/transcript-full.pdf` (generated via `cupsfilter -m application/pdf`).
+
 ## Ship Checklist
 
 - `npm run build` passes.

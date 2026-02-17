@@ -104,6 +104,15 @@ The standalone contact section was removed; all inquiries route through `/contac
   - Missing or empty episode audio files show a neutral `Audio coming soon` note.
 - When `/oral-history` CTA layout changes, refresh Desktop visual baselines for the homepage/oral-history snapshot set:
   - `npx playwright test tests/visual.spec.ts --project="Desktop Chrome" --update-snapshots --grep "(/ \\(top\\)|/oral-history \\(transcript CTA\\))"`
+- The Caltech page now also supports per-episode transcript links using:
+  - `episode-1-2025-03-25-transcript.txt`
+  - `episode-2-2025-04-02-transcript.txt`
+  - `episode-3-2025-04-07-transcript.txt`
+  - `episode-4-2025-04-28-transcript.txt`
+- Audio source handling for Caltech uploads:
+  - Recordings arrive as large WAV masters (e.g., from `/Users/enzo/Downloads/Recordings - Don Listwin Interviewed by David Zierler/`).
+  - Public web audio is MP3 (mono, 44.1kHz, 64kbps) written to `public/media/oral-history/caltech-2025/episode-*.mp3`.
+  - Keep runtime and transcript links in `src/pages/oral-history-caltech.astro` in sync with uploaded assets.
 
 ## Icons (astro-icon allowlist)
 
