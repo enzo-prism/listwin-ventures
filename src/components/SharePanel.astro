@@ -9,24 +9,26 @@ const {
   pageTitle?: string;
 } = Astro.props;
 
-const encodedUrl = encodeURIComponent(pageUrl);
-const encodedTitle = encodeURIComponent(pageTitle);
+const encode = (value: string) => encodeURIComponent(value);
 
 const socialLinks = [
   {
+    network: 'x',
     label: 'X',
     icon: 'tabler:brand-twitter',
-    href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+    href: `https://twitter.com/intent/tweet?url=${encode(pageUrl)}&text=${encode(pageTitle)}`,
   },
   {
+    network: 'linkedin',
     label: 'LinkedIn',
     icon: 'tabler:brand-linkedin',
-    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encode(pageUrl)}`,
   },
   {
+    network: 'facebook',
     label: 'Facebook',
     icon: 'tabler:brand-facebook',
-    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encode(pageUrl)}`,
   },
 ];
 ---
@@ -41,6 +43,9 @@ const socialLinks = [
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
+          data-share-network={link.network}
+          data-share-url={pageUrl}
+          data-share-title={pageTitle}
           aria-label={`Share on ${link.label}`}
           title={`Share on ${link.label}`}
         >
@@ -65,26 +70,80 @@ const socialLinks = [
 
 <script is:inline>
   {(() => {
-    const copyButtons = Array.from(document.querySelectorAll('[data-share-copy]'));
+    const encode = (value) => encodeURIComponent(value);
+    const buildShareHref = (network, url, title) => {
+      if (network === 'x') {
+        return `https://twitter.com/intent/tweet?url=${encode(url)}&text=${encode(title)}`;
+      }
+      if (network === 'linkedin') {
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${encode(url)}`;
+      }
+      if (network === 'facebook') {
+        return `https://www.facebook.com/sharer/sharer.php?u=${encode(url)}`;
+      }
+      return url;
+    };
+    const runtimeUrl = (fallbackUrl) => window.location?.href || fallbackUrl;
 
-    if (!copyButtons.length) return;
+    const shareLinks = Array.from(document.querySelectorAll('[data-share-network]'));
+    shareLinks.forEach((link) => {
+      const network = link.dataset.shareNetwork;
+      const fallbackUrl = link.dataset.shareUrl || '';
+      const title = link.dataset.shareTitle || document.title || 'Listwin Ventures';
+      if (!network) return;
+      const targetUrl = runtimeUrl(fallbackUrl);
+      if (!targetUrl) return;
+      link.setAttribute('href', buildShareHref(network, targetUrl, title));
+    });
 
     const setLabel = (button, text) => {
       const label = button.querySelector('[data-copy-label]');
       if (label) label.textContent = text;
     };
+    const copyWithFallback = async (url) => {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(url);
+          return true;
+        } catch {
+          // Fall through to legacy copy method.
+        }
+      }
+
+      try {
+        const input = document.createElement('textarea');
+        input.value = url;
+        input.setAttribute('readonly', '');
+        input.style.position = 'fixed';
+        input.style.top = '0';
+        input.style.left = '0';
+        input.style.opacity = '0';
+        document.body.appendChild(input);
+        input.focus();
+        input.select();
+        input.setSelectionRange(0, input.value.length);
+        const copied = document.execCommand('copy');
+        input.remove();
+        return copied;
+      } catch {
+        return false;
+      }
+    };
+
+    const copyButtons = Array.from(document.querySelectorAll('[data-share-copy]'));
+    if (!copyButtons.length) return;
 
     copyButtons.forEach((button) => {
       button.addEventListener('click', async () => {
-        const url = button.dataset.shareUrl;
+        const url = runtimeUrl(button.dataset.shareUrl || '');
         if (!url) return;
 
         const defaultLabel = button.dataset.defaultLabel ?? 'Copy link';
+        const copied = await copyWithFallback(url);
 
-        try {
-          await navigator.clipboard.writeText(url);
+        if (copied) {
           setLabel(button, 'Copied');
-        } catch {
+        } else {
           setLabel(button, 'Copy failed');
         }
 

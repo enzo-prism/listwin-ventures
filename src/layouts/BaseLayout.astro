@@ -11,7 +11,8 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://listwinventures.com';
-const pageUrl = Astro.url?.href ?? siteUrl;
+const pagePath = `${Astro.url?.pathname ?? '/'}${Astro.url?.search ?? ''}${Astro.url?.hash ?? ''}`;
+const pageUrl = new URL(pagePath, siteUrl).toString();
 const logoUrl =
   'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp';
 const openGraphImage = `${siteUrl}/assets/uploads/OpenGraph.png`;
