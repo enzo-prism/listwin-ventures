@@ -1,0 +1,95 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const {
+  pageUrl,
+  pageTitle = 'Listwin Ventures',
+}: {
+  pageUrl: string;
+  pageTitle?: string;
+} = Astro.props;
+
+const encodedUrl = encodeURIComponent(pageUrl);
+const encodedTitle = encodeURIComponent(pageTitle);
+
+const socialLinks = [
+  {
+    label: 'X',
+    icon: 'tabler:brand-twitter',
+    href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+  },
+  {
+    label: 'LinkedIn',
+    icon: 'tabler:brand-linkedin',
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+  },
+  {
+    label: 'Facebook',
+    icon: 'tabler:brand-facebook',
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+  },
+];
+---
+
+<section class="rounded-apple border border-white/80 bg-white/95 p-4 shadow-panel ring-1 ring-white/60 sm:p-5">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/55">Share this page</p>
+    <div class="flex flex-wrap gap-2">
+      {socialLinks.map((link) => (
+        <a
+          class="btn btn-ink px-3 py-2 text-xs"
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Share on ${link.label}`}
+          title={`Share on ${link.label}`}
+        >
+          <Icon name={link.icon} width="14" height="14" />
+          <span>{link.label}</span>
+        </a>
+      ))}
+      <button
+        type="button"
+        class="btn btn-ink px-3 py-2 text-xs"
+        data-share-copy
+        data-share-url={pageUrl}
+        data-default-label="Copy link"
+        aria-label="Copy page link"
+      >
+        <Icon name="tabler:link" width="14" height="14" />
+        <span data-copy-label>Copy link</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  {(() => {
+    const copyButtons = Array.from(document.querySelectorAll('[data-share-copy]'));
+
+    if (!copyButtons.length) return;
+
+    const setLabel = (button, text) => {
+      const label = button.querySelector('[data-copy-label]');
+      if (label) label.textContent = text;
+    };
+
+    copyButtons.forEach((button) => {
+      button.addEventListener('click', async () => {
+        const url = button.dataset.shareUrl;
+        if (!url) return;
+
+        const defaultLabel = button.dataset.defaultLabel ?? 'Copy link';
+
+        try {
+          await navigator.clipboard.writeText(url);
+          setLabel(button, 'Copied');
+        } catch {
+          setLabel(button, 'Copy failed');
+        }
+
+        window.setTimeout(() => setLabel(button, defaultLabel), 1800);
+      });
+    });
+  })()}
+</script>

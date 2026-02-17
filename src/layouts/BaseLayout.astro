@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SiteNavigation from '../components/SiteNavigation';
+import SharePanel from '../components/SharePanel.astro';
 import { investmentAssets } from '../data/assets';
 import { getEntityDetails, getDetailPath } from '../data/entityDetails';
 
@@ -162,6 +163,22 @@ const navItems = [
     sections: [{ label: 'Story', items: storyLinks }],
   },
 ];
+
+const rawPathname = Astro.url?.pathname ?? '/';
+const pathname = rawPathname === '/' ? '/' : rawPathname.replace(/\/+$/, '');
+const shareEnabledPaths = new Set([
+  '/',
+  '/oral-history',
+  '/oral-history-caltech',
+  '/press',
+  '/4ag',
+  '/belizekids',
+  '/genologics',
+  '/zevx-closes-20m-funding-round-appoints-don-listwin-as-ceo',
+]);
+const shareEnabledPrefixes = ['/company/', '/exploits/'];
+const showSharePanel =
+  shareEnabledPaths.has(pathname) || shareEnabledPrefixes.some((prefix) => pathname.startsWith(prefix));
 ---
 
 <!DOCTYPE html>
@@ -244,6 +261,7 @@ const navItems = [
 
       <main id="main-content" class="flex-1" tabindex="-1">
         <div class="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
+          {showSharePanel && <SharePanel pageUrl={pageUrl} pageTitle={title} />}
           <slot />
         </div>
       </main>
