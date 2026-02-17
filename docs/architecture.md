@@ -60,6 +60,23 @@ mobile nav expands into a full-width card with all sections stacked.
   `investmentIcons`, `communityLinks`, `storyLinks`) in `BaseLayout.astro` updated whenever you add
   or rename items so the grey→green hover treatment remains aligned across desktop and mobile.
 
+## Canonical URLs & Share Links
+
+- `src/layouts/BaseLayout.astro` is the single source of truth for canonical page URLs. It builds
+  `pageUrl` from the production origin plus `Astro.url` path/query/hash components.
+- Do **not** use `Astro.url?.href` for share or OpenGraph URL values on static pages, because build
+  output can otherwise inherit `http://localhost:8080/...`.
+- `astro.config.mjs` sets `site: 'https://listwinventures.com'` and must stay aligned with the live
+  domain.
+- `src/components/SharePanel.astro` powers social share buttons and Copy Link. It also normalizes
+  links at runtime with `window.location.href` and includes a clipboard fallback (`document.execCommand('copy')`)
+  for browsers where `navigator.clipboard` is unavailable.
+- Share-strip visibility is controlled in `BaseLayout.astro` via `shareEnabledPaths` and
+  `shareEnabledPrefixes`; update those lists when adding/removing key routes.
+- Regression check after share/SEO URL changes:
+  - `npm run build`
+  - `rg "localhost:8080|localhost" dist`
+
 ## Homepage Sections
 
 After the hero and “My Story” modules, the homepage is limited to three key sections:
