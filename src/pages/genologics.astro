@@ -5,9 +5,9 @@ import RelatedPressSection from '../components/RelatedPressSection.astro';
 import { getDetailPath, getEntityDetails } from '../data/entityDetails';
 import { getRelatedPressItems } from '../data/press';
 
-const pageTitle = 'GenoLogics — LIMS for the Genomics Era';
+const pageTitle = 'GenoLogics | LIMS Story & Exit to Illumina | Listwin Ventures';
 const pageDescription =
-  'The story behind GenoLogics, the laboratory information management platform that powered translational genomics labs before joining Illumina.';
+  'The GenoLogics story: a laboratory information management platform for genomics labs, plus Don Listwin’s investment perspective and Illumina exit context.';
 
 const genologicsDetail = getEntityDetails().find((detail) => detail.slug === 'genologics');
 const officialDetailHref = genologicsDetail ? getDetailPath('genologics') : null;

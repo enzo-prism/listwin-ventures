@@ -43,7 +43,8 @@ registerGroup(philanthropyAssets.flatMap((group) => group.items), 'philanthropy'
 
 const content: Record<string, DetailContent> = {
   awarex: {
-    summary: 'AwareX provides a custom engagement platform for mobile phone users.',
+    summary:
+      'AwareX provides a mobile engagement platform that helps carriers deliver personalized billing, support, and account experiences.',
     highlights: [
       'Lets carriers deliver tailored billing, support, and self-serve journeys inside branded apps.',
       'Board guidance keeps the platform tuned to telecom-scale personalization and reliability.',
@@ -107,14 +108,15 @@ const content: Record<string, DetailContent> = {
   },
   dwave: {
     summary:
-      'D-Wave Systems is the world’s only functional quantum computer.',
+      'D-Wave Systems develops commercial quantum computing platforms used for optimization, logistics, cybersecurity, and research workloads.',
     highlights: [
       'Don backed the company early as it bridged physics breakthroughs into enterprise-grade systems.',
       'Customers use D-Wave quantum solutions for logistics, cybersecurity, and drug discovery research.',
     ],
   },
   hwvp: {
-    summary: 'HWVP invests in early-stage enterprise software companies.',
+    summary:
+      'HWVP is an early-stage enterprise software firm that backs founders with capital, operating mentorship, and go-to-market support.',
     highlights: [
       'Partners closely with founders to navigate product-market fit, hiring, and customer success.',
       'Brings decades of operational knowledge to help enterprise startups scale responsibly.',
@@ -210,7 +212,8 @@ const content: Record<string, DetailContent> = {
     ],
   },
   rapidai: {
-    summary: 'RapidAI is the worldwide leader in neurovascular imaging.',
+    summary:
+      'RapidAI builds AI-powered neurovascular imaging software that helps stroke teams triage, diagnose, and treat patients faster.',
     highlights: [
       'Platforms guide stroke teams from the first scan through intervention with AI-enhanced insights.',
       'Leadership in perfusion imaging extended global treatment windows and reshaped stroke protocols.',
@@ -281,7 +284,8 @@ const content: Record<string, DetailContent> = {
     ],
   },
   uberflip: {
-    summary: 'Uberflip is a next-generation marketing engagement platform.',
+    summary:
+      'Uberflip is a marketing engagement platform that turns static content into personalized buyer journeys for B2B revenue teams.',
     highlights: [
       'Transforms static content into personalized destinations that nurture buyers.',
       'Enables marketing teams to orchestrate engagement journeys that convert faster.',
@@ -296,7 +300,8 @@ const content: Record<string, DetailContent> = {
     ],
   },
   zededa: {
-    summary: 'Zededa is a new distributed IoT platform.',
+    summary:
+      'ZEDEDA provides an edge orchestration platform for deploying, securing, and managing distributed IoT and edge applications.',
     highlights: [
       'Delivers a cloud-based control plane that keeps edge and IoT deployments secure and observable.',
       'Simplifies how operators roll out and update distributed applications across industrial sites.',

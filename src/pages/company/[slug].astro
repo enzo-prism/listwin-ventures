@@ -17,17 +17,18 @@ export async function getStaticPaths() {
 }
 
 const { detail } = Astro.props as { detail: EntityDetail };
-const pageTitle = `${detail.name} — Portfolio Detail | Listwin Ventures`;
-const pageDescription =
-  detail.summary && detail.summary.trim().length
-    ? detail.summary
-    : `${detail.name} portfolio overview with Listwin Ventures.`;
 const categoryLabels: Record<string, string> = {
   board: 'Board',
   investment: 'Investment',
   philanthropy: 'Philanthropy',
   hero: 'Spotlight',
 };
+const primaryCategoryLabel = categoryLabels[detail.categories[0]] ?? 'Profile';
+const pageTitle = `${detail.name} | Listwin Ventures`;
+const pageDescription =
+  detail.summary && detail.summary.trim().length
+    ? detail.summary
+    : `${detail.name} ${primaryCategoryLabel.toLowerCase()} profile with Don Listwin and Listwin Ventures.`;
 const externalUrlLabel = detail.externalUrl ? detail.externalUrl.replace(/\/$/, '') : null;
 const pressReleaseUrl =
   detail.slug === 'carbon-robotics'
