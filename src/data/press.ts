@@ -402,6 +402,22 @@ const pressItems: PressItem[] = [
     relatedSlugs: ['teradici', 'genologics', 'openwave'],
   },
   {
+    id: 'teradici-engineering-emmy-2020-10-08',
+    title: 'Teradici Honored With Engineering Emmy® Award From the Television Academy',
+    publisher: 'Teradici (Business Wire)',
+    publishedIso: '2020-10-08',
+    url: 'https://www.businesswire.com/news/home/20201008006053/en/Teradici-Honored-With-Engineering-Emmy%C2%AE-Award-From-the-Television-Academy',
+    summary:
+      'The Television Academy named Teradici a recipient of the 72nd Engineering Emmy® Awards, recognizing the PCoIP technology and Cloud Access Software that let film, VFX, and broadcast teams securely run remote workstations from home during the pandemic. Don Listwin chaired Teradici through the run-up to its 2021 sale to HP Inc.',
+    kind: 'press-release',
+    section: 'recognition-academic',
+    quote:
+      'We’re thrilled and so grateful to our many industry customers and partners, who have supported us and inspired us over the years as we have built and refined our technology to meet their challenges and expectations.',
+    tags: ['teradici', 'emmy', 'recognition', 'pcoip', 'remote-production'],
+    relatedSlugs: ['teradici'],
+    featured: true,
+  },
+  {
     id: 'cisco-departure-2000-08-08',
     title: 'Cisco Systems, Inc. Announces Departure of Don Listwin',
     publisher: 'Cisco Newsroom',
