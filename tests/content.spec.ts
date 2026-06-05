@@ -21,6 +21,13 @@ const oralHistory = {
   youtubeWatch: 'https://www.youtube.com/watch?v=WEHJnQ2XtN8',
 } as const;
 
+const caltechEpisodeAudio = [
+  '/media/oral-history/caltech-2025/episode-1-2025-03-25.mp3',
+  '/media/oral-history/caltech-2025/episode-2-2025-04-02.mp3',
+  '/media/oral-history/caltech-2025/episode-3-2025-04-07.mp3',
+  '/media/oral-history/caltech-2025/episode-4-2025-04-28.mp3',
+] as const;
+
 test.describe('Content coverage', () => {
   test.beforeEach(async ({}, testInfo) => {
     test.skip(testInfo.project.name !== 'Desktop Chrome', 'Content checks run on Desktop Chrome only.');
@@ -43,6 +50,18 @@ test.describe('Content coverage', () => {
     await expect(page.locator('iframe[src*="youtube.com/embed/WEHJnQ2XtN8"]')).toHaveCount(1);
     await expect(page.locator(`a[href="${oralHistory.youtubeWatch}"]`)).toHaveCount(1);
     await expect(page.locator(`a[href="${oralHistory.transcriptPdf}"]`)).toHaveCount(1);
+  });
+
+  test('Caltech oral history page exposes audio players and MP3 downloads', async ({ page }) => {
+    await page.goto('/oral-history-caltech', { waitUntil: 'domcontentloaded' });
+
+    await expect(page.getByRole('heading', { name: 'Caltech Heritage Project Oral History (2025)', level: 1 })).toBeVisible();
+    await expect(page.locator('audio')).toHaveCount(caltechEpisodeAudio.length);
+
+    for (const audioUrl of caltechEpisodeAudio) {
+      await expect(page.locator(`audio source[src="${audioUrl}"]`), audioUrl).toHaveCount(1);
+      await expect(page.locator(`a[download][href="${audioUrl}"]`), audioUrl).toHaveCount(1);
+    }
   });
 
   test('CV page is available by direct URL and includes anti-index controls', async ({ page, request }) => {

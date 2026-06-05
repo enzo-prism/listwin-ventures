@@ -163,8 +163,13 @@ const episodesWithMedia = episodes.map((episode) => ({
             <p class="rounded-[18px] border border-ink/15 bg-ink/[0.03] px-4 py-3 text-sm text-ink/60">Audio coming soon</p>
           )}
 
-          {episode.availableTranscriptLinks.length > 0 && (
+          {(episode.hasAudio || episode.availableTranscriptLinks.length > 0) && (
             <div class="flex flex-wrap gap-2">
+              {episode.hasAudio && (
+                <a class="btn btn-ink" href={episode.audioUrl} download>
+                  Download audio (MP3)
+                </a>
+              )}
               {episode.availableTranscriptLinks.map((transcriptLink) => (
                 <a class="btn btn-ink" href={transcriptLink.href} key={transcriptLink.href}>
                   {transcriptLink.label}

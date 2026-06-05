@@ -53,7 +53,7 @@ When you add a new file under `src/pages/`, also update:
   - PDF is always shown at `/media/oral-history/caltech-2025/transcript-full.pdf`.
   - TXT is conditional and only renders when `/media/oral-history/caltech-2025/transcript-full.txt` exists.
 - Audio behavior on `/oral-history-caltech`:
-  - An episode audio player renders only when the matching `.mp3` exists and has file size > 0.
+  - An episode audio player and `Download audio (MP3)` link render only when the matching `.mp3` exists and has file size > 0.
   - Otherwise the UI shows `Audio coming soon` (no broken controls).
 - If you change the `/oral-history` CTA section layout, refresh Desktop visual snapshots:
   - `npx playwright test tests/visual.spec.ts --project="Desktop Chrome" --update-snapshots --grep "(/ \\(top\\)|/oral-history \\(transcript CTA\\))"`
