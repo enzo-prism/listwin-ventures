@@ -1,8 +1,3 @@
----
-const robotsDirectives =
-  'noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate, noai, noimageai';
-const botDirectives = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
----
 
 <!doctype html>
 <html lang="en">
@@ -47,6 +42,7 @@ const botDirectives = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
       }
 
       .print-toolbar {
+        gap: 0.6rem;
         margin: 0 auto 0.75rem;
         max-width: 680px;
         display: flex;
@@ -203,7 +199,8 @@ const botDirectives = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
   <body>
     <main>
       <div class="print-toolbar">
-        <button type="button" class="print-button" onclick="window.print()">
+        <form method="post" action="/cv/logout"><button type="submit" class="print-button">Sign out</button></form>
+        <button type="button" class="print-button" data-print-cv>
           Print CV
         </button>
       </div>
@@ -278,5 +275,6 @@ const botDirectives = 'noindex, nofollow, noarchive, nosnippet, noimageindex';
         </section>
       </article>
     </main>
-  </body>
+    <script src="/cv-print.js" defer></script>
+</body>
 </html>

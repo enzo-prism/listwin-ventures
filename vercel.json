@@ -1,0 +1,20 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/cv.js": {
+      "includeFiles": "private/cv.html",
+      "memory": 128,
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/cv",
+      "destination": "/api/cv"
+    },
+    {
+      "source": "/cv/:path*",
+      "destination": "/api/cv"
+    }
+  ]
+}

@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview --port 8080",
     "preview:test": "astro preview --port 8081 --host 127.0.0.1",
+    "test:cv-auth": "node --test tests/cv-auth.test.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {

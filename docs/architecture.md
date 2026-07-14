@@ -143,8 +143,19 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - `src/pages/sitemap.xml.ts` builds `sitemap.xml` from a `staticRoutes` list plus the company and exploit slugs.
 - When adding a new top-level static page (example: `/press`), also add it to `staticRoutes`.
 - `/oral-history-caltech` is included in `staticRoutes` as the Caltech 2025 interview route.
-- `/cv` is intentionally excluded from `staticRoutes` and is not linked in navigation; it is a private share-only CV page.
-- Crawlers are blocked from `/cv` in `src/pages/robots.txt.ts` and `src/pages/llms.txt.ts`.
+- `/cv` is intentionally excluded from `staticRoutes` and all public discovery files.
+- `/cv` is not an Astro route. `vercel.json` rewrites it to `api/cv.js`, which fails closed unless `CV_PASSWORD_HASH` and `CV_SESSION_SECRET` are configured.
+- The handler uses a scrypt password hash, an eight-hour HMAC-signed `HttpOnly; Secure; SameSite=Strict` session, same-origin POST checks, and private/no-store response headers.
+- The CV HTML lives in `private/cv.html`, is included only in the Vercel function bundle, and must never be moved under `public/` or `src/pages/`.
+- `src/pages/robots.txt.ts` disallows `/cv`; this is only a discovery control, not the access-control boundary.
+
+## Private CV operations
+
+- Generate the password hash with the audited `createPasswordHash()` helper in `api/cv.js`; store only the hash in Vercel.
+- Store an independent random 32-byte-or-longer signing key as `CV_SESSION_SECRET`.
+- Rotate both values to revoke the shared password and every active session.
+- Run `npm run test:cv-auth`, `npm run build`, and verify that `dist/cv/index.html` does not exist before deploying.
+- Production acceptance: anonymous/wrong-password requests expose no CV bytes; authenticated requests return `Cache-Control: private, no-store`; logout and tampered/expired cookies fail closed.
 
 ## Development Workflow
 
