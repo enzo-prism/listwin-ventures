@@ -67,7 +67,7 @@ test.describe('Content coverage', () => {
   test('CV stays out of public discovery files', async ({ request }) => {
     const robotsResponse = await request.get('/robots.txt');
     expect(robotsResponse.ok()).toBeTruthy();
-    expect(await robotsResponse.text()).toContain('Disallow: /cv');
+    expect(await robotsResponse.text()).not.toContain('/cv');
 
     const llmsResponse = await request.get('/llms.txt');
     expect(llmsResponse.ok()).toBeTruthy();

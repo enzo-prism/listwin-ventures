@@ -147,7 +147,7 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - `/cv` is not an Astro route. `vercel.json` rewrites it to `api/cv.js`, which fails closed unless `CV_PASSWORD_HASH` and `CV_SESSION_SECRET` are configured.
 - The handler uses a scrypt password hash, an eight-hour HMAC-signed `HttpOnly; Secure; SameSite=Strict` session, same-origin POST checks, and private/no-store response headers.
 - The CV HTML lives in `private/cv.html`, is included only in the Vercel function bundle, and must never be moved under `public/` or `src/pages/`.
-- `src/pages/robots.txt.ts` disallows `/cv`; this is only a discovery control, not the access-control boundary.
+- `/cv` is deliberately not blocked in `robots.txt`, so crawlers can receive the handler's `X-Robots-Tag: noindex` response and remove any previously indexed URL. Authentication remains the access-control boundary.
 
 ## Private CV operations
 
