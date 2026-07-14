@@ -121,6 +121,8 @@ describe('Listwin private CV handler', () => {
     assert.equal(authorized.statusCode, 200);
     assert.match(authorized.body, /Board Experience/);
     assert.match(authorized.body, /Don Listwin/);
+    assert.match(authorized.body, /<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">/);
+    assert.doesNotMatch(authorized.body, /\{(?:robotsDirectives|botDirectives)\}/);
     assert.equal(authorized.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
     assert.equal(authorized.getHeader('vary'), 'Cookie');
   });
