@@ -64,33 +64,18 @@ test.describe('Content coverage', () => {
     }
   });
 
-  test('CV page is available by direct URL and includes anti-index controls', async ({ page, request }) => {
-    await page.goto('/cv', { waitUntil: 'domcontentloaded' });
-
-    await expect(page.getByRole('heading', { name: 'Don Listwin', level: 1 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Board Experience', level: 2 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Managment Experience', level: 2 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Skills', level: 2 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Education', level: 2 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Personal', level: 2 })).toBeVisible();
-
-    const robotsMeta = page.locator('meta[name="robots"]');
-    await expect(robotsMeta).toHaveAttribute('content', /noindex/i);
-
+  test('CV stays out of public discovery files', async ({ request }) => {
     const robotsResponse = await request.get('/robots.txt');
     expect(robotsResponse.ok()).toBeTruthy();
-    const robotsBody = await robotsResponse.text();
-    expect(robotsBody).toContain('Disallow: /cv');
+    expect(await robotsResponse.text()).not.toContain('/cv');
 
     const llmsResponse = await request.get('/llms.txt');
     expect(llmsResponse.ok()).toBeTruthy();
-    const llmsBody = await llmsResponse.text();
-    expect(llmsBody).toContain('/cv');
+    expect(await llmsResponse.text()).not.toContain('/cv');
 
     const sitemapResponse = await request.get('/sitemap.xml');
     expect(sitemapResponse.ok()).toBeTruthy();
-    const sitemapBody = await sitemapResponse.text();
-    expect(sitemapBody).not.toContain('/cv</loc>');
+    expect(await sitemapResponse.text()).not.toContain('/cv</loc>');
   });
 
   test('Stanford company page surfaces core external coverage', async ({ page }) => {
