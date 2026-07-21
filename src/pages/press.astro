@@ -5,9 +5,16 @@ import PressLinkCard from '../components/PressLinkCard.astro';
 import PressPhotoCard from '../components/PressPhotoCard.astro';
 import { getPressItems, type PressItem } from '../data/press';
 
-const pageTitle = 'Press & References | Don Listwin | Listwin Ventures';
+const pressSchema = {
+  '@type': 'CollectionPage',
+  '@id': 'https://www.listwinventures.com/press#webpage',
+  url: 'https://www.listwinventures.com/press',
+  isPartOf: { '@id': 'https://www.listwinventures.com#website' },
+  about: { '@id': 'https://www.listwinventures.com#person' },
+};
+const pageTitle = 'Don Listwin Press & References | Listwin Ventures';
 const pageDescription =
-  'Browse verified press coverage, interviews, and primary-source references about Don Listwin, Listwin Ventures, and Canary Foundation work.';
+  'A curated library of third-party coverage and primary sources on Don Listwin: Stanford honors, cancer early detection, board roles, and BelizeKIDS work.';
 
 const pressItems = getPressItems();
 
@@ -76,7 +83,7 @@ const visibleSections = sections.filter((section) => section.items.length > 0);
 const browseAllAnchor = visibleSections[0] ? `#${visibleSections[0].id}` : ungrouped.length ? '#library' : '#featured';
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} jsonLd={pressSchema}>
   <section class="lv-section">
     <div class="space-y-3 text-center">
       <p class="lv-eyebrow">Press</p>

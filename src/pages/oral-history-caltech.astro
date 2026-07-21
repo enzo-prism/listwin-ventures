@@ -4,9 +4,9 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const pageTitle = 'Caltech Heritage Project Oral History (2025) — Don Listwin';
+const pageTitle = 'Don Listwin: Caltech Oral History (2025) | Listwin Ventures';
 const pageDescription =
-  'Listen to the four-part 2025 Caltech Heritage Project interview with Don Listwin on Cisco, Openwave, investing, and building systems for early cancer detection.';
+  'Four sessions recorded with David Zierler in 2025: Don Listwin on Cisco, Openwave, and early cancer detection. Listen to each episode or read the transcript.';
 
 type EpisodeTranscript = {
   label: string;
@@ -103,9 +103,43 @@ const episodesWithMedia = episodes.map((episode) => ({
   hasAudio: fileHasContent(episode.audioUrl),
   availableTranscriptLinks: episode.transcriptLinks.filter((link) => fileExists(link.href)),
 }));
+
+// Core schema.org vocabulary: CreativeWorkSeries + AudioObject. PodcastSeries lives in the pending
+// extension and this is an interview series, not a podcast. Only episodes whose MP3 is actually
+// present are described, so the markup can never advertise audio that 404s.
+const SITE = 'https://www.listwinventures.com';
+const seriesUrl = `${SITE}/oral-history-caltech`;
+const toIsoDuration = (runtime: string) => {
+  const hours = /(\d+)\s*h/.exec(runtime)?.[1];
+  const minutes = /(\d+)\s*m/.exec(runtime)?.[1];
+  return `PT${hours ? `${hours}H` : ''}${minutes ? `${Number(minutes)}M` : ''}` || 'PT0M';
+};
+const seriesSchema = {
+  '@type': 'CreativeWorkSeries',
+  '@id': `${seriesUrl}#series`,
+  url: seriesUrl,
+  name: 'Caltech Heritage Project Oral History (2025) — Don Listwin',
+  inLanguage: 'en',
+  about: { '@id': `${SITE}#person` },
+  publisher: { '@type': 'Organization', name: 'Caltech Heritage Project' },
+  hasPart: episodesWithMedia
+    .filter((episode) => episode.hasAudio)
+    .map((episode, index) => ({
+      '@type': 'AudioObject',
+      '@id': `${seriesUrl}#episode-${index + 1}`,
+      position: index + 1,
+      name: `${episode.title}: ${episode.subtitle}`,
+      contentUrl: `${SITE}${episode.audioUrl}`,
+      encodingFormat: 'audio/mpeg',
+      duration: toIsoDuration(episode.runtime),
+      uploadDate: /(\d{4}-\d{2}-\d{2})/.exec(episode.audioUrl)?.[1],
+      inLanguage: 'en',
+      isPartOf: { '@id': `${seriesUrl}#series` },
+    })),
+};
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} jsonLd={seriesSchema}>
   <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-3 text-center">
       <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Interview</p>

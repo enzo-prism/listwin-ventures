@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
 
-const pageTitle = 'Oral History (2018) | Don Listwin | Listwin Ventures';
+const pageTitle = 'Don Listwin Oral History (2018) | Listwin Ventures';
 const pageDescription =
   'Watch the 2018 Computer History Museum oral history on Don Listwin covering Cisco growth, Openwave, leadership lessons, and the Canary Foundation.';
 
@@ -72,7 +72,7 @@ const iconMap: Record<string, string> = {
 };
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} ogType="article">
   <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-3 text-center">
       <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Interview</p>

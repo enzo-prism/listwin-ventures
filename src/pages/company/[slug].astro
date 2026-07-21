@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildTitle, buildDescription } from '../../lib/seo';
 import HeroMedia from '../../components/HeroMedia.astro';
 import RelatedPressSection from '../../components/RelatedPressSection.astro';
 import { getEntityDetails, type EntityDetail } from '../../data/entityDetails';
@@ -24,11 +25,33 @@ const categoryLabels: Record<string, string> = {
   hero: 'Spotlight',
 };
 const primaryCategoryLabel = categoryLabels[detail.categories[0]] ?? 'Profile';
-const pageTitle = `${detail.name} | Listwin Ventures`;
-const pageDescription =
+// `intro` is the visible lede. pageTitle/pageDescription are metadata only — keep them separate,
+// or the on-page paragraph starts showing trimmed meta copy.
+const intro =
   detail.summary && detail.summary.trim().length
     ? detail.summary
     : `${detail.name} ${primaryCategoryLabel.toLowerCase()} profile with Don Listwin and Listwin Ventures.`;
+const pageTitle = detail.seoTitle ?? buildTitle(detail.seoName ?? detail.name);
+const pageDescription =
+  detail.seoDescription ?? buildDescription([detail.summary, ...detail.highlights]);
+
+// The richer standalone pages are the ones worth ranking; consolidate the generated duplicates
+// onto them rather than competing with them.
+const canonicalOverrides: Record<string, string> = {
+  genologics: '/genologics',
+  belizekids: '/belizekids',
+};
+const canonical = canonicalOverrides[detail.slug];
+
+const selfUrl = `https://www.listwinventures.com/company/${detail.slug}`;
+const jsonLd = {
+  '@type': 'Organization',
+  '@id': `${selfUrl}#organization`,
+  name: detail.seoName ?? detail.name,
+  description: detail.summary,
+  ...(detail.externalUrl ? { url: detail.externalUrl, sameAs: [detail.externalUrl] } : {}),
+  ...(detail.asset?.path ? { logo: { '@type': 'ImageObject', url: detail.asset.path } } : {}),
+};
 const externalUrlLabel = detail.externalUrl ? detail.externalUrl.replace(/\/$/, '') : null;
 const pressReleaseUrl =
   detail.slug === 'carbon-robotics'
@@ -79,7 +102,7 @@ const carbonNews = isCarbonRobotics
   : null;
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} canonical={canonical} jsonLd={jsonLd}>
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-6 text-center">
       {!hideCategoryLabel && (
@@ -109,7 +132,7 @@ const carbonNews = isCarbonRobotics
       )}
       <div class="space-y-2">
         <h1 class="font-display text-3xl font-semibold text-ink sm:text-4xl">{detail.name}</h1>
-        <p class="text-base text-ink/70">{pageDescription}</p>
+        <p class="text-base text-ink/70">{intro}</p>
       </div>
       {(detail.externalUrl || pressReleaseUrl) && (
         <div class="flex flex-wrap justify-center gap-3">

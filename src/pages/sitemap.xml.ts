@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getEntityDetails, getDetailPath } from '../data/entityDetails';
 import { getExploitDetails, getExploitPath } from '../data/exploitDetails';
 
-const siteUrl = (import.meta.env.SITE_URL as string | undefined)?.replace(/\/$/, '') || 'https://listwinventures.com';
+const siteUrl = (import.meta.env.SITE_URL as string | undefined)?.replace(/\/$/, '') || 'https://www.listwinventures.com';
 
 const staticRoutes = [
   '/',

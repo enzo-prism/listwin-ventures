@@ -9,9 +9,17 @@ import { getExploitPath } from '../data/exploitDetails';
 import { getPressItems, isExternalUrl, type PressItem } from '../data/press';
 import { Icon } from 'astro-icon/components';
 
-const pageTitle = 'Don Listwin | Listwin Ventures';
+const profileSchema = {
+  '@type': 'ProfilePage',
+  '@id': 'https://www.listwinventures.com/#webpage',
+  url: 'https://www.listwinventures.com/',
+  isPartOf: { '@id': 'https://www.listwinventures.com#website' },
+  about: { '@id': 'https://www.listwinventures.com#person' },
+  mainEntity: { '@id': 'https://www.listwinventures.com#person' },
+};
+const pageTitle = 'Don Listwin, Technology Investor | Listwin Ventures';
 const pageDescription =
-  'Don Listwin is a technology investor, operator, and philanthropist backing companies in AI, robotics, networking, data, and early cancer detection.';
+  'Don Listwin spent a decade at Cisco and led Openwave and RapidAI as CEO. See his investments across AI, robotics, and data, plus his cancer detection work.';
 
 const carbonRoboticsDetailPath = getDetailPath('carbon-robotics');
 const carbonRoboticsAsset = investmentAssets
@@ -318,7 +326,7 @@ const exploitThemes = [
 
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} jsonLd={profileSchema}>
   <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 text-center shadow-panel ring-1 ring-white/60 sm:p-10">
 		    <p class="mx-auto flex items-center justify-center text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-ink/50 sm:text-xs">
 	      <span class="sr-only">Roles:</span>

@@ -3,13 +3,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroMedia from '../components/HeroMedia.astro';
 import { heroAssets } from '../data/assets';
 
-const pageTitle = 'ZEVX Funding Announcement (2023) | Don Listwin CEO Appointment';
+const pageTitle = 'ZEVX Raises $20M+, Names Don Listwin CEO | Listwin Ventures';
 const pageDescription =
-  'Official release announcing ZEVX’s $20M+ funding round and Don Listwin’s appointment as CEO in February 2023.';
+  'The February 2023 release: ZEVX closed over $20M led by Reynolds Capital and named Don Listwin CEO, with Kevin J. Kennedy joining as Chairman.';
 const zevxLogo = heroAssets.find((asset) => asset.id === 'zevx');
+
+// Dates and names below are taken verbatim from the release body rendered on this page.
+const releaseSchema = {
+  '@type': 'NewsArticle',
+  headline: 'ZEVX Closes $20M Funding Round, Appoints Don Listwin as CEO',
+  datePublished: '2023-02-16',
+  about: 'ZEVX electric vehicle infrastructure funding and leadership announcement',
+  author: { '@type': 'Organization', name: 'ZEVX' },
+  publisher: { '@id': 'https://www.listwinventures.com#organization' },
+  mainEntityOfPage: 'https://www.listwinventures.com/zevx-closes-20m-funding-round-appoints-don-listwin-as-ceo',
+};
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} ogType="article" jsonLd={releaseSchema}>
   <section class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <article class="mx-auto max-w-3xl space-y-6 text-base leading-7 text-ink/80 [overflow-wrap:anywhere]">
       <header class="space-y-5">

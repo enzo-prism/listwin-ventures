@@ -4,9 +4,13 @@ import RelatedPressSection from '../components/RelatedPressSection.astro';
 import { belizeKidsGallery } from '../data/assets';
 import { getRelatedPressItems } from '../data/press';
 
-const pageTitle = 'BelizeKids.org | Community Work | Listwin Ventures';
+// Visible copy, kept separate from the metadata below — see the note in 4ag.astro.
+const heading = 'BelizeKids.org';
+const intro =
+  'Education, medical outreach, and marine conservation programs in Belize.';
+const pageTitle = 'BelizeKids.org: Schools and Clinics | Listwin Ventures';
 const pageDescription =
-  'Explore BelizeKids.org programs supported by Don Listwin, including education initiatives, medical outreach, and marine conservation in Belize.';
+  'Don Listwin and his wife created BelizeKids.org to fund education, medical outreach, and conservation in Belize. See the programs and photos from the ground.';
 const galleryImages = belizeKidsGallery.slice(0, Math.max(0, belizeKidsGallery.length - 3));
 const relatedPress = getRelatedPressItems('belizekids');
 ---
@@ -14,8 +18,8 @@ const relatedPress = getRelatedPressItems('belizekids');
 <BaseLayout title={pageTitle} description={pageDescription}>
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-4 text-center">
-      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{pageTitle}</h1>
-      <p class="text-base text-ink/70">{pageDescription}</p>
+      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{heading}</h1>
+      <p class="text-base text-ink/70">{intro}</p>
       <div class="flex justify-center">
         <a class="btn btn-ink" href="https://belizekids.org" target="_blank" rel="noopener noreferrer">
           Visit belizekids.org

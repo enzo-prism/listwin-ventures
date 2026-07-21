@@ -5,9 +5,13 @@ import RelatedPressSection from '../components/RelatedPressSection.astro';
 import { getDetailPath, getEntityDetails } from '../data/entityDetails';
 import { getRelatedPressItems } from '../data/press';
 
-const pageTitle = 'GenoLogics | LIMS Story & Exit to Illumina | Listwin Ventures';
+// Visible copy, kept separate from the metadata below — see the note in 4ag.astro.
+const heading = 'GenoLogics';
+const intro =
+  'Lab information management software for proteomics and sequencing labs, acquired by Illumina in 2015.';
+const pageTitle = 'GenoLogics — LIMS Acquired by Illumina | Listwin Ventures';
 const pageDescription =
-  'The GenoLogics story: a laboratory information management platform for genomics labs, plus Don Listwin’s investment perspective and Illumina exit context.';
+  'GenoLogics built lab information management software for proteomics and sequencing labs, then sold to Illumina in 2015. Read the timeline behind the exit.';
 
 const genologicsDetail = getEntityDetails().find((detail) => detail.slug === 'genologics');
 const officialDetailHref = genologicsDetail ? getDetailPath('genologics') : null;
@@ -57,8 +61,8 @@ const focusAreas = [
   <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
     <div class="space-y-4 text-center">
       <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Exit spotlight</p>
-      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{pageTitle}</h1>
-      <p class="mx-auto max-w-3xl text-base text-ink/70">{pageDescription}</p>
+      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{heading}</h1>
+      <p class="mx-auto max-w-3xl text-base text-ink/70">{intro}</p>
       <div class="flex flex-wrap justify-center gap-3">
         {officialDetailHref && (
           <a class="btn btn-ink" href={officialDetailHref}>

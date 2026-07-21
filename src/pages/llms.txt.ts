@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-const siteUrl = (import.meta.env.SITE_URL as string | undefined)?.replace(/\/$/, '') || 'https://listwinventures.com';
+const siteUrl = (import.meta.env.SITE_URL as string | undefined)?.replace(/\/$/, '') || 'https://www.listwinventures.com';
 
 export const GET: APIRoute = () => {
   const body = `Site: ${siteUrl}

@@ -11,6 +11,12 @@ type Category = 'board' | 'investment' | 'philanthropy' | 'hero';
 type DetailContent = {
   summary: string;
   highlights: string[];
+  /** Metadata overrides. Used when the generated title/description would be poor — a summary
+   *  that is too short, a name derived from logo alt text, or copy carrying an unsourced
+   *  superlative that should not be promoted into a meta description. */
+  seoName?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
 export type EntityDetail = {
@@ -21,6 +27,9 @@ export type EntityDetail = {
   highlights: string[];
   externalUrl?: string;
   asset: VisualAsset;
+  seoName?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
 const assetIndex = new Map<string, VisualAsset>();
@@ -59,6 +68,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   calix: {
+    seoDescription: 'Calix provides next generation fiber optic based broadband solutions. Don serves as Lead Independent Director, focusing on go-to-market and customer success.',
     summary:
       'Calix is a leading provider of next generation fiber optic based broadband solutions.',
     highlights: [
@@ -75,6 +85,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   'canary-foundation': {
+    seoDescription: 'Canary Foundation, founded and led by Don Listwin, focuses solely on early cancer detection, funding research centers at Stanford, Cambridge, and Calgary.',
     summary:
       'Canary Foundation (Founder & CEO) has been the only foundation in the world focused solely on early cancer detection for over 15 years.',
     highlights: [
@@ -83,6 +94,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   'canary-challenge': {
+    seoDescription: 'The Canary Challenge is a charity ride that raises funds for Canary Foundation research and care programs, combining cycling, community, and patient stories.',
     summary:
       'The Canary Challenge is a flagship charity ride that raises funds for Canary Foundation research and care programs.',
     highlights: [
@@ -91,6 +103,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   clarius: {
+    seoDescription: 'Clarius Mobile Health makes accurate, easy to use and affordable imaging tools: handheld ultrasound scanners that pair with smartphones to scan anywhere.',
     summary:
       'Clarius Mobile Health empowers every medical professional with accurate, easy to use and affordable imaging tools.',
     highlights: [
@@ -123,6 +136,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   etek: {
+    seoDescription: 'ETEK Dynamics supplied networking and broadband access equipment, with board guidance on channel strategy and the shift from copper to packet networks.',
     summary:
       'ETEK Dynamics supplied networking and broadband access equipment during the first wave of internet build-outs.',
     highlights: [
@@ -131,6 +145,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   genologics: {
+    seoDescription: 'GenoLogics created laboratory information management software (LIMS) that helped genomics and proteomics labs manage next-generation sequencing workflows.',
     summary:
       'GenoLogics created laboratory information management software (LIMS) for genomics and proteomics labs.',
     highlights: [
@@ -139,6 +154,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   isilon: {
+    seoDescription: 'Isilon Systems built scale-out NAS storage for media, genomics, and cloud workloads, marrying hardware economics with software simplicity. Acquired by EMC.',
     summary:
       'Isilon Systems (acquired by EMC) pioneered scale-out NAS storage tuned for media, genomics, and cloud workloads.',
     highlights: [
@@ -147,6 +163,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   joyent: {
+    seoDescription: 'Joyent operated an early public cloud and built the Node.js ecosystem that powers modern web apps, with innovations in containers and real-time apps.',
     summary:
       'Joyent operated one of the earliest public clouds and built the Node.js ecosystem that powers modern web apps.',
     highlights: [
@@ -155,6 +172,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   lucile: {
+    seoDescription: 'Lucile Packard Children\'s Hospital at Stanford delivers pediatric and obstetric care alongside research, and partners on early detection trials.',
     summary:
       'Lucile Packard Children’s Hospital at Stanford delivers pediatric and obstetric care alongside world-class research.',
     highlights: [
@@ -163,6 +181,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   moffitt: {
+    seoDescription: 'Moffitt Cancer Center in Tampa, Florida, is a cancer research and patient care institute working with Canary Foundation researchers on screening technologies.',
     summary:
       'Moffitt Cancer Center in Tampa, Florida, is a leading institute for cancer research and patient care.',
     highlights: [
@@ -171,6 +190,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   nih: {
+    seoDescription: 'The National Institutes of Health funds biomedical research and sets priorities for patient care. Don served on the National Cancer Institute\'s Board.',
     summary:
       'The National Institutes of Health (NIH) funds biomedical research and sets national priorities for patient care.',
     highlights: [
@@ -179,6 +199,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   openwave: {
+    seoDescription: 'Openwave, born from the merger of Software.com and Phone.com, built the software stack that powered the mobile internet. Don led it from 2000 to 2004.',
     summary:
       'Openwave (born from the merger of Software.com and Phone.com) built the essential software stack that powered the first generation of the mobile internet.',
     highlights: [
@@ -188,6 +209,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   poet: {
+    seoDescription: 'POET Technologies designs photonic integrated circuits that make optical networking more energy efficient, reducing cost for datacenter transceivers.',
     summary:
       'POET Technologies designs photonic integrated circuits that make high-speed optical networking more energy efficient.',
     highlights: [
@@ -196,6 +218,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   plumgrid: {
+    seoDescription: 'PLUMgrid built software-defined networking overlays so enterprises could virtualize data center topologies, anticipating multi-cloud networking patterns.',
     summary:
       'PLUMgrid built software-defined networking overlays so enterprises could virtualize complex data center topologies.',
     highlights: [
@@ -204,6 +227,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   rally: {
+    seoDescription: 'Rally Ventures I-V invests in early-stage business technology companies, empowering entrepreneurs building products that modern enterprises actually deploy.',
     summary:
       'Rally Ventures I–V invests exclusively in early-stage business technology companies.',
     highlights: [
@@ -220,6 +244,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   redback: {
+    seoDescription: 'Redback Networks built edge routers for broadband carriers during DSL and fiber deployments; its SmartEdge platforms powered telco triple-play launches.',
     summary:
       'Redback Networks built edge routers for broadband carriers during the first wave of DSL and fiber deployments.',
     highlights: [
@@ -228,6 +253,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   robin: {
+    seoDescription: 'Robin Systems built next-generation data center software that automated Kubernetes-based container infrastructure for data-intensive and telco workloads.',
     summary:
       'ROBIN (Q1 2022) next-generation data center software delivering automated container infrastructure, sold to Rakuten Symphony.',
     highlights: [
@@ -236,6 +262,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   sana: {
+    seoDescription: 'Sana Security developed behavior-based intrusion prevention software to protect enterprises from emerging threats, up to its acquisition by AVG.',
     summary:
       'Sana Security developed behavior-based intrusion prevention software to protect enterprises from emerging threats.',
     highlights: [
@@ -252,6 +279,8 @@ const content: Record<string, DetailContent> = {
     ],
   },
   sequoia: {
+    seoDescription: 'Sequoia helps founders build companies across consumer, enterprise, and health. Don is a Technology Partner, advising teams on go-to-market and scaling.',
+    seoName: 'Sequoia',
     summary:
       'Sequoia helps daring founders build legendary companies across consumer, enterprise, and health.',
     highlights: [
@@ -268,6 +297,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   telesoft: {
+    seoDescription: 'TeleSoft Partners provides entrepreneurs with capital, knowledge, contacts, and expertise, pairing founders with proven operators and customer introductions.',
     summary:
       'TeleSoft Partners provides entrepreneurs with capital, knowledge, contacts, and expertise.',
     highlights: [
@@ -276,6 +306,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   teradici: {
+    seoDescription: 'Teradici invented PCoIP technology that securely streams high-performance desktops to artists, engineers, and cloud workstations. Sold to HP Inc. in Q4 2021.',
     summary:
       'TERADICI (Q4 2021) multi-cloud access for high-performance devices, sold to HP Inc.',
     highlights: [
@@ -292,6 +323,8 @@ const content: Record<string, DetailContent> = {
     ],
   },
   vida: {
+    seoDescription: 'VIDA is a precision lung health company using AI-powered lung intelligence, with Discovery services providing quantitative endpoints for clinical trials.',
+    seoName: 'VIDA',
     summary:
       'VIDA is a precision lung health company accelerating therapies to patients through AI-powered lung intelligence.',
     highlights: [
@@ -308,6 +341,7 @@ const content: Record<string, DetailContent> = {
     ],
   },
   zevx: {
+    seoDescription: 'ZEVX retrofits commercial vehicle fleets with intelligent EV powertrains. Don transitioned from Executive Chair to CEO to accelerate commercialization.',
     summary:
       'ZEVX retrofits commercial vehicle fleets with intelligent EV powertrains and data services.',
     highlights: [
@@ -381,6 +415,9 @@ const entityDetails: EntityDetail[] = requiredSlugs
       highlights: detailContent.highlights,
       externalUrl: asset.href,
       asset,
+      seoName: detailContent.seoName,
+      seoTitle: detailContent.seoTitle,
+      seoDescription: detailContent.seoDescription,
     };
   })
   .sort((a, b) => a.name.localeCompare(b.name));

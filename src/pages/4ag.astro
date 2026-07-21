@@ -5,9 +5,14 @@ import RelatedPressSection from '../components/RelatedPressSection.astro';
 import FourAgCarousel from '../components/FourAgCarousel';
 import { getRelatedPressItems } from '../data/press';
 
-const pageTitle = '4AG Robotics | Don Listwin Investment | Listwin Ventures';
+// `heading`/`intro` are what the page displays. `pageTitle`/`pageDescription` are metadata only —
+// keep them separate, or the visible <h1> renders the pipes and brand suffix of a title tag.
+const heading = '4AG Robotics';
+const intro =
+  '4AG Robotics retrofits working mushroom farms with autonomous harvesters that run around the clock.';
+const pageTitle = '4AG Robotics: Mushroom Harvesting | Listwin Ventures';
 const pageDescription =
-  '4AG Robotics builds autonomous mushroom-harvesting systems. Explore the Listwin Ventures investment thesis, milestones, and related coverage.';
+  '4AG Robotics retrofits working mushroom farms with harvesters that run 24/7. See how the robots pick, where they are deployed, and who funds the rollout.';
 const relatedPress = getRelatedPressItems('4ag');
 
 const initiativeGoals = [
@@ -134,8 +139,8 @@ const carouselImages = [
     <div class="space-y-8 p-6 sm:p-10">
       <div class="space-y-4 text-center">
         <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Initiative</p>
-        <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{pageTitle}</h1>
-        <p class="mx-auto max-w-3xl text-base text-ink/70">{pageDescription}</p>
+        <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{heading}</h1>
+        <p class="mx-auto max-w-3xl text-base text-ink/70">{intro}</p>
         <p class="mx-auto max-w-3xl text-sm text-ink/60">
           Their site says labour shortages are “crippling production capabilities,” so 4AG deploys autonomous harvesters that work
           24/7, climb four-metre shelving, and keep demand from going to waste.

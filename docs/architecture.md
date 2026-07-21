@@ -66,8 +66,15 @@ mobile nav expands into a full-width card with all sections stacked.
   `pageUrl` from the production origin plus `Astro.url` path/query/hash components.
 - Do **not** use `Astro.url?.href` for share or OpenGraph URL values on static pages, because build
   output can otherwise inherit `http://localhost:8080/...`.
-- `astro.config.mjs` sets `site: 'https://listwinventures.com'` and must stay aligned with the live
-  domain.
+- **The canonical host is `https://www.listwinventures.com` (with `www`).** Production serves `www`
+  with a 200 and 307-redirects the apex to it, so every URL the site emits must use `www` — a
+  canonical pointing at a redirecting host is worse than no canonical at all. Five files must agree:
+  `astro.config.mjs`, `BaseLayout.astro`, `sitemap.xml.ts`, `robots.txt.ts`, `llms.txt.ts`.
+- ⚠️ The apex→www redirect is currently **307 (temporary)**, which tells Google *not* to consolidate
+  the hosts. It should be **308/301 permanent** — that is a Vercel domain setting, not a repo change.
+- Canonical URLs strip the trailing slash. Both `/press` and `/press/` return 200, so without
+  normalization a page's self-canonical (`/genologics/`) would disagree with another page's override
+  pointing at it (`/genologics`).
 - `src/components/SharePanel.astro` powers social share buttons and Copy Link. It also normalizes
   links at runtime with `window.location.href` and includes a clipboard fallback (`document.execCommand('copy')`)
   for browsers where `navigator.clipboard` is unavailable.
@@ -76,6 +83,47 @@ mobile nav expands into a full-width card with all sections stacked.
 - Regression check after share/SEO URL changes:
   - `npm run build`
   - `rg "localhost:8080|localhost" dist`
+
+## Page Metadata (titles, descriptions, OpenGraph, structured data)
+
+`BaseLayout.astro` accepts optional metadata props, all defaulted so a page that passes only
+`title` and `description` behaves exactly as before:
+
+| Prop | Purpose |
+|---|---|
+| `canonical` | Point at a different URL when two routes cover the same subject |
+| `ogType` | `website` (default) or `article` |
+| `ogImage` / `ogImageAlt` | Per-page share image; falls back to the site card |
+| `robots` | Emits `<meta name="robots">`; omitted entirely when unset |
+| `jsonLd` | Page-specific schema.org node(s), appended to the shared `@graph` |
+
+Rules worth knowing before editing:
+
+- **Never render `pageTitle` or `pageDescription` as visible page copy.** They are title-tag and
+  meta-description strings — brand suffix, pipes and all. `/4ag`, `/belizekids`, `/genologics`, and
+  both dynamic routes previously did this, so the on-page `<h1>` literally read
+  `4AG Robotics | Don Listwin Investment | Listwin Ventures`. Each page now keeps separate
+  `heading`/`intro` (or `intro`) consts for what the visitor sees.
+- Generated routes build metadata through `src/lib/seo.ts` (`buildTitle`, `buildDescription`).
+  `buildDescription` packs whole sentences so the result is always grammatical, and
+  `truncateAtWord` never cuts mid-word or leaves a dangling preposition.
+- Records whose generated output would be poor carry `seoTitle` / `seoDescription` / `seoName`
+  overrides in `entityDetails.ts` and `exploitDetails.ts`. `seoName` exists because some names are
+  derived from logo alt text (`Sequoia tech partner`, `VIDA lung health`).
+- **Overrides are also the factual-integrity control.** Several `summary` fields carry unsourced
+  superlatives ("the only foundation in the world…", "a leading provider", "pioneered"). A meta
+  description is the most-quoted surface on the site, so those records have an `seoDescription` that
+  states the same thing without the unverifiable claim. Keep that bar for new records.
+- Metadata must not assert any of the site's known-contested facts: the Canary Foundation founding
+  year (the homepage says both 2002 and 2004) or a board count (three vs nine).
+- Page-specific JSON-LD appends into the **same** `@graph` so it stays cross-linked to the
+  Organization/Person/WebSite nodes by `@id`. Do not emit a second `<script>`.
+- `Organization.description` and `WebSite.description` use a fixed `siteDescription`, deliberately
+  **not** the page description — otherwise those entities claim a different identity on all 53 pages.
+- `personSameAs` in `BaseLayout.astro` lists only URLs that were fetched and identity-confirmed. Do
+  not add one that cannot be verified: a wrong `sameAs` actively harms entity resolution. LinkedIn
+  and Crunchbase are deliberately absent because they bot-block automated checks (999 / 403) and
+  need a human to confirm them in a browser first.
 
 ## Homepage Sections
 

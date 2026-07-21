@@ -94,6 +94,10 @@ When you add a new file under `src/pages/`, also update:
 ## Ship Checklist
 
 - `npm run build` passes.
+- Page metadata: never render `pageTitle`/`pageDescription` as visible copy (they carry the brand
+  suffix and pipes — use the separate `heading`/`intro` consts), the canonical host stays
+  `www.listwinventures.com`, and no metadata asserts a contested fact. See "Page Metadata" in
+  `docs/architecture.md`.
 - If you touched `api/cv.js`, `private/cv.html`, or `vercel.json`: `npm run test:cv-auth` and
   `npm run test:e2e:cv` pass, and `dist/cv/index.html` does **not** exist after a build (its
   presence means the CV is being published unprotected).

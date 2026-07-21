@@ -4,7 +4,7 @@ import react from '@astrojs/react';
 import icon from 'astro-icon';
 
 export default defineConfig({
-  site: 'https://listwinventures.com',
+  site: 'https://www.listwinventures.com',
   server: {
     port: 8080
   },

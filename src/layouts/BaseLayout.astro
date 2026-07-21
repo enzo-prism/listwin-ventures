@@ -8,14 +8,53 @@ import { getEntityDetails, getDetailPath } from '../data/entityDetails';
 const {
   title = 'Listwin Ventures',
   description = 'Technology investing, leadership, and philanthropy from Don Listwin.',
+  // Optional metadata overrides. Defaults keep every existing page working unchanged.
+  canonical,
+  ogType = 'website',
+  ogImage,
+  ogImageAlt = 'Listwin Ventures — Don Listwin',
+  robots,
+  jsonLd,
 } = Astro.props;
 
-const siteUrl = 'https://listwinventures.com';
+const siteUrl = 'https://www.listwinventures.com';
 const pagePath = `${Astro.url?.pathname ?? '/'}${Astro.url?.search ?? ''}${Astro.url?.hash ?? ''}`;
 const pageUrl = new URL(pagePath, siteUrl).toString();
+// Canonical ignores query/hash by design, and a page may point at a different URL entirely when
+// two routes cover the same subject (e.g. /genologics vs /company/genologics).
+// The trailing slash must be stripped: both /press and /press/ return 200, and an override
+// pointing at "/genologics" would otherwise disagree with that page's own "/genologics/".
+const stripTrailingSlash = (path: string) => {
+  const trimmed = path.replace(/\/+$/, '');
+  return trimmed === '' ? '/' : trimmed;
+};
+const canonicalUrl = new URL(
+  stripTrailingSlash(canonical ?? Astro.url?.pathname ?? '/'),
+  siteUrl,
+).toString();
 const logoUrl =
   'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp';
 const openGraphImage = `${siteUrl}/assets/uploads/OpenGraph.png`;
+// Per-page image when supplied, else the site card. Relative paths are resolved against the
+// production origin because OG consumers require absolute URLs.
+const socialImage = ogImage ? new URL(ogImage, siteUrl).toString() : openGraphImage;
+
+// The site's own identity, deliberately NOT the per-page description — otherwise the Organization
+// and WebSite entities claim a different description on every one of the 53 pages.
+const siteDescription = 'Technology investing, leadership, and philanthropy from Don Listwin.';
+
+// Every URL below was fetched and identity-confirmed against the page's own title. LinkedIn (999)
+// and Crunchbase (403) bot-block automated checks, so they are deliberately omitted until someone
+// confirms them in a browser — an unverified sameAs actively harms entity resolution.
+const personSameAs = [
+  'https://profiles.stanford.edu/don-listwin',
+  'https://med.stanford.edu/profiles/don-listwin',
+  'https://www.computerhistory.org/collections/catalog/102738863',
+  'https://www.computerhistory.org/collections/catalog/102738862',
+  'https://edrn.cancer.gov/about-edrn/sites/420-canary-foundation/listwin-don/',
+  'https://canaryfoundation.org/about/founders-story',
+  'https://x.com/Canarydon',
+];
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -29,8 +68,7 @@ const structuredData = {
         '@type': 'ImageObject',
         url: logoUrl,
       },
-      description,
-      sameAs: [],
+      description: siteDescription,
       founder: {
         '@id': `${siteUrl}#person`,
       },
@@ -45,17 +83,22 @@ const structuredData = {
       worksFor: {
         '@id': `${siteUrl}#organization`,
       },
+      sameAs: personSameAs,
     },
     {
       '@type': 'WebSite',
       '@id': `${siteUrl}#website`,
       url: siteUrl,
       name: 'Listwin Ventures',
-      description,
+      description: siteDescription,
       publisher: {
         '@id': `${siteUrl}#organization`,
       },
     },
+    // Pages may append their own node (Organization, NewsArticle, PodcastSeries…). Appending to
+    // the same @graph keeps it cross-linked to the Organization/Person/WebSite nodes above rather
+    // than emitting a second, disconnected script.
+    ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
   ],
 };
 
@@ -189,16 +232,23 @@ const showSharePanel =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {robots && <meta name="robots" content={robots} />}
     <meta property="og:site_name" content="Listwin Ventures" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={pageUrl} />
-    <meta property="og:image" content={openGraphImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={openGraphImage} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/uploads/Favicon%201.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/uploads/Favicon%202.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/uploads/Favicon%203.png" />
