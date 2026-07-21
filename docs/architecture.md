@@ -146,8 +146,8 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - When adding a new top-level static page (example: `/press`), also add it to `staticRoutes`.
 - `/oral-history-caltech` is included in `staticRoutes` as the Caltech 2025 interview route.
 - `/cv` is intentionally excluded from `staticRoutes` and all public discovery files.
-- `/cv` is not an Astro route. `vercel.json` rewrites it to `api/cv.js`, which fails closed unless `CV_PASSWORD_HASH` and `CV_SESSION_SECRET` are configured.
-- The handler uses a scrypt password hash, an eight-hour HMAC-signed `HttpOnly; Secure; SameSite=Strict` session, same-origin POST checks, and private/no-store response headers.
+- `/cv` is not an Astro route. `vercel.json` rewrites it to `api/cv.js`, which fails closed unless `CV_PASSWORD` is configured.
+- The handler is a deliberately simple password gate: a constant-time comparison against `CV_PASSWORD`, an eight-hour `HttpOnly; Secure; SameSite=Strict` cookie, and private/no-store response headers.
 - The CV HTML lives in `private/cv.html`, is included only in the Vercel function bundle, and must never be moved under `public/` or `src/pages/`.
 - `/cv` is deliberately not blocked in `robots.txt`, so crawlers can receive the handler's `X-Robots-Tag: noindex` response and remove any previously indexed URL. Authentication remains the access-control boundary.
 
@@ -166,17 +166,24 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 
 ## Private CV operations
 
-- Generate the password hash with the audited `createPasswordHash()` helper in `api/cv.js`; store only the hash in Vercel.
-- Store an independent random 32-byte-or-longer signing key as `CV_SESSION_SECRET`.
-- Rotate both values to revoke the shared password and every active session. Rotating only
-  `CV_PASSWORD_HASH` changes the password but leaves existing 8-hour sessions valid; rotate
-  `CV_SESSION_SECRET` as well to force everyone to re-authenticate.
+- **The security boundary is that `private/cv.html` is outside the static build.** The handler only
+  reads that file after the password check passes. Anything under `public/` or `src/pages/` is
+  fetchable by anyone with `curl`, no matter what JavaScript sits in front of it — so a
+  client-side password check is not an option here. This page was publicly exposed once (July 2026)
+  and that is the mistake to avoid repeating.
+- To change the password, set `CV_PASSWORD` in Vercel (Production). It is stored as a plain value,
+  not a hash — the simplification is deliberate, and it means anyone with Vercel project access can
+  read the password.
 - **Vercel binds environment variables at deploy time, so an env change alone has no effect — you
   must redeploy.** `vercel redeploy <current-production-url>` reuses the exact deployed source and
   is safer than `vercel --prod`, which rebuilds from your local working copy. Confirm afterwards
   that a correct password returns `303` and a wrong one returns `401`.
-- Never commit the plaintext password to this repo, to `docs/`, or to a commit message — only the
-  scrypt hash is stored, and only in Vercel.
+- Changing `CV_PASSWORD` invalidates existing sessions, because the cookie stores the password and
+  is re-checked on every request.
+- Never commit the plaintext password to this repo, to `docs/`, or to a commit message.
+- ⚠️ There is **no rate limiting** on this endpoint. Guessing is bounded only by Vercel's platform
+  throttling, so the password itself is the whole defence — pick one that is not derivable from
+  public information about Don.
 - Run `npm run test:cv-auth`, `npm run build`, and verify that `dist/cv/index.html` does not exist before deploying.
 - Production acceptance: anonymous/wrong-password requests expose no CV bytes; authenticated requests return `Cache-Control: private, no-store`; logout and tampered/expired cookies fail closed.
 

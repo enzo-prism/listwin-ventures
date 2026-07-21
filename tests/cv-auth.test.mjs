@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import handler, {
-  createPasswordHash,
-  createSessionToken,
-} from '../api/cv.js';
+import handler from '../api/cv.js';
 
-const SESSION_SECRET = 'test-listwin-session-secret-that-is-more-than-thirty-two-characters';
 const PASSWORD = 'correct:private password';
+
+// Strings that only appear in the real CV. Every "should not leak" assertion checks for these,
+// so a regression that serves private/cv.html without auth fails the suite loudly.
+const CV_MARKERS = /Board Experience|Don Listwin/i;
 
 const makeRequest = ({ method = 'GET', url = '/cv', headers = {}, body } = {}) => ({
   method,
@@ -26,10 +26,6 @@ const makeResponse = () => ({
   getHeader(name) {
     return this.headers.get(name.toLowerCase());
   },
-  status(code) {
-    this.statusCode = code;
-    return this;
-  },
   end(value = '') {
     this.body = String(value);
     return this;
@@ -42,125 +38,100 @@ const run = async (request) => {
   return response;
 };
 
-const validOriginHeaders = {
-  host: 'www.listwinventures.com',
-  origin: 'https://www.listwinventures.com',
-  'x-forwarded-proto': 'https',
-  'content-type': 'application/x-www-form-urlencoded',
-};
+const login = async (password) => run(makeRequest({
+  method: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  body: `password=${encodeURIComponent(password)}`,
+}));
 
 beforeEach(() => {
-  process.env.CV_PASSWORD_HASH = createPasswordHash(PASSWORD, '00112233445566778899aabbccddeeff');
-  process.env.CV_SESSION_SECRET = SESSION_SECRET;
+  process.env.CV_PASSWORD = PASSWORD;
 });
 
 afterEach(() => {
-  delete process.env.CV_PASSWORD_HASH;
-  delete process.env.CV_SESSION_SECRET;
+  delete process.env.CV_PASSWORD;
 });
 
 describe('Listwin private CV handler', () => {
-  it('fails closed when required secrets are missing', async () => {
-    delete process.env.CV_PASSWORD_HASH;
+  it('fails closed when no password is configured', async () => {
+    delete process.env.CV_PASSWORD;
     const response = await run(makeRequest());
 
     assert.equal(response.statusCode, 503);
-    assert.doesNotMatch(response.body, /Board Experience|Don Listwin/i);
+    assert.doesNotMatch(response.body, CV_MARKERS);
   });
 
-  it('shows a generic login page without CV content to anonymous visitors', async () => {
+  it('shows a login page without CV content to anonymous visitors', async () => {
     const response = await run(makeRequest());
 
     assert.equal(response.statusCode, 200);
     assert.match(response.body, /Private CV access/);
-    assert.doesNotMatch(response.body, /Board Experience|Don Listwin/i);
+    assert.doesNotMatch(response.body, CV_MARKERS);
     assert.equal(response.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
     assert.match(response.getHeader('x-robots-tag'), /noindex/);
     assert.equal(response.getHeader('referrer-policy'), 'no-referrer');
-    assert.equal(response.getHeader('content-security-policy'), "default-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
+    assert.equal(response.getHeader('vary'), 'Cookie');
   });
 
-  it('rejects cross-origin and incorrect login attempts without setting a cookie', async () => {
-    const crossOrigin = await run(makeRequest({
-      method: 'POST',
-      headers: { ...validOriginHeaders, origin: 'https://attacker.example' },
-      body: `password=${encodeURIComponent(PASSWORD)}`,
-    }));
-    assert.equal(crossOrigin.statusCode, 403);
-    assert.equal(crossOrigin.getHeader('set-cookie'), undefined);
+  it('rejects an incorrect password without setting a cookie', async () => {
+    const response = await login('incorrect');
 
-    const incorrect = await run(makeRequest({
-      method: 'POST',
-      headers: validOriginHeaders,
-      body: 'password=incorrect',
-    }));
-    assert.equal(incorrect.statusCode, 401);
-    assert.match(incorrect.body, /could not verify/i);
-    assert.equal(incorrect.getHeader('set-cookie'), undefined);
-    assert.doesNotMatch(incorrect.body, /Board Experience|Don Listwin/i);
+    assert.equal(response.statusCode, 401);
+    assert.match(response.body, /could not verify/i);
+    assert.equal(response.getHeader('set-cookie'), undefined);
+    assert.doesNotMatch(response.body, CV_MARKERS);
   });
 
-  it('issues a secure signed session and serves the CV only with a valid cookie', async () => {
-    const login = await run(makeRequest({
-      method: 'POST',
-      headers: validOriginHeaders,
-      body: `password=${encodeURIComponent(PASSWORD)}&next=%2Fcv`,
-    }));
+  it('issues a secure cookie on the correct password', async () => {
+    const response = await login(PASSWORD);
 
-    assert.equal(login.statusCode, 303);
-    assert.equal(login.getHeader('location'), '/cv');
-    const setCookie = login.getHeader('set-cookie');
-    assert.match(setCookie, /^__Host-listwin_cv_session=/);
+    assert.equal(response.statusCode, 303);
+    assert.equal(response.getHeader('location'), '/cv');
+    assert.doesNotMatch(response.body, CV_MARKERS);
+
+    const setCookie = response.getHeader('set-cookie');
+    assert.match(setCookie, /^__Host-listwin_cv=/);
     assert.match(setCookie, /HttpOnly/);
     assert.match(setCookie, /Secure/);
     assert.match(setCookie, /SameSite=Strict/);
     assert.match(setCookie, /Path=\//);
-
-    const cookie = setCookie.split(';', 1)[0];
-    const authorized = await run(makeRequest({ headers: { cookie } }));
-    assert.equal(authorized.statusCode, 200);
-    assert.match(authorized.body, /Board Experience/);
-    assert.match(authorized.body, /Don Listwin/);
-    assert.match(authorized.body, /<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">/);
-    assert.doesNotMatch(authorized.body, /\{(?:robotsDirectives|botDirectives)\}/);
-    assert.equal(authorized.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
-    assert.equal(authorized.getHeader('vary'), 'Cookie');
   });
 
-  it('rejects tampered and expired sessions', async () => {
-    const valid = createSessionToken({
-      secret: SESSION_SECRET,
-      now: 1_000,
-      expiresAt: 2_000,
-    });
-    const tampered = `${valid.slice(0, -1)}${valid.endsWith('a') ? 'b' : 'a'}`;
+  it('serves the CV only when the cookie carries the right password', async () => {
+    const cookie = (await login(PASSWORD)).getHeader('set-cookie').split(';', 1)[0];
+    const response = await run(makeRequest({ headers: { cookie } }));
 
-    const tamperedResponse = await run(makeRequest({
-      headers: { cookie: `__Host-listwin_cv_session=${tampered}` },
-    }));
-    assert.doesNotMatch(tamperedResponse.body, /Board Experience/);
-
-    const expired = createSessionToken({
-      secret: SESSION_SECRET,
-      now: 1_000,
-      expiresAt: Date.now() - 1,
-    });
-    const expiredResponse = await run(makeRequest({
-      headers: { cookie: `__Host-listwin_cv_session=${expired}` },
-    }));
-    assert.doesNotMatch(expiredResponse.body, /Board Experience/);
+    assert.equal(response.statusCode, 200);
+    assert.match(response.body, /Board Experience/);
+    assert.match(response.body, /Don Listwin/);
+    assert.match(response.body, /<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">/);
+    assert.equal(response.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
   });
 
-  it('clears the session on same-origin logout', async () => {
-    const response = await run(makeRequest({
-      method: 'POST',
-      url: '/cv/logout',
-      headers: validOriginHeaders,
-      body: '',
-    }));
+  it('rejects a forged or stale cookie', async () => {
+    for (const cookie of [
+      '__Host-listwin_cv=wrong',
+      '__Host-listwin_cv=',
+      `__Host-listwin_cv=${encodeURIComponent(PASSWORD)}x`,
+      'other_cookie=irrelevant',
+    ]) {
+      const response = await run(makeRequest({ headers: { cookie } }));
+      assert.doesNotMatch(response.body, CV_MARKERS, `leaked CV for cookie: ${cookie}`);
+    }
+  });
+
+  it('clears the cookie on sign out', async () => {
+    const response = await run(makeRequest({ method: 'POST', url: '/cv/logout' }));
 
     assert.equal(response.statusCode, 303);
     assert.equal(response.getHeader('location'), '/cv');
     assert.match(response.getHeader('set-cookie'), /Max-Age=0/);
+  });
+
+  it('does not leak CV content on a HEAD request', async () => {
+    const cookie = (await login(PASSWORD)).getHeader('set-cookie').split(';', 1)[0];
+    const response = await run(makeRequest({ method: 'HEAD', headers: { cookie } }));
+
+    assert.equal(response.body, '');
   });
 });
