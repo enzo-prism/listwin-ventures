@@ -290,9 +290,16 @@ test.describe('Accessibility', () => {
     });
     expect(duplicateIds).toEqual([]);
 
-    // Every form control has an accessible name.
+    // Every form control that is EXPOSED to assistive tech has an accessible name. Controls that
+    // are not in the accessibility tree (the password-manager username field is display:none) are
+    // legitimately unnamed — naming them would be meaningless, since nothing can reach them.
     const unnamed = await page.evaluate(() => [...document.querySelectorAll('input, select, textarea')]
       .filter((el) => {
+        const exposed =
+          (el as HTMLElement).offsetParent !== null
+          && el.getAttribute('aria-hidden') !== 'true'
+          && (el as HTMLInputElement).type !== 'hidden';
+        if (!exposed) return false;
         const id = el.getAttribute('id');
         return !(
           (id && document.querySelector(`label[for="${id}"]`))
@@ -303,6 +310,40 @@ test.describe('Accessibility', () => {
       })
       .map((el) => el.outerHTML));
     expect(unnamed).toEqual([]);
+  });
+
+  // The username field exists purely so password managers can label the saved credential, and so
+  // Safari does not interrupt with "enter the username for this account".
+  //
+  // It is deliberately CSS-clipped rather than display:none. Chromium and Firefox both EXCLUDE
+  // type="hidden" inputs from password parsing outright, and display:none makes Chromium classify
+  // the field as invisible — clipping keeps it in the parse as a superset. So the invariant is not
+  // "the browser cannot see it" (the browser must) but "a human cannot reach or perceive it".
+  test('the password-manager username field is inert for real users', async ({ page }) => {
+    await page.goto('/cv');
+
+    const username = page.locator('#username');
+    await expect(username).toHaveCount(1);
+    await expect(username).toHaveAttribute('autocomplete', 'username');
+    await expect(username).toHaveAttribute('aria-hidden', 'true');
+    await expect(username).toHaveAttribute('tabindex', '-1');
+    await expect(username).toHaveJSProperty('readOnly', true);
+
+    // Must be a real text input: type="hidden" is excluded by Chromium and Firefox.
+    await expect(username).toHaveAttribute('type', 'text');
+
+    // Imperceptible: no more than a clipped pixel.
+    const box = await username.boundingBox();
+    expect(box === null || (box.width <= 1 && box.height <= 1)).toBe(true);
+
+    // Not in the tab order — focus goes from the password field straight to the toggle.
+    await page.locator('#password').focus();
+    await page.keyboard.press('Tab');
+    await expect(page.locator('#toggle-password')).toBeFocused();
+
+    // It carries a human-readable label for the vault entry — never the secret itself.
+    await expect(username).toHaveValue('Don Listwin CV');
+    await expect(username).not.toHaveValue(CV_TEST_PASSWORD);
   });
 
   test('the toggle keeps a visible focus indicator', async ({ page }) => {

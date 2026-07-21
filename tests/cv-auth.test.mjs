@@ -6,9 +6,12 @@ import handler from '../api/cv.js';
 
 const PASSWORD = 'correct:private password';
 
-// Strings that only appear in the real CV. Every "should not leak" assertion checks for these,
-// so a regression that serves private/cv.html without auth fails the suite loudly.
-const CV_MARKERS = /Board Experience|Don Listwin/i;
+// Strings that appear ONLY in the real CV. Every "should not leak" assertion checks for these, so
+// a regression that serves private/cv.html without auth fails the suite loudly.
+// Deliberately not "Don Listwin": that is a common string which legitimately appears elsewhere
+// (the password-manager username field), so it produced false positives rather than real signal.
+// These five are CV-exclusive — verified absent from the login page and present in private/cv.html.
+const CV_MARKERS = /Board Experience|Management Experience|Woodside Road|DOB:|Curriculum/i;
 
 const makeRequest = ({ method = 'GET', url = '/cv', headers = {}, body } = {}) => ({
   method,
