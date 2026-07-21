@@ -181,10 +181,34 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - Changing `CV_PASSWORD` invalidates existing sessions, because the cookie stores the password and
   is re-checked on every request.
 - Never commit the plaintext password to this repo, to `docs/`, or to a commit message.
-- ⚠️ There is **no rate limiting** on this endpoint. Guessing is bounded only by Vercel's platform
-  throttling, so the password itself is the whole defence — pick one that is not derivable from
-  public information about Don.
-- Run `npm run test:cv-auth`, `npm run build`, and verify that `dist/cv/index.html` does not exist before deploying.
+- ⚠️ There is **no rate limiting** on this endpoint, by choice. Two Vercel WAF rules
+  (`rule_rate_limit_cv_login_GUMWLK`, `rule_rate_limit_direct_cv_function_s7XKzB`) capped `/cv`
+  POSTs at 5 per 600s per IP; they are now **Disabled** — not deleted, so `vercel firewall rules
+  enable <id>` + `vercel firewall publish` restores them. They were disabled because they refused
+  the *correct* password once tripped, counted sign-out against the same quota, and were keyed by
+  IP, so everyone behind one office NAT shared five attempts. The tradeoff accepted: the password
+  alone is the defence, and automated guessing is unthrottled.
+
+## Private CV login screen
+
+- The password field has a show/hide eyeball. Notes for anyone editing it:
+  - The inline toggle script is permitted by a **CSP hash derived from the script itself**
+    (`SCRIPT_HASH` in `api/cv.js`), so it can never go stale. Do not add `'unsafe-inline'`.
+  - `script-src` **must keep `'self'`** — `private/cv.html` loads `/cv-print.js`, and without it the
+    "Print CV" button becomes a visible control that silently does nothing.
+  - Icon visibility uses `toggleAttribute('hidden', …)`, **not** `.hidden = …`. The `hidden` IDL
+    property lives on `HTMLElement`; the icons are `SVGElement`, so assigning `.hidden` does nothing.
+  - There is deliberately **no `aria-pressed`**. A flipping accessible name plus a pressed state
+    announces "Hide password, pressed", implying the opposite of the true state. State is announced
+    via the `#password-status` polite live region instead.
+  - The button ships with the `hidden` attribute and is revealed by the script, so no dead control
+    appears without JavaScript. The stylesheet needs `[hidden]{display:none!important}` because the
+    author `display` rules would otherwise beat it.
+  - `autofocus` is applied **only** on the error render, where it lands on the field described by
+    `aria-describedby`; a clean load leaves focus alone so screen readers hear the instructions.
+- Run `npm run test:cv-auth`, `npm run test:e2e:cv`, `npm run build`, and verify that
+  `dist/cv/index.html` does not exist before deploying. `test:e2e:cv` serves `api/cv.js` over a
+  local http shim (`tests-cv/serve-cv.mjs`), so it needs no `vercel dev` and no credentials.
 - Production acceptance: anonymous/wrong-password requests expose no CV bytes; authenticated requests return `Cache-Control: private, no-store`; logout and tampered/expired cookies fail closed.
 
 ## Development Workflow
