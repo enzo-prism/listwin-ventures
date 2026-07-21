@@ -254,6 +254,29 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
     author `display` rules would otherwise beat it.
   - `autofocus` is applied **only** on the error render, where it lands on the field described by
     `aria-describedby`; a clean load leaves focus alone so screen readers hear the instructions.
+- **The `#username` field exists so password managers can save the credential with a usable label**,
+  and so Safari 15.4+ does not interrupt with "enter the username for this account". Its exact shape
+  is load-bearing and non-obvious:
+  - It must **not** be `type="hidden"`. Chromium excludes hidden inputs from the FormData the
+    password manager sees, and Firefox's username-compatible type allowlist omits `hidden`. The
+    WHATWG spec blesses `<input type=hidden autocomplete=username>`; no major engine honours it for
+    password management, so the spec is not a safe guide here.
+  - It is **CSS-clipped (`.pm-anchor`), not `display:none`**. Verified in real Chrome via
+    `chrome://password-manager-internals`: `display:none` is classified `invisible`, clipping is
+    classified `visible` and stays on the interactability path as well as the autocomplete path.
+  - Its own class, not `.sr-only` — `.sr-only` exists to *expose* the live region to screen readers,
+    the opposite intent.
+  - `readonly` + `tabindex="-1"` + `aria-hidden="true"` keep it out of the tab order and the
+    accessibility tree. The server ignores the field; `readPassword` reads only `password`.
+- **Two existing behaviours are load-bearing for save detection — do not change them.** The `303`
+  redirect is the strongest submission signal the platform offers, and the `401` on a wrong password
+  is what suppresses a save prompt for a failed login (Chrome checks both
+  `WasLastNavigationHTTPError` and whether the form reappears). Changing the 401 to a 200 would make
+  browsers offer to save wrong passwords.
+- The Credential Management API (`navigator.credentials.store`) was evaluated and rejected:
+  Chromium-only, an eleven-year-old W3C Working Draft with no WebKit or Mozilla position, unreachable
+  by third-party managers (they parse the DOM), and it would require replacing the native POST with
+  `preventDefault` + `fetch`, breaking the no-JavaScript path.
 - Run `npm run test:cv-auth`, `npm run test:e2e:cv`, `npm run build`, and verify that
   `dist/cv/index.html` does not exist before deploying. `test:e2e:cv` serves `api/cv.js` over a
   local http shim (`tests-cv/serve-cv.mjs`), so it needs no `vercel dev` and no credentials.
