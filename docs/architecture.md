@@ -115,7 +115,9 @@ The standalone contact section was removed; all inquiries route through `/contac
 - `/oral-history-caltech` is the 2025 Caltech Heritage Project interview page.
 - Caltech interview media lives at `public/media/oral-history/caltech-2025/`.
 - `/oral-history-caltech` intentionally uses file-aware rendering:
-  - Full transcript PDF link is always shown (`/media/oral-history/caltech-2025/transcript-full.pdf`).
+  - Full transcript PDF link is always shown. It is served from Cloudinary via `transcriptPdfUrl` in
+    `src/pages/oral-history-caltech.astro`, not from the local copy that still exists at
+    `public/media/oral-history/caltech-2025/transcript-full.pdf`.
   - Full transcript TXT link is only shown when `transcript-full.txt` exists.
   - Episode audio controls are shown only when the matching `.mp3` exists and has a non-zero file size.
   - Missing or empty episode audio files show a neutral `Audio coming soon` note.
@@ -149,11 +151,32 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - The CV HTML lives in `private/cv.html`, is included only in the Vercel function bundle, and must never be moved under `public/` or `src/pages/`.
 - `/cv` is deliberately not blocked in `robots.txt`, so crawlers can receive the handler's `X-Robots-Tag: noindex` response and remove any previously indexed URL. Authentication remains the access-control boundary.
 
+## Hosting and headers
+
+- This site is deployed on **Vercel**. Pushing to `main` auto-deploys production via the Vercel
+  GitHub integration; branch pushes get preview deployments.
+- ⚠️ `public/_headers` uses Netlify/Cloudflare Pages syntax and **is inert on Vercel** — it is a
+  leftover from an earlier host. Its `X-Robots-Tag` rules for `/cv` have never applied in
+  production. They are also redundant: `api/cv.js` sets that header itself on every response.
+  **Do not add security or cache headers to `public/_headers` expecting them to work.** Real
+  headers belong in the `headers` array of `vercel.json`, or in the handler.
+- Static assets are already served with `Cache-Control: public, max-age=31536000, immutable` by
+  Vercel's defaults, and HSTS is applied at the platform level. `nosniff`, `Referrer-Policy`, and
+  a CSP are **not** currently set for the static site (the `/cv` handler sets its own).
+
 ## Private CV operations
 
 - Generate the password hash with the audited `createPasswordHash()` helper in `api/cv.js`; store only the hash in Vercel.
 - Store an independent random 32-byte-or-longer signing key as `CV_SESSION_SECRET`.
-- Rotate both values to revoke the shared password and every active session.
+- Rotate both values to revoke the shared password and every active session. Rotating only
+  `CV_PASSWORD_HASH` changes the password but leaves existing 8-hour sessions valid; rotate
+  `CV_SESSION_SECRET` as well to force everyone to re-authenticate.
+- **Vercel binds environment variables at deploy time, so an env change alone has no effect — you
+  must redeploy.** `vercel redeploy <current-production-url>` reuses the exact deployed source and
+  is safer than `vercel --prod`, which rebuilds from your local working copy. Confirm afterwards
+  that a correct password returns `303` and a wrong one returns `401`.
+- Never commit the plaintext password to this repo, to `docs/`, or to a commit message — only the
+  scrypt hash is stored, and only in Vercel.
 - Run `npm run test:cv-auth`, `npm run build`, and verify that `dist/cv/index.html` does not exist before deploying.
 - Production acceptance: anonymous/wrong-password requests expose no CV bytes; authenticated requests return `Cache-Control: private, no-store`; logout and tampered/expired cookies fail closed.
 
@@ -178,8 +201,8 @@ company detail routes still pre-render correctly.
 
 ## Documentation Expectations
 
-- Update this file (and the root copy) whenever navigation rules, homepage sections, or data
-  catalogues change.
+- Update this file whenever navigation rules, homepage sections, or data catalogues change. (There
+  is no root-level copy of this document; the repo is standalone.)
 - Record large-asset decisions so contributors know why certain directories are ignored by git.
 - When adding a new component or workflow, briefly document the intent plus any required scripts
   or environment variables.

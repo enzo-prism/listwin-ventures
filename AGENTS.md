@@ -50,7 +50,9 @@ When you add a new file under `src/pages/`, also update:
 - `/oral-history-caltech` renders a four-episode 2025 series and expects media under
   `public/media/oral-history/caltech-2025/`.
 - Transcript button behavior on `/oral-history-caltech`:
-  - PDF is always shown at `/media/oral-history/caltech-2025/transcript-full.pdf`.
+  - PDF is always shown, served from Cloudinary via `transcriptPdfUrl` in the page frontmatter.
+    The local `public/media/oral-history/caltech-2025/transcript-full.pdf` still exists but is no
+    longer the linked copy.
   - TXT is conditional and only renders when `/media/oral-history/caltech-2025/transcript-full.txt` exists.
 - Audio behavior on `/oral-history-caltech`:
   - An episode audio player and `Download audio (MP3)` link render only when the matching `.mp3` exists and has file size > 0.
@@ -78,4 +80,5 @@ When you add a new file under `src/pages/`, also update:
 - `npm run build` passes.
 - Any new static routes show up in `sitemap.xml`.
 - Any new icons are added to the `astro.config.mjs` allowlist.
-- Update both `docs/architecture.md` and `../docs/architecture.md` if structure or data catalogs changed.
+- Update `docs/architecture.md` if structure or data catalogs changed. (There is no `../docs/`
+  copy — this repo is standalone; earlier references to a root-level sibling were stale.)

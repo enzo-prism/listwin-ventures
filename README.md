@@ -53,7 +53,8 @@ the related media.
 - `src/data/press.ts` – curated press + reference links powering `/press` and the “Related reading” blocks on company detail pages.
 - `public/assets/` – static uploads, legacy CSS, and any new media (note the large-file exclusions above).
 - `docs/architecture.md` – ground truth for the design system, section structure, and data flow.
-- `archive/` – frozen WordPress exports for historical reference (do not edit).
+- `api/cv.js` + `private/cv.html` + `vercel.json` – the password-gated private CV. See
+  “Private CV operations” in `docs/architecture.md` before touching any of these.
 
 ## Data-Driven Company Pages
 
@@ -82,7 +83,12 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 - **Investments** – mega-menu fed by `investmentAssets`/`entityDetails` (Seed, Private, Exits inserted between Private/Venture, then Venture, Public).
 - **Community** – philanthropy slugs sourced from `entityDetails`.
 - **About** – links to the oral-history interview, the on-page “My Story” anchor, and the Press library.
-- **Contact** – dedicated `/contact` page with a Netlify-backed form (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
+- **Contact** – dedicated `/contact` page (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
+  > ⚠️ **The contact form does not currently work.** `src/pages/contact.astro` still carries
+  > `data-netlify="true"` and a hidden `form-name` input from an earlier Netlify deployment. This
+  > site is hosted on **Vercel**, which does not implement Netlify Forms, and the form declares no
+  > `action` and has no serverless handler — so submissions are silently discarded. Fixing it means
+  > adding an `api/contact.js` handler (or an external form service) and pointing `action` at it.
 
 All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
 
