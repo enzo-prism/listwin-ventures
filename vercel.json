@@ -7,9 +7,20 @@
       "maxDuration": 10
     }
   },
+  "redirects": [
+    {
+      "source": "/:cv(CV|Cv|cV)",
+      "destination": "/cv",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/cv",
+      "destination": "/api/cv"
+    },
+    {
+      "source": "/cv/",
       "destination": "/api/cv"
     },
     {

@@ -194,15 +194,29 @@
           text-decoration: underline;
         }
       }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
     </style>
   </head>
   <body>
     <main>
       <div class="print-toolbar">
-        <form method="post" action="/cv/logout"><button type="submit" class="print-button">Sign out</button></form>
+        <!-- Print first: Sign out was the first focusable element on the page, so a keyboard user
+             landed on "log me out" before anything else. -->
         <button type="button" class="print-button" data-print-cv>
           Print CV
         </button>
+        <form method="post" action="/cv/logout"><button type="submit" class="print-button">Sign out</button></form>
       </div>
       <article aria-labelledby="cv-title">
         <header class="contact">
@@ -214,26 +228,54 @@
 
         <section aria-labelledby="board-experience">
           <h2 id="board-experience">Board Experience</h2>
+          <p class="board-legend">Current roles are shown in bold.</p>
 
-          <h3>Public Board Experience (bold current)</h3>
+          <h3>Public Board Experience</h3>
           <ul>
-            <li>Calix; ETEK; Isilon; JDSU; Openwave; Phone.com; POET Systems; Redback; Software.com; TIBCO; VMEM Cisco (executive management).</li>
+            <li>Calix</li>
+            <li>ETEK</li>
+            <li>Isilon</li>
+            <li>JDSU</li>
+            <li>Openwave</li>
+            <li>Phone.com</li>
+            <li>POET Systems</li>
+            <li>Redback</li>
+            <li>Software.com</li>
+            <li>TIBCO</li>
+            <li>VMEM</li>
+            <li>Cisco (executive management)</li>
           </ul>
 
-          <h3>Private Board Experience (bold current)</h3>
+          <h3>Private Board Experience</h3>
           <ul>
-            <li><strong>4AG</strong> (AI AG Robotics); <strong>AwareX</strong> (mobile B2C); Clarius (mobile ultrasound); <strong>Carbon Robotics</strong> (AI AG Robotics); Clustrix(database);</li>
-            <li>D Wave - (quantum computing); Genologics (genetic sequencing); RapidAi (stroke imaging); Joyent (cloud); Plumgrid (SDN); Robin Systems (data center) Sana (security); Teradici (virtualization).</li>
+            <li><strong>4AG<span class="sr-only"> (current)</span></strong> (AI AG Robotics)</li>
+            <li><strong>AwareX<span class="sr-only"> (current)</span></strong> (mobile B2C)</li>
+            <li>Clarius (mobile ultrasound)</li>
+            <li><strong>Carbon Robotics<span class="sr-only"> (current)</span></strong> (AI AG Robotics)</li>
+            <li>Clustrix (database)</li>
+            <li>D Wave (quantum computing)</li>
+            <li>Genologics (genetic sequencing)</li>
+            <li>RapidAI (stroke imaging)</li>
+            <li>Joyent (cloud)</li>
+            <li>Plumgrid (SDN)</li>
+            <li>Robin Systems (data center)</li>
+            <li>Sana (security)</li>
+            <li>Teradici (virtualization)</li>
           </ul>
 
-          <h3>Non-Profit Board Experience (bold current)</h3>
+          <h3>Non-Profit Board Experience</h3>
           <ul>
-            <li>National Cancer Institute (NCI)/(BSA) Board of Scientific Advisors; Fred Hutchinson Cancer Center, <strong>Canary Foundation</strong>; <strong>Canary Center at Stanford</strong>; Public Library of Science; <strong>BelizeKids.org</strong></li>
+            <li>National Cancer Institute (NCI) / Board of Scientific Advisors (BSA)</li>
+            <li>Fred Hutchinson Cancer Center</li>
+            <li><strong>Canary Foundation<span class="sr-only"> (current)</span></strong></li>
+            <li><strong>Canary Center at Stanford<span class="sr-only"> (current)</span></strong></li>
+            <li>Public Library of Science</li>
+            <li><strong>BelizeKids.org<span class="sr-only"> (current)</span></strong></li>
           </ul>
         </section>
 
-        <section aria-labelledby="managment-experience">
-          <h2 id="managment-experience">Managment Experience</h2>
+        <section aria-labelledby="management-experience">
+          <h2 id="management-experience">Management Experience</h2>
           <ul>
             <li>CEO ZEVX EV infrastructure</li>
             <li>CEO RapidAI (AI medical imaging-private)</li>
