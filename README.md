@@ -29,6 +29,21 @@ design or content work.
    npm run preview
    ```
 
+### Tests
+
+```bash
+npm run test:e2e      # Playwright: responsive/visual/content across 3 viewports
+npm run test:cv-auth  # node:test units for the /cv password gate
+npm run test:e2e:cv   # Playwright for the /cv login screen and show/hide toggle
+```
+
+`npm run dev` serves Astro only, so **`/cv` 404s locally** — it is a Vercel serverless function
+rather than a page. Use `vercel dev` to exercise it, or `npm run test:e2e:cv`, which serves the
+handler over a local http shim and needs no Vercel login.
+
+Note the `tests/visual.spec.ts` snapshot baselines are currently stale, so that suite fails as a
+whole. Review the diffs before treating a failure as a real regression.
+
 ### Large Files
 
 The repo intentionally ignores:

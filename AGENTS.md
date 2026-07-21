@@ -10,7 +10,18 @@ npm install
 npm run dev       # http://localhost:8080
 npm run build
 npm run preview   # http://localhost:8080 (serves /dist)
+
+npm run test:e2e      # Playwright: responsive/visual/content across 3 viewports
+npm run test:cv-auth  # node:test units for the /cv password gate
+npm run test:e2e:cv   # Playwright for the /cv login screen and toggle
 ```
+
+`npm run dev` runs Astro only, so **`/cv` 404s locally** — it is a Vercel function, not a page. Use
+`vercel dev` (port 3000) to exercise it, or `npm run test:e2e:cv`, which serves the handler over a
+local http shim and needs no credentials.
+
+⚠️ The `tests/visual.spec.ts` baselines are stale and that suite currently fails wholesale. Review
+the diffs before trusting a red run, and refresh with `--update-snapshots` once confirmed.
 
 ## Where Content Lives
 
@@ -19,6 +30,11 @@ npm run preview   # http://localhost:8080 (serves /dist)
 - `src/data/exploitDetails.ts` – Exploits cards + `/exploits/[slug]` pages.
 - `src/data/press.ts` – Press & References library (powers `/press` and “Related reading” on company pages).
 - `src/pages/press.astro` – `/press` route.
+- `private/cv.html` – the password-gated CV. **Not an Astro page.** `vercel.json` rewrites `/cv` to
+  the `api/cv.js` serverless function, which reads this file only after the password check passes.
+  **Never move it under `public/` or `src/pages/`** — anything in the static build is fetchable by
+  anyone. See “Private CV operations” and “Private CV login screen” in `docs/architecture.md`
+  before editing `api/cv.js`; it has four non-obvious traps that have each caused a real bug.
 
 ## Common Tasks
 
@@ -78,6 +94,9 @@ When you add a new file under `src/pages/`, also update:
 ## Ship Checklist
 
 - `npm run build` passes.
+- If you touched `api/cv.js`, `private/cv.html`, or `vercel.json`: `npm run test:cv-auth` and
+  `npm run test:e2e:cv` pass, and `dist/cv/index.html` does **not** exist after a build (its
+  presence means the CV is being published unprotected).
 - Any new static routes show up in `sitemap.xml`.
 - Any new icons are added to the `astro.config.mjs` allowlist.
 - Update `docs/architecture.md` if structure or data catalogs changed. (There is no `../docs/`
