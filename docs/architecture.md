@@ -60,6 +60,24 @@ mobile nav expands into a full-width card with all sections stacked.
   `investmentIcons`, `communityLinks`, `storyLinks`) in `BaseLayout.astro` updated whenever you add
   or rename items so the grey→green hover treatment remains aligned across desktop and mobile.
 
+### Navigation is zero-JavaScript (`SiteNavigation.astro`)
+
+- The nav was a React island (`SiteNavigation.tsx`, `client:load`) that pulled React + Radix +
+  lucide onto **every** page (~300 KB). It is now a pure Astro component:
+  - **Desktop dropdowns** open via CSS `:hover`/`:focus-within` — no JS needed to show/hide.
+    Closed panels are `display:none` (not `visibility:hidden`) so their 700px box never contributes
+    to document width and never creates horizontal overflow.
+  - Panels are **right-aligned to their trigger** and single-section menus render one narrow column
+    (`w-64`); only multi-section menus (Investments) use the wide `w-max` mega-grid. This keeps every
+    panel on-screen at 1024–1920 without clipping. `tests/responsive.spec.ts` guards the overflow.
+  - **Mobile** uses a native `<details>`/`<summary>` drawer with `<details>` accordions inside —
+    fully functional with JS disabled.
+  - A tiny `is:inline` script only *enhances*: it syncs `aria-expanded`, closes on Escape/outside
+    click, and locks body scroll while the drawer is open.
+  - New icon names still go in the `astro.config.mjs` allowlist (the nav added `chevron-down`,
+    `menu-2`, `x`). The React-only page now is `/4ag` (the Embla carousel island).
+  - The drawer toggle is a `<summary>`, not a `<button>` — update selectors accordingly.
+
 ## Canonical URLs & Share Links
 
 - `src/layouts/BaseLayout.astro` is the single source of truth for canonical page URLs. It builds
@@ -114,8 +132,11 @@ Rules worth knowing before editing:
   superlatives ("the only foundation in the world…", "a leading provider", "pioneered"). A meta
   description is the most-quoted surface on the site, so those records have an `seoDescription` that
   states the same thing without the unverifiable claim. Keep that bar for new records.
-- Metadata must not assert any of the site's known-contested facts: the Canary Foundation founding
-  year (the homepage says both 2002 and 2004) or a board count (three vs nine).
+- The Canary Foundation founding year is **2004** (per canaryfoundation.org and Wikipedia:
+  "founded in 2004 by … Don Listwin"). The homepage "My Story" prose previously said 2002 in two
+  places — now corrected to 2004 so the whole site agrees with the Exploits card. `docs/site-copy.md`
+  still shows 2002 because it archives the original legacy WordPress copy verbatim.
+- Metadata must not assert the site's remaining known-contested fact: the board count (three vs nine).
 - Page-specific JSON-LD appends into the **same** `@graph` so it stays cross-linked to the
   Organization/Person/WebSite nodes by `@id`. Do not emit a second `<script>`.
 - `Organization.description` and `WebSite.description` use a fixed `siteDescription`, deliberately
@@ -211,6 +232,36 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - Static assets are already served with `Cache-Control: public, max-age=31536000, immutable` by
   Vercel's defaults, and HSTS is applied at the platform level. `nosniff`, `Referrer-Policy`, and
   a CSP are **not** currently set for the static site (the `/cv` handler sets its own).
+
+## Analytics & cookie consent
+
+- Google Analytics (`gtag`, `G-5R6NTCMFK3`) and Hotjar (`hjid 6585931`) used to load eagerly in
+  `<head>` on every page. They now load **only after an explicit opt-in** and, even then, off the
+  critical path via `requestIdleCallback`. The loader + consent banner live at the bottom of
+  `BaseLayout.astro`.
+- The choice is stored in `localStorage` under `lv-analytics-consent` (`granted`/`denied`). Granted
+  → analytics load immediately on later visits; denied → nothing loads; no decision → the banner
+  shows. The banner is `role="region"` (a persistent non-modal notice, **not** a `dialog` — that
+  role is reserved for the mobile nav drawer, and two dialogs break `getByRole('dialog')`).
+- To change measurement IDs, edit the constants in the consent `is:inline` script.
+
+## Contact form
+
+- `src/pages/contact.astro` posts to the third-party endpoint in **`PUBLIC_CONTACT_ENDPOINT`**
+  (Formspree/Basin style). Set it in Vercel and in `.env.local` for local testing.
+- Progressive enhancement: with JS it submits via `fetch` (inline status, no navigation); without JS
+  it falls back to a native POST. A hidden `_gotcha` honeypot filters bots. When the variable is
+  unset the form tells the visitor it is not configured rather than silently dropping the message.
+- The form controls are server-rendered shadcn components (`Input`/`Label`/`Textarea`) with no
+  `client:` directive, so the page still ships zero framework JS.
+
+## Image optimization
+
+- Remote Cloudinary image URLs carry `f_auto,q_auto` transforms (AVIF/WebP + auto quality). The
+  `Don_Listwin_*.pdf` transcript URL is deliberately left untransformed — it is not an image.
+- Raw `<img>` tags in the shared components and the homepage grids set `decoding="async"` alongside
+  `loading="lazy"`. Images under `public/` are still not run through `astro:assets` (that would mean
+  moving them into `src/`); a future migration could add responsive `srcset`/AVIF at build time.
 
 ## Private CV operations
 

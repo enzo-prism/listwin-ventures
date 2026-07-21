@@ -8,6 +8,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const pageTitle = 'Contact Listwin Ventures | Investment and Media Inquiries';
 const pageDescription =
   'Reach Listwin Ventures about investments, partnerships, speaking, or media. Use the form to share your organization and what you are currently building.';
+
+// Third-party form endpoint (e.g. Formspree "https://formspree.io/f/<id>" or Basin). Set
+// PUBLIC_CONTACT_ENDPOINT in the environment. When it is unset the form renders but posts are
+// short-circuited with a clear message instead of silently failing (the previous behaviour).
+const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -17,8 +22,22 @@ const pageDescription =
       <p class="text-sm text-muted-foreground">Tell us what you are building and how we can help.</p>
     </div>
 
-    <form class="space-y-6" name="contact" method="post" data-netlify="true">
-      <input type="hidden" name="form-name" value="contact" />
+    <form
+      class="space-y-6"
+      name="contact"
+      method="post"
+      action={contactEndpoint || '#'}
+      data-contact-form
+      data-endpoint={contactEndpoint}
+    >
+      <!-- Honeypot: real people leave this empty; bots tend to fill every field. Visually and
+           programmatically hidden, and excluded from the tab order. -->
+      <div class="hidden" aria-hidden="true">
+        <label>
+          Leave this field empty
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+        </label>
+      </div>
 
       <div class="grid gap-4 md:grid-cols-2">
         <label class="space-y-2">
@@ -47,9 +66,67 @@ const pageDescription =
         <Textarea className="min-h-[170px]" name="message" required />
       </label>
 
-      <button type="submit" class={buttonVariants({ variant: 'default' })}>
-        Send message
-      </button>
+      <div class="flex flex-wrap items-center gap-4">
+        <button type="submit" class={buttonVariants({ variant: 'default' })} data-contact-submit>
+          Send message
+        </button>
+        <p data-contact-status role="status" aria-live="polite" class="text-sm text-muted-foreground"></p>
+      </div>
     </form>
   </section>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const form = document.querySelector('[data-contact-form]');
+    if (!form) return;
+    const status = form.querySelector('[data-contact-status]');
+    const submit = form.querySelector('[data-contact-submit]');
+    const endpoint = form.getAttribute('data-endpoint') || '';
+
+    const setStatus = (message, tone) => {
+      if (!status) return;
+      status.textContent = message;
+      status.classList.remove('text-muted-foreground', 'text-primary', 'text-destructive');
+      status.classList.add(
+        tone === 'success' ? 'text-primary' : tone === 'error' ? 'text-destructive' : 'text-muted-foreground',
+      );
+    };
+
+    form.addEventListener('submit', async (event) => {
+      // Without a configured endpoint, never let the browser POST to "#" (which silently reloads
+      // and drops the message). Tell the visitor instead.
+      if (!endpoint) {
+        event.preventDefault();
+        setStatus('This form is not yet configured. Please email us in the meantime.', 'error');
+        return;
+      }
+
+      // Progressive enhancement: submit via fetch so the visitor stays on the page. If fetch is
+      // unavailable the native POST to the endpoint proceeds unchanged.
+      if (typeof window.fetch !== 'function') return;
+      event.preventDefault();
+
+      if (submit) submit.setAttribute('disabled', 'true');
+      setStatus('Sending…', 'info');
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (response.ok) {
+          form.reset();
+          setStatus('Thanks — your message is on its way. We’ll be in touch.', 'success');
+        } else {
+          setStatus('Something went wrong sending your message. Please try again shortly.', 'error');
+        }
+      } catch (error) {
+        setStatus('We could not reach the network. Please check your connection and try again.', 'error');
+      } finally {
+        if (submit) submit.removeAttribute('disabled');
+      }
+    });
+  })();
+</script>

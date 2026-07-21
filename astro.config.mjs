@@ -18,6 +18,9 @@ export default defineConfig({
         'heroicons-outline': ['book-open', 'academic-cap', 'heart', 'light-bulb'],
         tabler: [
           'compass',
+          'chevron-down',
+          'menu-2',
+          'x',
           'chart-line',
           'heart-handshake',
           'network',

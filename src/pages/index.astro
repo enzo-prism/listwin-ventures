@@ -153,7 +153,7 @@ const carbonPressReleaseUrl =
 const fourAgHeroAsset: VisualAsset = {
   id: '4ag',
   name: '4AG field deployments',
-  path: 'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp',
+  path: 'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp',
   alt: '4AG pilot featuring the LaserWeeder operating at sunset in a field',
 };
 
@@ -327,7 +327,7 @@ const exploitThemes = [
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} jsonLd={profileSchema}>
-  <section data-reveal class="space-y-6 rounded-apple bg-white/95 p-6 text-center shadow-panel ring-1 ring-white/60 sm:p-10">
+  <section data-reveal class="space-y-7 rounded-apple bg-gradient-to-br from-white via-white to-brand/5 p-8 text-center shadow-panel ring-1 ring-white/60 sm:p-12">
 		    <p class="mx-auto flex items-center justify-center text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-ink/50 sm:text-xs">
 	      <span class="sr-only">Roles:</span>
 	      <span class="typing-line">
@@ -335,8 +335,8 @@ const exploitThemes = [
 	        <span class="inline-block h-3 w-[2px] animate-pulse bg-brand align-middle motion-reduce:animate-none sm:h-4" aria-hidden="true"></span>
 	      </span>
 	    </p>
-    <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Don Listwin</h1>
-    <p class="text-ink/70">
+    <h1 class="font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">Don Listwin</h1>
+    <p class="mx-auto max-w-2xl text-ink/70">
       Building enduring companies across networking, data, and health while backing founders who pair engineering rigor with human
       impact.
       <br />
@@ -347,7 +347,7 @@ const exploitThemes = [
       <div
         data-reveal
         class="hero-spotlight-card group space-y-4 rounded-[32px] border border-ink/10 px-6 py-6 text-center text-white shadow-panel transition"
-        style={`--hero-image: url('https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp');`}
+        style={`--hero-image: url('https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp');`}
       >
         <span class="hero-spotlight-card__glow" aria-hidden="true"></span>
         <div class="hero-spotlight-card__content space-y-3">
@@ -405,6 +405,7 @@ const exploitThemes = [
             width="220"
             height="220"
             loading="lazy"
+            decoding="async"
             class="h-28 w-28 rounded-[24px] border border-ink/10 object-cover sm:h-32 sm:w-32"
           />
           <div class="space-y-2">
@@ -464,7 +465,7 @@ const exploitThemes = [
             I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a
             public company—<a href={linkTargets.openwave}>OpenWave</a>—that created the mobile internet. Since then, I created
             Listwin Ventures which has invested in dozens of other leading technology companies. I founded the
-            <a href={linkTargets.canary}>Canary Foundation</a> in 2002—the world's largest research entity to focus on early cancer
+            <a href={linkTargets.canary}>Canary Foundation</a> in 2004—the world's largest research entity to focus on early cancer
             technology. Most recently, I was the CEO of <a href={linkTargets.rapidai}>RapidAI</a>, and I currently serve on three boards
             including as Lead Independent Director at <a href={linkTargets.calix}>Calix</a>. Additionally, I serve as a technology
             partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
@@ -485,7 +486,7 @@ const exploitThemes = [
         </p>
         <p>
           After 25 years of senior leadership operating experience, I founded the <a href={linkTargets.canary}>Canary Foundation</a>
-          in 2002 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. The
+          in 2004 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. The
           <a href={linkTargets.canary}>Canary Foundation</a> is the world’s first non-profit organization focused solely on the
           funding, discovery, and development of tests for early cancer detection. I continue to be deeply involved with other
           cancer-related organizations. In 2009, I was appointed to the National Cancer Institute’s Board of Scientific Advisors. I
@@ -639,23 +640,24 @@ const exploitThemes = [
 	                      width={mediaDimensions?.width ?? 768}
 	                      height={mediaDimensions?.height ?? 576}
 	                      loading="lazy"
+	                      decoding="async"
 	                      class="w-full rounded-[24px] border border-white/70"
 	                    />
 	                  )}
                   <h4 class="text-lg font-semibold text-ink">{card.title}</h4>
                   <p>{card.description}</p>
-                  <a
-                    class={`btn btn-ink text-xs uppercase tracking-[0.3em] ${
-                      buttonDisabled
-                        ? 'cursor-not-allowed border-ink/20 text-ink/40'
-                        : ''
-                    }`}
-                    href={buttonDisabled ? '#' : buttonHref}
-                    aria-disabled={buttonDisabled}
-                    tabindex={buttonDisabled ? -1 : undefined}
-                  >
-                    Learn more
-                  </a>
+                  {buttonDisabled ? (
+                    <span
+                      class="btn btn-ink cursor-not-allowed border-ink/20 text-xs uppercase tracking-[0.3em] text-ink/40"
+                      aria-disabled="true"
+                    >
+                      Learn more<span class="sr-only"> about {card.title} (coming soon)</span>
+                    </span>
+                  ) : (
+                    <a class="btn btn-ink text-xs uppercase tracking-[0.3em]" href={buttonHref}>
+                      Learn more<span class="sr-only"> about {card.title}</span>
+                    </a>
+                  )}
                 </article>
               );
             })}
@@ -723,11 +725,11 @@ const exploitThemes = [
 
   .hero-spotlight-card:hover,
   .hero-spotlight-card:focus-within {
-    transform: translateY(-8px);
+    transform: translateY(-4px);
     border-color: rgba(255, 255, 255, 0.4);
     box-shadow:
-      0 18px 50px rgba(15, 23, 42, 0.55),
-      0 10px 28px rgba(0, 0, 0, 0.2);
+      0 14px 38px rgba(15, 23, 42, 0.4),
+      0 8px 20px rgba(0, 0, 0, 0.15);
   }
 
   .hero-spotlight-card:hover::before,
@@ -743,7 +745,19 @@ const exploitThemes = [
 
   .hero-spotlight-card:hover .hero-spotlight-card__glow,
   .hero-spotlight-card:focus-within .hero-spotlight-card__glow {
-    opacity: 1;
+    opacity: 0.65;
     transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-spotlight-card,
+    .hero-spotlight-card::before,
+    .hero-spotlight-card__glow {
+      transition: none;
+    }
+    .hero-spotlight-card:hover,
+    .hero-spotlight-card:focus-within {
+      transform: none;
+    }
   }
 </style>

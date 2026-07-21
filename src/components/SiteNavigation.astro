@@ -1,0 +1,341 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface NavLeaf {
+  label: string;
+  href: string;
+  description?: string;
+  icon?: string;
+}
+
+interface NavSection {
+  label: string;
+  items: NavLeaf[];
+}
+
+interface NavMenu {
+  label: string;
+  href?: string;
+  icon?: string;
+  sections?: NavSection[];
+}
+
+export interface Props {
+  items: NavMenu[];
+  contactHref: string;
+}
+
+const { items, contactHref } = Astro.props;
+
+// Map the layout's short icon keys to astro-icon names. Every name below must stay in the
+// `icon({ include })` allowlist in astro.config.mjs or the build fails.
+const iconMap: Record<string, string> = {
+  home: 'tabler:home',
+  sparkles: 'tabler:sparkles',
+  briefcase: 'tabler:briefcase',
+  users: 'tabler:users-group',
+  about: 'tabler:book',
+  rocket: 'tabler:rocket',
+  community: 'tabler:heart-handshake',
+  heart: 'tabler:heart',
+  shield: 'tabler:shield-heart',
+  hospital: 'tabler:hospital',
+  bank: 'tabler:building-bank',
+  church: 'tabler:building-church',
+  news: 'tabler:news',
+  user: 'tabler:user-heart',
+  school: 'tabler:school',
+  compass: 'tabler:compass',
+};
+
+const iconName = (key?: string) => (key ? iconMap[key] : undefined);
+---
+
+<nav class="site-nav flex items-center gap-2" aria-label="Primary">
+  <!-- Desktop: CSS-driven hover/focus dropdowns, no JavaScript required for open/close. -->
+  <ul class="hidden items-center gap-1 lg:flex">
+    {items.map((item) => {
+      const icon = iconName(item.icon);
+      if (!item.sections?.length && item.href) {
+        return (
+          <li>
+            <a
+              href={item.href}
+              class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-foreground/75 no-underline transition hover:bg-accent hover:text-foreground"
+            >
+              {icon && <Icon name={icon} class="h-4 w-4 text-foreground/50" aria-hidden="true" />}
+              {item.label}
+            </a>
+          </li>
+        );
+      }
+
+      return (
+        <li class="nav-group relative">
+          <button
+            type="button"
+            class="nav-trigger inline-flex items-center gap-2 rounded-full bg-transparent px-4 py-2 text-sm font-medium text-foreground/75 transition hover:bg-accent hover:text-foreground"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            {icon && <Icon name={icon} class="h-4 w-4 text-foreground/50" aria-hidden="true" />}
+            {item.label}
+            <Icon name="tabler:chevron-down" class="nav-caret h-3.5 w-3.5 text-foreground/40 transition-transform" aria-hidden="true" />
+          </button>
+          <div class="nav-panel absolute right-0 top-full pt-2">
+            <div
+              class:list={[
+                'grid gap-3 rounded-2xl border border-border/70 bg-card/95 p-4 shadow-panel backdrop-blur',
+                (item.sections?.length ?? 0) > 1
+                  ? 'w-max max-w-[min(680px,calc(100vw-5rem))] sm:grid-cols-2 lg:grid-cols-3'
+                  : 'w-64',
+              ]}
+            >
+              {item.sections?.map((section) => (
+                <div class="space-y-2 rounded-2xl border border-border/70 bg-card/80 p-3">
+                  <p class="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">{section.label}</p>
+                  <div class="space-y-1">
+                    {section.items.map((leaf) => {
+                      const leafIcon = iconName(leaf.icon);
+                      return (
+                        <a
+                          href={leaf.href}
+                          class="group/leaf flex items-start gap-2 rounded-xl px-2 py-1.5 text-sm text-foreground/75 no-underline transition hover:bg-accent hover:text-foreground"
+                        >
+                          {leafIcon && (
+                            <Icon
+                              name={leafIcon}
+                              class="mt-0.5 h-3.5 w-3.5 text-muted-foreground transition group-hover/leaf:text-primary"
+                              aria-hidden="true"
+                            />
+                          )}
+                          <span>
+                            <span class="block font-medium">{leaf.label}</span>
+                            {leaf.description && (
+                              <span class="mt-0.5 block text-xs text-muted-foreground">{leaf.description}</span>
+                            )}
+                          </span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </li>
+      );
+    })}
+    <li>
+      <a
+        href={contactHref}
+        class="btn btn-brand ml-1 px-4 py-2 text-sm"
+      >
+        Contact
+      </a>
+    </li>
+  </ul>
+
+  <!-- Mobile: native <details> drawer + <details> accordions. Fully functional with JS disabled. -->
+  <details class="mobile-drawer lg:hidden">
+    <summary
+      class="inline-flex cursor-pointer list-none items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium text-foreground/80 [&::-webkit-details-marker]:hidden"
+      aria-label="Open navigation menu"
+    >
+      <Icon name="tabler:menu-2" class="drawer-open-icon h-4 w-4" aria-hidden="true" />
+      <Icon name="tabler:x" class="drawer-close-icon h-4 w-4" aria-hidden="true" />
+      Menu
+    </summary>
+    <div class="mobile-backdrop" aria-hidden="true"></div>
+    <div class="mobile-panel" role="dialog" aria-label="Navigation">
+      <div class="flex items-center justify-between border-b border-border/60 px-5 py-4">
+        <span class="text-sm font-semibold uppercase tracking-[0.25em] text-muted-foreground">Navigation</span>
+      </div>
+      <div class="space-y-3 overflow-y-auto px-4 py-4">
+        {items.map((item) => {
+          const icon = iconName(item.icon);
+          if (!item.sections?.length && item.href) {
+            return (
+              <a
+                href={item.href}
+                class="flex items-center gap-2 rounded-xl border border-border/60 bg-card/80 px-3 py-2.5 text-sm font-medium text-foreground/80 no-underline"
+              >
+                {icon && <Icon name={icon} class="h-4 w-4 text-foreground/60" aria-hidden="true" />}
+                {item.label}
+              </a>
+            );
+          }
+
+          return (
+            <details class="mobile-section rounded-xl border border-border/60">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-3 text-sm font-medium text-foreground/80 [&::-webkit-details-marker]:hidden">
+                <span class="inline-flex items-center gap-2">
+                  {icon && <Icon name={icon} class="h-4 w-4 text-foreground/60" aria-hidden="true" />}
+                  {item.label}
+                </span>
+                <Icon name="tabler:chevron-down" class="mobile-caret h-4 w-4 text-foreground/40 transition-transform" aria-hidden="true" />
+              </summary>
+              <div class="space-y-3 px-3 pb-3">
+                {item.sections?.map((section) => (
+                  <div class="space-y-1.5 rounded-lg bg-muted/50 p-2.5">
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">{section.label}</p>
+                    {section.items.map((leaf) => (
+                      <a
+                        href={leaf.href}
+                        class="block rounded-md px-2 py-1.5 text-sm text-foreground/75 no-underline transition hover:bg-accent hover:text-foreground"
+                      >
+                        {leaf.label}
+                      </a>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </details>
+          );
+        })}
+        <a href={contactHref} class="btn btn-brand mt-2 w-full">Contact</a>
+      </div>
+    </div>
+  </details>
+</nav>
+
+<style>
+  /* Desktop dropdown: hidden by default, revealed on hover or keyboard focus within the group.
+     No JavaScript is required for this to work. */
+  /* Closed panels use display:none so their 700px box never contributes to document width
+     (a visibility:hidden panel is still laid out and would create horizontal overflow). */
+  .nav-panel {
+    display: none;
+    z-index: 50;
+  }
+  .nav-group:hover > .nav-panel,
+  .nav-group:focus-within > .nav-panel {
+    display: block;
+    animation: lv-nav-in 160ms ease;
+  }
+  @keyframes lv-nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .nav-group:hover > .nav-trigger .nav-caret,
+  .nav-group:focus-within > .nav-trigger .nav-caret {
+    transform: rotate(180deg);
+  }
+
+  /* Mobile drawer via <details>. Icons swap on open; a fixed panel slides in from the right. */
+  .mobile-drawer > summary .drawer-close-icon {
+    display: none;
+  }
+  .mobile-drawer[open] > summary .drawer-open-icon {
+    display: none;
+  }
+  .mobile-drawer[open] > summary .drawer-close-icon {
+    display: inline-block;
+  }
+
+  .mobile-backdrop {
+    display: none;
+  }
+  .mobile-drawer[open] .mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    display: block;
+    background: rgba(15, 23, 42, 0.35);
+    backdrop-filter: blur(2px);
+    z-index: 45;
+  }
+
+  /* Rendered only while the drawer is open. An explicit display on the closed panel would
+     override the native <details> hiding and leave a fixed element off-screen to the right,
+     which creates horizontal overflow on mobile. */
+  .mobile-panel {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: min(94vw, 24rem);
+    background: hsl(var(--background) / 0.98);
+    backdrop-filter: blur(12px);
+    border-inline-start: 1px solid hsl(var(--border) / 0.7);
+    box-shadow: -20px 0 60px rgba(15, 23, 42, 0.18);
+    z-index: 46;
+    display: none;
+  }
+  .mobile-drawer[open] .mobile-panel {
+    display: flex;
+    flex-direction: column;
+    animation: lv-drawer-in 220ms ease;
+  }
+  @keyframes lv-drawer-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .mobile-section[open] .mobile-caret {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-group:hover > .nav-panel,
+    .nav-group:focus-within > .nav-panel {
+      animation: none;
+    }
+    .mobile-drawer[open] .mobile-panel {
+      animation: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  // Progressive enhancement only — the nav is fully usable without this.
+  // 1) keep aria-expanded in sync on the desktop triggers; 2) close the mobile drawer and any
+  // open desktop menu on Escape or an outside click; 3) lock body scroll while the drawer is open.
+  (() => {
+    const groups = Array.from(document.querySelectorAll('.nav-group'));
+    groups.forEach((group) => {
+      const trigger = group.querySelector('.nav-trigger');
+      if (!trigger) return;
+      const sync = () => {
+        const open = group.matches(':hover') || group.contains(document.activeElement);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      group.addEventListener('mouseenter', sync);
+      group.addEventListener('mouseleave', sync);
+      group.addEventListener('focusin', sync);
+      group.addEventListener('focusout', () => window.setTimeout(sync, 0));
+    });
+
+    const drawer = document.querySelector('.mobile-drawer');
+    const setBodyLock = (locked) => {
+      document.body.style.overflow = locked ? 'hidden' : '';
+    };
+    if (drawer) {
+      drawer.addEventListener('toggle', () => setBodyLock(drawer.open));
+      const backdrop = drawer.querySelector('.mobile-backdrop');
+      if (backdrop) backdrop.addEventListener('click', () => drawer.removeAttribute('open'));
+      // Close the drawer after tapping a navigation link.
+      drawer.querySelectorAll('.mobile-panel a').forEach((link) => {
+        link.addEventListener('click', () => drawer.removeAttribute('open'));
+      });
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (drawer && drawer.open) {
+        drawer.removeAttribute('open');
+        return;
+      }
+      const active = document.activeElement;
+      if (active && active.closest && active.closest('.nav-group')) active.blur();
+    });
+  })();
+</script>

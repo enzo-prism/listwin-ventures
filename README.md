@@ -99,11 +99,13 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 - **Community** – philanthropy slugs sourced from `entityDetails`.
 - **About** – links to the oral-history interview, the on-page “My Story” anchor, and the Press library.
 - **Contact** – dedicated `/contact` page (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
-  > ⚠️ **The contact form does not currently work.** `src/pages/contact.astro` still carries
-  > `data-netlify="true"` and a hidden `form-name` input from an earlier Netlify deployment. This
-  > site is hosted on **Vercel**, which does not implement Netlify Forms, and the form declares no
-  > `action` and has no serverless handler — so submissions are silently discarded. Fixing it means
-  > adding an `api/contact.js` handler (or an external form service) and pointing `action` at it.
+  > **The contact form posts to a third-party form service.** The old Netlify markup
+  > (`data-netlify` + hidden `form-name`) is gone; `src/pages/contact.astro` now posts to the URL in
+  > the **`PUBLIC_CONTACT_ENDPOINT`** environment variable (e.g. a Formspree/Basin endpoint). Set it
+  > in Vercel (and `.env.local` for local testing). The form progressively enhances: with JS it
+  > submits via `fetch` and shows an inline status without leaving the page; without JS it does a
+  > native POST. A honeypot field (`_gotcha`) filters bots. **If the variable is unset, the form
+  > renders but tells the visitor it is not configured instead of silently dropping the message.**
 
 All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
 

@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import SiteNavigation from '../components/SiteNavigation';
+import SiteNavigation from '../components/SiteNavigation.astro';
 import SharePanel from '../components/SharePanel.astro';
 import { investmentAssets } from '../data/assets';
 import { getEntityDetails, getDetailPath } from '../data/entityDetails';
@@ -33,7 +33,7 @@ const canonicalUrl = new URL(
   siteUrl,
 ).toString();
 const logoUrl =
-  'https://res.cloudinary.com/dhqpqfw6w/image/upload/v1762622395/LV_logo-02-300x120_gobztf.webp';
+  'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762622395/LV_logo-02-300x120_gobztf.webp';
 const openGraphImage = `${siteUrl}/assets/uploads/OpenGraph.png`;
 // Per-page image when supplied, else the site card. Relative paths are resolved against the
 // production origin because OG consumers require absolute URLs.
@@ -256,32 +256,6 @@ const showSharePanel =
     <link rel="apple-touch-icon" href="/assets/uploads/Favicon%204.png" />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R6NTCMFK3"></script>
-    <script is:inline>
-      {(() => {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-5R6NTCMFK3');
-      })()}
-    </script>
-    <script is:inline>
-      {(function (h, o, t, j, a, r) {
-        h.hj =
-          h.hj ||
-          function () {
-            (h.hj.q = h.hj.q || []).push(arguments);
-          };
-        h._hjSettings = { hjid: 6585931, hjsv: 6 };
-        a = o.getElementsByTagName('head')[0];
-        r = o.createElement('script');
-        r.async = 1;
-        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-        a.appendChild(r);
-      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')}
-    </script>
   </head>
   <body>
     <a
@@ -306,7 +280,7 @@ const showSharePanel =
             />
             <span class="sr-only">Listwin Ventures</span>
           </a>
-          <SiteNavigation client:load items={navItems} contactHref="/contact" />
+          <SiteNavigation items={navItems} contactHref="/contact" />
         </div>
       </header>
 
@@ -337,6 +311,111 @@ const showSharePanel =
         </div>
       </footer>
     </div>
+
+    <!-- Cookie consent. Analytics load only after an explicit opt-in, and even then off the
+         critical path (requestIdleCallback). Hidden until the loader confirms no prior decision. -->
+    <div
+      id="consent-banner"
+      hidden
+      role="region"
+      aria-label="Cookie consent"
+      aria-live="polite"
+      class="fixed inset-x-0 bottom-0 z-50 px-4 pb-4"
+    >
+      <div class="mx-auto flex max-w-4xl flex-col gap-3 rounded-2xl border border-border/70 bg-card/95 p-4 shadow-panel backdrop-blur sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm text-muted-foreground">
+          We use analytics cookies to understand how visitors use this site. See our
+          <a href="/cookie-policy" class="underline hover:text-foreground">Cookie Policy</a>.
+        </p>
+        <div class="flex shrink-0 gap-2">
+          <button type="button" data-consent-decline class="btn btn-ink text-sm">Decline</button>
+          <button type="button" data-consent-accept class="btn btn-brand text-sm">Accept</button>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      {(() => {
+        const CONSENT_KEY = 'lv-analytics-consent';
+        const GA_ID = 'G-5R6NTCMFK3';
+        const HOTJAR_ID = 6585931;
+        const HOTJAR_SV = 6;
+
+        let loaded = false;
+        const loadAnalytics = () => {
+          if (loaded) return;
+          loaded = true;
+          const start = () => {
+            const ga = document.createElement('script');
+            ga.async = true;
+            ga.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+            document.head.appendChild(ga);
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              window.dataLayer.push(arguments);
+            }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', GA_ID);
+
+            (function (h, o, t, j, a, r) {
+              h.hj =
+                h.hj ||
+                function () {
+                  (h.hj.q = h.hj.q || []).push(arguments);
+                };
+              h._hjSettings = { hjid: HOTJAR_ID, hjsv: HOTJAR_SV };
+              a = o.getElementsByTagName('head')[0];
+              r = o.createElement('script');
+              r.async = 1;
+              r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+              a.appendChild(r);
+            })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+          };
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(start, { timeout: 3000 });
+          } else {
+            window.setTimeout(start, 1200);
+          }
+        };
+
+        let decision = null;
+        try {
+          decision = window.localStorage.getItem(CONSENT_KEY);
+        } catch (e) {}
+
+        if (decision === 'granted') {
+          loadAnalytics();
+          return;
+        }
+        if (decision === 'denied') return;
+
+        const banner = document.getElementById('consent-banner');
+        if (!banner) return;
+        banner.hidden = false;
+        const store = (value) => {
+          try {
+            window.localStorage.setItem(CONSENT_KEY, value);
+          } catch (e) {}
+        };
+        const accept = banner.querySelector('[data-consent-accept]');
+        const decline = banner.querySelector('[data-consent-decline]');
+        if (accept) {
+          accept.addEventListener('click', () => {
+            store('granted');
+            banner.hidden = true;
+            loadAnalytics();
+          });
+        }
+        if (decline) {
+          decline.addEventListener('click', () => {
+            store('denied');
+            banner.hidden = true;
+          });
+        }
+      })()}
+    </script>
+
     <script is:inline>
       {(() => {
         const typingEl = document.getElementById('hero-typing');

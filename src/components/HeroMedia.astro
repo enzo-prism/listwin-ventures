@@ -70,6 +70,7 @@ const figureToneClass = usesDarkFrame ? 'bg-foreground text-background ring-bord
 	        width={dimensions.width}
 	        height={dimensions.height}
 	        loading={loading}
+	        decoding="async"
 	        fetchpriority={fetchpriority}
 	        class={`w-full object-contain ${shadow ? 'shadow-panel' : ''}`}
 	      />

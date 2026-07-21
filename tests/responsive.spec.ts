@@ -42,7 +42,8 @@ test.describe('Responsive smoke', () => {
 
     await page.goto('/press', { waitUntil: 'domcontentloaded' });
 
-    const toggle = page.locator('header button').filter({ hasText: 'Menu' });
+    // The drawer toggle is a native <details><summary>, not a React button.
+    const toggle = page.locator('header summary').filter({ hasText: 'Menu' });
     await expect(toggle).toBeVisible();
 
     await toggle.click();
