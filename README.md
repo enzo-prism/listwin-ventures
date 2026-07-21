@@ -59,7 +59,8 @@ the related media.
 ## Project Structure
 
 - `src/pages/` – Astro page routing (hero/homepage, legal pages, BelizeKids.org spotlight, oral history, contact form, exploit detail pages, etc.).
-- `src/layouts/BaseLayout.astro` – Global shell (sticky nav, dropdown menus, frosted glass header/footer).
+- `src/layouts/BaseLayout.astro` – Global shell (sticky nav, dropdown menus, frosted glass header/footer, cookie-consent banner + deferred analytics loader).
+- `src/components/SiteNavigation.astro` – the header nav. **Zero-JavaScript** (CSS `:hover`/`:focus-within` desktop dropdowns + a native `<details>` mobile drawer). Replaced the old React/Radix island, so most pages now ship 0 KB of module JS. See “Navigation is zero-JavaScript” in `docs/architecture.md`.
 - `src/components/CompanyCarousel.astro`, `LogoGrid.astro`, and `HeroMedia.astro` – reusable media primitives that render the homepage carousels, legacy grids, and hero imagery.
 - `src/components/Button` (global `.btn` utility via `src/styles/global.css`) – shared white-fill/colored-outline button styling consumed across all pages for consistent hover states.
 - `src/data/assets.ts` – legacy media mapping plus grouped board/investment/philanthropy collections.
@@ -92,7 +93,11 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 
 ## Navigation
 
-`src/layouts/BaseLayout.astro` now renders a responsive navigation system with distinct menus:
+The nav is a **zero-JS Astro component** (`src/components/SiteNavigation.astro`, fed `navItems` from
+`BaseLayout.astro`). Desktop dropdowns open on CSS `:hover`/`:focus-within`; the mobile drawer is a
+native `<details>`. A tiny inline script only enhances (`aria-expanded`, Escape/outside-click close,
+scroll lock). New icon names still need adding to the `astro.config.mjs` allowlist. It renders
+distinct menus:
 
 - **New** – curated spotlight cards for current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
 - **Investments** – mega-menu fed by `investmentAssets`/`entityDetails` (Seed, Private, Exits inserted between Private/Venture, then Venture, Public).
@@ -101,11 +106,14 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 - **Contact** – dedicated `/contact` page (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
   > **The contact form posts to a third-party form service.** The old Netlify markup
   > (`data-netlify` + hidden `form-name`) is gone; `src/pages/contact.astro` now posts to the URL in
-  > the **`PUBLIC_CONTACT_ENDPOINT`** environment variable (e.g. a Formspree/Basin endpoint). Set it
-  > in Vercel (and `.env.local` for local testing). The form progressively enhances: with JS it
-  > submits via `fetch` and shows an inline status without leaving the page; without JS it does a
-  > native POST. A honeypot field (`_gotcha`) filters bots. **If the variable is unset, the form
-  > renders but tells the visitor it is not configured instead of silently dropping the message.**
+  > the **`PUBLIC_CONTACT_ENDPOINT`** environment variable (a Formspree endpoint). It is already set
+  > in Vercel for Production and Preview and in `.env.local` for local builds. Because it is a
+  > `PUBLIC_*` variable it is inlined at **build time**, so changing it requires a redeploy/rebuild,
+  > not just an env edit. The form progressively enhances: with JS it submits via `fetch` and shows
+  > an inline status without leaving the page; without JS it does a native POST. A honeypot field
+  > (`_gotcha`) filters bots. **If the variable is unset, the form renders but tells the visitor it
+  > is not configured instead of silently dropping the message.** New Formspree forms also require a
+  > one-time email confirmation before they deliver.
 
 All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
 

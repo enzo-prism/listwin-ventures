@@ -30,6 +30,16 @@ the diffs before trusting a red run, and refresh with `--update-snapshots` once 
 - `src/data/exploitDetails.ts` – Exploits cards + `/exploits/[slug]` pages.
 - `src/data/press.ts` – Press & References library (powers `/press` and “Related reading” on company pages).
 - `src/pages/press.astro` – `/press` route.
+- `src/components/SiteNavigation.astro` – the header nav. **Zero-JavaScript** (CSS dropdowns + a
+  native `<details>` drawer). It replaced a React/Radix island, so most pages now ship 0 KB module
+  JS; only `/4ag` still hydrates React. New icon names go in the `astro.config.mjs` allowlist. See
+  “Navigation is zero-JavaScript” in `docs/architecture.md`.
+- `src/pages/contact.astro` – contact form. Posts to `PUBLIC_CONTACT_ENDPOINT` (a Formspree endpoint,
+  set in Vercel for Production + Preview and in `.env.local`). `PUBLIC_*` vars inline at build time,
+  so changing the endpoint needs a redeploy. See “Contact form” in `docs/architecture.md`.
+- `src/layouts/BaseLayout.astro` – global shell. Also owns the cookie-consent banner + the
+  consent-gated, idle-deferred GA/Hotjar loader (analytics load only after opt-in). See
+  “Analytics & cookie consent” in `docs/architecture.md`.
 - `private/cv.html` – the password-gated CV. **Not an Astro page.** `vercel.json` rewrites `/cv` to
   the `api/cv.js` serverless function, which reads this file only after the password check passes.
   **Never move it under `public/` or `src/pages/`** — anything in the static build is fetchable by
@@ -103,5 +113,13 @@ When you add a new file under `src/pages/`, also update:
   presence means the CV is being published unprotected).
 - Any new static routes show up in `sitemap.xml`.
 - Any new icons are added to the `astro.config.mjs` allowlist.
+- If you touched the nav (`SiteNavigation.astro`) or anything header-related: `npm run test:e2e`
+  passes `tests/responsive.spec.ts` (no horizontal overflow on any route/viewport, the mobile
+  `<details>` drawer opens/locks scroll/closes on Escape, and the desktop dropdown stays on-screen).
+- If you touched analytics/consent: nothing loads GA/Hotjar eagerly in `<head>` — they must stay
+  behind the consent opt-in in `BaseLayout.astro`. The consent banner is `role="region"`, **not**
+  `dialog` (that role belongs to the nav drawer; two dialogs break `getByRole('dialog')`).
+- If you touched the contact form: it still posts to `PUBLIC_CONTACT_ENDPOINT`, degrades to a native
+  POST without JS, and shows the “not configured” message when the var is unset.
 - Update `docs/architecture.md` if structure or data catalogs changed. (There is no `../docs/`
   copy — this repo is standalone; earlier references to a root-level sibling were stale.)

@@ -248,7 +248,10 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 ## Contact form
 
 - `src/pages/contact.astro` posts to the third-party endpoint in **`PUBLIC_CONTACT_ENDPOINT`**
-  (Formspree/Basin style). Set it in Vercel and in `.env.local` for local testing.
+  (a Formspree endpoint). It is already configured in Vercel for Production + Preview and in
+  `.env.local`. Because `PUBLIC_*` vars inline at **build time**, changing the endpoint requires a
+  redeploy/rebuild (e.g. `vercel redeploy <prod-deployment>`), not just an env edit. A brand-new
+  Formspree form also needs a one-time email confirmation before it delivers.
 - Progressive enhancement: with JS it submits via `fetch` (inline status, no navigation); without JS
   it falls back to a native POST. A hidden `_gotcha` honeypot filters bots. When the variable is
   unset the form tells the visitor it is not configured rather than silently dropping the message.
