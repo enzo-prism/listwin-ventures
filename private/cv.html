@@ -1,17 +1,17 @@
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Don Listwin CV</title>
-    <meta name="description" content="Curriculum vitae for Don Listwin." />
-    <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
-    <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
-    <meta name="bingbot" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+    <meta name="description" content="Private curriculum vitae for Don Listwin." />
+    <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
+    <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
+    <meta name="bingbot" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
     <style>
       :root {
         color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
       * {
@@ -20,303 +20,163 @@
 
       body {
         margin: 0;
-        font-family: "Times New Roman", Times, serif;
-        color: #111;
-        background: #f4f4f4;
-        line-height: 1.45;
+        min-width: 0;
+        background: #f4f3ef;
+        color: #17202a;
       }
 
       main {
-        margin: 0 auto;
-        max-width: 860px;
+        width: min(100%, 76rem);
         min-height: 100vh;
-        padding: 2rem 1.25rem 3rem;
-      }
-
-      article {
         margin: 0 auto;
-        max-width: 680px;
-        background: #fff;
-        border: 1px solid #ddd;
-        padding: 2.25rem 1.5rem;
+        padding: clamp(1rem, 3vw, 2rem);
       }
 
-      .print-toolbar {
-        gap: 0.6rem;
-        margin: 0 auto 0.75rem;
-        max-width: 680px;
+      .header {
         display: flex;
-        justify-content: flex-end;
-      }
-
-      .print-button {
-        border: 1px solid #1f2937;
-        border-radius: 999px;
-        background: #fff;
-        color: #111;
-        font: inherit;
-        font-size: 0.95rem;
-        line-height: 1;
-        padding: 0.55rem 0.95rem;
-        cursor: pointer;
-      }
-
-      .print-button:hover {
-        background: #f1f1f1;
-      }
-
-      .print-button:focus-visible {
-        outline: 2px solid #111;
-        outline-offset: 2px;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
       }
 
       h1 {
-        margin: 0 0 0.25rem;
-        font-size: clamp(2rem, 3.5vw, 2.5rem);
+        margin: 0;
+        font-size: clamp(1.65rem, 4vw, 2.35rem);
         line-height: 1.1;
       }
 
-      h2 {
-        margin: 2rem 0 0.75rem;
-        font-size: clamp(1.45rem, 2.4vw, 1.75rem);
-        text-decoration: underline;
-        text-underline-offset: 0.12em;
+      .intro {
+        margin: 0.35rem 0 0;
+        color: #5b6470;
+        line-height: 1.5;
       }
 
-      h3 {
-        margin: 1rem 0 0.4rem;
-        font-size: 1.1rem;
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.55rem;
       }
 
-      p {
-        margin: 0.4rem 0;
-        font-size: 1.03rem;
+      .button {
+        display: inline-flex;
+        min-height: 2.75rem;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #17202a;
+        border-radius: 999px;
+        padding: 0.65rem 1rem;
+        background: #fff;
+        color: #17202a;
+        font: inherit;
+        font-weight: 700;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
       }
 
-      ul {
-        margin: 0.35rem 0 0.95rem 1.15rem;
-        padding: 0;
-        list-style-type: square;
+      .button.primary {
+        background: #17202a;
+        color: #fff;
       }
 
-      li {
-        margin: 0.26rem 0;
+      .button:hover {
+        background: #e8e7e2;
       }
 
-      .contact p {
-        margin: 0.15rem 0;
+      .button.primary:hover {
+        background: #303b46;
       }
 
-      .skills-continuation {
-        margin-top: 1rem;
+      .button:focus-visible {
+        outline: 3px solid #1e6091;
+        outline-offset: 2px;
       }
 
-      @media (min-width: 768px) {
-        main {
-          padding: 2.75rem 1.5rem 3.5rem;
-        }
-
-        article {
-          padding: 2.75rem 2.2rem;
-        }
+      form {
+        margin: 0;
       }
 
-      @media print {
-        @page {
-          size: letter;
-          margin: 0.55in 0.5in;
-        }
-
-        body {
-          background: #fff;
-          color: #000;
-          font-size: 10.5pt;
-          line-height: 1.28;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-
-        main {
-          max-width: none;
-          min-height: auto;
-          padding: 0;
-        }
-
-        .print-toolbar {
-          display: none !important;
-        }
-
-        article {
-          border: 0;
-          max-width: none;
-          padding: 0;
-        }
-
-        h1 {
-          font-size: 24pt;
-          margin: 0 0 0.18in;
-        }
-
-        h2 {
-          margin: 0.17in 0 0.08in;
-          font-size: 14pt;
-          text-underline-offset: 0.09em;
-          page-break-after: avoid;
-        }
-
-        h3 {
-          margin: 0.08in 0 0.03in;
-          font-size: 11pt;
-          page-break-after: avoid;
-        }
-
-        p,
-        li {
-          font-size: 10.5pt;
-          margin: 0.03in 0;
-        }
-
-        ul {
-          margin: 0.04in 0 0.08in 0.2in;
-        }
-
-        .skills-continuation {
-          margin-top: 0.06in;
-        }
-
-        section {
-          break-inside: avoid-page;
-          page-break-inside: avoid;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: underline;
-        }
+      .viewer {
+        width: 100%;
+        display: grid;
+        gap: 1.25rem;
       }
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border: 0;
+
+      .page {
+        display: block;
+        width: min(100%, 53rem);
+        height: auto;
+        margin: 0 auto;
+        border: 1px solid #d8d6cf;
+        background: #fff;
+        box-shadow: 0 0.75rem 2.5rem rgba(23, 32, 42, 0.08);
+      }
+
+      .fallback {
+        margin: 0.75rem 0 0;
+        color: #5b6470;
+        font-size: 0.9rem;
+      }
+
+      .fallback a {
+        color: #174f78;
+      }
+
+      @media (max-width: 760px) {
+        .header {
+          display: block;
+        }
+
+        .actions {
+          justify-content: flex-start;
+          margin-top: 1rem;
+        }
+
+        .viewer {
+          gap: 0.75rem;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <div class="print-toolbar">
-        <!-- Print first: Sign out was the first focusable element on the page, so a keyboard user
-             landed on "log me out" before anything else. -->
-        <button type="button" class="print-button" data-print-cv>
-          Print CV
-        </button>
-        <form method="post" action="/cv/logout"><button type="submit" class="print-button">Sign out</button></form>
-      </div>
-      <article aria-labelledby="cv-title">
-        <header class="contact">
-          <h1 id="cv-title">Don Listwin</h1>
-          <p>3480 Woodside Road, Woodside, CA 94062</p>
-          <p>Cell: (650) 814-9966</p>
-          <p>Email: <a href="mailto:dj22listwin@gmail.com">dj22listwin@gmail.com</a></p>
-        </header>
+      <header class="header">
+        <div>
+          <h1>Don Listwin CV</h1>
+          <p class="intro">July 2026 original-format CV</p>
+        </div>
+        <nav class="actions" aria-label="CV actions">
+          <a class="button primary" href="/cv/download.doc">Download Word CV</a>
+          <a class="button" href="/cv/document.pdf" target="_blank" rel="noreferrer">Open printable PDF</a>
+          <form method="post" action="/cv/logout">
+            <button type="submit" class="button">Sign out</button>
+          </form>
+        </nav>
+      </header>
 
-        <section aria-labelledby="board-experience">
-          <h2 id="board-experience">Board Experience</h2>
-          <p class="board-legend">Current roles are shown in bold.</p>
-
-          <h3>Public Board Experience</h3>
-          <ul>
-            <li>Calix</li>
-            <li>ETEK</li>
-            <li>Isilon</li>
-            <li>JDSU</li>
-            <li>Openwave</li>
-            <li>Phone.com</li>
-            <li>POET Systems</li>
-            <li>Redback</li>
-            <li>Software.com</li>
-            <li>TIBCO</li>
-            <li>VMEM</li>
-            <li>Cisco (executive management)</li>
-          </ul>
-
-          <h3>Private Board Experience</h3>
-          <ul>
-            <li><strong>4AG<span class="sr-only"> (current)</span></strong> (AI AG Robotics)</li>
-            <li><strong>AwareX<span class="sr-only"> (current)</span></strong> (mobile B2C)</li>
-            <li>Clarius (mobile ultrasound)</li>
-            <li><strong>Carbon Robotics<span class="sr-only"> (current)</span></strong> (AI AG Robotics)</li>
-            <li>Clustrix (database)</li>
-            <li>D Wave (quantum computing)</li>
-            <li>Genologics (genetic sequencing)</li>
-            <li>RapidAI (stroke imaging)</li>
-            <li>Joyent (cloud)</li>
-            <li>Plumgrid (SDN)</li>
-            <li>Robin Systems (data center)</li>
-            <li>Sana (security)</li>
-            <li>Teradici (virtualization)</li>
-          </ul>
-
-          <h3>Non-Profit Board Experience</h3>
-          <ul>
-            <li>National Cancer Institute (NCI) / Board of Scientific Advisors (BSA)</li>
-            <li>Fred Hutchinson Cancer Center</li>
-            <li><strong>Canary Foundation<span class="sr-only"> (current)</span></strong></li>
-            <li><strong>Canary Center at Stanford<span class="sr-only"> (current)</span></strong></li>
-            <li>Public Library of Science</li>
-            <li><strong>BelizeKids.org<span class="sr-only"> (current)</span></strong></li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="management-experience">
-          <h2 id="management-experience">Management Experience</h2>
-          <ul>
-            <li>CEO ZEVX EV infrastructure</li>
-            <li>CEO RapidAI (AI medical imaging-private)</li>
-            <li>CEO Sana Security (private sold to AVG)</li>
-            <li>CEO Canary Foundation (non-profit)</li>
-            <li>CEO Belize Kids.org (non-profit)</li>
-            <li>CEO Openwave Systems (public).</li>
-            <li>EVP Cisco Systems; $12B/year business management; Wall Street management.</li>
-            <li>Listwin Ventures; manage my own venture investments including public company portfolio; 9 LP positions in other venture companies; 8 current private invests from 100K to 10M.</li>
-            <li>Tech Partner (Rally Ventures); Tech Partner (Sequoia Capital)</li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="skills">
-          <h2 id="skills">Skills</h2>
-          <ul>
-            <li>Broad Internet/data center product, technology, and market knowledge.</li>
-          </ul>
-          <ul class="skills-continuation">
-            <li>Med tech AI in ultrasound, CT and other imaging modalities.</li>
-            <li>Cancer molecular diagnostics scientific and market knowledge.</li>
-            <li>Acquired, sold, and integrated dozens of companies in past three decades.</li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="education">
-          <h2 id="education">Education</h2>
-          <p>University of Saskatchewan BEng EE 1980; Doctorate Law (Honorary) 2001</p>
-          <p>Associate Professor of Radiology Stanford University 2012 - current.</p>
-        </section>
-
-        <section aria-labelledby="personal">
-          <h2 id="personal">Personal</h2>
-          <p>DOB: 3/22/59. Married with children. Hobbies include golf, skiing, and scuba diving.</p>
-          <p>
-            General information at
-            <a href="https://www.listwinventures.com" rel="noreferrer">www.listwinventures.com</a>
-          </p>
-        </section>
-      </article>
+      <section class="viewer" aria-label="Don Listwin CV preview">
+        <img
+          class="page"
+          src="/cv/page-1.png"
+          alt="Page 1 of Don Listwin's July 2026 CV"
+          width="1547"
+          height="2002"
+        />
+        <img
+          class="page"
+          src="/cv/page-2.png"
+          alt="Page 2 of Don Listwin's July 2026 CV"
+          width="1547"
+          height="2002"
+          loading="lazy"
+          decoding="async"
+        />
+      </section>
+      <p class="fallback">
+        If the preview does not load, <a href="/cv/document.pdf">open the printable PDF</a>.
+      </p>
     </main>
-    <script src="/cv-print.js" defer></script>
-</body>
+  </body>
 </html>

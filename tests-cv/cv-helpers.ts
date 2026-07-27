@@ -5,9 +5,9 @@ import { expect, type Page } from '@playwright/test';
 export const CV_TEST_PASSWORD = 'e2e-test:password 42';
 export const CV_TEST_PORT = 8082;
 
-// Strings that only exist in private/cv.html. Mirrors the CV_MARKERS idea in tests/cv-auth.test.mjs
-// so a regression that serves the CV to an anonymous visitor fails loudly rather than subtly.
-export const CV_MARKERS = /Board Experience|Woodside|dj22listwin/i;
+// Strings that only exist in the authenticated CV shell. The private binary routes have separate
+// request-level coverage in tests/cv-auth.test.mjs.
+export const CV_MARKERS = /July 2026 original-format CV|Download Word CV|page-1\.png/i;
 
 export async function expectLoginScreen(page: Page) {
   await expect(page.getByRole('heading', { name: 'Private CV access', level: 1 })).toBeVisible();
@@ -20,8 +20,9 @@ export async function expectNoCvContent(page: Page) {
 }
 
 export async function expectCvContent(page: Page) {
-  await expect(page.getByRole('heading', { name: 'Don Listwin', level: 1 })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Board Experience', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Don Listwin CV', level: 1 })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Download Word CV' })).toBeVisible();
+  await expect(page.getByRole('img', { name: "Page 1 of Don Listwin's July 2026 CV" })).toBeVisible();
 }
 
 export async function login(page: Page, password: string = CV_TEST_PASSWORD) {

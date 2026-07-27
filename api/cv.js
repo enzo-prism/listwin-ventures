@@ -1,16 +1,23 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 // Simple password gate for the private CV.
 //
-// The security boundary is that private/cv.html lives OUTSIDE the static build and is only
-// read after the password check passes. Do not move that file under public/ or src/pages/ —
+// The security boundary is that every CV asset lives OUTSIDE the static build and is only
+// read after the password check passes. Do not move these files under public/ or src/pages/ —
 // anything in the static build is fetchable by anyone, regardless of what this file does.
 
 const COOKIE_NAME = '__Host-listwin_cv';
 const MAX_AGE_SECONDS = 8 * 60 * 60;
+const SESSION_VERSION = 1;
 const CV_FILE = fileURLToPath(new URL('../private/cv.html', import.meta.url));
+const CV_WORD_FILE = fileURLToPath(new URL('../private/Don-Listwin-CV-July-2026.doc', import.meta.url));
+const CV_PDF_FILE = fileURLToPath(new URL('../private/Don-Listwin-CV-July-2026.pdf', import.meta.url));
+const CV_PAGE_FILES = new Map([
+  ['/cv/page-1.png', fileURLToPath(new URL('../private/Don-Listwin-CV-July-2026-page-1.png', import.meta.url))],
+  ['/cv/page-2.png', fileURLToPath(new URL('../private/Don-Listwin-CV-July-2026-page-2.png', import.meta.url))],
+]);
 
 // Show/hide toggle for the password field. The button starts hidden and is revealed here, so a
 // browser with JavaScript disabled never shows a control that cannot work.
@@ -50,18 +57,24 @@ const SCRIPT_HASH = `sha256-${createHash('sha256').update(TOGGLE_SCRIPT).digest(
 
 const headers = {
   'Cache-Control': 'private, no-store, max-age=0, must-revalidate',
+  Pragma: 'no-cache',
   'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet, noimageindex',
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
-  // 'self' is required for /cv-print.js on the CV page — without it the Print button silently
-  // does nothing. The hash additionally permits the inline toggle script.
-  'Content-Security-Policy': `default-src 'self'; script-src 'self' '${SCRIPT_HASH}'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; form-action 'self'; frame-ancestors 'none'; base-uri 'none'`,
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  // The hash permits the login page's inline password toggle. img-src allows the authenticated
+  // page previews served by this same handler.
+  'Content-Security-Policy': `default-src 'self'; script-src 'self' '${SCRIPT_HASH}'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'`,
   Vary: 'Cookie',
 };
 
-const send = (res, statusCode, body) => {
+const send = (res, statusCode, body, {
+  contentType = 'text/html; charset=utf-8',
+  disposition,
+} = {}) => {
   for (const [name, value] of Object.entries(headers)) res.setHeader(name, value);
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Content-Type', contentType);
+  if (disposition) res.setHeader('Content-Disposition', disposition);
   res.statusCode = statusCode;
   res.end(body);
 };
@@ -73,22 +86,45 @@ const matches = (candidate, expected) => {
   return a.length === b.length && timingSafeEqual(a, b);
 };
 
+const signingSecret = (password) => process.env.CV_SESSION_SECRET || password;
+
+const sign = (payload, password) => createHmac('sha256', signingSecret(password))
+  .update(payload)
+  .digest('base64url');
+
+const createSessionToken = (password) => {
+  const payload = Buffer.from(JSON.stringify({
+    v: SESSION_VERSION,
+    exp: Date.now() + (MAX_AGE_SECONDS * 1000),
+    nonce: randomBytes(16).toString('base64url'),
+  })).toString('base64url');
+
+  return `${payload}.${sign(payload, password)}`;
+};
+
+const hasValidSession = (token, password) => {
+  const parts = String(token).split('.');
+  if (parts.length !== 2 || !parts[0] || !parts[1] || !matches(parts[1], sign(parts[0], password))) {
+    return false;
+  }
+
+  try {
+    const session = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'));
+    return session.v === SESSION_VERSION
+      && Number.isFinite(session.exp)
+      && session.exp > Date.now()
+      && typeof session.nonce === 'string'
+      && session.nonce.length >= 16;
+  } catch {
+    return false;
+  }
+};
+
 const readCookie = (header = '') => header
   .split(';')
   .map((part) => part.trim())
   .find((part) => part.startsWith(`${COOKIE_NAME}=`))
   ?.slice(COOKIE_NAME.length + 1) ?? '';
-
-// decodeURIComponent throws URIError on a malformed value (a bare '%'). Left uncaught that is a
-// 500 on every GET, and because the cookie is HttpOnly the visitor cannot clear it from the page —
-// a permanent lockout. Treat anything undecodable as "not logged in" and show the login form.
-const safeDecode = (value) => {
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return '';
-  }
-};
 
 const readPassword = (req) => {
   try {
@@ -108,6 +144,14 @@ const isLogout = (req) => {
     return new URL(req.url ?? '/cv', 'https://placeholder.invalid').pathname.endsWith('/logout');
   } catch {
     return false;
+  }
+};
+
+const pathname = (req) => {
+  try {
+    return new URL(req.url ?? '/cv', 'https://placeholder.invalid').pathname;
+  } catch {
+    return '/cv';
   }
 };
 
@@ -166,14 +210,41 @@ export default async function handler(req, res) {
     res.setHeader('Location', '/cv');
     res.setHeader(
       'Set-Cookie',
-      `${COOKIE_NAME}=${encodeURIComponent(password)}; Path=/; Max-Age=${MAX_AGE_SECONDS}; HttpOnly; Secure; SameSite=Strict`,
+      `${COOKIE_NAME}=${createSessionToken(password)}; Path=/; Max-Age=${MAX_AGE_SECONDS}; HttpOnly; Secure; SameSite=Strict`,
     );
     res.end('');
     return;
   }
 
-  if (!matches(safeDecode(readCookie(req.headers.cookie)), password)) {
+  if (!hasValidSession(readCookie(req.headers.cookie), password)) {
     send(res, 200, loginPage());
+    return;
+  }
+
+  const path = pathname(req);
+  if (path === '/cv/download.doc') {
+    const word = await readFile(CV_WORD_FILE);
+    send(res, 200, req.method === 'HEAD' ? '' : word, {
+      contentType: 'application/msword',
+      disposition: 'attachment; filename="Don-Listwin-CV-July-2026.doc"',
+    });
+    return;
+  }
+
+  if (path === '/cv/document.pdf') {
+    const pdf = await readFile(CV_PDF_FILE);
+    send(res, 200, req.method === 'HEAD' ? '' : pdf, {
+      contentType: 'application/pdf',
+      disposition: 'inline; filename="Don-Listwin-CV-July-2026.pdf"',
+    });
+    return;
+  }
+
+  if (CV_PAGE_FILES.has(path)) {
+    const image = await readFile(CV_PAGE_FILES.get(path));
+    send(res, 200, req.method === 'HEAD' ? '' : image, {
+      contentType: 'image/png',
+    });
     return;
   }
 

@@ -1,8 +1,7 @@
 # Architecture & Maintenance Notes
 
-This document mirrors the root-level reference (`../docs/architecture.md`) so contributors working
-solely inside the Astro project have the context they need. Keep both files in sync when shipping
-structural changes.
+This is the standalone architecture reference for the Astro project. Keep it in sync when shipping
+structural, security, routing, or deployment changes.
 
 ## Project Layout
 
@@ -23,6 +22,8 @@ listwinventures-rebuild/
 ## CSS Strategy
 
 - `src/styles/global.css` is the only global stylesheet entry point (Tailwind base/components/utilities + shared site styles).
+- Tailwind 3 is processed through `postcss.config.cjs`; the retired `@astrojs/tailwind` integration
+  is intentionally absent from `astro.config.mjs`.
 - Legacy WordPress stylesheets remain under `public/assets/css/` for reference only and are not loaded by `BaseLayout.astro`.
 
 ## Data Sources
@@ -60,7 +61,7 @@ mobile nav expands into a full-width card with all sections stacked.
   `investmentIcons`, `communityLinks`, `storyLinks`) in `BaseLayout.astro` updated whenever you add
   or rename items so the grey→green hover treatment remains aligned across desktop and mobile.
 
-### Navigation is zero-JavaScript (`SiteNavigation.astro`)
+### Navigation uses no framework JavaScript (`SiteNavigation.astro`)
 
 - The nav was a React island (`SiteNavigation.tsx`, `client:load`) that pulled React + Radix +
   lucide onto **every** page (~300 KB). It is now a pure Astro component:
@@ -72,8 +73,16 @@ mobile nav expands into a full-width card with all sections stacked.
     panel on-screen at 1024–1920 without clipping. `tests/responsive.spec.ts` guards the overflow.
   - **Mobile** uses a native `<details>`/`<summary>` drawer with `<details>` accordions inside —
     fully functional with JS disabled.
-  - A tiny `is:inline` script only *enhances*: it syncs `aria-expanded`, closes on Escape/outside
-    click, and locks body scroll while the drawer is open.
+  - A small `is:inline` accessibility enhancement syncs `aria-expanded`, gives the drawer modal
+    semantics, contains keyboard focus, returns focus to the trigger, marks background content
+    inert, closes on Escape/backdrop activation, preserves body scroll state, and unlocks the page
+    if the viewport changes to desktop.
+  - Static markup deliberately omits JavaScript-only `aria-expanded` and `aria-modal` state. With
+    JavaScript disabled, the native summary moves above the open panel and remains the close control.
+  - The sticky header's `backdrop-filter` would otherwise make it the containing block for fixed
+    descendants in Chromium. The open state disables that filter and raises the header above the
+    consent banner so the panel and backdrop cover the full viewport. The mobile Playwright checks
+    guard this geometry and stacking behavior.
   - New icon names still go in the `astro.config.mjs` allowlist (the nav added `chevron-down`,
     `menu-2`, `x`). The React-only page now is `/4ag` (the Embla carousel island).
   - The drawer toggle is a `<summary>`, not a `<button>` — update selectors accordingly.
@@ -216,8 +225,11 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - `/oral-history-caltech` is included in `staticRoutes` as the Caltech 2025 interview route.
 - `/cv` is intentionally excluded from `staticRoutes` and all public discovery files.
 - `/cv` is not an Astro route. `vercel.json` rewrites it to `api/cv.js`, which fails closed unless `CV_PASSWORD` is configured.
-- The handler is a deliberately simple password gate: a constant-time comparison against `CV_PASSWORD`, an eight-hour `HttpOnly; Secure; SameSite=Strict` cookie, and private/no-store response headers.
-- The CV HTML lives in `private/cv.html`, is included only in the Vercel function bundle, and must never be moved under `public/` or `src/pages/`.
+- The handler uses a constant-time comparison against `CV_PASSWORD`, then issues an eight-hour
+  signed `HttpOnly; Secure; SameSite=Strict` session token with private/no-store response headers.
+  The reusable password is never stored in the browser cookie.
+- The CV viewer, original Word file, and printable PDF live under `private/`, are included only in
+  the Vercel function bundle, and must never be moved under `public/` or `src/pages/`.
 - `/cv` is deliberately not blocked in `robots.txt`, so crawlers can receive the handler's `X-Robots-Tag: noindex` response and remove any previously indexed URL. Authentication remains the access-control boundary.
 
 ## Hosting and headers
@@ -229,9 +241,28 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
   production. They are also redundant: `api/cv.js` sets that header itself on every response.
   **Do not add security or cache headers to `public/_headers` expecting them to work.** Real
   headers belong in the `headers` array of `vercel.json`, or in the handler.
-- Static assets are already served with `Cache-Control: public, max-age=31536000, immutable` by
-  Vercel's defaults, and HSTS is applied at the platform level. `nosniff`, `Referrer-Policy`, and
-  a CSP are **not** currently set for the static site (the `/cv` handler sets its own).
+- `vercel.json` applies the public site's security headers to every non-API, non-CV route:
+  `Content-Security-Policy`, `X-Content-Type-Options: nosniff`,
+  `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, and
+  `X-Frame-Options: DENY`. The CSP defaults to same-origin content, blocks object embeds and
+  third-party framing, and allowlists only the site's required runtime services:
+  - GA4 and Hotjar scripts/connections after consent.
+  - Formspree for the contact form's native and enhanced submissions.
+  - YouTube for the oral-history embed.
+  - 4AG and Cloudinary for initiative/company videos.
+  - HTTPS images because the curated portfolio/press catalogs intentionally use multiple external
+    image hosts; executable resources remain on explicit host allowlists.
+- Keep the public-header rule's `/api` and `/cv` exclusions. `api/cv.js` owns the private route's
+  stricter no-store/no-referrer/CSP policy, and duplicate edge headers can produce an accidental
+  intersection that blocks the authenticated viewer.
+- Inline scripts/styles remain allowed because Astro renders several small inline enhancements,
+  structured-data scripts, and element styles. Third-party scripts still require explicit hosts,
+  and `object-src 'none'`, `base-uri 'self'`, and `frame-ancestors 'none'` reduce the risk.
+- Static assets are served with `Cache-Control: public, max-age=31536000, immutable` by Vercel's
+  defaults. Vercel also supplies `Strict-Transport-Security: max-age=63072000` to deployment
+  responses, so the repo deliberately does not duplicate or weaken HSTS.
+- `api/cv.js` function assets use an exact `includeFiles` allowlist. Never broaden it to
+  `private/**`: unrelated working files under `private/` must not enter the deployed function.
 
 ## Analytics & cookie consent
 
@@ -268,20 +299,28 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 
 ## Private CV operations
 
-- **The security boundary is that `private/cv.html` is outside the static build.** The handler only
-  reads that file after the password check passes. Anything under `public/` or `src/pages/` is
-  fetchable by anyone with `curl`, no matter what JavaScript sits in front of it — so a
-  client-side password check is not an option here. This page was publicly exposed once (July 2026)
-  and that is the mistake to avoid repeating.
+- **The security boundary is that every file under `private/` is outside the static build.** The
+  handler reads the viewer, original Word CV, and printable PDF only after the password check
+  passes. Anything under `public/` or `src/pages/` is fetchable by anyone with `curl`, no matter
+  what JavaScript sits in front of it — so a client-side password check is not an option here.
+  This page was publicly exposed once (July 2026) and that is the mistake to avoid repeating.
+- Authenticated routes:
+  - `/cv` serves the private viewer.
+  - `/cv/download.doc` downloads Don's exact July 2026 Word file.
+  - `/cv/document.pdf` serves the two-page printable PDF derived from that Word file.
+  - `/cv/page-1.png` and `/cv/page-2.png` serve browser-safe previews of those two pages.
+  All asset routes return `Cache-Control: private, no-store` and no-index headers. Anonymous asset
+  requests return the login page and never receive document bytes.
 - To change the password, set `CV_PASSWORD` in Vercel (Production). It is stored as a plain value,
-  not a hash — the simplification is deliberate, and it means anyone with Vercel project access can
-  read the password.
+  not a hash, so anyone with Vercel project access can read it.
+- `CV_SESSION_SECRET` is an optional, separate HMAC signing secret. Configure it in Vercel for
+  defence in depth. Until configured, the handler derives signatures from `CV_PASSWORD`; either
+  way, the password itself never appears in the session token.
 - **Vercel binds environment variables at deploy time, so an env change alone has no effect — you
   must redeploy.** `vercel redeploy <current-production-url>` reuses the exact deployed source and
   is safer than `vercel --prod`, which rebuilds from your local working copy. Confirm afterwards
   that a correct password returns `303` and a wrong one returns `401`.
-- Changing `CV_PASSWORD` invalidates existing sessions, because the cookie stores the password and
-  is re-checked on every request.
+- Changing `CV_PASSWORD` or `CV_SESSION_SECRET` invalidates existing signed sessions.
 - Never commit the plaintext password to this repo, to `docs/`, or to a commit message.
 - ⚠️ There is **no rate limiting** on this endpoint, by choice. Two Vercel WAF rules
   (`rule_rate_limit_cv_login_GUMWLK`, `rule_rate_limit_direct_cv_function_s7XKzB`) capped `/cv`
@@ -296,8 +335,8 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - The password field has a show/hide eyeball. Notes for anyone editing it:
   - The inline toggle script is permitted by a **CSP hash derived from the script itself**
     (`SCRIPT_HASH` in `api/cv.js`), so it can never go stale. Do not add `'unsafe-inline'`.
-  - `script-src` **must keep `'self'`** — `private/cv.html` loads `/cv-print.js`, and without it the
-    "Print CV" button becomes a visible control that silently does nothing.
+  - `img-src` **must keep `'self'`** so the authenticated viewer can load its protected page
+    previews. Printing uses the browser PDF viewer.
   - Icon visibility uses `toggleAttribute('hidden', …)`, **not** `.hidden = …`. The `hidden` IDL
     property lives on `HTMLElement`; the icons are `SVGElement`, so assigning `.hidden` does nothing.
   - There is deliberately **no `aria-pressed`**. A flipping accessible name plus a pressed state
@@ -331,10 +370,12 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
   Chromium-only, an eleven-year-old W3C Working Draft with no WebKit or Mozilla position, unreachable
   by third-party managers (they parse the DOM), and it would require replacing the native POST with
   `preventDefault` + `fetch`, breaking the no-JavaScript path.
-- Run `npm run test:cv-auth`, `npm run test:e2e:cv`, `npm run build`, and verify that
-  `dist/cv/index.html` does not exist before deploying. `test:e2e:cv` serves `api/cv.js` over a
-  local http shim (`tests-cv/serve-cv.mjs`), so it needs no `vercel dev` and no credentials.
-- Production acceptance: anonymous/wrong-password requests expose no CV bytes; authenticated requests return `Cache-Control: private, no-store`; logout and tampered/expired cookies fail closed.
+- Run `npm run test:cv-auth`, `npm run test:e2e:cv`, `npm run build`, and verify that `dist/`
+  contains no CV HTML, Word, or PDF assets before deploying. `test:e2e:cv` serves `api/cv.js` over
+  a local HTTP shim (`tests-cv/serve-cv.mjs`), so it needs no `vercel dev` and no credentials.
+- Production acceptance: anonymous/wrong-password requests expose no CV or document bytes;
+  authenticated HTML, Word, and PDF requests return `Cache-Control: private, no-store`; the Word
+  download matches its checked SHA-256; logout and tampered/expired cookies fail closed.
 
 ## Development Workflow
 
@@ -343,6 +384,10 @@ npm install
 npm run dev       # http://localhost:8080
 npm run build
 npm run preview   # run after build to inspect /dist
+npm audit
+npm run test:security-headers
+npm run test:cv-auth
+npm run test:e2e:cv
 npm run test:e2e   # Playwright responsive smoke tests (multi-viewport)
 ```
 
@@ -354,6 +399,18 @@ company detail routes still pre-render correctly.
 - First-time setup may require downloading browsers: `npx playwright install`
 - CI builds that do not run `npm run test:e2e` can skip browser downloads by setting
   `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`.
+
+### Release verification
+
+- Use Node 22.x locally and in Vercel.
+- `npm audit` must report zero known vulnerabilities.
+- `npm run test:security-headers` validates both the public header policy and the exact five-file
+  private CV function allowlist.
+- `npm run test:cv-auth` and `npm run test:e2e:cv` must pass after any CV or Vercel routing change.
+- Run `npx playwright test tests/responsive.spec.ts` after any navigation or header change.
+- `npm run build` must complete all 53 static pages, and `dist/` must contain no private CV files.
+- After production deploys, verify public security headers, anonymous `/cv` access, protected asset
+  denial, and the production deployment commit before calling the release complete.
 
 ## Documentation Expectations
 

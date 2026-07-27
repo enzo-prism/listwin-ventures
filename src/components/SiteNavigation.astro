@@ -140,16 +140,31 @@ const iconName = (key?: string) => (key ? iconMap[key] : undefined);
   <details class="mobile-drawer lg:hidden">
     <summary
       class="inline-flex cursor-pointer list-none items-center gap-2 rounded-full border border-border/70 bg-card px-4 py-2 text-sm font-medium text-foreground/80 [&::-webkit-details-marker]:hidden"
-      aria-label="Open navigation menu"
+      aria-controls="mobile-navigation-panel"
     >
       <Icon name="tabler:menu-2" class="drawer-open-icon h-4 w-4" aria-hidden="true" />
       <Icon name="tabler:x" class="drawer-close-icon h-4 w-4" aria-hidden="true" />
       Menu
     </summary>
     <div class="mobile-backdrop" aria-hidden="true"></div>
-    <div class="mobile-panel" role="dialog" aria-label="Navigation">
+    <div
+      id="mobile-navigation-panel"
+      class="mobile-panel"
+      role="dialog"
+      aria-labelledby="mobile-navigation-title"
+    >
       <div class="flex items-center justify-between border-b border-border/60 px-5 py-4">
-        <span class="text-sm font-semibold uppercase tracking-[0.25em] text-muted-foreground">Navigation</span>
+        <span id="mobile-navigation-title" class="text-sm font-semibold uppercase tracking-[0.25em] text-muted-foreground">
+          Navigation
+        </span>
+        <button
+          type="button"
+          class="hidden h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-card text-foreground/80 transition hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label="Close navigation menu"
+          data-mobile-close
+        >
+          <Icon name="tabler:x" class="h-4 w-4" aria-hidden="true" />
+        </button>
       </div>
       <div class="space-y-3 overflow-y-auto px-4 py-4">
         {items.map((item) => {
@@ -251,6 +266,24 @@ const iconName = (key?: string) => (key ? iconMap[key] : undefined);
     z-index: 45;
   }
 
+  /* A backdrop-filter makes an ancestor the containing block for fixed descendants in
+     Chromium. Temporarily remove the sticky header blur so the open drawer and backdrop
+     are fixed to the viewport instead of being clipped to the 64px header. */
+  :global(header:has(.mobile-drawer[open])) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    z-index: 60;
+  }
+
+  /* Without JavaScript, the native summary remains the drawer's close control. Move it
+     above the viewport-sized panel so keyboard and pointer users cannot get trapped. */
+  :global(html:not(.nav-enhanced) header:has(.mobile-drawer[open]) .mobile-drawer > summary) {
+    position: fixed;
+    inset-block-start: 0.8rem;
+    inset-inline-end: 1rem;
+    z-index: 47;
+  }
+
   /* Rendered only while the drawer is open. An explicit display on the closed panel would
      override the native <details> hiding and leave a fixed element off-screen to the right,
      which creates horizontal overflow on mobile. */
@@ -298,8 +331,11 @@ const iconName = (key?: string) => (key ? iconMap[key] : undefined);
 <script is:inline>
   // Progressive enhancement only — the nav is fully usable without this.
   // 1) keep aria-expanded in sync on the desktop triggers; 2) close the mobile drawer and any
-  // open desktop menu on Escape or an outside click; 3) lock body scroll while the drawer is open.
+  // open desktop menu on Escape or an outside click; 3) make the mobile drawer modal by
+  // containing focus, returning it to the trigger, and making the background inert.
   (() => {
+    document.documentElement.classList.add('nav-enhanced');
+
     const groups = Array.from(document.querySelectorAll('.nav-group'));
     groups.forEach((group) => {
       const trigger = group.querySelector('.nav-trigger');
@@ -315,25 +351,156 @@ const iconName = (key?: string) => (key ? iconMap[key] : undefined);
     });
 
     const drawer = document.querySelector('.mobile-drawer');
-    const setBodyLock = (locked) => {
-      document.body.style.overflow = locked ? 'hidden' : '';
-    };
     if (drawer) {
-      drawer.addEventListener('toggle', () => setBodyLock(drawer.open));
+      const trigger = drawer.querySelector(':scope > summary');
+      const panel = drawer.querySelector('.mobile-panel');
+      const closeButton = drawer.querySelector('[data-mobile-close]');
+      const inertedSiblings = [];
+      let savedBodyOverflow = '';
+      let bodyLocked = false;
+
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('aria-label', 'Open navigation menu');
+      }
+      if (closeButton) closeButton.classList.remove('hidden');
+
+      const focusableSelector = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        'textarea:not([disabled])',
+        'summary',
+        '[tabindex]:not([tabindex="-1"])',
+      ].join(',');
+
+      const getFocusableElements = () => {
+        if (!panel) return [];
+        return Array.from(panel.querySelectorAll(focusableSelector)).filter(
+          (element) =>
+            element instanceof HTMLElement &&
+            !element.closest('[inert]') &&
+            element.getClientRects().length > 0,
+        );
+      };
+
+      const setBodyLock = (locked) => {
+        if (locked && !bodyLocked) {
+          savedBodyOverflow = document.body.style.overflow;
+          document.body.style.overflow = 'hidden';
+          bodyLocked = true;
+        } else if (!locked && bodyLocked) {
+          document.body.style.overflow = savedBodyOverflow;
+          bodyLocked = false;
+        }
+      };
+
+      // Inert every sibling outside the branch that contains the drawer. This handles the
+      // header logo, page content, footer, cookie banner, and skip link without coupling the
+      // component to a particular page layout.
+      const setBackgroundInert = (inert) => {
+        if (!inert) {
+          inertedSiblings.splice(0).forEach(({ element, wasInert }) => {
+            element.inert = wasInert;
+          });
+          return;
+        }
+
+        let branch = drawer;
+        while (branch && branch !== document.body) {
+          const parent = branch.parentElement;
+          if (!parent) break;
+          Array.from(parent.children).forEach((sibling) => {
+            if (sibling === branch || !(sibling instanceof HTMLElement)) return;
+            inertedSiblings.push({ element: sibling, wasInert: sibling.inert });
+            sibling.inert = true;
+          });
+          branch = parent;
+        }
+      };
+
+      const syncDrawerState = (open) => {
+        if (trigger) {
+          trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+          trigger.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        }
+        if (panel) {
+          if (open) panel.setAttribute('aria-modal', 'true');
+          else panel.removeAttribute('aria-modal');
+        }
+        setBodyLock(open);
+        setBackgroundInert(open);
+
+        if (open) {
+          // Wait until the newly displayed panel has completed layout before moving focus.
+          window.requestAnimationFrame(() => {
+            if (!drawer.open) return;
+            (closeButton || getFocusableElements()[0])?.focus();
+          });
+        } else if (trigger instanceof HTMLElement && document.contains(trigger)) {
+          trigger.focus();
+        }
+      };
+
+      const closeDrawer = () => {
+        if (!drawer.open) return;
+        drawer.removeAttribute('open');
+        // The native toggle event is queued. Restore interaction synchronously so Escape,
+        // backdrop dismissal, and responsive resizing cannot briefly leave the page inert.
+        syncDrawerState(false);
+      };
+
+      drawer.addEventListener('toggle', () => syncDrawerState(drawer.open));
+
       const backdrop = drawer.querySelector('.mobile-backdrop');
-      if (backdrop) backdrop.addEventListener('click', () => drawer.removeAttribute('open'));
+      if (backdrop) backdrop.addEventListener('click', closeDrawer);
+      if (closeButton) closeButton.addEventListener('click', closeDrawer);
+
       // Close the drawer after tapping a navigation link.
       drawer.querySelectorAll('.mobile-panel a').forEach((link) => {
-        link.addEventListener('click', () => drawer.removeAttribute('open'));
+        link.addEventListener('click', closeDrawer);
+      });
+
+      // A responsive resize must not leave an invisible open drawer locking the desktop page.
+      const desktopMedia = window.matchMedia('(min-width: 1024px)');
+      desktopMedia.addEventListener('change', (event) => {
+        if (event.matches && drawer.open) closeDrawer();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (!drawer.open) return;
+
+        if (event.key === 'Tab') {
+          const focusable = getFocusableElements();
+          event.preventDefault();
+          if (!focusable.length) {
+            return;
+          }
+
+          const active = document.activeElement;
+          const activeIndex = focusable.indexOf(active);
+          const nextIndex = event.shiftKey
+            ? activeIndex <= 0
+              ? focusable.length - 1
+              : activeIndex - 1
+            : activeIndex < 0 || activeIndex === focusable.length - 1
+              ? 0
+              : activeIndex + 1;
+          focusable[nextIndex].focus();
+          return;
+        }
+
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeDrawer();
+        }
       });
     }
 
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
-      if (drawer && drawer.open) {
-        drawer.removeAttribute('open');
-        return;
-      }
+      if (drawer && drawer.open) return;
       const active = document.activeElement;
       if (active && active.closest && active.closest('.nav-group')) active.blur();
     });

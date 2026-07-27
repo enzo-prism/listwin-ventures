@@ -6,12 +6,9 @@ import handler from '../api/cv.js';
 
 const PASSWORD = 'correct:private password';
 
-// Strings that appear ONLY in the real CV. Every "should not leak" assertion checks for these, so
-// a regression that serves private/cv.html without auth fails the suite loudly.
-// Deliberately not "Don Listwin": that is a common string which legitimately appears elsewhere
-// (the password-manager username field), so it produced false positives rather than real signal.
-// These five are CV-exclusive — verified absent from the login page and present in private/cv.html.
-const CV_MARKERS = /Board Experience|Management Experience|Woodside Road|DOB:|Curriculum/i;
+// Strings that appear only in the authenticated CV shell. The actual Word/PDF bytes are checked
+// separately below so anonymous asset routes cannot leak even if this shell changes.
+const CV_MARKERS = /July 2026 original-format CV|Download Word CV|page-1\.png/i;
 
 const makeRequest = ({ method = 'GET', url = '/cv', headers = {}, body } = {}) => ({
   method,
@@ -31,7 +28,7 @@ const makeResponse = () => ({
     return this.headers.get(name.toLowerCase());
   },
   end(value = '') {
-    this.body = String(value);
+    this.body = value;
     return this;
   },
 });
@@ -50,10 +47,12 @@ const login = async (password) => run(makeRequest({
 
 beforeEach(() => {
   process.env.CV_PASSWORD = PASSWORD;
+  process.env.CV_SESSION_SECRET = 'test-only-session-signing-secret';
 });
 
 afterEach(() => {
   delete process.env.CV_PASSWORD;
+  delete process.env.CV_SESSION_SECRET;
 });
 
 describe('Listwin private CV handler', () => {
@@ -106,12 +105,10 @@ describe('Listwin private CV handler', () => {
     assert.doesNotMatch(body, /aria-invalid/);
   });
 
-  // The CV page loads /cv-print.js. If script-src ever drops 'self' the Print button becomes a
-  // visible control that silently does nothing.
-  it('permits the external print script under the CSP', async () => {
+  it('permits the private image previews under the CSP', async () => {
     const csp = (await run(makeRequest())).getHeader('content-security-policy');
 
-    assert.match(csp, /script-src[^;]*'self'/);
+    assert.match(csp, /img-src[^;]*'self'/);
   });
 
   it('issues a secure cookie on the correct password', async () => {
@@ -127,6 +124,8 @@ describe('Listwin private CV handler', () => {
     assert.match(setCookie, /Secure/);
     assert.match(setCookie, /SameSite=Strict/);
     assert.match(setCookie, /Path=\//);
+    assert.doesNotMatch(setCookie, new RegExp(encodeURIComponent(PASSWORD)));
+    assert.doesNotMatch(setCookie, /correct:private/);
   });
 
   it('serves the CV only when the cookie carries the right password', async () => {
@@ -134,10 +133,63 @@ describe('Listwin private CV handler', () => {
     const response = await run(makeRequest({ headers: { cookie } }));
 
     assert.equal(response.statusCode, 200);
-    assert.match(response.body, /Board Experience/);
-    assert.match(response.body, /Don Listwin/);
-    assert.match(response.body, /<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">/);
+    assert.match(response.body, /Download Word CV/);
+    assert.match(response.body, /\/cv\/document\.pdf/);
+    assert.match(response.body, /\/cv\/page-1\.png/);
+    assert.match(response.body, /<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"/);
     assert.equal(response.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
+  });
+
+  it('never serves private document bytes to anonymous visitors', async () => {
+    for (const url of ['/cv/download.doc', '/cv/document.pdf', '/cv/page-1.png', '/cv/page-2.png']) {
+      const response = await run(makeRequest({ url }));
+
+      assert.equal(response.statusCode, 200);
+      assert.match(response.body, /Private CV access/);
+      assert.equal(response.getHeader('content-type'), 'text/html; charset=utf-8');
+      assert.match(response.getHeader('x-robots-tag'), /noindex/);
+    }
+  });
+
+  it('serves the exact original Word CV as an authenticated download', async () => {
+    const cookie = (await login(PASSWORD)).getHeader('set-cookie').split(';', 1)[0];
+    const response = await run(makeRequest({ url: '/cv/download.doc', headers: { cookie } }));
+
+    assert.equal(response.statusCode, 200);
+    assert.ok(Buffer.isBuffer(response.body));
+    assert.equal(response.body.length, 44032);
+    assert.equal(
+      createHash('sha256').update(response.body).digest('hex'),
+      '6dd013147cb70d36388fbccad8392757cde54efa81ee283416acf1aa9cc9c6ed',
+    );
+    assert.equal(response.getHeader('content-type'), 'application/msword');
+    assert.match(response.getHeader('content-disposition'), /^attachment;/);
+    assert.equal(response.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
+  });
+
+  it('serves the authenticated PDF preview inline', async () => {
+    const cookie = (await login(PASSWORD)).getHeader('set-cookie').split(';', 1)[0];
+    const response = await run(makeRequest({ url: '/cv/document.pdf', headers: { cookie } }));
+
+    assert.equal(response.statusCode, 200);
+    assert.ok(Buffer.isBuffer(response.body));
+    assert.equal(response.body.subarray(0, 5).toString(), '%PDF-');
+    assert.equal(response.getHeader('content-type'), 'application/pdf');
+    assert.match(response.getHeader('content-disposition'), /^inline;/);
+    assert.equal(response.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
+  });
+
+  it('serves authenticated PNG previews without exposing them publicly', async () => {
+    const cookie = (await login(PASSWORD)).getHeader('set-cookie').split(';', 1)[0];
+
+    for (const url of ['/cv/page-1.png', '/cv/page-2.png']) {
+      const response = await run(makeRequest({ url, headers: { cookie } }));
+      assert.equal(response.statusCode, 200);
+      assert.ok(Buffer.isBuffer(response.body));
+      assert.equal(response.body.subarray(1, 4).toString(), 'PNG');
+      assert.equal(response.getHeader('content-type'), 'image/png');
+      assert.equal(response.getHeader('cache-control'), 'private, no-store, max-age=0, must-revalidate');
+    }
   });
 
   it('rejects a forged or stale cookie', async () => {
@@ -152,8 +204,7 @@ describe('Listwin private CV handler', () => {
     }
   });
 
-  // A malformed cookie used to throw URIError out of decodeURIComponent, 500ing every GET. The
-  // cookie is HttpOnly so the page could not clear it — an unrecoverable lockout.
+  // Malformed session data must fail closed instead of throwing and locking the visitor out.
   it('shows the login page rather than crashing on a malformed cookie', async () => {
     for (const raw of ['%', '%E0%A4', '%zz', '%C0%80', 'Canary%']) {
       const response = await run(makeRequest({ headers: { cookie: `__Host-listwin_cv=${raw}` } }));
@@ -237,8 +288,9 @@ describe('Listwin private CV handler', () => {
 
   it('does not leak CV content on a HEAD request', async () => {
     const cookie = (await login(PASSWORD)).getHeader('set-cookie').split(';', 1)[0];
-    const response = await run(makeRequest({ method: 'HEAD', headers: { cookie } }));
-
-    assert.equal(response.body, '');
+    for (const url of ['/cv', '/cv/download.doc', '/cv/document.pdf', '/cv/page-1.png', '/cv/page-2.png']) {
+      const response = await run(makeRequest({ method: 'HEAD', url, headers: { cookie } }));
+      assert.equal(response.body, '');
+    }
   });
 });

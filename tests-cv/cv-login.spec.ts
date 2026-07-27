@@ -190,6 +190,39 @@ test.describe('Login flow', () => {
     await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible();
   });
 
+  test('authenticated Word download and PDF preview stay private and usable', async ({ page }) => {
+    await login(page);
+
+    const documents = await page.evaluate(async () => {
+      const inspect = async (url: string) => {
+        const response = await fetch(url);
+        const body = new Uint8Array(await response.arrayBuffer());
+        return {
+          status: response.status,
+          contentType: response.headers.get('content-type'),
+          disposition: response.headers.get('content-disposition'),
+          length: body.length,
+          prefix: new TextDecoder().decode(body.slice(0, 5)),
+        };
+      };
+
+      return {
+        word: await inspect('/cv/download.doc'),
+        pdf: await inspect('/cv/document.pdf'),
+      };
+    });
+
+    expect(documents.word.status).toBe(200);
+    expect(documents.word.contentType).toBe('application/msword');
+    expect(documents.word.disposition).toMatch(/^attachment;/);
+    expect(documents.word.length).toBe(44032);
+
+    expect(documents.pdf.status).toBe(200);
+    expect(documents.pdf.contentType).toBe('application/pdf');
+    expect(documents.pdf.disposition).toMatch(/^inline;/);
+    expect(documents.pdf.prefix).toBe('%PDF-');
+  });
+
   test('the session survives a reload', async ({ page }) => {
     await login(page);
     await expectCvContent(page);
@@ -365,23 +398,8 @@ test.describe('Accessibility', () => {
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page).toHaveTitle(/\S/);
     await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Print CV' })).toBeVisible();
-  });
-
-  // Regression guard. private/cv.html loads /cv-print.js; if script-src ever drops 'self' the
-  // browser blocks it and the "Print CV" button becomes a visible control that does nothing.
-  test('the Print CV script is allowed to load', async ({ page }) => {
-    const blocked: string[] = [];
-    page.on('console', (message) => {
-      if (message.type() === 'error' && /Content Security Policy/i.test(message.text())) {
-        blocked.push(message.text());
-      }
-    });
-
-    await login(page);
-    await expectCvContent(page);
-
-    expect(blocked).toEqual([]);
+    await expect(page.getByRole('link', { name: 'Download Word CV' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Open printable PDF' })).toBeVisible();
   });
 });
 

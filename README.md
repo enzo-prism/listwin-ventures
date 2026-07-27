@@ -6,7 +6,7 @@ design or content work.
 
 ## Prerequisites
 
-- Node.js 18.17+ (Astro’s minimum) and npm 9+.
+- Node.js 22.12+ within the 22.x release line, matching the Vercel project runtime.
 
 ## Getting Started
 
@@ -32,9 +32,11 @@ design or content work.
 ### Tests
 
 ```bash
-npm run test:e2e      # Playwright: responsive/visual/content across 3 viewports
-npm run test:cv-auth  # node:test units for the /cv password gate
-npm run test:e2e:cv   # Playwright for the /cv login screen and show/hide toggle
+npm audit                       # dependency vulnerability check
+npm run test:security-headers   # public headers + exact private CV bundle allowlist
+npm run test:e2e                # Playwright: responsive/visual/content across 3 viewports
+npm run test:cv-auth            # node:test units for the /cv password gate
+npm run test:e2e:cv             # Playwright for the private CV workflow
 ```
 
 `npm run dev` serves Astro only, so **`/cv` 404s locally** — it is a Vercel serverless function
@@ -60,7 +62,10 @@ the related media.
 
 - `src/pages/` – Astro page routing (hero/homepage, legal pages, BelizeKids.org spotlight, oral history, contact form, exploit detail pages, etc.).
 - `src/layouts/BaseLayout.astro` – Global shell (sticky nav, dropdown menus, frosted glass header/footer, cookie-consent banner + deferred analytics loader).
-- `src/components/SiteNavigation.astro` – the header nav. **Zero-JavaScript** (CSS `:hover`/`:focus-within` desktop dropdowns + a native `<details>` mobile drawer). Replaced the old React/Radix island, so most pages now ship 0 KB of module JS. See “Navigation is zero-JavaScript” in `docs/architecture.md`.
+- `src/components/SiteNavigation.astro` – the header nav. **Zero-framework module JavaScript**
+  (CSS desktop dropdowns + a native `<details>` mobile drawer with a small inline accessibility
+  enhancement). It replaced the old React/Radix island. See “Navigation uses no framework
+  JavaScript” in `docs/architecture.md`.
 - `src/components/CompanyCarousel.astro`, `LogoGrid.astro`, and `HeroMedia.astro` – reusable media primitives that render the homepage carousels, legacy grids, and hero imagery.
 - `src/components/Button` (global `.btn` utility via `src/styles/global.css`) – shared white-fill/colored-outline button styling consumed across all pages for consistent hover states.
 - `src/data/assets.ts` – legacy media mapping plus grouped board/investment/philanthropy collections.
@@ -69,8 +74,8 @@ the related media.
 - `src/data/press.ts` – curated press + reference links powering `/press` and the “Related reading” blocks on company detail pages.
 - `public/assets/` – static uploads, legacy CSS, and any new media (note the large-file exclusions above).
 - `docs/architecture.md` – ground truth for the design system, section structure, and data flow.
-- `api/cv.js` + `private/cv.html` + `vercel.json` – the password-gated private CV. See
-  “Private CV operations” in `docs/architecture.md` before touching any of these.
+- `api/cv.js` + `private/` + `vercel.json` – the password-gated CV viewer, original Word download,
+  and printable PDF. See “Private CV operations” in `docs/architecture.md` before touching them.
 
 ## Data-Driven Company Pages
 
@@ -93,11 +98,12 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 
 ## Navigation
 
-The nav is a **zero-JS Astro component** (`src/components/SiteNavigation.astro`, fed `navItems` from
-`BaseLayout.astro`). Desktop dropdowns open on CSS `:hover`/`:focus-within`; the mobile drawer is a
-native `<details>`. A tiny inline script only enhances (`aria-expanded`, Escape/outside-click close,
-scroll lock). New icon names still need adding to the `astro.config.mjs` allowlist. It renders
-distinct menus:
+The nav is a **zero-framework module-JS Astro component** (`src/components/SiteNavigation.astro`,
+fed `navItems` from `BaseLayout.astro`). Desktop dropdowns open on CSS
+`:hover`/`:focus-within`; the mobile drawer is a native `<details>`. A small inline script keeps
+ARIA state synchronized, contains and restores focus, makes background content inert, closes on
+Escape/backdrop activation, and preserves body scroll state. New icon names still need adding to
+the `astro.config.mjs` allowlist. It renders distinct menus:
 
 - **New** – curated spotlight cards for current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
 - **Investments** – mega-menu fed by `investmentAssets`/`entityDetails` (Seed, Private, Exits inserted between Private/Venture, then Venture, Public).
@@ -116,6 +122,24 @@ distinct menus:
   > one-time email confirmation before they deliver.
 
 All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
+
+The mobile drawer is tested as a real modal when JavaScript is available: focus stays inside,
+background content becomes inert, body scrolling locks, Escape closes the drawer, and focus returns
+to the Menu trigger. Without JavaScript, the native `<summary>` remains an accurate, reachable close
+control and the static markup does not claim modal-only ARIA state.
+
+## Security and release checks
+
+- Keep the project on Node 22.x so local, CI, and Vercel dependency resolution agree.
+- Run `npm audit` after dependency changes. The production and development audit should report zero
+  known vulnerabilities before release.
+- Run `npm run test:security-headers` after editing `vercel.json`. Public routes receive CSP,
+  `nosniff`, referrer, permissions, and frame-denial policies; `/api` and `/cv` remain excluded
+  because the CV handler supplies its own stricter private response policy.
+- Never broaden the CV function's exact `includeFiles` allowlist to `private/**`. Only the viewer,
+  July 2026 Word/PDF documents, and their two protected page previews belong in the function bundle.
+- Before release, run the focused responsive and CV tests plus `npm run build`, then verify that
+  `dist/` contains no CV HTML, Word document, or CV PDF.
 
 ### Icons (astro-icon allowlist)
 

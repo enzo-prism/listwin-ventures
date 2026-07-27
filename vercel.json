@@ -2,11 +2,38 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/cv.js": {
-      "includeFiles": "private/cv.html",
+      "includeFiles": "private/{cv.html,Don-Listwin-CV-July-2026.doc,Don-Listwin-CV-July-2026.pdf,Don-Listwin-CV-July-2026-page-1.png,Don-Listwin-CV-July-2026-page-2.png}",
       "memory": 128,
       "maxDuration": 10
     }
   },
+  "headers": [
+    {
+      "source": "/((?!api(?:/|$)|cv(?:/|$)).*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.hotjar.com; style-src 'self' 'unsafe-inline' https://*.hotjar.com; img-src 'self' data: https:; font-src 'self' data: https://*.hotjar.com; media-src 'self' https://4ag.ai https://res.cloudinary.com; frame-src https://www.youtube.com https://*.hotjar.com; connect-src 'self' https://formspree.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.hotjar.com https://*.hotjar.io wss://*.hotjar.com; form-action 'self' https://formspree.io; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "accelerometer=(self \"https://www.youtube.com\"), autoplay=(self \"https://www.youtube.com\"), camera=(), clipboard-write=(self \"https://www.youtube.com\"), display-capture=(), encrypted-media=(self \"https://www.youtube.com\"), fullscreen=(self \"https://www.youtube.com\"), geolocation=(), gyroscope=(self \"https://www.youtube.com\"), magnetometer=(), microphone=(), payment=(), picture-in-picture=(self \"https://www.youtube.com\"), publickey-credentials-get=(), usb=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/:cv(CV|Cv|cV)",
