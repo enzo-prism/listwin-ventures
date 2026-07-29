@@ -1,7 +1,6 @@
 ---
 import { existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const pageTitle = 'Don Listwin: Caltech Oral History (2025) | Listwin Ventures';
@@ -22,7 +21,7 @@ type Episode = {
   transcriptLinks: EpisodeTranscript[];
 };
 
-const publicRoot = fileURLToPath(new URL('../../public', import.meta.url));
+const publicRoot = join(process.cwd(), 'public');
 
 const toPublicFilePath = (publicUrl: string) => join(publicRoot, publicUrl.replace(/^\/+/, ''));
 

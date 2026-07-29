@@ -14,11 +14,12 @@
 - "BelizeKids.org" — "STEM, clinics, and conservation programs across Belize." (link to /belizekids)
 
 #### "Investments" dropdown sections
-- **Seed**: "Uberflip", "VIDA lung health", "Cradle Genomics".
+- **Seed**: "VIDA lung health".
 - **Private**: "AwareX", "Clarius Mobile Health", "RapidAI", "Zededa".
-- **Venture**: "HWVP", "Rally Ventures", "Sequoia tech partner", "TeleSoft Partners".
-- **Public**: "Calix", "POET Technologies".
-- **Exits**: "Openwave", "GenoLogics", "Joyent", "Isilon Systems", "PLUMgrid", "Teradici".
+- **Venture**: "HWVP", "Rally Ventures", "Sequoia Capital", "TeleSoft Partners".
+- **Public**: "Calix".
+- **Exits**: "Uberflip", "Openwave", "GenoLogics", "Joyent", "Isilon Systems", "PLUMgrid", "Teradici", "ZEVX".
+- **Archived**: Cradle Genomics is retained in the data inventory but hidden from public navigation.
 
 #### "Community" dropdown links
 - "BelizeKids.org"
@@ -52,12 +53,12 @@
 
 ### Section: My Story (card 1)
 - Label row text: "My Story" (prefixed with the section icon).
-- Paragraph: "I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a public company—OpenWave—that created the mobile internet. Since then, I created Listwin Ventures which has invested in dozens of other leading technology companies. I founded the Canary Foundation in 2002—the world's largest research entity to focus on early cancer technology. Most recently, I was the CEO of RapidAI, and I currently serve on three boards including as Lead Independent Director at Calix. Additionally, I serve as a technology partner at Sequoia Capital and Rally Ventures."
+- Paragraph: "I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a public company—OpenWave—that created the mobile internet. Since then, I created Listwin Ventures which has invested in dozens of other leading technology companies. I founded the Canary Foundation in 2004 to advance early cancer detection. My operating experience includes CEO roles at RapidAI and ZEVX. I currently serve on four boards: 4AG Robotics, Carbon Robotics, Canary Foundation, and BelizeKids.org. I also serve as a Tech Partner at Sequoia Capital and Rally Ventures."
 - Portrait image alt text (displayed but caption hidden on this page): "Portrait of Don Listwin".
 
 ### Section: My Story (biography block)
 - Paragraph: "With a focus on developing networking and data center technologies for the Internet, I began my career in 1980 at Develcon in Canada, marketing data switching technology for the mini-computer era. In the mid-1980s, I relocated to Silicon Valley and joined Cisco Systems in 1990. During a 10-year tenure at Cisco, I built the IBM business unit, the Access business unit, and the Service Provider line of business—overseeing business totaling more than $12 billion in annual revenue. In 2000, I became CEO of Openwave, which invented much of the early mobile Internet technology."
-- Paragraph: "After 25 years of senior leadership operating experience, I founded the Canary Foundation in 2002 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. The Canary Foundation is the world’s first non-profit organization focused solely on the funding, discovery, and development of tests for early cancer detection. I continue to be deeply involved with other cancer-related organizations. In 2009, I was appointed to the National Cancer Institute’s Board of Scientific Advisors. I am a member of the Stanford Advisory Board for the Canary Center for Cancer Early Detection at Stanford and in 2018 I was honored to be awarded the Dean's Medal—the highest honor bestowed by the School of Medicine to individuals whose contributions have significantly advanced the mission of Stanford Medicine. I am also an adjunct professor in Radiology at Stanford University."
+- Paragraph: "After 25 years of senior leadership operating experience, I founded the Canary Foundation in 2004 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. Canary Foundation is a non-profit organization focused on funding, discovering, and developing tests for early cancer detection. I continue to be deeply involved with other cancer-related organizations. In 2009, I was appointed to the National Cancer Institute’s Board of Scientific Advisors. I am a member of the Stanford Advisory Board for the Canary Center for Cancer Early Detection at Stanford and in 2018 I was honored to be awarded the Dean's Medal—the highest honor bestowed by the School of Medicine to individuals whose contributions have significantly advanced the mission of Stanford Medicine. I am also an Associate Professor of Radiology at Stanford University."
 - Paragraph: "From 2018–2021, I served as CEO of RapidAI— the worldwide leader in cerebrovascular imaging analysis, delivering the proven software tools that healthcare professionals around the world use to successfully identify and treat more stroke patients than ever before."
 - Paragraph: "I live part-time in Belize where I scuba dive daily and work on restoring and protecting the barrier reef. In 2010, my wife and I created the non-profit BelizeKids.org to support local community and education initiatives and have created a partnership with Stanford to deliver eye care to the local community."
 - Paragraph: "A native of Canada, I hold a B.S. degree in Electrical Engineering and an Honorary Doctor of Law from the University of Saskatchewan, Canada where I continue to actively support student entrepreneurs."
@@ -80,7 +81,7 @@
   - Paragraph: "4AG builds robots that cultivate, pick, and pack mushrooms at industrial scale."
   - Inline link text: "Explore the 4AG initiative" (links to /4ag).
   - Button: "Visit 4AG.ai" (opens a new tab).
-  - Hero image alt text: "4AG field deployments".
+  - The 4AG image shows an autonomous mushroom harvester, not Carbon Robotics equipment.
 
 ### Section: Investments
 - Section label: "TECHNOLOGY AND BUSINESS DEVELOPMENT · FOR NEW TECHNOLOGIES" (icon displayed to the left).
@@ -90,11 +91,9 @@
 - Each carousel card repeats the CTA text "View detail →" and uses the logo alt text listed for the entity below.
 
 #### Seed carousel
-- Logo alt texts: "Uberflip", "VIDA lung health", "Cradle Genomics logo".
+- Logo alt text: "VIDA lung health".
 - Card copy:
-  - "Uberflip" — "Uberflip is a next-generation marketing engagement platform."
   - "VIDA" — "VIDA is a precision lung health company accelerating therapies to patients through AI-powered lung intelligence."
-  - "Cradle Genomics" — "Cradle Genomics engineers next-generation prenatal diagnostic tests that combine genomics with proprietary biochemistry."
 
 #### Private carousel
 - Logo alt texts: "AwareX logo", "Clarius Mobile Health logo", "RapidAI logo", "Teradici logo", "Zededa".
@@ -105,18 +104,16 @@
   - "Teradici" — "TERADICI (Q4 2021) multi-cloud access for high-performance devices, sold to HP Inc."
   - "Zededa" — "Zededa is a new distributed IoT platform."
 
-#### Exits carousel (appears immediately after the Private group)
-- Logo alt texts: "Robin Systems logo", "Teradici logo", "GenoLogics logo".
-- Card copy:
-  - "Robin Systems" — "ROBIN (Q1 2022) next-generation data center software delivering automated container infrastructure, sold to Rakuten Symphony."
-  - "Teradici" — "TERADICI (Q4 2021) multi-cloud access for high-performance devices, sold to HP Inc." (duplicate summary as above because Teradici appears in both carousels).
-  - "GenoLogics" — "GenoLogics created laboratory information management software (LIMS) for genomics and proteomics labs. Exit to Illumina validated Don’s thesis that informatics is key to precision medicine."
+#### Exits carousel
+- Entities: "Uberflip", "Openwave", "GenoLogics", "Joyent", "Isilon Systems", "PLUMgrid", "Teradici", and "ZEVX".
+- Uberflip is described as acquired by PathFactory in July 2024.
+- ZEVX is described as having wound down in 2024.
 
 #### Venture carousel (text-only list, images hidden on this group)
 - Entities and summaries:
   - "HWVP" — "HWVP invests in early-stage enterprise software companies."
   - "Rally Ventures" — "Rally Ventures I–V invests exclusively in early-stage business technology companies."
-  - "Sequoia partner network" — "Sequoia helps daring founders build legendary companies across consumer, enterprise, and health."
+  - "Sequoia Capital" — "Sequoia helps daring founders build legendary companies across consumer, enterprise, and health."
   - "TeleSoft Partners" — "TeleSoft Partners provides entrepreneurs with capital, knowledge, contacts, and expertise."
 
 #### Public carousel
@@ -129,7 +126,7 @@
 - Logo alt texts: "BelizeKids.org logo", "Canary Foundation logo".
 - Card copy:
   - "BelizeKids.org" — "BelizeKids.org (Founder & Chairman) is a non-profit organization partnering with businesses to support the needs of kids in Belize."
-  - "Canary Foundation" — "Canary Foundation (Founder & CEO) has been the only foundation in the world focused solely on early cancer detection for over 15 years."
+  - "Canary Foundation" — "Canary Foundation, founded by Don in 2004, focuses solely on early cancer detection."
 
 ### Section: Exploits overview
 - Section label: "Exploits" (with icon).
@@ -148,7 +145,7 @@
 
 #### Theme: BIG IDEA — "Advancing Early Cancer Detection"
 - Card: "Canary Foundation"
-  - Description: "Founded in 2004 as the world’s first nonprofit solely dedicated to funding, discovering, and developing tests for early cancer detection."
+  - Description: "Founded in 2004 to fund collaborative research and advance tests for early cancer detection."
   - Image alt text: "Canary Foundation researchers collaborating inside the lab".
   - Button: "Learn more" (links to /company/canary-foundation).
 - Card: "Canary Center at Stanford"
@@ -266,12 +263,12 @@ If you have any questions about this Cookie Policy, please contact us at privacy
 - Main heading: "Don Listwin".
 - Subheading: "Technology Investor, CEO, Philanthropist".
 - Link button: "My Story" (anchors to the section below).
-- Paragraph: "I have 35+ years in the technology industry, built a successful tech career at Cisco (#2 executive), been the CEO of a public company, invested in several other leading technology companies, and founded the Canary Foundation in 2004 to focus on early cancer technology. I currently serve on nine boards, am the CEO of RapidAI, and also serve as a technology partner at Sequoia Capital and Rally Ventures."
+- Paragraph: "I have 40+ years in the technology industry, built a successful tech career at Cisco (#2 executive), been the CEO of a public company, invested in several other leading technology companies, and founded the Canary Foundation in 2004 to focus on early cancer technology. I currently serve on the boards of 4AG Robotics, Carbon Robotics, Canary Foundation, and BelizeKids.org. I also serve as a Tech Partner at Sequoia Capital and Rally Ventures."
 
 ### Section: My Story
 - Paragraph: "With a focus on developing networking and data center technologies for the Internet, I began my career in 1980 at Develcon in Canada, marketing data switching technology for the mini-computer era. In the mid-1980s, I relocated to Silicon Valley and joined Cisco Systems in 1990. During a 10-year tenure at Cisco, I built the IBM business unit, the Access business unit, and the Service Provider line of business—overseeing business totaling more than $12 billion in annual revenue. In 2000, I became CEO of Openwave, which invented much of the early mobile Internet technology."
-- Paragraph: "After 25 years of senior leadership operating experience, I founded the Canary Foundation in 2004 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. The Canary Foundation is the world's first non-profit organization focused solely on the funding, discovery, and development of tests for early cancer detection. I continue to be deeply involved with other cancer-related organizations. In 2009, I was appointed to the National Cancer Institute's Board of Scientific Advisors. I am a member of the Stanford Advisory Board for the Canary Center for Cancer Early Detection at Stanford and in 2018 I was honored to be awarded the Dean's Medal—the highest honor bestowed by the School of Medicine to individuals whose contributions have significantly advanced the mission of Stanford Medicine. I am also a consulting professor at Stanford University."
-- Paragraph: "In 2018, I joined RapidAI as CEO. RapidAI is the worldwide leader in cerebrovascular imaging analysis, delivering the proven software tools that healthcare professionals around the world use to successfully identify and treat more stroke patients than ever before."
+- Paragraph: "After 25 years of senior leadership operating experience, I founded the Canary Foundation in 2004 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. I am also an Associate Professor of Radiology at Stanford University."
+- Paragraph: "From 2018 to 2021, I served as CEO of RapidAI. RapidAI is a leader in cerebrovascular imaging analysis."
 - Paragraph: "I live part-time in Belize where I scuba dive daily and work on restoring and protecting the barrier reef. In 2010, my wife and I built the non-profit BelizeKids.org to support local community and education initiatives and have created a partnership with Stanford to deliver eye care for the local community."
 - Paragraph: "A native of Canada, I hold a B.S. degree in Electrical Engineering and an Honorary Doctor of Law from the University of Saskatchewan, Canada where I continue to actively support student entrepreneurs."
 - Portrait card (HeroMedia) caption text: "Portrait of Don Listwin"; logo card alt text in this column: "RapidAI logo".
@@ -280,19 +277,15 @@ If you have any questions about this Cookie Policy, please contact us at privacy
 Each logo tile is image-only, so the alt text listed below is the only copy surfaced inside the grid groups.
 
 #### Current Boards
+- "4AG autonomous mushroom harvester"
+- "Carbon Robotics logo"
 - "BelizeKids.org logo"
 - "Canary Foundation logo"
-- "AwareX logo"
-- "Calix logo"
-- "D-Wave Systems logo"
-- "POET Technologies logo"
-- "RapidAI logo"
-- "Robin Systems logo"
-- "Teradici logo"
 
 #### CEO Experience
 - "Openwave logo"
 - "RapidAI logo"
+- "ZEVX logo"
 - "Sana Security logo"
 - "Canary Foundation logo"
 - "BelizeKids.org logo"
@@ -303,9 +296,13 @@ Each logo tile is image-only, so the alt text listed below is the only copy surf
 - "Isilon Systems logo"
 
 #### Previous Boards
+- "AwareX logo"
+- "Calix logo"
+- "D-Wave Systems logo"
 - "GenoLogics logo"
 - "Joyent logo"
 - "PLUMgrid logo"
+- "POET Technologies logo"
 - "RapidAI logo"
 - "Robin Systems logo"
 - "Teradici logo"
@@ -314,11 +311,13 @@ Each logo tile is image-only, so the alt text listed below is the only copy surf
 ### Investment Highlights section
 - Section heading: "Investment Highlights".
 - Each group uses only logo alt text:
-  - **Seed**: "Uberflip", "VIDA lung health", "Zededa", "Cradle Genomics logo".
-  - **Private**: "AwareX logo", "Clarius Mobile Health logo", "RapidAI logo", "Teradici logo".
-  - **Venture**: "HWVP logo", "Rally Ventures logo", "Sequoia partner network logo", "TeleSoft Partners logo".
-  - **Public**: "Calix logo", "POET Technologies logo".
+  - **Seed**: "VIDA lung health".
+  - **Private**: "AwareX logo", "Clarius Mobile Health logo", "RapidAI logo", "Zededa".
+  - **Venture**: "HWVP logo", "Rally Ventures logo", "Sequoia Capital logo", "TeleSoft Partners logo".
+  - **Public**: "Calix logo".
   - **Philanthropic**: "BelizeKids.org", "Canary Foundation".
+  - **Exits**: "Uberflip", "Openwave", "GenoLogics", "Joyent", "Isilon Systems", "PLUMgrid", "Teradici", "ZEVX".
+  - **Archived**: "Cradle Genomics logo".
 
 ### Philanthropy & Academia grid
 - Group title: "Philanthropy & Academia".
@@ -473,9 +472,9 @@ If you have any questions about this Privacy Policy, please contact us at privac
 ## Page family: /company/[slug] (Portfolio Details)
 
 ### Shared layout copy
-- Category pill text displays the first applicable label out of "Board", "Investment", "Philanthropy", or "Spotlight." The pill is entirely hidden on the Sequoia partner network page. Hero logos are shown with their alt text (e.g., "AwareX logo") except on HWVP, Sequoia partner network, and TeleSoft Partners, where the media block is intentionally suppressed.
+- Category pill text displays the first applicable label out of "Board", "Investment", "Philanthropy", or "Spotlight." The pill is hidden on the Sequoia Capital page. Hero logos are shown with their alt text except on HWVP, Sequoia Capital, and TeleSoft Partners, where the media block is intentionally suppressed.
 - Every detail page repeats the organization name as the page heading and renders the summary paragraph listed below.
-- The button label is always "Visit official site" when an external URL is available. That CTA appears on these slugs: AwareX, BelizeKids.org, Calix, Carbon Robotics, Canary Foundation, Clarius Mobile Health, Cradle Genomics, D-Wave Systems, HWVP, National Institutes of Health, POET Technologies, Rally Ventures, RapidAI, Robin Systems, Sequoia partner network, Stanford Medicine, TeleSoft Partners, Teradici, Uberflip, VIDA, Zededa, and ZEVX.
+- The button label is always "Visit official site" when an external URL is available. Cradle Genomics, Uberflip, and ZEVX intentionally have no live-site CTA.
 - The Carbon Robotics detail is the only page that also shows the secondary button "Read press release," the "Latest News" section (kicker text "Latest News," heading "Carbon Robotics Raises $20M, Teases New “AI Robot” for Farms," summary sentence, and the six bullet points listed below), the "Media gallery" block (figure caption "Carbon Robotics LaserWeeder G2" with image alt text "Carbon Robotics LaserWeeder G2 operating at sunset in a field"), and the section heading "Field footage" above the embedded videos.
 - Details without an external URL simply omit the CTA button, so no additional button text appears on those pages.
 
@@ -521,7 +520,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
 #### Canary Foundation (/company/canary-foundation)
 - Category label: "Board".
 - Hero image alt text: "Canary Foundation logo".
-- Summary: "Canary Foundation (Founder & CEO) has been the only foundation in the world focused solely on early cancer detection for over 15 years."
+- Summary: "Canary Foundation, founded by Don in 2004, focuses solely on early cancer detection."
 - CTA button text: "Visit official site".
 
 #### Canary Challenge (/company/canary-challenge)
@@ -538,8 +537,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
 #### Cradle Genomics (/company/cradle)
 - Category label: "Investment".
 - Hero image alt text: "Cradle Genomics logo".
-- Summary: "Cradle Genomics engineers next-generation prenatal diagnostic tests that combine genomics with proprietary biochemistry."
-- CTA button text: "Visit official site".
+- Summary: "Cradle Genomics developed prenatal diagnostic tests that combined genomics with proprietary biochemistry."
+- No live-site CTA.
 
 #### D-Wave Systems (/company/dwave)
 - Category label: "Board".
@@ -637,7 +636,7 @@ If you have any questions about this Privacy Policy, please contact us at privac
 - Hero image alt text: "University of Saskatchewan crest".
 - Summary: "The University of Saskatchewan is Don’s alma mater and a continuing partner for scholarships and entrepreneurship programs."
 
-#### Sequoia partner network (/company/sequoia)
+#### Sequoia Capital (/company/sequoia)
 - Category label: hidden on this page; the card jumps straight to the name and summary.
 - Hero image: hidden.
 - Summary: "Sequoia helps daring founders build legendary companies across consumer, enterprise, and health."
@@ -664,8 +663,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
 #### Uberflip (/company/uberflip)
 - Category label: "Investment".
 - Hero image alt text: "Uberflip".
-- Summary: "Uberflip is a next-generation marketing engagement platform."
-- CTA button text: "Visit official site".
+- Summary: "Uberflip built a marketing engagement platform for personalized B2B buyer journeys and was acquired by PathFactory in July 2024."
+- No live-site CTA.
 
 #### VIDA (/company/vida)
 - Category label: "Investment".
@@ -682,8 +681,8 @@ If you have any questions about this Privacy Policy, please contact us at privac
 #### ZEVX (/company/zevx)
 - Category label: "Spotlight".
 - Hero image alt text: "ZEVX logo".
-- Summary: "ZEVX retrofits commercial vehicle fleets with intelligent EV powertrains and data services."
-- CTA button text: "Visit official site".
+- Summary: "ZEVX developed intelligent EV powertrains and data services for commercial fleets before winding down in 2024."
+- No live-site CTA.
 
 ## Page family: /exploits/[slug]
 

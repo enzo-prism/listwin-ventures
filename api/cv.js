@@ -86,25 +86,23 @@ const matches = (candidate, expected) => {
   return a.length === b.length && timingSafeEqual(a, b);
 };
 
-const signingSecret = (password) => process.env.CV_SESSION_SECRET || password;
-
-const sign = (payload, password) => createHmac('sha256', signingSecret(password))
+const sign = (payload, sessionSecret) => createHmac('sha256', sessionSecret)
   .update(payload)
   .digest('base64url');
 
-const createSessionToken = (password) => {
+const createSessionToken = (sessionSecret) => {
   const payload = Buffer.from(JSON.stringify({
     v: SESSION_VERSION,
     exp: Date.now() + (MAX_AGE_SECONDS * 1000),
     nonce: randomBytes(16).toString('base64url'),
   })).toString('base64url');
 
-  return `${payload}.${sign(payload, password)}`;
+  return `${payload}.${sign(payload, sessionSecret)}`;
 };
 
-const hasValidSession = (token, password) => {
+const hasValidSession = (token, sessionSecret) => {
   const parts = String(token).split('.');
-  if (parts.length !== 2 || !parts[0] || !parts[1] || !matches(parts[1], sign(parts[0], password))) {
+  if (parts.length !== 2 || !parts[0] || !parts[1] || !matches(parts[1], sign(parts[0], sessionSecret))) {
     return false;
   }
 
@@ -182,9 +180,10 @@ ${unavailable ? '<p role="alert">Private access is temporarily unavailable. Plea
 
 export default async function handler(req, res) {
   const password = process.env.CV_PASSWORD ?? '';
+  const sessionSecret = process.env.CV_SESSION_SECRET ?? '';
 
-  // Fail closed: with no password configured, never serve the CV.
-  if (!password) {
+  // Fail closed unless authentication and session signing use separate secrets.
+  if (!password || !sessionSecret) {
     send(res, 503, loginPage({ unavailable: true }));
     return;
   }
@@ -210,13 +209,13 @@ export default async function handler(req, res) {
     res.setHeader('Location', '/cv');
     res.setHeader(
       'Set-Cookie',
-      `${COOKIE_NAME}=${createSessionToken(password)}; Path=/; Max-Age=${MAX_AGE_SECONDS}; HttpOnly; Secure; SameSite=Strict`,
+      `${COOKIE_NAME}=${createSessionToken(sessionSecret)}; Path=/; Max-Age=${MAX_AGE_SECONDS}; HttpOnly; Secure; SameSite=Strict`,
     );
     res.end('');
     return;
   }
 
-  if (!hasValidSession(readCookie(req.headers.cookie), password)) {
+  if (!hasValidSession(readCookie(req.headers.cookie), sessionSecret)) {
     send(res, 200, loginPage());
     return;
   }

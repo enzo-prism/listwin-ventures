@@ -64,6 +64,14 @@ describe('Listwin private CV handler', () => {
     assert.doesNotMatch(response.body, CV_MARKERS);
   });
 
+  it('fails closed when no separate session secret is configured', async () => {
+    delete process.env.CV_SESSION_SECRET;
+    const response = await run(makeRequest());
+
+    assert.equal(response.statusCode, 503);
+    assert.doesNotMatch(response.body, CV_MARKERS);
+  });
+
   it('shows a login page without CV content to anonymous visitors', async () => {
     const response = await run(makeRequest());
 

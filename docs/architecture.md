@@ -136,7 +136,7 @@ Rules worth knowing before editing:
   `truncateAtWord` never cuts mid-word or leaves a dangling preposition.
 - Records whose generated output would be poor carry `seoTitle` / `seoDescription` / `seoName`
   overrides in `entityDetails.ts` and `exploitDetails.ts`. `seoName` exists because some names are
-  derived from logo alt text (`Sequoia tech partner`, `VIDA lung health`).
+  derived from logo alt text (`Sequoia Capital`, `VIDA lung health`).
 - **Overrides are also the factual-integrity control.** Several `summary` fields carry unsourced
   superlatives ("the only foundation in the world…", "a leading provider", "pioneered"). A meta
   description is the most-quoted surface on the site, so those records have an `seoDescription` that
@@ -224,7 +224,7 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - When adding a new top-level static page (example: `/press`), also add it to `staticRoutes`.
 - `/oral-history-caltech` is included in `staticRoutes` as the Caltech 2025 interview route.
 - `/cv` is intentionally excluded from `staticRoutes` and all public discovery files.
-- `/cv` is not an Astro route. `vercel.json` rewrites it to `api/cv.js`, which fails closed unless `CV_PASSWORD` is configured.
+- `/cv` is not an Astro route. `vercel.json` rewrites it to `api/cv.js`, which fails closed unless both `CV_PASSWORD` and `CV_SESSION_SECRET` are configured.
 - The handler uses a constant-time comparison against `CV_PASSWORD`, then issues an eight-hour
   signed `HttpOnly; Secure; SameSite=Strict` session token with private/no-store response headers.
   The reusable password is never stored in the browser cookie.
@@ -311,24 +311,19 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
   - `/cv/page-1.png` and `/cv/page-2.png` serve browser-safe previews of those two pages.
   All asset routes return `Cache-Control: private, no-store` and no-index headers. Anonymous asset
   requests return the login page and never receive document bytes.
-- To change the password, set `CV_PASSWORD` in Vercel (Production). It is stored as a plain value,
-  not a hash, so anyone with Vercel project access can read it.
-- `CV_SESSION_SECRET` is an optional, separate HMAC signing secret. Configure it in Vercel for
-  defence in depth. Until configured, the handler derives signatures from `CV_PASSWORD`; either
-  way, the password itself never appears in the session token.
+- Configure both `CV_PASSWORD` and a separate `CV_SESSION_SECRET` in every Vercel environment that
+  serves this route (Production, Preview, and Development). The handler returns `503` when either is
+  missing. The password itself never appears in the signed session token.
 - **Vercel binds environment variables at deploy time, so an env change alone has no effect — you
   must redeploy.** `vercel redeploy <current-production-url>` reuses the exact deployed source and
   is safer than `vercel --prod`, which rebuilds from your local working copy. Confirm afterwards
   that a correct password returns `303` and a wrong one returns `401`.
 - Changing `CV_PASSWORD` or `CV_SESSION_SECRET` invalidates existing signed sessions.
 - Never commit the plaintext password to this repo, to `docs/`, or to a commit message.
-- ⚠️ There is **no rate limiting** on this endpoint, by choice. Two Vercel WAF rules
-  (`rule_rate_limit_cv_login_GUMWLK`, `rule_rate_limit_direct_cv_function_s7XKzB`) capped `/cv`
-  POSTs at 5 per 600s per IP; they are now **Disabled** — not deleted, so `vercel firewall rules
-  enable <id>` + `vercel firewall publish` restores them. They were disabled because they refused
-  the *correct* password once tripped, counted sign-out against the same quota, and were keyed by
-  IP, so everyone behind one office NAT shared five attempts. The tradeoff accepted: the password
-  alone is the defence, and automated guessing is unthrottled.
+- Two Vercel WAF rules rate-limit both `/cv` and direct `/api/cv` password posts to five attempts per
+  IP every ten minutes. Keep both rules enabled and publish staged firewall changes before release.
+  The live rule IDs are `rule_rate_limit_cv_login_GUMWLK` and
+  `rule_rate_limit_direct_cv_function_s7XKzB`.
 
 ## Private CV login screen
 

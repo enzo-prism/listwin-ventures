@@ -106,7 +106,6 @@ const entityDetails = getEntityDetails();
 const detailBySlug = new Map(entityDetails.map((detail) => [detail.slug, detail]));
 
 const hiddenInvestmentNavSlugs = new Set(['carbon-robotics', 'cradle']);
-const exitSlugs = ['openwave', 'genologics', 'joyent', 'isilon', 'plumgrid', 'teradici'];
 
 const prettify = (name: string) => name.replace(/\s+(logo|crest|lockup)$/i, '');
 
@@ -144,18 +143,6 @@ const investmentSections = investmentAssets
     return { label: group.label, items };
   })
   .filter((section) => section.items.length > 0);
-
-const exitItems = exitSlugs
-  .map((slug) => detailBySlug.get(slug))
-  .filter(Boolean)
-  .map((detail) => ({
-    label: prettify(detail.name),
-    href: getDetailPath(detail.slug),
-  }));
-
-if (exitItems.length) {
-  investmentSections.push({ label: 'Exits', items: exitItems });
-}
 
 const communityLinks = [
   { slug: 'belizekids', icon: 'heart' },

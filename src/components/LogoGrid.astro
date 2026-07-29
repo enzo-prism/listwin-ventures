@@ -60,12 +60,13 @@ const colClass = (() => {
           {(() => {
             const detailPath = getDetailPath(asset.id);
             const linkHref = detailPath ?? asset.href;
+            const isInternal = Boolean(linkHref?.startsWith('/'));
             if (linkHref) {
               return (
                 <a
                   href={linkHref}
-                  target={detailPath ? undefined : '_blank'}
-                  rel={detailPath ? undefined : 'noopener noreferrer'}
+                  target={detailPath || isInternal ? undefined : '_blank'}
+                  rel={detailPath || isInternal ? undefined : 'noopener noreferrer'}
                   class="transition hover:scale-105"
                 >
 	                  <img

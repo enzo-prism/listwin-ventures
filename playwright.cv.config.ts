@@ -37,6 +37,7 @@ export default defineConfig({
     timeout: 30_000,
     env: {
       CV_PASSWORD: CV_TEST_PASSWORD,
+      CV_SESSION_SECRET: 'test-only-browser-session-signing-secret',
       CV_TEST_PORT: String(CV_TEST_PORT),
     },
   },

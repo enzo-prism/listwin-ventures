@@ -68,11 +68,11 @@ const content: Record<string, DetailContent> = {
     ],
   },
   calix: {
-    seoDescription: 'Calix provides next generation fiber optic based broadband solutions. Don serves as Lead Independent Director, focusing on go-to-market and customer success.',
+    seoDescription: 'Calix provides next-generation fiber optic broadband solutions. Don Listwin served on its board through May 9, 2024.',
     summary:
       'Calix is a leading provider of next generation fiber optic based broadband solutions.',
     highlights: [
-      'Don serves as Lead Independent Director, focusing on go-to-market discipline and customer success.',
+      'Don’s Calix board term, including his service as Lead Independent Director, ended on May 9, 2024.',
       'Calix Cloud and Revenue EDGE help providers launch new services without heavy engineering teams.',
     ],
   },
@@ -87,7 +87,7 @@ const content: Record<string, DetailContent> = {
   'canary-foundation': {
     seoDescription: 'Canary Foundation, founded and led by Don Listwin, focuses solely on early cancer detection, funding research centers at Stanford, Cambridge, and Calgary.',
     summary:
-      'Canary Foundation (Founder & CEO) has been the only foundation in the world focused solely on early cancer detection for over 15 years.',
+      'Canary Foundation, founded by Don in 2004, focuses solely on early cancer detection.',
     highlights: [
       'Funded collaborative centers at Stanford, Cambridge, and Calgary to translate lab breakthroughs to clinics.',
       'Catalyzed new standards of care for prostate and ovarian cancer screening.',
@@ -113,10 +113,10 @@ const content: Record<string, DetailContent> = {
   },
   cradle: {
     summary:
-      'Cradle Genomics engineers next-generation prenatal diagnostic tests that combine genomics with proprietary biochemistry.',
+      'Cradle Genomics developed prenatal diagnostic tests that combined genomics with proprietary biochemistry.',
     highlights: [
-      'Investment supports the shift toward safer, noninvasive prenatal testing.',
-      'Cradle’s platform exemplifies Don’s interest in applying engineering rigor to medical diagnostics.',
+      'The investment supported the shift toward safer, noninvasive prenatal testing.',
+      'The company reflected Don’s interest in applying engineering rigor to medical diagnostics.',
     ],
   },
   dwave: {
@@ -232,7 +232,7 @@ const content: Record<string, DetailContent> = {
       'Rally Ventures I–V invests exclusively in early-stage business technology companies.',
     highlights: [
       'Empowers entrepreneurs building products that modern enterprises actually deploy.',
-      'Don is a Venture Partner, helping diligence infrastructure deals and mentor founders.',
+      'Don serves as a Tech Partner, supporting founders with operating and technology experience.',
     ],
   },
   rapidai: {
@@ -279,13 +279,13 @@ const content: Record<string, DetailContent> = {
     ],
   },
   sequoia: {
-    seoDescription: 'Sequoia helps founders build companies across consumer, enterprise, and health. Don is a Technology Partner, advising teams on go-to-market and scaling.',
-    seoName: 'Sequoia',
+    seoDescription: 'Sequoia Capital partners with founders building enduring companies. Don Listwin serves as a Tech Partner.',
+    seoName: 'Sequoia Capital',
     summary:
       'Sequoia helps daring founders build legendary companies across consumer, enterprise, and health.',
     highlights: [
-      'Don serves as a Technology Partner, advising portfolio teams on go-to-market and scaling.',
-      'Sequoia’s scout and expert networks amplify Don’s reach in next-gen infrastructure.',
+      'Don serves as a Tech Partner.',
+      'He brings operating experience across networking, enterprise software, healthcare, and robotics.',
     ],
   },
   stanford: {
@@ -316,10 +316,10 @@ const content: Record<string, DetailContent> = {
   },
   uberflip: {
     summary:
-      'Uberflip is a marketing engagement platform that turns static content into personalized buyer journeys for B2B revenue teams.',
+      'Uberflip built a marketing engagement platform for personalized B2B buyer journeys and was acquired by PathFactory in July 2024.',
     highlights: [
-      'Transforms static content into personalized destinations that nurture buyers.',
-      'Enables marketing teams to orchestrate engagement journeys that convert faster.',
+      'The acquisition combined Uberflip’s content experience platform with PathFactory’s content intelligence.',
+      'The combined company operates under the PathFactory name.',
     ],
   },
   vida: {
@@ -341,12 +341,12 @@ const content: Record<string, DetailContent> = {
     ],
   },
   zevx: {
-    seoDescription: 'ZEVX retrofits commercial vehicle fleets with intelligent EV powertrains. Don transitioned from Executive Chair to CEO to accelerate commercialization.',
+    seoDescription: 'ZEVX developed electric powertrains for commercial fleets. Don Listwin served as CEO before the company wound down in 2024.',
     summary:
-      'ZEVX retrofits commercial vehicle fleets with intelligent EV powertrains and data services.',
+      'ZEVX developed intelligent EV powertrains and data services for commercial fleets before winding down in 2024.',
     highlights: [
-      'Don transitioned from Executive Chair to CEO to accelerate commercialization.',
-      'Closed a $20M+ funding round led by Reynolds Capital to scale manufacturing and partnerships.',
+      'Don transitioned from Executive Chair to CEO in February 2023.',
+      'The company later liquidated its assets as it wound down operations in 2024.',
     ],
   },
 };

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { boardAssets, investmentAssets } from '../src/data/assets';
 
 const pressUrls = [
   'https://med.stanford.edu/news/all-news/2009/06/foundation-to-back-early-cancer-detection-center.html',
@@ -76,6 +77,75 @@ test.describe('Content coverage', () => {
     const sitemapResponse = await request.get('/sitemap.xml');
     expect(sitemapResponse.ok()).toBeTruthy();
     expect(await sitemapResponse.text()).not.toContain('/cv</loc>');
+  });
+
+  test('Homepage matches Don’s July 2026 current roles', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    const story = page.locator('#my-story');
+    await expect(story).toContainText('I currently serve on four boards');
+    await expect(story.getByRole('link', { name: '4AG Robotics' })).toHaveAttribute('href', '/4ag');
+    await expect(story.getByRole('link', { name: 'Carbon Robotics' })).toHaveAttribute('href', '/company/carbon-robotics');
+    await expect(story.getByRole('link', { name: 'Canary Foundation' }).first()).toHaveAttribute('href', '/company/canary-foundation');
+    await expect(story.getByRole('link', { name: 'BelizeKids.org' }).first()).toHaveAttribute('href', '/company/belizekids');
+    await expect(story).not.toContainText('Lead Independent Director at Calix');
+    await expect(story).toContainText('Tech Partner at Sequoia Capital and Rally Ventures');
+  });
+
+  test('Current Boards and Exits data have the exact verified membership', () => {
+    const currentBoards = boardAssets.find((group) => group.label === 'Current Boards');
+    const previousBoards = boardAssets.find((group) => group.label === 'Previous Boards');
+    const exits = investmentAssets.find((group) => group.label === 'Exits');
+    const archived = investmentAssets.find((group) => group.label === 'Archived');
+
+    expect(currentBoards?.items.map((item) => item.id)).toEqual([
+      '4ag',
+      'carbon-robotics',
+      'belizekids',
+      'canary-foundation',
+    ]);
+    const currentIds = currentBoards?.items.map((item) => item.id) ?? [];
+    const previousIds = previousBoards?.items.map((item) => item.id) ?? [];
+    expect(previousIds.filter((id) => currentIds.includes(id))).toEqual([]);
+    expect(exits?.items.map((item) => item.id)).toEqual([
+      'uberflip',
+      'openwave',
+      'genologics',
+      'joyent',
+      'isilon',
+      'plumgrid',
+      'teradici',
+      'zevx',
+    ]);
+    expect(archived?.items.map((item) => item.id)).toEqual(['cradle']);
+  });
+
+  test('Calix board role is presented as historical', async ({ page }) => {
+    await page.goto('/company/calix', { waitUntil: 'domcontentloaded' });
+
+    await expect(page.locator('main')).toContainText('ended on May 9, 2024');
+    await expect(page.locator('main')).not.toContainText('Don serves as Lead Independent Director');
+  });
+
+  test('Acquisitions and closures appear as exits', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    const exits = page.getByRole('heading', { name: 'Exits', exact: true }).locator('..');
+    await expect(exits).toContainText('Uberflip');
+    await expect(exits).toContainText('ZEVX');
+
+    await page.goto('/company/uberflip', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('main')).toContainText('acquired by PathFactory in July 2024');
+
+    await page.goto('/company/zevx', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('main')).toContainText('winding down in 2024');
+  });
+
+  test('Canary Foundation uses an evergreen founding date', async ({ page }) => {
+    await page.goto('/company/canary-foundation', { waitUntil: 'domcontentloaded' });
+
+    await expect(page.locator('main')).toContainText('founded by Don in 2004');
+    await expect(page.locator('main')).not.toContainText('over 15 years');
   });
 
   test('Stanford company page surfaces core external coverage', async ({ page }) => {

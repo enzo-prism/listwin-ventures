@@ -39,7 +39,7 @@ export const heroAssets: VisualAsset[] = [
   make('don-listwin', '2020/05/don-02.jpg', 'Portrait of Don Listwin'),
   make('clarius', '2020/05/clarius.png', 'Clarius Mobile Health logo', 'https://clarius.com/'),
   make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
-  make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo', 'https://zevx.com/'),
+  make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo'),
   make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
 ];
 
@@ -48,15 +48,10 @@ export const boardAssets: AssetGroup[] = [
     type: 'board',
     label: 'Current Boards',
     items: [
+      make('4ag', 'https://techcouver.com/wp-content/uploads/2023/11/4ag-robot-1.png', '4AG autonomous mushroom harvester', '/4ag'),
+      make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
       make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
-      make('awarex', '2020/05/awarex.png', 'AwareX logo', 'https://www.awarex.com/'),
-      make('calix', '2018/05/calix.png', 'Calix logo', 'https://www.calix.com/'),
-      make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
-      make('poet', '2020/05/poet-02.png', 'POET Technologies logo', 'https://poet-technologies.com/'),
-      make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
-      make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
-      make('teradici', '2018/05/teradici.png', 'Teradici logo', 'https://www.teradici.com/'),
     ],
   },
   {
@@ -65,6 +60,7 @@ export const boardAssets: AssetGroup[] = [
     items: [
       make('openwave', '2018/05/openwave.png', 'Openwave logo'),
       make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
+      make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo'),
       make('sana', '2018/05/sana.png', 'Sana Security logo'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
       make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
@@ -83,9 +79,13 @@ export const boardAssets: AssetGroup[] = [
     type: 'board',
     label: 'Previous Boards',
     items: [
+      make('awarex', '2020/05/awarex.png', 'AwareX logo', 'https://www.awarex.com/'),
+      make('calix', '2018/05/calix.png', 'Calix logo', 'https://www.calix.com/'),
+      make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
       make('genologics', '2018/05/genologics.png', 'GenoLogics logo'),
       make('joyent', '2018/05/joyent.png', 'Joyent logo'),
       make('plumgrid', '2018/05/plumgrid.png', 'PLUMgrid logo'),
+      make('poet', '2020/05/poet-02.png', 'POET Technologies logo', 'https://poet-technologies.com/'),
       make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
       make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
       make('teradici', '2018/05/teradici.png', 'Teradici logo', 'https://www.teradici.com/'),
@@ -99,9 +99,7 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Seed',
     items: [
-      make('uberflip', '2018/05/uberflip.png', 'Uberflip', 'https://www.uberflip.com/'),
       make('vida', '2022/05/vida.png', 'VIDA lung health', 'https://www.vidalung.ai/'),
-      make('cradle', '2019/07/cradle.png', 'Cradle Genomics logo', 'https://www.cradlegenomics.com/'),
     ],
   },
   {
@@ -120,7 +118,7 @@ export const investmentAssets: AssetGroup[] = [
     items: [
       make('hwvp', 'https://www.hummerwinblad.com/wp-content/themes/hwvpfoundation/dist/images/hwvp-logo.svg', 'HWVP logo', 'https://www.hummerwinblad.com/'),
       make('rally', '2018/05/rally.png', 'Rally Ventures logo', 'https://rallyventures.com/'),
-      make('sequoia', '2018/05/stanford.png', 'Sequoia tech partner logo', 'https://www.sequoiacap.com/'),
+      make('sequoia', 'https://sequoiacap.com/wp-content/uploads/sites/6/2021/11/cropped-cropped-android-chrome-512x512-1.png', 'Sequoia Capital logo', 'https://www.sequoiacap.com/'),
       make('telesoft', 'https://telesoftpartners.com/wp-content/uploads/2015/01/telesoft-logo.png', 'TeleSoft Partners logo', 'https://telesoftpartners.com/'),
     ],
   },
@@ -137,6 +135,27 @@ export const investmentAssets: AssetGroup[] = [
     items: [
       make('belizekids', '2018/05/belize.png', 'BelizeKids.org', 'https://belizekids.org/'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation', 'https://www.canaryfoundation.org/'),
+    ],
+  },
+  {
+    type: 'investment',
+    label: 'Exits',
+    items: [
+      make('uberflip', '2018/05/uberflip.png', 'Uberflip'),
+      make('openwave', '2018/05/openwave.png', 'Openwave logo'),
+      make('genologics', '2018/05/genologics.png', 'GenoLogics logo'),
+      make('joyent', '2018/05/joyent.png', 'Joyent logo'),
+      make('isilon', '2018/05/isilon.png', 'Isilon Systems logo'),
+      make('plumgrid', '2018/05/plumgrid.png', 'PLUMgrid logo'),
+      make('teradici', '2018/05/teradici.png', 'Teradici logo'),
+      make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo'),
+    ],
+  },
+  {
+    type: 'investment',
+    label: 'Archived',
+    items: [
+      make('cradle', '2019/07/cradle.png', 'Cradle Genomics logo'),
     ],
   },
 ];

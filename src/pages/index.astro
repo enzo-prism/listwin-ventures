@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CompanyCarousel from '../components/CompanyCarousel.astro';
 import HeroMedia from '../components/HeroMedia.astro';
 import { heroAssets, investmentAssets } from '../data/assets';
-import type { VisualAsset } from '../data/assets';
 import { getDetailPath, getEntityDetails, type EntityDetail } from '../data/entityDetails';
 import { getExploitPath } from '../data/exploitDetails';
 import { getPressItems, isExternalUrl, type PressItem } from '../data/press';
@@ -29,8 +28,6 @@ const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
 const entityDetails = getEntityDetails();
 const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail) => [detail.slug, detail]));
 const hiddenInvestmentCarouselSlugs = new Set(['cradle']);
-const exitSlugs = ['openwave', 'genologics', 'joyent', 'isilon', 'plumgrid', 'teradici'];
-const exitItems = exitSlugs.map((slug) => entityDetailMap.get(slug)).filter((detail): detail is EntityDetail => Boolean(detail));
 const pressItems = getPressItems();
 const verifiedLinkIds = [
   'stanford-medicine-deans-medal-2018-11-01',
@@ -59,16 +56,14 @@ const investmentCarousels = investmentAssets.reduce((acc, group) => {
       .map((asset) => entityDetailMap.get(asset.id))
       .filter((detail): detail is EntityDetail => detail !== undefined && !hiddenInvestmentCarouselSlugs.has(detail.slug)),
   });
-  if (group.label === 'Private' && exitItems.length) {
-    acc.push({ label: 'Exits', items: exitItems });
-  }
   return acc;
 }, [] as { label: string; items: EntityDetail[] }[]);
 
 const linkTargets = {
   openwave: getDetailPath('openwave'),
   rapidai: getDetailPath('rapidai'),
-  calix: getDetailPath('calix'),
+  fourAg: '/4ag',
+  carbonRobotics: getDetailPath('carbon-robotics'),
   canary: getDetailPath('canary-foundation'),
   sequoia: getDetailPath('sequoia'),
   rally: getDetailPath('rally'),
@@ -150,13 +145,6 @@ const linkTargets = {
 const carbonPressReleaseUrl =
   'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board';
 
-const fourAgHeroAsset: VisualAsset = {
-  id: '4ag',
-  name: '4AG field deployments',
-  path: 'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633738/LaserWeeder-G2-600-Sunset_qghpi1.webp',
-  alt: '4AG pilot featuring the LaserWeeder operating at sunset in a field',
-};
-
 const recentWorkCards = [
   {
     title: 'Carbon Robotics',
@@ -232,7 +220,7 @@ const exploitThemes = [
       {
         title: 'Canary Foundation',
         description:
-          'Founded in 2004 as the world’s first nonprofit solely dedicated to funding, discovering, and developing tests for early cancer detection.',
+          'Founded in 2004 to fund collaborative research and advance tests for early cancer detection.',
         tag: 'canary-foundation',
         link: linkTargets.canary,
       },
@@ -465,10 +453,11 @@ const exploitThemes = [
             I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a
             public company—<a href={linkTargets.openwave}>OpenWave</a>—that created the mobile internet. Since then, I created
             Listwin Ventures which has invested in dozens of other leading technology companies. I founded the
-            <a href={linkTargets.canary}>Canary Foundation</a> in 2004—the world's largest research entity to focus on early cancer
-            technology. Most recently, I was the CEO of <a href={linkTargets.rapidai}>RapidAI</a>, and I currently serve on three boards
-            including as Lead Independent Director at <a href={linkTargets.calix}>Calix</a>. Additionally, I serve as a technology
-            partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
+            <a href={linkTargets.canary}>Canary Foundation</a> in 2004 to advance early cancer detection. My operating experience
+            includes CEO roles at <a href={linkTargets.rapidai}>RapidAI</a> and ZEVX. I currently
+            serve on four boards: <a href={linkTargets.fourAg}>4AG Robotics</a>, <a href={linkTargets.carbonRobotics}>Carbon Robotics</a>,
+            <a href={linkTargets.canary}>Canary Foundation</a>, and <a href={linkTargets.belizekids}>BelizeKids.org</a>. I also serve as
+            a Tech Partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
           </p>
         </div>
         {portrait && <HeroMedia asset={portrait} showCaption={false} loading="eager" fetchpriority="high" />}
@@ -487,13 +476,13 @@ const exploitThemes = [
         <p>
           After 25 years of senior leadership operating experience, I founded the <a href={linkTargets.canary}>Canary Foundation</a>
           in 2004 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. The
-          <a href={linkTargets.canary}>Canary Foundation</a> is the world’s first non-profit organization focused solely on the
-          funding, discovery, and development of tests for early cancer detection. I continue to be deeply involved with other
+          <a href={linkTargets.canary}>Canary Foundation</a> is a non-profit organization focused on funding, discovering, and
+          developing tests for early cancer detection. I continue to be deeply involved with other
           cancer-related organizations. In 2009, I was appointed to the National Cancer Institute’s Board of Scientific Advisors. I
           am a member of the Stanford Advisory Board for the Canary Center for Cancer Early Detection at
           <a href={linkTargets.stanford}>Stanford</a> and in 2018 I was honored to be awarded the Dean's Medal—the highest honor
           bestowed by the School of Medicine to individuals whose contributions have significantly advanced the mission of
-          <a href={linkTargets.stanford}>Stanford Medicine</a>. I am also an adjunct professor in Radiology at
+          <a href={linkTargets.stanford}>Stanford Medicine</a>. I am also an Associate Professor of Radiology at
           <a href={linkTargets.stanford}>Stanford University</a>.
         </p>
         <p>
