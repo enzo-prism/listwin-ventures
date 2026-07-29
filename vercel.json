@@ -34,13 +34,6 @@
       ]
     }
   ],
-  "redirects": [
-    {
-      "source": "/:cv(CV|Cv|cV)",
-      "destination": "/cv",
-      "permanent": false
-    }
-  ],
   "rewrites": [
     {
       "source": "/cv",

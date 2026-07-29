@@ -13,6 +13,17 @@ const headers = new Map(
 );
 
 describe('Vercel security boundaries', () => {
+  it('never redirects the canonical private CV path back to itself', () => {
+    const cvRedirects = (config.redirects ?? [])
+      .filter(({ destination }) => destination === '/cv');
+
+    assert.deepEqual(
+      cvRedirects,
+      [],
+      'Vercel route matching is case-insensitive, so a case-normalizing redirect to /cv loops',
+    );
+  });
+
   it('applies the complete public-site header set outside API and CV routes', () => {
     assert.ok(publicRule, 'missing non-API/non-CV security header rule');
     assert.equal(headers.get('x-content-type-options'), 'nosniff');
