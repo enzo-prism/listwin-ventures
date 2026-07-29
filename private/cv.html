@@ -138,6 +138,47 @@
           gap: 0.75rem;
         }
       }
+
+      @media print {
+        @page {
+          size: letter;
+          margin: 0;
+        }
+
+        body,
+        main {
+          background: #fff;
+        }
+
+        main {
+          width: auto;
+          margin: 0;
+          padding: 0;
+        }
+
+        .header,
+        .fallback {
+          display: none;
+        }
+
+        .viewer {
+          display: block;
+        }
+
+        .page {
+          width: 8.5in;
+          height: 11in;
+          border: 0;
+          box-shadow: none;
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .page:last-child {
+          break-after: auto;
+          page-break-after: auto;
+        }
+      }
     </style>
   </head>
   <body>
@@ -161,15 +202,15 @@
           class="page"
           src="/cv/page-1.png"
           alt="Page 1 of Don Listwin's July 2026 CV"
-          width="1547"
-          height="2002"
+          width="1224"
+          height="1584"
         />
         <img
           class="page"
           src="/cv/page-2.png"
           alt="Page 2 of Don Listwin's July 2026 CV"
-          width="1547"
-          height="2002"
+          width="1224"
+          height="1584"
           loading="lazy"
           decoding="async"
         />

@@ -307,8 +307,12 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - Authenticated routes:
   - `/cv` serves the private viewer.
   - `/cv/download.doc` downloads Don's exact July 2026 Word file.
-  - `/cv/document.pdf` serves the two-page printable PDF derived from that Word file.
-  - `/cv/page-1.png` and `/cv/page-2.png` serve browser-safe previews of those two pages.
+  - `/cv/document.pdf` serves the two-page printable PDF exported from that Word file with Apple
+    Pages so Book Antiqua headings, Times New Roman body text, square bullets, spacing, and page
+    breaks match Don's source formatting.
+  - `/cv/page-1.png` and `/cv/page-2.png` serve browser-safe previews rendered from that PDF.
+  - The original Word file stays byte-for-byte unchanged; only its derived PDF/PNG previews may be
+    regenerated.
   All asset routes return `Cache-Control: private, no-store` and no-index headers. Anonymous asset
   requests return the login page and never receive document bytes.
 - Configure both `CV_PASSWORD` and a separate `CV_SESSION_SECRET` in every Vercel environment that

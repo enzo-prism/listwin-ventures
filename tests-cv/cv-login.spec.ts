@@ -190,6 +190,29 @@ test.describe('Login flow', () => {
     await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible();
   });
 
+  test('the source-faithful two-page preview uses Letter proportions', async ({ page }) => {
+    await login(page);
+
+    const pages = page.locator('.page');
+    await expect(pages).toHaveCount(2);
+    for (const preview of await pages.all()) {
+      await expect(preview).toHaveAttribute('width', '1224');
+      await expect(preview).toHaveAttribute('height', '1584');
+      await expect(preview).toHaveJSProperty('naturalWidth', 1224);
+      await expect(preview).toHaveJSProperty('naturalHeight', 1584);
+    }
+  });
+
+  test('printing keeps only the clean Letter pages', async ({ page }) => {
+    await login(page);
+    await page.emulateMedia({ media: 'print' });
+
+    await expect(page.locator('.header')).toBeHidden();
+    await expect(page.locator('.fallback')).toBeHidden();
+    await expect(page.locator('.page').first()).toHaveCSS('width', '816px');
+    await expect(page.locator('.page').first()).toHaveCSS('height', '1056px');
+  });
+
   test('authenticated Word download and PDF preview stay private and usable', async ({ page }) => {
     await login(page);
 
