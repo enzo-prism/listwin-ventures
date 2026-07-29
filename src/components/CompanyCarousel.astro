@@ -26,7 +26,7 @@ export interface Props {
 {items.length > 0 && (
   <section class="space-y-3">
 	    {title && <h3 class="text-lg font-semibold text-foreground">{title}</h3>}
-	    <div class="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-4 pt-1 -mx-1">
+	    <div role="list" class="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-4 pt-1 -mx-1">
 	      {items.map((item) => {
 	        const dimensions = inferImageDimensionsFromPath(item.asset.path, { width: 320, height: 128 });
 	        return (

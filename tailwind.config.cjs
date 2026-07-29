@@ -29,7 +29,7 @@ module.exports = {
         midnight: '#00010a',
         fog: '#f5f5f7',
         cloud: '#ffffff',
-        brand: '#1cad7b',
+        brand: '#087a52',
         'brand-soft': '#5ed4a4',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

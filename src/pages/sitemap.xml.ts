@@ -22,7 +22,9 @@ const staticRoutes = [
 const getCompanyRoutes = () =>
   getEntityDetails()
     .map((detail) => getDetailPath(detail.slug))
-    .filter((path): path is string => Boolean(path));
+    .filter((path): path is string =>
+      Boolean(path) && path !== '/company/belizekids' && path !== '/company/genologics'
+    );
 
 const getExploitRoutes = () =>
   getExploitDetails()
@@ -33,7 +35,6 @@ const toUrl = (path: string) => `${siteUrl}${path}`;
 
 export const GET: APIRoute = () => {
   const paths = Array.from(new Set([...staticRoutes, ...getCompanyRoutes(), ...getExploitRoutes()]));
-  const lastmod = new Date().toISOString();
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -41,7 +42,6 @@ ${paths
   .map(
     (path) => `  <url>
     <loc>${toUrl(path)}</loc>
-    <lastmod>${lastmod}</lastmod>
   </url>`
   )
   .join('\n')}

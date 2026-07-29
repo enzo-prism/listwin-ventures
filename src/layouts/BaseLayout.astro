@@ -32,8 +32,8 @@ const canonicalUrl = new URL(
   stripTrailingSlash(canonical ?? Astro.url?.pathname ?? '/'),
   siteUrl,
 ).toString();
-const logoUrl =
-  'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762622395/LV_logo-02-300x120_gobztf.webp';
+const logoPath = '/assets/media/listwin-ventures-logo.webp';
+const logoUrl = `${siteUrl}${logoPath}`;
 const openGraphImage = `${siteUrl}/assets/uploads/OpenGraph.png`;
 // Per-page image when supplied, else the site card. Relative paths are resolved against the
 // production origin because OG consumers require absolute URLs.
@@ -78,7 +78,7 @@ const structuredData = {
       '@id': `${siteUrl}#person`,
       name: 'Don Listwin',
       url: siteUrl,
-      jobTitle: 'Founder & Managing Partner',
+      jobTitle: 'Founder and technology investor',
       description: 'Technology investor, CEO, philanthropist, and longtime operator.',
       worksFor: {
         '@id': `${siteUrl}#organization`,
@@ -257,7 +257,7 @@ const showSharePanel =
         <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-foreground no-underline">
             <img
-              src={logoUrl}
+              src={logoPath}
               alt="Listwin Ventures"
               width="300"
               height="120"
@@ -282,7 +282,7 @@ const showSharePanel =
         <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <div class="flex items-center gap-3">
             <img
-              src={logoUrl}
+              src={logoPath}
               alt="Listwin Ventures"
               width="300"
               height="120"
@@ -294,6 +294,9 @@ const showSharePanel =
           <div class="flex flex-wrap gap-5">
             <a href="/privacy-policy" class="text-muted-foreground no-underline hover:text-foreground">Privacy</a>
             <a href="/cookie-policy" class="text-muted-foreground no-underline hover:text-foreground">Cookies</a>
+            <button type="button" data-cookie-preferences class="text-muted-foreground hover:text-foreground">
+              Cookie preferences
+            </button>
           </div>
         </div>
       </footer>
@@ -371,15 +374,11 @@ const showSharePanel =
           decision = window.localStorage.getItem(CONSENT_KEY);
         } catch (e) {}
 
-        if (decision === 'granted') {
-          loadAnalytics();
-          return;
-        }
-        if (decision === 'denied') return;
-
         const banner = document.getElementById('consent-banner');
         if (!banner) return;
-        banner.hidden = false;
+        if (decision === 'granted') loadAnalytics();
+        if (decision !== 'granted' && decision !== 'denied') banner.hidden = false;
+
         const store = (value) => {
           try {
             window.localStorage.setItem(CONSENT_KEY, value);
@@ -387,6 +386,12 @@ const showSharePanel =
         };
         const accept = banner.querySelector('[data-consent-accept]');
         const decline = banner.querySelector('[data-consent-decline]');
+        document.querySelectorAll('[data-cookie-preferences]').forEach((control) => {
+          control.addEventListener('click', () => {
+            banner.hidden = false;
+            accept?.focus();
+          });
+        });
         if (accept) {
           accept.addEventListener('click', () => {
             store('granted');
@@ -398,6 +403,7 @@ const showSharePanel =
           decline.addEventListener('click', () => {
             store('denied');
             banner.hidden = true;
+            if (loaded) window.location.reload();
           });
         }
       })()}

@@ -334,10 +334,10 @@ const content: Record<string, DetailContent> = {
   },
   zededa: {
     summary:
-      'ZEDEDA provides an edge orchestration platform for deploying, securing, and managing distributed IoT and edge applications.',
+      'ZEDEDA provides an edge intelligence platform for creating, securing, and operating AI and autonomous workloads across distributed environments.',
     highlights: [
-      'Delivers a cloud-based control plane that keeps edge and IoT deployments secure and observable.',
-      'Simplifies how operators roll out and update distributed applications across industrial sites.',
+      'Runs models, agents, applications, and infrastructure at the edge for real-time decisions close to operational data.',
+      'Helps enterprises deploy and govern autonomous edge operations securely across thousands of distributed sites.',
     ],
   },
   zevx: {

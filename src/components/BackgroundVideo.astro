@@ -1,29 +1,17 @@
 ---
 interface Props {
-  src: string;
   poster?: string;
   overlayClass?: string;
   class?: string;
 }
 
-const { src, poster, overlayClass = 'bg-white/80', class: className = '' } = Astro.props;
+const { poster, overlayClass = 'bg-white/80', class: className = '' } = Astro.props;
 ---
 
 <section
   class={`background-video relative overflow-hidden ${className}`}
   style={poster ? `--bg-video-poster: url('${poster}')` : undefined}
 >
-  <video
-    class="background-video__video absolute inset-0 h-full w-full object-cover"
-    src={src}
-    poster={poster}
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="metadata"
-    aria-hidden="true"
-  />
   <div class="background-video__poster absolute inset-0 bg-cover bg-center" aria-hidden="true"></div>
   <div class={`absolute inset-0 ${overlayClass}`} aria-hidden="true"></div>
   <div class="relative">
@@ -33,17 +21,7 @@ const { src, poster, overlayClass = 'bg-white/80', class: className = '' } = Ast
 
 <style>
   .background-video__poster {
-    display: none;
+    display: block;
     background-image: var(--bg-video-poster);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .background-video__video {
-      display: none;
-    }
-
-    .background-video__poster {
-      display: block;
-    }
   }
 </style>

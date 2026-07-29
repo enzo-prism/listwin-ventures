@@ -14,7 +14,8 @@ type AssetGroup = {
 
 const assetBase = '/assets/uploads';
 
-const resolvePath = (file: string) => (file.startsWith('http') ? file : `${assetBase}/${file}`);
+const resolvePath = (file: string) =>
+  file.startsWith('http') || file.startsWith('/') ? file : `${assetBase}/${file}`;
 
 const formatAssetName = (alt: string) => {
   const trimmed = alt.trim();
@@ -40,7 +41,7 @@ export const heroAssets: VisualAsset[] = [
   make('clarius', '2020/05/clarius.png', 'Clarius Mobile Health logo', 'https://clarius.com/'),
   make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
   make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo'),
-  make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
+  make('carbon-robotics', '/assets/media/carbon-robotics-logo.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
 ];
 
 export const boardAssets: AssetGroup[] = [
@@ -48,8 +49,8 @@ export const boardAssets: AssetGroup[] = [
     type: 'board',
     label: 'Current Boards',
     items: [
-      make('4ag', 'https://techcouver.com/wp-content/uploads/2023/11/4ag-robot-1.png', '4AG autonomous mushroom harvester', '/4ag'),
-      make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
+      make('4ag', '/assets/media/4ag-robot.webp', '4AG autonomous mushroom harvester', '/4ag'),
+      make('carbon-robotics', '/assets/media/carbon-robotics-logo.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
       make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
     ],
@@ -81,14 +82,14 @@ export const boardAssets: AssetGroup[] = [
     items: [
       make('awarex', '2020/05/awarex.png', 'AwareX logo', 'https://www.awarex.com/'),
       make('calix', '2018/05/calix.png', 'Calix logo', 'https://www.calix.com/'),
-      make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
+      make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavequantum.com/'),
       make('genologics', '2018/05/genologics.png', 'GenoLogics logo'),
       make('joyent', '2018/05/joyent.png', 'Joyent logo'),
       make('plumgrid', '2018/05/plumgrid.png', 'PLUMgrid logo'),
       make('poet', '2020/05/poet-02.png', 'POET Technologies logo', 'https://poet-technologies.com/'),
       make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
-      make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
-      make('teradici', '2018/05/teradici.png', 'Teradici logo', 'https://www.teradici.com/'),
+      make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://global.rakuten.com/corp/news/press/2022/0228_03.html'),
+      make('teradici', '2018/05/teradici.png', 'Teradici logo', 'https://www.hp.com/us-en/newsroom/press-releases/2021/hp-inc-completes-acquisition-of-teradici.html'),
       make('openwave', '2018/05/openwave.png', 'Openwave logo'),
     ],
   },
@@ -116,10 +117,10 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Venture',
     items: [
-      make('hwvp', 'https://www.hummerwinblad.com/wp-content/themes/hwvpfoundation/dist/images/hwvp-logo.svg', 'HWVP logo', 'https://www.hummerwinblad.com/'),
+      make('hwvp', '/assets/media/hwvp-logo.svg', 'HWVP logo', 'https://hwvp.com/'),
       make('rally', '2018/05/rally.png', 'Rally Ventures logo', 'https://rallyventures.com/'),
-      make('sequoia', 'https://sequoiacap.com/wp-content/uploads/sites/6/2021/11/cropped-cropped-android-chrome-512x512-1.png', 'Sequoia Capital logo', 'https://www.sequoiacap.com/'),
-      make('telesoft', 'https://telesoftpartners.com/wp-content/uploads/2015/01/telesoft-logo.png', 'TeleSoft Partners logo', 'https://telesoftpartners.com/'),
+      make('sequoia', '/assets/media/sequoia-logo.png', 'Sequoia Capital logo', 'https://www.sequoiacap.com/'),
+      make('telesoft', '/assets/media/telesoft-logo.png', 'TeleSoft Partners logo', 'https://www.telesoft.ai/'),
     ],
   },
   {
@@ -179,21 +180,16 @@ export const philanthropyAssets: AssetGroup[] = [
 
 export const belizeKidsGallery: VisualAsset[] = [
   make(
-    'belizekids-community-health',
-    'https://i.imgur.com/N1PGdy7.jpg',
-    'BelizeKids.org volunteer team preparing supplies for community clinics',
+    'belizekids-vision-clinic',
+    '2020/09/vision-clinic.jpg',
+    'Eye exam at the Stanford Belize Vision Clinic',
     'https://belizekids.org/',
   ),
-  make('belizekids-classroom', 'https://i.imgur.com/lx4GcRr.jpg', 'Hands-on STEM workshop with Belizean students'),
-  make('belizekids-eye-care', 'https://i.imgur.com/0Qjoc64.jpg', 'Stanford-led eye care outreach in Belize'),
-  make('belizekids-reef', 'https://i.imgur.com/UNzoaBD.jpg', 'Marine conservation dive supporting reef restoration'),
-  make('belizekids-community-partners', 'https://i.imgur.com/IJKaTAA.jpg', 'Local partners collaborating on education programs'),
-  make('belizekids-mentorship', 'https://i.imgur.com/44skZfu.jpg', 'Mentorship circle with scholarship recipients'),
-  make('belizekids-tech-lab', 'https://i.imgur.com/r8J764N.jpg', 'Mobile technology lab brought to coastal schools'),
-  make('belizekids-celebration', 'https://i.imgur.com/BHPVT5L.jpg', 'Celebration with students after completing summer institute'),
-  make('carbon-robotics', 'https://res.cloudinary.com/dhqpqfw6w/image/upload/f_auto,q_auto/v1762633341/cr-logo_hjlqd1.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
-  make('dwave', '2018/05/dwave.png', 'D-Wave Systems logo', 'https://www.dwavesys.com/'),
-  make('robin', '2020/05/robin-02.png', 'Robin Systems logo', 'https://robin.io/'),
+  make('belizekids-canary-cove', '2020/09/boca.jpg', 'Canary Cove playground in Belize'),
+  make('belizekids-hol-chan', '2020/09/hol-chan.jpg', 'Sea turtle at Hol Chan Marine Reserve'),
+  make('belizekids-community-dive', '2020/09/food-drive.jpg', 'Belize community members gathered on a dive boat'),
+  make('belizekids-donation', '2020/09/tour-guide.jpg', 'Tour guide association members with donated marine equipment'),
+  make('belizekids-dolla-dive', '2020/09/dolla-dive.jpg', 'Two divers taking part in a Belize fundraising dive'),
 ];
 
 export type { AssetGroup };

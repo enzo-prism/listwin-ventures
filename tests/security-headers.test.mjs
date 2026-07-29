@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { describe, it } from 'node:test';
 
 const repoRoot = new URL('../', import.meta.url);
@@ -12,6 +12,16 @@ const headers = new Map(
   (publicRule?.headers ?? []).map(({ key, value }) => [key.toLowerCase(), value]),
 );
 
+const findPublicPhp = async (directory) => {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const nested = await Promise.all(entries.map(async (entry) => {
+    const path = new URL(entry.name + (entry.isDirectory() ? '/' : ''), directory);
+    if (entry.isDirectory()) return findPublicPhp(path);
+    return entry.name.endsWith('.php') ? [path.pathname] : [];
+  }));
+  return nested.flat();
+};
+
 describe('Vercel security boundaries', () => {
   it('never redirects the canonical private CV path back to itself', () => {
     const cvRedirects = (config.redirects ?? [])
@@ -22,6 +32,14 @@ describe('Vercel security boundaries', () => {
       [],
       'Vercel route matching is case-insensitive, so a case-normalizing redirect to /cv loops',
     );
+  });
+
+  it('redirects retired and duplicate public routes without touching the private CV route', () => {
+    assert.deepEqual(config.redirects, [
+      { source: '/home-old', destination: '/', permanent: true },
+      { source: '/company/belizekids', destination: '/belizekids', permanent: true },
+      { source: '/company/genologics', destination: '/genologics', permanent: true },
+    ]);
   });
 
   it('applies the complete public-site header set outside API and CV routes', () => {
@@ -91,5 +109,10 @@ describe('Vercel security boundaries', () => {
     );
     assert.doesNotMatch(includeFiles, /\*\*/);
     assert.doesNotMatch(includeFiles, /cv 2\.html/);
+  });
+
+  it('never publishes legacy PHP or WordPress security datastores', async () => {
+    const phpFiles = await findPublicPhp(new URL('public/', repoRoot));
+    assert.deepEqual(phpFiles, []);
   });
 });

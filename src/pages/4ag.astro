@@ -57,11 +57,11 @@ const engagementPhases = [
   {
     title: '3. Global scale-out',
     description:
-      'Deployed across Canada, Ireland, Australia, and soon the Netherlands and United States, with more farms entering the queue as production ramps.',
+      'Live on three continents, with a retrofit model designed to bring automation to standard mushroom-farm shelving.',
     notes: [
-      'Completed installs on Highline, Monaghan, South Mill Champs, Banken, and a farm in Oceania.',
-      'Live across three farms already, with more robots going operational this year.',
-      'North America, Europe, and Australia first; Asia follows as labour economics converge.',
+      'The July 29, 2025 Series B announcement said 4AG robots were active across five countries.',
+      'Systems pick, trim, pack, and bring mushrooms to the front of each room.',
+      'Standardized shelving supports expansion with minimal farm customization.',
     ],
   },
 ];
@@ -104,27 +104,27 @@ const marketFocus = [
 
 const carouselImages = [
   {
-    src: 'https://agfundernews.com/wp-content/uploads/2023/11/CoverRealFinalSahara.jpg',
+    src: '/assets/media/4ag-sahara.webp',
     alt: '4AG Sahara harvester concept staged for a greenhouse deployment',
   },
   {
-    src: 'https://techcouver.com/wp-content/uploads/2023/11/4ag-robot-1.png',
+    src: '/assets/media/4ag-robot.webp',
     alt: '4AG autonomous harvester operating inside mushroom shelving',
   },
   {
-    src: 'https://www.britishcolumbia.ca/wp-content/uploads/RS4628_TechBrew-9.jpg',
+    src: '/assets/media/4ag-techbrew.webp',
     alt: '4AG robotics demo on stage at a TechBrew event',
   },
   {
-    src: 'https://agfundernews.com/wp-content/uploads/2025/07/4AG-Robotics-mushroom-harvesting-Image-credit-4AG-Robotics.jpg',
+    src: '/assets/media/4ag-production.webp',
     alt: '4AG mushroom harvesting rig in production with articulated arms',
   },
   {
-    src: 'https://www.vmcdn.ca/f/files/biv/images/business/4ag-robotics.jpg%3Bw%3D960',
+    src: '/assets/media/4ag-grow-room.webp',
     alt: '4AG robot traversing stacked mushroom beds in a grow room',
   },
   {
-    src: 'https://techcouver.com/wp-content/uploads/2023/11/4ag-robot-1.png',
+    src: '/assets/media/4ag-robot.webp',
     alt: '4AG autonomous harvester operating inside mushroom shelving',
   },
 ];
@@ -132,7 +132,7 @@ const carouselImages = [
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <BackgroundVideo
-    src="https://4ag.ai/wp-content/uploads/2025/01/header-output.mp4"
+    poster="/assets/media/4ag-robot.webp"
     overlayClass="bg-white/85 backdrop-blur-[2px]"
     class="rounded-apple shadow-panel ring-1 ring-white/60"
   >
@@ -142,8 +142,8 @@ const carouselImages = [
         <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{heading}</h1>
         <p class="mx-auto max-w-3xl text-base text-ink/70">{intro}</p>
         <p class="mx-auto max-w-3xl text-sm text-ink/60">
-          Their site says labour shortages are “crippling production capabilities,” so 4AG deploys autonomous harvesters that work
-          24/7, climb four-metre shelving, and keep demand from going to waste.
+          4AG addresses labour shortages with autonomous harvesters that work around the clock, climb four-metre shelving, and
+          help farms keep pace with demand.
         </p>
         <div class="flex flex-wrap justify-center gap-3">
           <a class="btn btn-brand" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">
@@ -211,8 +211,8 @@ const carouselImages = [
       <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Support Stack</p>
       <h2 class="text-3xl font-semibold text-ink">What partners receive</h2>
       <p class="text-base text-ink/70">
-        Every pilot taps into Don’s mix of venture backing, philanthropic reach, and trusted collaborators.
-        That blend keeps experiments well-resourced without losing sight of on-the-ground realities.
+        4AG combines mushroom-farming knowledge, robotics engineering, and institutional backing to support reliable farm
+        deployments.
       </p>
     </div>
     <div class="grid gap-4 md:grid-cols-3">
@@ -246,12 +246,12 @@ const carouselImages = [
 
   <section class="rounded-apple bg-brand text-white shadow-panel ring-1 ring-brand/40">
     <div class="space-y-4 p-6 sm:p-10">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">Next Step</p>
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white">Next Step</p>
       <h2 class="text-3xl font-semibold">Bring 4AG to your acreage</h2>
-      <p class="max-w-3xl text-base text-white/80">
+      <p class="max-w-3xl text-base text-white">
         Run Agaricus houses in North America, Europe, or Australia and wrestling with labour? 4AG’s robots retrofit into your racks
         and keep production running. Learn more about active deployments and funding announcements at
-        <a class="font-semibold underline hover:text-white" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">4AG.ai</a>.
+        <a class="font-semibold text-white underline hover:text-white" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">4AG.ai</a>.
       </p>
     </div>
   </section>

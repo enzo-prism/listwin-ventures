@@ -79,6 +79,14 @@ test.describe('Content coverage', () => {
     expect(await sitemapResponse.text()).not.toContain('/cv</loc>');
   });
 
+  test('Unknown routes use the branded recovery page', async ({ request }) => {
+    const response = await request.get('/this-page-does-not-exist');
+    expect(response.status()).toBe(404);
+    const body = await response.text();
+    expect(body).toContain('Page not found');
+    expect(body).toContain('Return home');
+  });
+
   test('Homepage matches Don’s July 2026 current roles', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
@@ -90,6 +98,28 @@ test.describe('Content coverage', () => {
     await expect(story.getByRole('link', { name: 'BelizeKids.org' }).first()).toHaveAttribute('href', '/company/belizekids');
     await expect(story).not.toContainText('Lead Independent Director at Calix');
     await expect(story).toContainText('Tech Partner at Sequoia Capital and Rally Ventures');
+    await expect(story).toContainText('B.E. in Electrical Engineering');
+    await expect(story).not.toContainText('B.S. degree');
+    await expect(page.locator('main')).not.toContainText('New investment');
+    await expect(page.locator('main')).not.toContainText('New interview live');
+  });
+
+  test('Current content avoids stale relative claims and third-party image hotlinks', async ({ page, request }) => {
+    await page.goto('/4ag', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('main')).not.toContainText('soon the Netherlands');
+    await expect(page.locator('main')).not.toContainText('this year');
+
+    const externalImages = await page.locator('img').evaluateAll((images) =>
+      images
+        .map((image) => image.getAttribute('src') ?? '')
+        .filter((src) => /^https?:\/\//.test(src))
+    );
+    expect(externalImages).toEqual([]);
+
+    const sitemap = await (await request.get('/sitemap.xml')).text();
+    expect(sitemap).not.toContain('/company/belizekids</loc>');
+    expect(sitemap).not.toContain('/company/genologics</loc>');
+    expect(sitemap).not.toContain('<lastmod>');
   });
 
   test('Current Boards and Exits data have the exact verified membership', () => {
