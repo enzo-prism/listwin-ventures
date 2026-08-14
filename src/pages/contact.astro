@@ -3,6 +3,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import Ga4LeadTracker from '../components/Ga4LeadTracker.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const pageTitle = 'Contact Listwin Ventures | Investment and Media Inquiries';
@@ -74,6 +75,7 @@ const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
       </div>
     </form>
   </section>
+  <Ga4LeadTracker />
 </BaseLayout>
 
 <script is:inline>
@@ -119,6 +121,7 @@ const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
         if (response.ok) {
           form.reset();
           setStatus('Thanks — your message is on its way. We’ll be in touch.', 'success');
+          window.dispatchEvent(new Event('lv:contact-success'));
         } else {
           setStatus('Something went wrong sending your message. Please try again shortly.', 'error');
         }
