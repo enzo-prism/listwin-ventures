@@ -108,7 +108,7 @@ const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
       event.preventDefault();
 
       if (submit) submit.setAttribute('disabled', 'true');
-      setStatus('Sending…', 'info');
+      setStatus('Sending\u2026', 'info');
 
       try {
         const response = await fetch(endpoint, {
@@ -118,7 +118,8 @@ const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
         });
         if (response.ok) {
           form.reset();
-          setStatus('Thanks — your message is on its way. We’ll be in touch.', 'success');
+          setStatus('Thanks \u2014 your message is on its way. We\u2019ll be in touch.', 'success');
+          window.dispatchEvent(new Event('lv:contact-success'));
         } else {
           setStatus('Something went wrong sending your message. Please try again shortly.', 'error');
         }

@@ -1,0 +1,47 @@
+---
+---
+
+<script>
+  import {
+    locationFromPathname,
+    phoneLeadParams,
+    recordContactFormLead,
+    trackGenerateLead,
+  } from "../lib/ga4";
+
+  function isModifiedClick(event: MouseEvent) {
+    return (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    );
+  }
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (event.defaultPrevented || isModifiedClick(event)) {
+        return;
+      }
+
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const telLink = target.closest<HTMLAnchorElement>('a[href^="tel:"]');
+      if (!telLink) {
+        return;
+      }
+
+      trackGenerateLead(phoneLeadParams(locationFromPathname(window.location.pathname)));
+    },
+    true,
+  );
+
+  window.addEventListener("lv:contact-success", () => {
+    recordContactFormLead();
+  });
+</script>
