@@ -1,189 +1,413 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
 
 const pageTitle = 'Privacy Policy | Listwin Ventures';
 const pageDescription =
   'How Listwin Ventures collects, uses, shares, and protects personal information on listwinventures.com, including analytics, retention, and your data rights.';
+
+// Table of contents — ids match the section headings below.
+const toc = [
+  { id: 'information-we-collect', label: 'What information we collect and store' },
+  { id: 'sharing', label: 'With whom we share your personal information' },
+  { id: 'protection', label: 'How we protect your personal information' },
+  { id: 'cookies', label: 'Cookies' },
+  { id: 'childrens-privacy', label: 'Children’s privacy' },
+  { id: 'analytics', label: 'Analytics programs' },
+  { id: 'retention', label: 'Information retention' },
+  { id: 'your-rights', label: 'Your rights' },
+  { id: 'exercising-your-rights', label: 'Exercising your rights' },
+  { id: 'accountability', label: 'Accountability' },
+  { id: 'location', label: 'Location of data processing' },
+  { id: 'third-party-websites', label: 'Third-party websites' },
+  { id: 'do-not-track', label: 'Do Not Track' },
+  { id: 'transferring-data', label: 'Transferring data' },
+  { id: 'changes', label: 'Changes to this Privacy Policy' },
+  { id: 'questions', label: 'Questions' },
+];
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <section class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <article class="mx-auto max-w-3xl space-y-6 text-base leading-7 text-ink/80 [overflow-wrap:anywhere]">
-      <header class="space-y-2">
-        <h1 class="text-3xl font-semibold text-ink">Privacy Policy</h1>
-        <p>Last updated July 29, 2026.</p>
-        <p>
-          We value your privacy very highly. Please read this Privacy Policy carefully before using the listwinventures.com
-          website (the “Website”) operated by Listwin Ventures, a Limited Liability Company formed in California, United States
-          (“us, we, our”), as this Privacy Policy contains important information regarding your privacy and how we may use the
-          information we collect about you.
-        </p>
-        <p>This policy applies to visitors who browse the Website or submit its contact form.</p>
-      </header>
+  <PageHero eyebrow="Legal" title="Privacy <em>Policy</em>" size="md">
+    <span class="chip"><Icon name="calendar" size={13} />Last updated July 29, 2026</span>
+  </PageHero>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">What information we collect and store</h2>
-      <p>We collect information you choose to submit through the contact form:</p>
-      <ul class="list-disc space-y-1 pl-6">
-        <li>First and last name</li>
-        <li>Organization name</li>
-        <li>Email address and message</li>
-      </ul>
-      <p>
-        Our hosting, form, and optional analytics providers may also process technical information such as your IP address,
-        browser, device, and site interactions to provide their services and protect against abuse.
-      </p>
-    </section>
+  <div class="container-lv pb-24 sm:pb-32">
+    <div class="legal-layout">
+      <aside class="legal-aside" aria-label="On this page">
+        <details class="toc-mobile">
+          <summary>
+            <span>On this page</span>
+            <Icon name="chevron-down" size={16} class="toc-chevron" />
+          </summary>
+          <ol class="toc-list">
+            {toc.map((item) => (
+              <li><a href={`#${item.id}`}>{item.label}</a></li>
+            ))}
+          </ol>
+        </details>
+        <nav class="toc-desktop" aria-label="Table of contents">
+          <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted-foreground">On this page</p>
+          <ol class="toc-list mt-4" data-toc>
+            {toc.map((item) => (
+              <li><a href={`#${item.id}`}>{item.label}</a></li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">With whom we share your personal information</h2>
-      <p>
-        Vercel hosts the Website. Formspree processes contact-form submissions. If you accept analytics, Google Analytics and
-        Hotjar process usage information. These providers process information under their own privacy terms.
-      </p>
-    </section>
+      <article class="legal prose-lv" data-legal>
+        <header>
+          <p class="legal-lead">
+            We value your privacy very highly. Please read this Privacy Policy carefully before using the listwinventures.com
+            website (the “Website”) operated by Listwin Ventures, a Limited Liability Company formed in California, United States
+            (“us, we, our”), as this Privacy Policy contains important information regarding your privacy and how we may use the
+            information we collect about you.
+          </p>
+          <p>This policy applies to visitors who browse the Website or submit its contact form.</p>
+        </header>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">How we protect your personal information</h2>
-      <p>
-        We protect and safeguard your personal information by using SSL encryption or other secure technologies when receiving or
-        sending personal information beyond internal networks.
-      </p>
-    </section>
+        <section aria-labelledby="information-we-collect">
+          <h2 id="information-we-collect">What information we collect and store</h2>
+          <p>We collect information you choose to submit through the contact form:</p>
+          <ul>
+            <li>First and last name</li>
+            <li>Organization name</li>
+            <li>Email address and message</li>
+          </ul>
+          <p>
+            Our hosting, form, and optional analytics providers may also process technical information such as your IP address,
+            browser, device, and site interactions to provide their services and protect against abuse.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Cookies</h2>
-      <p>
-        This Website collects cookies. A cookie is a small piece of data sent from a website and stored on your device by your
-        browser. Please visit our Cookie Policy to learn more about what cookies we collect, why we collect them, and how to change
-        your cookie settings.
-      </p>
-    </section>
+        <section aria-labelledby="sharing">
+          <h2 id="sharing">With whom we share your personal information</h2>
+          <p>
+            Vercel hosts the Website. Formspree processes contact-form submissions. If you accept analytics, Google Analytics and
+            Hotjar process usage information. These providers process information under their own privacy terms.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Children’s privacy</h2>
-      <p>
-        This Website is intended for use by a general audience and does not offer services to children. Should a child whom we know
-        to be under 18 send personal information to us, we will use that information only to respond to that child to inform them
-        that they cannot use this Website.
-      </p>
-    </section>
+        <section aria-labelledby="protection">
+          <h2 id="protection">How we protect your personal information</h2>
+          <p>
+            We protect and safeguard your personal information by using SSL encryption or other secure technologies when receiving or
+            sending personal information beyond internal networks.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Analytics programs</h2>
-      <p>
-        If you select Accept in the cookie notice, this Website uses Google Analytics and Hotjar to understand usage and improve
-        the experience. They do not load after you select Decline. You can change this choice using Cookie preferences in the
-        footer. You can also use the{' '}
-        <a class="text-brand underline" href="https://tools.google.com/dlpage/gaoptout/">
-          Google Analytics opt-out tool
-        </a>.
-      </p>
-    </section>
+        <section aria-labelledby="cookies">
+          <h2 id="cookies">Cookies</h2>
+          <p>
+            This Website collects cookies. A cookie is a small piece of data sent from a website and stored on your device by your
+            browser. Please visit our <a href="/cookie-policy">Cookie Policy</a> to learn more about what cookies we collect, why we collect them, and how to change
+            your cookie settings.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Information retention</h2>
-      <p>
-        We keep contact messages only as long as reasonably needed to respond, maintain business records, prevent abuse, and meet
-        legal obligations. Analytics providers apply their own retention settings and policies.
-      </p>
-    </section>
+        <section aria-labelledby="childrens-privacy">
+          <h2 id="childrens-privacy">Children’s privacy</h2>
+          <p>
+            This Website is intended for use by a general audience and does not offer services to children. Should a child whom we know
+            to be under 18 send personal information to us, we will use that information only to respond to that child to inform them
+            that they cannot use this Website.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Your rights</h2>
-      <p>All visitors or users of this Website have the following rights with regard to their personal information:</p>
-      <ul class="list-disc space-y-1 pl-6">
-        <li>The right to access the personal information that we hold about you.</li>
-        <li>The right to receive the personal information that we hold about you in a portable format.</li>
-        <li>The right to ask us to transmit your personal information to another provider, where technically feasible.</li>
-        <li>The right to request that we amend any of the information that we have collected about you.</li>
-        <li>The right to withdraw your consent to the processing of your personal information.</li>
-        <li>The right to request that we restrict the processing of your personal information.</li>
-        <li>The right to request that we delete some or all of the personal information that we have collected about you.</li>
-        <li>The right to lodge a complaint regarding our data practices with competent authorities.</li>
-        <li>The right to opt out of direct marketing, data sales, location tracking, profiling, and automated decision making.</li>
-      </ul>
-    </section>
+        <section aria-labelledby="analytics">
+          <h2 id="analytics">Analytics programs</h2>
+          <p>
+            If you select Accept in the cookie notice, this Website uses Google Analytics and Hotjar to understand usage and improve
+            the experience. They do not load after you select Decline. You can change this choice using Cookie preferences in the
+            footer. You can also use the{' '}
+            <a href="https://tools.google.com/dlpage/gaoptout/">Google Analytics opt-out tool</a>.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Exercising your rights</h2>
-      <p>You may exercise the rights specified above by submitting a consumer request to:</p>
-      <address class="space-y-1 not-italic">
-        <div>Listwin Ventures</div>
-        <div><a class="text-brand underline" href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a></div>
-        <div>United States</div>
-        <div><a class="text-brand underline" href="https://www.listwinventures.com">listwinventures.com</a></div>
-      </address>
-      <p>
-        We will need to verify your identity prior to processing your request. Please include your name, IP address, and email
-        address in the request. We generally respond within 30 days and will notify you if more time is required. Certain legal
-        exceptions may allow us to deny a request; if that occurs, we will explain the basis for the denial.
-      </p>
-    </section>
+        <section aria-labelledby="retention">
+          <h2 id="retention">Information retention</h2>
+          <p>
+            We keep contact messages only as long as reasonably needed to respond, maintain business records, prevent abuse, and meet
+            legal obligations. Analytics providers apply their own retention settings and policies.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Accountability</h2>
-      <p>
-        The following person is accountable and responsible for our privacy practices and procedures:
-        <br />
-        Listwin Ventures – <a class="text-brand underline" href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>
-      </p>
-      <p>
-        You may lodge a complaint with us using the contact above. Residents of Canada may also lodge a complaint with the Office
-        of the Privacy Commissioner of Canada by calling 1-800-282-1376. Residents of Quebec may lodge a complaint with the Quebec
-        Privacy Commissioner by calling 1-888-528-7741.
-      </p>
-    </section>
+        <section aria-labelledby="your-rights">
+          <h2 id="your-rights">Your rights</h2>
+          <p>All visitors or users of this Website have the following rights with regard to their personal information:</p>
+          <ul>
+            <li>The right to access the personal information that we hold about you.</li>
+            <li>The right to receive the personal information that we hold about you in a portable format.</li>
+            <li>The right to ask us to transmit your personal information to another provider, where technically feasible.</li>
+            <li>The right to request that we amend any of the information that we have collected about you.</li>
+            <li>The right to withdraw your consent to the processing of your personal information.</li>
+            <li>The right to request that we restrict the processing of your personal information.</li>
+            <li>The right to request that we delete some or all of the personal information that we have collected about you.</li>
+            <li>The right to lodge a complaint regarding our data practices with competent authorities.</li>
+            <li>The right to opt out of direct marketing, data sales, location tracking, profiling, and automated decision making.</li>
+          </ul>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Location of data processing</h2>
-      <p>
-        We and our service providers may process information in the United States and other countries where they operate, subject
-        to applicable safeguards.
-      </p>
-    </section>
+        <section aria-labelledby="exercising-your-rights">
+          <h2 id="exercising-your-rights">Exercising your rights</h2>
+          <p>You may exercise the rights specified above by submitting a consumer request to:</p>
+          <address class="legal-address">
+            <div class="font-medium text-foreground">Listwin Ventures</div>
+            <div><a href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a></div>
+            <div>United States</div>
+            <div><a href="https://www.listwinventures.com">listwinventures.com</a></div>
+          </address>
+          <p>
+            We will need to verify your identity prior to processing your request. Please include your name, IP address, and email
+            address in the request. We generally respond within 30 days and will notify you if more time is required. Certain legal
+            exceptions may allow us to deny a request; if that occurs, we will explain the basis for the denial.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Third-party websites</h2>
-      <p>
-        This Website may contain hyperlinks to websites operated by parties other than us. We provide such hyperlinks for your
-        reference only. We do not control such websites and are not responsible for their contents or privacy practices. Our
-        inclusion of hyperlinks does not imply endorsement of their operators.
-      </p>
-    </section>
+        <section aria-labelledby="accountability">
+          <h2 id="accountability">Accountability</h2>
+          <p>
+            The following person is accountable and responsible for our privacy practices and procedures:
+            <br />
+            Listwin Ventures – <a href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>
+          </p>
+          <p>
+            You may lodge a complaint with us using the contact above. Residents of Canada may also lodge a complaint with the Office
+            of the Privacy Commissioner of Canada by calling 1-800-282-1376. Residents of Quebec may lodge a complaint with the Quebec
+            Privacy Commissioner by calling 1-888-528-7741.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Do Not Track</h2>
-      <p>
-        Do Not Track (“DNT”) is a browser preference that signals websites not to track you. We do not support DNT. You can enable
-        or disable DNT by visiting the Preferences or Settings page of your browser.
-      </p>
-    </section>
+        <section aria-labelledby="location">
+          <h2 id="location">Location of data processing</h2>
+          <p>
+            We and our service providers may process information in the United States and other countries where they operate, subject
+            to applicable safeguards.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Transferring data</h2>
-      <p>
-        We may transfer your personal information for processing to the United States. This means your information may be processed
-        outside your country of residence and could be accessible to law enforcement and national security authorities. We use
-        standard contractual clauses, additional safeguards, and adequacy decisions when transferring data.
-      </p>
-    </section>
+        <section aria-labelledby="third-party-websites">
+          <h2 id="third-party-websites">Third-party websites</h2>
+          <p>
+            This Website may contain hyperlinks to websites operated by parties other than us. We provide such hyperlinks for your
+            reference only. We do not control such websites and are not responsible for their contents or privacy practices. Our
+            inclusion of hyperlinks does not imply endorsement of their operators.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Changes to this Privacy Policy</h2>
-      <p>
-        We reserve the right to amend this Privacy Policy at any time. We will notify you of any changes by posting the updated
-        Privacy Policy on this Website.
-      </p>
-    </section>
+        <section aria-labelledby="do-not-track">
+          <h2 id="do-not-track">Do Not Track</h2>
+          <p>
+            Do Not Track (“DNT”) is a browser preference that signals websites not to track you. We do not support DNT. You can enable
+            or disable DNT by visiting the Preferences or Settings page of your browser.
+          </p>
+        </section>
 
-    <section class="space-y-3">
-      <h2 class="text-2xl font-semibold text-ink">Questions</h2>
-      <p>
-        If you have any questions about this Privacy Policy, please contact us at
-        <a class="text-brand underline" href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>.
-      </p>
-    </section>
-    </article>
-  </section>
+        <section aria-labelledby="transferring-data">
+          <h2 id="transferring-data">Transferring data</h2>
+          <p>
+            We may transfer your personal information for processing to the United States. This means your information may be processed
+            outside your country of residence and could be accessible to law enforcement and national security authorities. We use
+            standard contractual clauses, additional safeguards, and adequacy decisions when transferring data.
+          </p>
+        </section>
+
+        <section aria-labelledby="changes">
+          <h2 id="changes">Changes to this Privacy Policy</h2>
+          <p>
+            We reserve the right to amend this Privacy Policy at any time. We will notify you of any changes by posting the updated
+            Privacy Policy on this Website.
+          </p>
+        </section>
+
+        <section aria-labelledby="questions">
+          <h2 id="questions">Questions</h2>
+          <p>
+            If you have any questions about this Privacy Policy, please contact us at
+            <a href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>.
+          </p>
+        </section>
+      </article>
+    </div>
+  </div>
 </BaseLayout>
+
+<script is:inline>
+  // Highlights the current section in the desktop table of contents. Pure enhancement.
+  (() => {
+    const toc = document.querySelector('[data-toc]');
+    if (!toc || !('IntersectionObserver' in window)) return;
+    const links = new Map(
+      Array.from(toc.querySelectorAll('a')).map((link) => [link.getAttribute('href')?.slice(1), link]),
+    );
+    const headings = Array.from(document.querySelectorAll('[data-legal] h2[id]'));
+    const setActive = (id) => {
+      links.forEach((link, key) => {
+        if (key === id) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (visible.length) setActive(visible[0].target.id);
+      },
+      { rootMargin: '-15% 0px -70% 0px' },
+    );
+    if (headings[0]) setActive(headings[0].id);
+    headings.forEach((heading) => observer.observe(heading));
+  })();
+</script>
+
+<style>
+  .legal-layout {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 1024px) {
+    .legal-layout {
+      grid-template-columns: 15rem minmax(0, 44rem);
+      gap: 5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .legal-layout {
+      grid-template-columns: 17rem minmax(0, 44rem);
+      gap: 7rem;
+    }
+  }
+
+  .legal-aside {
+    min-width: 0;
+  }
+  .toc-desktop {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .toc-mobile {
+      display: none;
+    }
+    .toc-desktop {
+      display: block;
+      position: sticky;
+      top: 7rem;
+      max-height: calc(100vh - 9rem);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+  }
+
+  .toc-mobile {
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--card);
+  }
+  .toc-mobile summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3rem;
+    padding: 0.75rem 1.1rem;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 500;
+  }
+  .toc-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+  .toc-mobile :global(.toc-chevron) {
+    transition: transform 300ms var(--ease-out-expo);
+  }
+  .toc-mobile[open] :global(.toc-chevron) {
+    transform: rotate(180deg);
+  }
+  .toc-mobile .toc-list {
+    padding: 0 1.1rem 1rem;
+  }
+
+  .toc-list {
+    display: grid;
+    gap: 0.1rem;
+    counter-reset: toc;
+  }
+  .toc-list a {
+    display: block;
+    padding: 0.4rem 0 0.4rem 0.9rem;
+    border-left: 1px solid var(--border);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+    transition:
+      color 200ms,
+      border-color 200ms;
+  }
+  .toc-list a:hover {
+    color: var(--foreground);
+  }
+  .toc-list a[aria-current] {
+    color: var(--foreground);
+    border-left-color: var(--primary);
+  }
+
+  .legal {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .legal-lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--foreground);
+  }
+  .legal > header > * + * {
+    margin-top: 1.25em;
+  }
+  .legal section {
+    margin-top: 3.25rem;
+    padding-top: 3.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .legal section > * + * {
+    margin-top: 1rem;
+  }
+  .legal h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    margin-top: 0;
+    scroll-margin-top: 6.5rem;
+  }
+  .legal ul {
+    display: grid;
+    gap: 0.55rem;
+    padding-left: 0;
+    list-style: none;
+  }
+  .legal ul li {
+    position: relative;
+    margin-top: 0;
+    padding-left: 1.5rem;
+  }
+  .legal ul li::before {
+    content: '';
+    position: absolute;
+    left: 0.25rem;
+    top: 0.78em;
+    width: 0.45rem;
+    height: 1px;
+    background: var(--primary);
+  }
+  .legal-address {
+    font-style: normal;
+    display: grid;
+    gap: 0.2rem;
+    padding: 1.25rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--card);
+  }
+</style>

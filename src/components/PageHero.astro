@@ -1,0 +1,84 @@
+---
+// Standard page opener. Title words rise in on load; the ambient aurora + grid sit behind.
+// `title` may contain one <em>…</em> run for the italic green accent (trusted, authored strings).
+import Icon from './Icon.astro';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  align?: 'left' | 'center';
+  size?: 'lg' | 'md';
+  crumbs?: Crumb[];
+  class?: string;
+}
+
+const { eyebrow, title, intro, align = 'left', size = 'lg', crumbs, class: className = '' } = Astro.props;
+
+// Split into words for the staggered rise, keeping any <em> run intact as one styled group.
+const tokens = title.split(/(<em>.*?<\/em>)/).flatMap((part) =>
+  part.startsWith('<em>') ? [part] : part.split(/\s+/).filter(Boolean),
+);
+const centered = align === 'center';
+const hasMedia = Astro.slots.has('media');
+---
+
+<section class={`page-hero relative overflow-hidden ${className}`.trim()}>
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="grid-lines opacity-60" aria-hidden="true"></div>
+  <div
+    class:list={[
+      'container-lv relative z-10 pb-16 pt-14 sm:pb-24 sm:pt-20 lg:pt-24',
+      hasMedia && 'grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16',
+    ]}
+  >
+    <div class:list={[centered && 'mx-auto max-w-4xl text-center', !centered && 'max-w-4xl']}>
+      {crumbs && crumbs.length > 0 && (
+        <nav aria-label="Breadcrumb" class="rise mb-8" style="--d:0ms">
+          <ol class:list={['flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground', centered && 'justify-center']}>
+            {crumbs.map((crumb, index) => (
+              <li class="inline-flex items-center gap-1.5">
+                {index > 0 && <Icon name="chevron-right" size={14} class="opacity-50" />}
+                {crumb.href ? (
+                  <a href={crumb.href} class="transition-colors hover:text-foreground">{crumb.label}</a>
+                ) : (
+                  <span aria-current="page" class="text-foreground/80">{crumb.label}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      {eyebrow && (
+        <p class:list={['eyebrow rise', centered && 'justify-center']} style="--d:60ms">{eyebrow}</p>
+      )}
+      <h1 class:list={[size === 'lg' ? 'display-lg' : 'display-md', 'rise-words mt-5']}>
+        {tokens.map((token, index) => (
+          <Fragment>
+            <span class="word" style={`--i:${index}`} set:html={token} />{' '}
+          </Fragment>
+        ))}
+      </h1>
+      {intro && (
+        <p class:list={['lede rise mt-6 max-w-2xl', centered && 'mx-auto']} style={`--d:${tokens.length * 80 + 200}ms`}>
+          {intro}
+        </p>
+      )}
+      {Astro.slots.has('default') && (
+        <div class:list={['rise mt-9 flex flex-wrap items-center gap-3', centered && 'justify-center']} style={`--d:${tokens.length * 80 + 320}ms`}>
+          <slot />
+        </div>
+      )}
+    </div>
+    {hasMedia && (
+      <div class="rise" style="--d:300ms">
+        <slot name="media" />
+      </div>
+    )}
+  </div>
+</section>

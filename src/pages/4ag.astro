@@ -1,13 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BackgroundVideo from '../components/BackgroundVideo.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 import RelatedPressSection from '../components/RelatedPressSection.astro';
-import FourAgCarousel from '../components/FourAgCarousel';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
 import { getRelatedPressItems } from '../data/press';
 
 // `heading`/`intro` are what the page displays. `pageTitle`/`pageDescription` are metadata only —
 // keep them separate, or the visible <h1> renders the pipes and brand suffix of a title tag.
-const heading = '4AG Robotics';
+const heading = '4AG <em>Robotics</em>';
 const intro =
   '4AG Robotics retrofits working mushroom farms with autonomous harvesters that run around the clock.';
 const pageTitle = '4AG Robotics: Mushroom Harvesting | Listwin Ventures';
@@ -17,25 +19,39 @@ const relatedPress = getRelatedPressItems('4ag');
 
 const initiativeGoals = [
   {
+    icon: 'bot',
     title: 'Purpose-built harvesters',
     description:
       'Vision-guided robots clamp onto standard Dutch shelving and automate Agaricus mushroom picking without forcing farms to rebuild their infrastructure.',
   },
   {
+    icon: 'clock',
     title: 'Round-the-clock labour relief',
     description:
       'Machines climb four-metre shelving, handle back-breaking stretches, and harvest 24/7 so labour shortages stop crippling production capacity.',
   },
   {
+    icon: 'scan-eye',
     title: 'Data-rich autonomy',
     description:
       'Each pass captures crop data that AI uses to decide what to thin, what to harvest, and when—raising yields beyond what human pickers can consistently achieve.',
   },
 ];
 
+// Every figure below is restated from copy elsewhere on this page — do not add new numbers here.
+const keyFacts = [
+  { value: '24/7', label: 'Harvesting around the clock' },
+  { value: '4 m', label: 'Shelving the robots climb' },
+  { value: '3', count: 3, label: 'Continents with live deployments' },
+  { value: '5', count: 5, label: 'Countries with active robots, per the July 29, 2025 Series B announcement' },
+  { value: 'CAD $40M', count: 40, prefix: 'CAD $', suffix: 'M', label: 'Series B, announced July 29, 2025' },
+  { value: '~900K t', label: 'Mushrooms produced annually across North America, Europe, and Australia' },
+];
+
 const engagementPhases = [
   {
-    title: '1. Retrofit and roll',
+    number: '01',
+    title: 'Retrofit and roll',
     description:
       'Robots attach directly to existing mushroom shelves, travel between rooms, and start harvesting immediately—no civil works required.',
     notes: [
@@ -45,7 +61,8 @@ const engagementPhases = [
     ],
   },
   {
-    title: '2. Autonomy + AI loop',
+    number: '02',
+    title: 'Autonomy + AI loop',
     description:
       'Vision systems thin poor mushrooms, pick only specimens that meet customer specs, and feed a vast amount of data back into decision models.',
     notes: [
@@ -55,7 +72,8 @@ const engagementPhases = [
     ],
   },
   {
-    title: '3. Global scale-out',
+    number: '03',
+    title: 'Global scale-out',
     description:
       'Live on three continents, with a retrofit model designed to bring automation to standard mushroom-farm shelving.',
     notes: [
@@ -68,16 +86,19 @@ const engagementPhases = [
 
 const supportStack = [
   {
+    icon: 'sprout',
     title: 'Mushroom-native culture',
     detail:
       'Teams proudly say “we are mushroom farmers” because every robot is tuned for yield, quality, and value on Agaricus beds.',
   },
   {
+    icon: 'landmark',
     title: 'Investor bench strength',
     detail:
       'Backed by Astanor Ventures, Cibus Capital, Voyager Capital, InBC, Emmertech, BDC Industrial Innovation Fund, Stray Dog Capital, Seraph Group, and private investors.',
   },
   {
+    icon: 'trending-up',
     title: 'Category momentum',
     detail:
       'CAD $40M Series B (July 29, 2025) fuels manufacturing, service, and global rollout so more farms can automate faster.',
@@ -86,174 +107,442 @@ const supportStack = [
 
 const marketFocus = [
   {
+    icon: 'users',
     title: 'Labour shortages',
     detail:
       '4AG says labour shortages are “crippling production capabilities,” with 24-hour harvests, four-metre climbs, and back-breaking work making it hard to keep staff.',
   },
   {
+    icon: 'layers',
     title: 'Standardized infrastructure',
     detail:
       'Modern farms already use similar shelving and climate setups, letting robots retrofit “from Canada to China” with minimal custom engineering.',
   },
   {
+    icon: 'globe',
     title: 'Market rollout plan',
     detail:
       'North America, Europe, and Australia produce ~900K tonnes of mushrooms annually, so they come first. Asia—especially China’s 70% share—follows once economics align.',
   },
 ];
 
-const carouselImages = [
+const galleryImages = [
   {
     src: '/assets/media/4ag-sahara.webp',
+    width: 1400,
+    height: 787,
     alt: '4AG Sahara harvester concept staged for a greenhouse deployment',
+    caption: 'Sahara harvester concept',
   },
   {
     src: '/assets/media/4ag-robot.webp',
+    width: 1400,
+    height: 933,
     alt: '4AG autonomous harvester operating inside mushroom shelving',
+    caption: 'Autonomous harvester at work in mushroom shelving',
   },
   {
     src: '/assets/media/4ag-techbrew.webp',
+    width: 1400,
+    height: 788,
     alt: '4AG robotics demo on stage at a TechBrew event',
+    caption: 'On stage at a TechBrew event',
   },
   {
     src: '/assets/media/4ag-production.webp',
+    width: 1400,
+    height: 748,
     alt: '4AG mushroom harvesting rig in production with articulated arms',
+    caption: 'Harvesting rig in production',
   },
   {
     src: '/assets/media/4ag-grow-room.webp',
+    width: 960,
+    height: 641,
     alt: '4AG robot traversing stacked mushroom beds in a grow room',
-  },
-  {
-    src: '/assets/media/4ag-robot.webp',
-    alt: '4AG autonomous harvester operating inside mushroom shelving',
+    caption: 'Traversing stacked beds in a grow room',
   },
 ];
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <BackgroundVideo
-    poster="/assets/media/4ag-robot.webp"
-    overlayClass="bg-white/85 backdrop-blur-[2px]"
-    class="rounded-apple shadow-panel ring-1 ring-white/60"
-  >
-    <div class="space-y-8 p-6 sm:p-10">
-      <div class="space-y-4 text-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Initiative</p>
-        <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">{heading}</h1>
-        <p class="mx-auto max-w-3xl text-base text-ink/70">{intro}</p>
-        <p class="mx-auto max-w-3xl text-sm text-ink/60">
-          4AG addresses labour shortages with autonomous harvesters that work around the clock, climb four-metre shelving, and
-          help farms keep pace with demand.
-        </p>
-        <div class="flex flex-wrap justify-center gap-3">
-          <a class="btn btn-brand" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">
-            Visit 4AG.ai
-          </a>
-        </div>
+  <PageHero eyebrow="Initiative" title={heading} intro={intro}>
+    <a class="btn btn-primary" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">
+      Visit 4AG.ai
+      <Icon name="arrow-up-right" size={16} class="arrow-diag" />
+    </a>
+    <a class="btn btn-secondary" href="#field">
+      See the robots
+      <Icon name="arrow-down" size={16} />
+    </a>
+
+    <div slot="media" class="relative">
+      <div class="media-frame zoom-media aspect-[4/3] rounded-[2rem] shadow-[var(--shadow-panel)]">
+        <img
+          src="/assets/media/4ag-robot.webp"
+          alt="4AG autonomous harvester operating inside mushroom shelving"
+          width="1400"
+          height="933"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+        <div class="hero-scrim" aria-hidden="true"></div>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {initiativeGoals.map((goal) => (
-          <article
-            key={goal.title}
-            class="space-y-3 rounded-[28px] border border-ink/10 bg-fog/70 p-4 text-left shadow-panel backdrop-blur-[1px]"
-          >
-            <h2 class="text-lg font-semibold text-ink">{goal.title}</h2>
-            <p class="text-sm text-ink/70">{goal.description}</p>
-          </article>
-        ))}
-      </div>
+      <p class="chip chip-live absolute bottom-4 left-4 shadow-[var(--shadow-soft)] sm:bottom-6 sm:left-6">
+        Live on three continents
+      </p>
     </div>
-  </BackgroundVideo>
+  </PageHero>
+
+  <!-- What the initiative does -->
+  <section class="container-lv section-lv pt-8 sm:pt-12" aria-labelledby="initiative-title">
+    <div class="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+      <div data-reveal>
+        <p class="eyebrow">The initiative</p>
+        <h2 id="initiative-title" class="display-md mt-4">Autonomy for working <em>mushroom farms</em></h2>
+        <p class="lede mt-6 max-w-xl">
+          4AG addresses labour shortages with autonomous harvesters that work around the clock, climb four-metre
+          shelving, and help farms keep pace with demand.
+        </p>
+      </div>
+
+      <ul class="divide-y divide-border border-y border-border" data-reveal-stagger="90">
+        {initiativeGoals.map((goal) => (
+          <li class="grid grid-cols-[auto_1fr] gap-5 py-7 sm:gap-7 sm:py-9" data-reveal>
+            <span class="icon-well" aria-hidden="true">
+              <Icon name={goal.icon} size={20} strokeWidth={1.75} />
+            </span>
+            <div>
+              <h3 class="text-lg font-medium tracking-tight sm:text-xl">{goal.title}</h3>
+              <p class="mt-2 text-[0.98rem] leading-relaxed text-muted-foreground">{goal.description}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Key facts (restated from the page copy) -->
+  <section class="container-lv pb-4" aria-labelledby="facts-title">
+    <h2 id="facts-title" class="sr-only">4AG at a glance</h2>
+    <dl class="facts-grid">
+      {keyFacts.map((fact, index) => (
+        <div class="fact">
+          <div class="flex flex-col" data-reveal style={`--reveal-delay:${index * 70}ms`}>
+          <dt class="order-2 mt-3 max-w-[16rem] text-sm leading-snug text-muted-foreground">{fact.label}</dt>
+          <dd class="order-1 stat-num">
+            {fact.count !== undefined ? (
+              <span
+                data-count-to={fact.count}
+                data-count-prefix={fact.prefix}
+                data-count-suffix={fact.suffix}
+              >{fact.value}</span>
+            ) : (
+              <span>{fact.value}</span>
+            )}
+          </dd>
+          </div>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- Field gallery: CSS scroll-snap; buttons are a JS-only enhancement -->
+  <section id="field" class="gallery section-lv" aria-labelledby="field-title">
+    <div class="container-lv">
+      <SectionHeading
+        id="field-title"
+        eyebrow="Deployments"
+        title="Field looks <em>like this</em>"
+        description="Real robots in real rooms—see the Sahara prototype, live rigs, and events across North America and Europe."
+      >
+        <div class="flex gap-2" data-gallery-controls hidden>
+          <button type="button" class="gallery-btn" data-gallery-prev aria-label="Previous photo" disabled>
+            <Icon name="arrow-left" size={18} />
+          </button>
+          <button type="button" class="gallery-btn" data-gallery-next aria-label="Next photo">
+            <Icon name="arrow-right" size={18} />
+          </button>
+        </div>
+      </SectionHeading>
+    </div>
+
+    <div class="gallery-track mt-12" data-gallery-track tabindex="0" role="region" aria-label="4AG field photos, scrollable">
+      <ul class="gallery-list" data-reveal="fade">
+        {galleryImages.map((image, index) => (
+          <li class="gallery-slide">
+            <figure>
+              <div class="media-frame zoom-media aspect-[16/10] rounded-[1.75rem]">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  width={image.width}
+                  height={image.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption class="mt-4 flex items-baseline gap-4">
+                <span class="shrink-0 whitespace-nowrap font-mono text-[0.7rem] tracking-[0.14em] text-muted-foreground">
+                  {pad(index + 1)} / {pad(galleryImages.length)}
+                </span>
+                <span class="text-[0.95rem] text-foreground/85">{image.caption}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Engagement model -->
+  <section class="border-y border-border bg-muted/40" aria-labelledby="cadence-title">
+    <div class="container-lv section-lv grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+        <p class="eyebrow">Engagement model</p>
+        <h2 id="cadence-title" class="display-md mt-4">Field cadence, <em>not theory</em></h2>
+        <p class="lede mt-6 max-w-xl">
+          4AG embeds with mushroom growers and their rack suppliers through three repeating phases. Each pass sharpens
+          the autonomy, data, and service playbook needed to keep farms harvesting.
+        </p>
+      </div>
+
+      <ol class="grid gap-5" data-reveal-stagger="100">
+        {engagementPhases.map((phase) => (
+          <li class="card-lv card-hover spotlight p-7 sm:p-10" data-reveal>
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-7">
+              <span class="phase-num" aria-hidden="true">{phase.number}</span>
+              <div class="min-w-0">
+                <h3 class="display-sm"><span class="sr-only">Phase {Number(phase.number)}: </span>{phase.title}</h3>
+                <p class="mt-3 leading-relaxed text-muted-foreground">{phase.description}</p>
+              </div>
+            </div>
+            <ul class="mt-7 grid gap-3 border-t border-border pt-6">
+              {phase.notes.map((note) => (
+                <li class="flex gap-3 text-[0.95rem] leading-relaxed">
+                  <Icon name="check" size={16} class="mt-[0.3rem] shrink-0 text-primary" />
+                  <span>{note}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Why mushrooms need robots -->
+  <section class="container-lv section-lv" aria-labelledby="why-title">
+    <SectionHeading
+      id="why-title"
+      eyebrow="Why mushrooms need robots"
+      title="Labour, infrastructure, and <em>market pull</em>"
+      description="Everything on 4AG’s site points to a single conclusion: mushroom demand is soaring, labour is scarce, and standardized facilities let autonomy scale quickly."
+    />
+    <div class="mt-14 grid gap-10 md:grid-cols-3 md:gap-8 lg:gap-12" data-reveal-stagger="90">
+      {marketFocus.map((item) => (
+        <article class="border-t border-foreground/80 pt-6" data-reveal>
+          <Icon name={item.icon} size={22} strokeWidth={1.5} class="text-primary" />
+          <h3 class="mt-5 text-lg font-medium tracking-tight">{item.title}</h3>
+          <p class="mt-3 leading-relaxed text-muted-foreground">{item.detail}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Support stack -->
+  <section class="container-lv section-lv pt-0" aria-labelledby="support-title">
+    <SectionHeading
+      id="support-title"
+      eyebrow="Support stack"
+      title="What partners <em>receive</em>"
+      description="4AG combines mushroom-farming knowledge, robotics engineering, and institutional backing to support reliable farm deployments."
+    />
+    <div class="mt-14 grid gap-5 md:grid-cols-3" data-reveal-stagger="90">
+      {supportStack.map((item) => (
+        <article class="card-lv card-hover spotlight flex flex-col p-7 sm:p-9" data-reveal>
+          <span class="icon-well" aria-hidden="true">
+            <Icon name={item.icon} size={20} strokeWidth={1.75} />
+          </span>
+          <h3 class="mt-8 text-lg font-medium tracking-tight">{item.title}</h3>
+          <p class="mt-3 leading-relaxed text-muted-foreground">{item.detail}</p>
+        </article>
+      ))}
+    </div>
+  </section>
 
   <RelatedPressSection items={relatedPress} />
 
-  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-2 text-center sm:text-left">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Deployments</p>
-      <h2 class="text-3xl font-semibold text-ink">Field looks like this</h2>
-      <p class="text-base text-ink/70">
-        Real robots in real rooms—see the Sahara prototype, live rigs, and events across North America and Europe.
-      </p>
-    </div>
-    <FourAgCarousel client:idle images={carouselImages} />
-	  </section>
-
-  <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-3">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Engagement Model</p>
-      <h2 class="text-3xl font-semibold text-ink">Field cadence, not theory</h2>
-      <p class="text-base text-ink/70">
-        4AG embeds with mushroom growers and their rack suppliers through three repeating phases. Each pass sharpens the
-        autonomy, data, and service playbook needed to keep farms harvesting.
-      </p>
-    </div>
-    <div class="space-y-6">
-      {engagementPhases.map((phase) => (
-        <article key={phase.title} class="space-y-3 rounded-[28px] border border-ink/10 bg-white/90 p-5 shadow-panel">
-          <div class="space-y-1">
-            <h3 class="text-xl font-semibold text-ink">{phase.title}</h3>
-            <p class="text-sm text-ink/70">{phase.description}</p>
-          </div>
-          <ul class="space-y-2 text-sm text-ink/70">
-            {phase.notes.map((note) => (
-              <li key={note} class="rounded-2xl border border-ink/5 bg-fog/60 px-4 py-2">
-                {note}
-              </li>
-            ))}
-          </ul>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-3">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Support Stack</p>
-      <h2 class="text-3xl font-semibold text-ink">What partners receive</h2>
-      <p class="text-base text-ink/70">
-        4AG combines mushroom-farming knowledge, robotics engineering, and institutional backing to support reliable farm
-        deployments.
-      </p>
-    </div>
-    <div class="grid gap-4 md:grid-cols-3">
-      {supportStack.map((item) => (
-        <article key={item.title} class="space-y-2 rounded-[26px] border border-ink/10 bg-fog/60 p-4">
-          <h3 class="text-lg font-semibold text-ink">{item.title}</h3>
-          <p class="text-sm text-ink/70">{item.detail}</p>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-3">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Why mushrooms need robots</p>
-      <h2 class="text-3xl font-semibold text-ink">Labour, infrastructure, and market pull</h2>
-      <p class="text-base text-ink/70">
-        Everything on 4AG’s site points to a single conclusion: mushroom demand is soaring, labour is scarce, and standardized
-        facilities let autonomy scale quickly.
-      </p>
-    </div>
-    <div class="grid gap-4 md:grid-cols-3">
-      {marketFocus.map((item) => (
-        <article key={item.title} class="space-y-2 rounded-[26px] border border-ink/10 bg-fog/60 p-4">
-          <h3 class="text-lg font-semibold text-ink">{item.title}</h3>
-          <p class="text-sm text-ink/70">{item.detail}</p>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="rounded-apple bg-brand text-white shadow-panel ring-1 ring-brand/40">
-    <div class="space-y-4 p-6 sm:p-10">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white">Next Step</p>
-      <h2 class="text-3xl font-semibold">Bring 4AG to your acreage</h2>
-      <p class="max-w-3xl text-base text-white">
-        Run Agaricus houses in North America, Europe, or Australia and wrestling with labour? 4AG’s robots retrofit into your racks
-        and keep production running. Learn more about active deployments and funding announcements at
-        <a class="font-semibold text-white underline hover:text-white" href="https://4ag.ai" target="_blank" rel="noopener noreferrer">4AG.ai</a>.
-      </p>
-    </div>
-  </section>
-
+  <CtaBand
+    eyebrow="Next step"
+    title="Bring 4AG to your <em>acreage</em>"
+    body="Run Agaricus houses in North America, Europe, or Australia and wrestling with labour? 4AG’s robots retrofit into your racks and keep production running. Learn more about active deployments and funding announcements at 4AG.ai."
+    primaryLabel="Visit 4AG.ai"
+    primaryHref="https://4ag.ai"
+    secondaryLabel="Browse press"
+    secondaryHref="/press"
+  />
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const track = document.querySelector('[data-gallery-track]');
+    const controls = document.querySelector('[data-gallery-controls]');
+    if (!track || !controls) return;
+    const prev = controls.querySelector('[data-gallery-prev]');
+    const next = controls.querySelector('[data-gallery-next]');
+    const slides = Array.from(track.querySelectorAll('.gallery-slide'));
+    if (!prev || !next || slides.length < 2) return;
+    controls.hidden = false;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const step = () => {
+      const first = slides[0].getBoundingClientRect();
+      const second = slides[1].getBoundingClientRect();
+      return second.left - first.left;
+    };
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max;
+    };
+    const go = (direction) => {
+      track.scrollBy({ left: direction * step(), behavior: reduce.matches ? 'auto' : 'smooth' });
+    };
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  })();
+</script>
+
+<style>
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, color-mix(in oklab, var(--foreground) 22%, transparent), transparent 45%);
+  }
+
+  .icon-well {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.9rem;
+    background: var(--accent);
+    color: var(--accent-foreground);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Hairline grid: 1px gaps over a border-coloured backdrop. */
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-3xl);
+    background: var(--border);
+  }
+  @media (min-width: 1024px) {
+    .facts-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .fact {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: clamp(1.5rem, 3.5vw, 2.75rem);
+    background: var(--background);
+  }
+  .fact .stat-num {
+    font-size: clamp(2.1rem, 5vw, 4rem);
+    overflow-wrap: anywhere;
+  }
+
+  .phase-num {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    color: var(--primary);
+  }
+  @media (min-width: 640px) {
+    .phase-num {
+      padding-top: 0.6rem;
+    }
+  }
+
+  /* Gallery: full-bleed track whose padding lines the first slide up with the container. */
+  .gallery {
+    --gutter: 1.25rem;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) {
+    .gallery {
+      --gutter: 2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .gallery {
+      --gutter: 3rem;
+    }
+  }
+  .gallery-track {
+    --inset: max(var(--gutter), calc((100% - 80rem) / 2 + var(--gutter)));
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--inset);
+    padding-inline: var(--inset);
+    padding-bottom: 1.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--input) transparent;
+    border-radius: 0;
+  }
+  .gallery-track:focus-visible {
+    outline-offset: -2px;
+  }
+  .gallery-list {
+    display: flex;
+    gap: clamp(0.875rem, 2vw, 1.5rem);
+    width: max-content;
+  }
+  .gallery-slide {
+    width: min(82vw, 46rem);
+    scroll-snap-align: start;
+  }
+  .gallery-btn {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--foreground);
+    cursor: pointer;
+    transition:
+      background-color 200ms,
+      border-color 200ms,
+      opacity 200ms,
+      transform 300ms var(--ease-out-expo);
+  }
+  .gallery-btn:hover:not(:disabled) {
+    background: var(--muted);
+    border-color: color-mix(in oklab, var(--foreground) 30%, var(--border));
+  }
+  .gallery-btn:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+  .gallery-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+</style>

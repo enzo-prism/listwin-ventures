@@ -1,5 +1,5 @@
 ---
-import { Icon } from 'astro-icon/components';
+import Icon from './Icon.astro';
 
 const {
   pageUrl,
@@ -15,7 +15,7 @@ const socialLinks = [
   {
     network: 'x',
     label: 'X',
-    icon: 'tabler:brand-twitter',
+    icon: 'tabler:brand-x',
     href: `https://twitter.com/intent/tweet?url=${encode(pageUrl)}&text=${encode(pageTitle)}`,
   },
   {
@@ -33,13 +33,16 @@ const socialLinks = [
 ];
 ---
 
-<section class="rounded-apple border border-white/80 bg-white/95 p-4 shadow-panel ring-1 ring-white/60 sm:p-5">
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-ink/55">Share this page</p>
+<section class="share-panel container-lv pb-16 pt-4" aria-label="Share this page">
+  <div class="flex flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
+    <p class="eyebrow no-rule">
+      <Icon name="share-2" size={14} />
+      Share this page
+    </p>
     <div class="flex flex-wrap gap-2">
       {socialLinks.map((link) => (
         <a
-          class="btn btn-ink px-3 py-2 text-xs"
+          class="btn btn-secondary btn-sm"
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
@@ -49,19 +52,19 @@ const socialLinks = [
           aria-label={`Share on ${link.label}`}
           title={`Share on ${link.label}`}
         >
-          <Icon name={link.icon} width="14" height="14" />
+          <Icon name={link.icon} size={15} />
           <span>{link.label}</span>
         </a>
       ))}
       <button
         type="button"
-        class="btn btn-ink px-3 py-2 text-xs"
+        class="btn btn-secondary btn-sm"
         data-share-copy
         data-share-url={pageUrl}
         data-default-label="Copy link"
         aria-label="Copy link"
       >
-        <Icon name="tabler:link" width="14" height="14" />
+        <Icon name="link" size={15} />
         <span data-copy-label>Copy link</span>
       </button>
     </div>

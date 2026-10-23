@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import SiteNavigation from '../components/SiteNavigation.astro';
 import SharePanel from '../components/SharePanel.astro';
+import BrandMark from '../components/BrandMark.astro';
+import Icon from '../components/Icon.astro';
 import { investmentAssets } from '../data/assets';
 import { getEntityDetails, getDetailPath } from '../data/entityDetails';
 
@@ -16,6 +18,7 @@ const {
   robots,
   jsonLd,
 } = Astro.props;
+
 
 const siteUrl = 'https://www.listwinventures.com';
 const pagePath = `${Astro.url?.pathname ?? '/'}${Astro.url?.search ?? ''}${Astro.url?.hash ?? ''}`;
@@ -109,24 +112,25 @@ const hiddenInvestmentNavSlugs = new Set(['carbon-robotics', 'cradle']);
 
 const prettify = (name: string) => name.replace(/\s+(logo|crest|lockup)$/i, '');
 
+// Icon values are Lucide names rendered at build time by Icon.astro.
 const workHighlights = [
   {
     label: 'Carbon Robotics',
     description: 'AI-driven laser weeding and farm autonomy.',
     href: getDetailPath('carbon-robotics') ?? '/',
-    icon: 'rocket',
+    icon: 'tractor',
   },
   {
-    label: '4AG',
-    description: 'Autonomous mushroom cultivation and harvesting robotics.',
+    label: '4AG Robotics',
+    description: 'Autonomous mushroom cultivation and harvesting.',
     href: '/4ag',
-    icon: 'sparkles',
+    icon: 'bot',
   },
   {
     label: 'BelizeKids.org',
-    description: 'STEM, clinics, and conservation programs across Belize.',
+    description: 'STEM, clinics, and conservation across Belize.',
     href: '/belizekids',
-    icon: 'community',
+    icon: 'heart-handshake',
   },
 ];
 
@@ -136,8 +140,8 @@ const investmentSections = investmentAssets
       .map((asset) => detailBySlug.get(asset.id))
       .filter((detail) => detail && !hiddenInvestmentNavSlugs.has(detail.slug))
       .map((detail) => ({
-        label: prettify(detail.name),
-        href: getDetailPath(detail.slug),
+        label: prettify(detail!.name),
+        href: getDetailPath(detail!.slug)!,
       }));
 
     return { label: group.label, items };
@@ -146,18 +150,18 @@ const investmentSections = investmentAssets
 
 const communityLinks = [
   { slug: 'belizekids', icon: 'heart' },
-  { slug: 'canary-foundation', icon: 'shield' },
+  { slug: 'canary-foundation', icon: 'microscope' },
   { slug: 'lucile', icon: 'hospital' },
-  { slug: 'nih', icon: 'bank' },
-  { slug: 'stanford', icon: 'school' },
-  { slug: 'saskatchewan', icon: 'church' },
+  { slug: 'nih', icon: 'landmark' },
+  { slug: 'stanford', icon: 'graduation-cap' },
+  { slug: 'saskatchewan', icon: 'library' },
 ]
   .map(({ slug, icon }) => {
     const detail = detailBySlug.get(slug);
     return detail
       ? {
           label: prettify(detail.name),
-          href: getDetailPath(detail.slug),
+          href: getDetailPath(detail.slug)!,
           icon,
         }
       : null;
@@ -165,33 +169,60 @@ const communityLinks = [
   .filter((item): item is { label: string; href: string; icon: string } => Boolean(item));
 
 const storyLinks = [
-  { label: "Oral History '18", href: '/oral-history', icon: 'about' },
-  { label: "Caltech Interview '25", href: '/oral-history-caltech', icon: 'news' },
-  { label: 'My Story', href: '/#my-story', icon: 'user' },
-  { label: 'Press', href: '/press', icon: 'news' },
+  { label: 'My Story', href: '/#my-story', icon: 'user-round', description: 'Forty years across networks, data, and health.' },
+  { label: 'Caltech Interview ’25', href: '/oral-history-caltech', icon: 'audio-lines', description: 'Four-part oral history, audio + transcript.' },
+  { label: 'Oral History ’18', href: '/oral-history', icon: 'video', description: 'Computer History Museum interview.' },
+  { label: 'Press & References', href: '/press', icon: 'newspaper', description: 'Coverage, interviews, and sources.' },
 ];
 
 const navItems = [
-  { label: 'Home', href: '/', icon: 'home' },
+  { label: 'Home', href: '/', icon: 'house', mobileOnly: true },
   {
-    label: 'New',
-    icon: 'sparkles',
-    sections: [{ label: 'Current Focus', items: workHighlights }],
+    label: 'Focus',
+    sections: [{ label: 'Current focus', items: workHighlights }],
   },
   {
     label: 'Investments',
-    icon: 'briefcase',
     sections: investmentSections,
   },
   {
     label: 'Community',
-    icon: 'users',
-    sections: [{ label: 'Projects & Partnerships', items: communityLinks }],
+    sections: [{ label: 'Projects & partnerships', items: communityLinks }],
   },
   {
     label: 'About',
-    icon: 'about',
     sections: [{ label: 'Story', items: storyLinks }],
+  },
+  { label: 'Press', href: '/press' },
+];
+
+const footerColumns = [
+  {
+    label: 'Focus',
+    links: [
+      { label: 'Carbon Robotics', href: getDetailPath('carbon-robotics') ?? '/' },
+      { label: '4AG Robotics', href: '/4ag' },
+      { label: 'Investments', href: '/#investments' },
+      { label: 'Exploits', href: '/#exploits' },
+    ],
+  },
+  {
+    label: 'Community',
+    links: [
+      { label: 'Canary Foundation', href: getDetailPath('canary-foundation') ?? '/' },
+      { label: 'BelizeKids.org', href: '/belizekids' },
+      { label: 'Stanford Medicine', href: getDetailPath('stanford') ?? '/' },
+      { label: 'Canary Cove', href: '/exploits/canary-cove' },
+    ],
+  },
+  {
+    label: 'About',
+    links: [
+      { label: 'My Story', href: '/#my-story' },
+      { label: 'Caltech Interview', href: '/oral-history-caltech' },
+      { label: 'Oral History', href: '/oral-history' },
+      { label: 'Press & References', href: '/press' },
+    ],
   },
 ];
 
@@ -216,11 +247,25 @@ const showSharePanel =
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Theme before first paint: saved choice wins, otherwise follow the OS. No flash. -->
+    <script is:inline>
+      (() => {
+        let stored = null;
+        try {
+          stored = window.localStorage.getItem('lv-theme');
+        } catch (e) {}
+        const dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     {robots && <meta name="robots" content={robots} />}
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfbf9" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0e0d" />
     <meta property="og:site_name" content="Listwin Ventures" />
     <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="en_US" />
@@ -245,58 +290,94 @@ const showSharePanel =
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-card focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-foreground"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-foreground focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-background"
     >
       Skip to content
     </a>
 
     <div class="flex min-h-screen flex-col">
-      <header class="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
-        <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-          <a href="/" class="group flex items-center gap-3 text-xl font-semibold tracking-tight text-foreground no-underline">
-            <img
-              src={logoPath}
-              alt="Listwin Ventures"
-              width="300"
-              height="120"
-              class="h-10 w-auto transition-opacity duration-200 group-hover:opacity-80"
-              loading="eager"
-              fetchpriority="high"
-            />
-            <span class="sr-only">Listwin Ventures</span>
-          </a>
-          <SiteNavigation items={navItems} contactHref="/contact" />
+      <header class="site-header sticky top-0 z-40" data-site-header>
+        <div class="header-bar">
+          <div class="container-lv flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
+            <a href="/" class="shrink-0 text-foreground" aria-label="Listwin Ventures home">
+              <BrandMark />
+            </a>
+            <div class="flex items-center gap-2">
+              <SiteNavigation items={navItems} contactHref="/contact" currentPath={pathname} />
+              <button
+                type="button"
+                class="theme-toggle grid size-10 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-muted"
+                data-theme-toggle
+                aria-label="Switch to dark theme"
+                title="Toggle theme"
+              >
+                <Icon name="sun" size={17} class="theme-icon-sun" />
+                <Icon name="moon" size={17} class="theme-icon-moon" />
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
       <main id="main-content" class="flex-1" tabindex="-1">
-        <div class="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
-          {showSharePanel && <SharePanel pageUrl={pageUrl} pageTitle={title} />}
-          <slot />
-        </div>
+        <slot />
+        {showSharePanel && <SharePanel pageUrl={pageUrl} pageTitle={title} />}
       </main>
 
-      <footer class="border-t border-border/70 bg-card/80">
-        <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <div class="flex items-center gap-3">
-            <img
-              src={logoPath}
-              alt="Listwin Ventures"
-              width="300"
-              height="120"
-              class="h-8 w-auto"
-              loading="lazy"
-            />
-            <span>&copy; {new Date().getFullYear()} Listwin Ventures. All rights reserved.</span>
+      <footer class="site-footer relative overflow-hidden border-t border-border bg-card/40">
+        <div class="container-lv pb-10 pt-20 sm:pt-24">
+          <div class="grid gap-14 lg:grid-cols-[1.2fr_2fr]">
+            <div class="space-y-6">
+              <a href="/" class="inline-flex text-foreground" aria-label="Listwin Ventures home">
+                <BrandMark />
+              </a>
+              <p class="max-w-sm text-[0.95rem] leading-relaxed text-muted-foreground">
+                Technology investing, leadership, and philanthropy from Don Listwin — from networking and data to early
+                cancer detection and AI robotics.
+              </p>
+              <a href="/contact" class="btn btn-secondary btn-sm">
+                Get in touch
+                <Icon name="arrow-right" size={15} class="arrow" />
+              </a>
+            </div>
+            <div class="grid grid-cols-2 gap-10 sm:grid-cols-3">
+              {footerColumns.map((column) => (
+                <div>
+                  <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted-foreground">{column.label}</p>
+                  <ul class="mt-4 space-y-2.5">
+                    {column.links.map((link) => (
+                      <li>
+                        <a href={link.href} class="text-[0.95rem] text-foreground/80 transition-colors hover:text-primary">
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
-          <div class="flex flex-wrap gap-5">
-            <a href="/privacy-policy" class="text-muted-foreground no-underline hover:text-foreground">Privacy</a>
-            <a href="/cookie-policy" class="text-muted-foreground no-underline hover:text-foreground">Cookies</a>
-            <button type="button" data-cookie-preferences class="text-muted-foreground hover:text-foreground">
-              Cookie preferences
-            </button>
+
+          <p class="footer-word mt-20 select-none font-display leading-[0.8] tracking-[-0.04em] text-foreground/[0.06]" aria-hidden="true">
+            Listwin Ventures
+          </p>
+
+          <div class="mt-6 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <span>&copy; {new Date().getFullYear()} Listwin Ventures. All rights reserved.</span>
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <a href="/privacy-policy" class="transition-colors hover:text-foreground">Privacy</a>
+              <a href="/cookie-policy" class="transition-colors hover:text-foreground">Cookies</a>
+              <button type="button" data-cookie-preferences class="cursor-pointer transition-colors hover:text-foreground">
+                Cookie preferences
+              </button>
+              <a href="https://x.com/Canarydon" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
+                <Icon name="tabler:brand-x" size={15} />
+                <span>@Canarydon</span>
+              </a>
+            </div>
           </div>
         </div>
       </footer>
@@ -310,16 +391,19 @@ const showSharePanel =
       role="region"
       aria-label="Cookie consent"
       aria-live="polite"
-      class="fixed inset-x-0 bottom-0 z-50 px-4 pb-4"
+      class="fixed inset-x-0 bottom-0 z-50 p-3 sm:p-5"
     >
-      <div class="mx-auto flex max-w-4xl flex-col gap-3 rounded-2xl border border-border/70 bg-card/95 p-4 shadow-panel backdrop-blur sm:flex-row sm:items-center sm:justify-between">
-        <p class="text-sm text-muted-foreground">
-          We use analytics cookies to understand how visitors use this site. See our
-          <a href="/cookie-policy" class="underline hover:text-foreground">Cookie Policy</a>.
+      <div class="consent-card mx-auto flex max-w-3xl flex-col gap-4 rounded-3xl border border-border bg-card/95 p-4 pl-5 shadow-[var(--shadow-panel)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+        <p class="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+          <Icon name="cookie" size={18} class="mt-0.5 shrink-0 text-foreground" />
+          <span>
+            We use analytics cookies to understand how visitors use this site. See our
+            <a href="/cookie-policy" class="inline-link">Cookie Policy</a>.
+          </span>
         </p>
         <div class="flex shrink-0 gap-2">
-          <button type="button" data-consent-decline class="btn btn-ink text-sm">Decline</button>
-          <button type="button" data-consent-accept class="btn btn-brand text-sm">Accept</button>
+          <button type="button" data-consent-decline class="btn btn-secondary btn-sm flex-1 sm:flex-none">Decline</button>
+          <button type="button" data-consent-accept class="btn btn-primary btn-sm flex-1 sm:flex-none">Accept</button>
         </div>
       </div>
     </div>
@@ -409,90 +493,179 @@ const showSharePanel =
       })()}
     </script>
 
+    <!-- Motion + theme. Progressive enhancement only: every page is complete without it. -->
     <script is:inline>
-      {(() => {
-        const typingEl = document.getElementById('hero-typing');
-        const typingPhrases = ['Technology investor', 'CEO', 'Philanthropist'];
+      (() => {
+        const root = document.documentElement;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-        if (!typingEl || !typingPhrases.length) return;
-
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-          typingEl.textContent = typingPhrases[0];
-          return;
-        }
-
-        const typingWrapper = typingEl.closest('.typing-line');
-        if (typingWrapper) {
-          const typingComputed = window.getComputedStyle(typingEl);
-          const wrapperComputed = window.getComputedStyle(typingWrapper);
-          const cursorEl = typingWrapper.querySelector('[aria-hidden="true"]');
-          const measure = document.createElement('span');
-
-          measure.style.position = 'absolute';
-          measure.style.visibility = 'hidden';
-          measure.style.pointerEvents = 'none';
-          measure.style.whiteSpace = 'nowrap';
-          measure.style.font = typingComputed.font;
-          measure.style.letterSpacing = typingComputed.letterSpacing;
-          measure.style.textTransform = typingComputed.textTransform;
-          measure.style.textRendering = typingComputed.textRendering;
-
-          document.body.appendChild(measure);
-          let maxWidth = 0;
-          typingPhrases.forEach((phrase) => {
-            measure.textContent = phrase;
-            maxWidth = Math.max(maxWidth, measure.getBoundingClientRect().width);
+        // Theme toggle (with a circular reveal where View Transitions are supported).
+        const toggles = document.querySelectorAll('[data-theme-toggle]');
+        const syncToggle = () => {
+          const dark = root.classList.contains('dark');
+          toggles.forEach((button) => {
+            button.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
           });
-          measure.remove();
+        };
+        syncToggle();
+        toggles.forEach((button) => {
+          button.addEventListener('click', (event) => {
+            const next = !root.classList.contains('dark');
+            const apply = () => {
+              root.classList.toggle('dark', next);
+              try {
+                window.localStorage.setItem('lv-theme', next ? 'dark' : 'light');
+              } catch (e) {}
+              syncToggle();
+            };
+            if (!document.startViewTransition || reduceMotion.matches) {
+              apply();
+              return;
+            }
+            const rect = button.getBoundingClientRect();
+            const x = event.clientX || rect.left + rect.width / 2;
+            const y = event.clientY || rect.top + rect.height / 2;
+            const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+            root.classList.add('theme-transition');
+            const transition = document.startViewTransition(apply);
+            transition.ready
+              .then(() => {
+                root.animate(
+                  { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+                  { duration: 650, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' },
+                );
+              })
+              .catch(() => {});
+            transition.finished.finally(() => root.classList.remove('theme-transition'));
+          });
+        });
+        // Follow OS changes until the visitor makes an explicit choice.
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+          let stored = null;
+          try {
+            stored = window.localStorage.getItem('lv-theme');
+          } catch (e) {}
+          if (stored) return;
+          root.classList.toggle('dark', event.matches);
+          syncToggle();
+        });
 
-          const gapWidth = Number.parseFloat(wrapperComputed.columnGap || wrapperComputed.gap || '0') || 0;
-          const cursorWidth = cursorEl ? cursorEl.getBoundingClientRect().width : 2;
-          const safetyPadding = 8;
-          const totalWidth = Math.ceil(maxWidth + gapWidth + cursorWidth + safetyPadding);
-          typingWrapper.style.setProperty('--typing-width', `${totalWidth}px`);
+        // Header: transparent at the top, frosted once the page scrolls.
+        const header = document.querySelector('[data-site-header]');
+        if (header) {
+          const onScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 8);
+          onScroll();
+          window.addEventListener('scroll', onScroll, { passive: true });
         }
 
-        let phraseIndex = 0;
-        let charIndex = 1;
-        let deleting = false;
+        if (reduceMotion.matches || !('IntersectionObserver' in window)) return;
+        root.classList.add('motion-ready');
 
-        const typeSpeed = 90;
-        const eraseSpeed = 60;
-        const holdTime = 1200;
+        // Scroll reveals. Children of [data-reveal-stagger] get incremental delays.
+        document.querySelectorAll('[data-reveal-stagger]').forEach((group) => {
+          const step = Number(group.getAttribute('data-reveal-stagger')) || 70;
+          Array.from(group.querySelectorAll(':scope > [data-reveal]')).forEach((child, index) => {
+            child.style.setProperty('--reveal-delay', `${index * step}ms`);
+          });
+        });
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        document.querySelectorAll('[data-reveal]').forEach((element) => revealObserver.observe(element));
 
-        const typeLoop = () => {
-          const currentPhrase = typingPhrases[phraseIndex];
-          if (!deleting) {
-            typingEl.textContent = currentPhrase.substring(0, charIndex);
-            charIndex += 1;
+        // Count-up numbers: <span data-count-to="40" data-count-suffix="+">40+</span>
+        const counters = document.querySelectorAll('[data-count-to]');
+        const countObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              countObserver.unobserve(entry.target);
+              const element = entry.target;
+              const target = Number(element.getAttribute('data-count-to'));
+              const prefix = element.getAttribute('data-count-prefix') || '';
+              const suffix = element.getAttribute('data-count-suffix') || '';
+              const duration = 1600;
+              const start = performance.now();
+              const tick = (now) => {
+                const progress = Math.min(1, (now - start) / duration);
+                const eased = 1 - Math.pow(1 - progress, 4);
+                element.textContent = `${prefix}${Math.round(target * eased)}${suffix}`;
+                if (progress < 1) window.requestAnimationFrame(tick);
+              };
+              window.requestAnimationFrame(tick);
+            });
+          },
+          { threshold: 0.6 },
+        );
+        counters.forEach((element) => countObserver.observe(element));
 
-            if (charIndex > currentPhrase.length) {
-              setTimeout(() => {
-                deleting = true;
-                charIndex = currentPhrase.length;
-                typeLoop();
-              }, holdTime);
-              return;
-            }
-          } else {
-            typingEl.textContent = currentPhrase.substring(0, Math.max(1, charIndex));
-            charIndex -= 1;
-
-            if (charIndex <= 1) {
-              deleting = false;
-              phraseIndex = (phraseIndex + 1) % typingPhrases.length;
-              charIndex = 1;
-              setTimeout(typeLoop, typeSpeed);
-              return;
-            }
-          }
-
-          setTimeout(typeLoop, deleting ? eraseSpeed : typeSpeed);
-        };
-
-        typeLoop();
-      })()}
+        // Pointer-tracked spotlight on cards (fine pointers only).
+        if (window.matchMedia('(pointer: fine)').matches) {
+          document.addEventListener(
+            'pointermove',
+            (event) => {
+              const card = event.target instanceof Element ? event.target.closest('.spotlight') : null;
+              if (!card) return;
+              const rect = card.getBoundingClientRect();
+              card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+              card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+            },
+            { passive: true },
+          );
+        }
+      })();
     </script>
   </body>
 </html>
+
+<style>
+  .header-bar {
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 400ms,
+      border-color 400ms,
+      backdrop-filter 400ms;
+  }
+  [data-site-header][data-scrolled] .header-bar {
+    background: color-mix(in oklab, var(--background) 78%, transparent);
+    border-bottom-color: color-mix(in oklab, var(--border) 80%, transparent);
+    backdrop-filter: saturate(1.6) blur(18px);
+    -webkit-backdrop-filter: saturate(1.6) blur(18px);
+  }
+  /* The drawer needs the header's containing block to be the viewport (see SiteNavigation). */
+  [data-site-header]:has(.mobile-drawer[open]) .header-bar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .theme-icon-moon {
+    display: none;
+  }
+  :global(.dark) .theme-icon-sun {
+    display: none;
+  }
+  :global(.dark) .theme-icon-moon {
+    display: block;
+  }
+
+  .footer-word {
+    font-size: clamp(3.5rem, 15.5vw, 15rem);
+    white-space: nowrap;
+  }
+
+  :global(.theme-transition)::view-transition-old(root),
+  :global(.theme-transition)::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  :global(.theme-transition) .site-header {
+    view-transition-name: none;
+  }
+</style>

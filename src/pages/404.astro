@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 ---
 
 <BaseLayout
@@ -7,12 +8,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="The requested page could not be found."
   robots="noindex, nofollow"
 >
-  <section class="rounded-apple bg-white/95 p-8 text-center shadow-panel ring-1 ring-white/60 sm:p-14">
-    <p class="text-sm font-semibold uppercase tracking-[0.35em] text-brand">404</p>
-    <h1 class="mt-3 font-display text-4xl font-semibold text-ink sm:text-5xl">Page not found</h1>
-    <p class="mx-auto mt-4 max-w-xl text-ink/70">
-      This page may have moved or no longer exists.
-    </p>
-    <a class="btn btn-brand mt-7" href="/">Return home</a>
+  <section class="relative overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="grid-lines opacity-70" aria-hidden="true"></div>
+    <div class="container-lv relative z-10 flex min-h-[70vh] flex-col items-center justify-center py-24 text-center">
+      <p class="rise font-display text-[clamp(7rem,26vw,16rem)] leading-none tracking-[-0.05em] text-foreground/10" style="--d:0ms">404</p>
+      <h1 class="display-md rise -mt-6 sm:-mt-10" style="--d:120ms">Page not found</h1>
+      <p class="lede rise mx-auto mt-5 max-w-md" style="--d:220ms">
+        This page may have moved or no longer exists.
+      </p>
+      <div class="rise mt-9 flex flex-wrap justify-center gap-3" style="--d:320ms">
+        <a class="btn btn-primary" href="/">
+          <Icon name="arrow-left" size={16} />
+          Return home
+        </a>
+        <a class="btn btn-secondary" href="/press">Browse press</a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

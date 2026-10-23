@@ -1,6 +1,7 @@
 ---
-import { buttonVariants } from '@/components/ui/button';
+import Icon from './Icon.astro';
 import PressLinkCard from './PressLinkCard.astro';
+import SectionHeading from './SectionHeading.astro';
 import type { PressItem } from '../data/press';
 
 const {
@@ -21,21 +22,19 @@ const {
 ---
 
 {items.length > 0 && (
-  <section class="lv-section">
-    <div class="flex flex-wrap items-end justify-between gap-3">
-      <div class="space-y-1">
-        <p class="lv-eyebrow">{eyebrow}</p>
-        <h2 class="lv-heading">{title}</h2>
-        {countNote && <p class="text-sm text-muted-foreground">{countNote}</p>}
-      </div>
-      <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href={viewAllHref}>
+  <section class="related-press container-lv section-tight">
+    <SectionHeading eyebrow={eyebrow} title={title} description={countNote} size="sm">
+      <a class="btn btn-secondary btn-sm" href={viewAllHref}>
         {viewAllLabel}
+        <Icon name="arrow-right" size={14} class="arrow" />
       </a>
-    </div>
+    </SectionHeading>
 
-    <div class="grid gap-5 md:grid-cols-2">
+    <div class="mt-10 grid gap-4 md:grid-cols-2" data-reveal-stagger="80">
       {items.map((item) => (
-        <PressLinkCard item={item} variant="related" key={item.id} />
+        <div data-reveal>
+          <PressLinkCard item={item} variant="related" />
+        </div>
       ))}
     </div>
   </section>

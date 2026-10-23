@@ -6,6 +6,6 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<div class={`overflow-hidden rounded-[2rem] border border-border/70 bg-card shadow-panel ${className}`.trim()}>
+<div class={`media-frame border border-border shadow-[var(--shadow-soft)] ${className}`.trim()}>
   <slot />
 </div>

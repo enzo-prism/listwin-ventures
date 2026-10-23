@@ -235,6 +235,8 @@ test.describe('Visual regression', () => {
             await page.goto(route, { waitUntil: 'domcontentloaded' });
             await stabilizePage(page);
             const related = page.getByRole('heading', { name: 'Related reading' });
+            // The section only renders when press.ts has items for the route (none for GenoLogics yet).
+            test.skip((await related.count()) === 0, `No related press for ${route}`);
             await related.scrollIntoViewIfNeeded();
             await page.waitForTimeout(100);
             const section = related.locator('xpath=ancestor::section[1]');

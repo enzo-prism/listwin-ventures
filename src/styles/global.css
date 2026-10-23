@@ -1,164 +1,848 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+  Listwin Ventures design system ("Quiet Ledger").
+  Tailwind 4, CSS-first. Tokens live in :root / .dark as plain colors and are mapped into the
+  Tailwind theme with @theme inline, so every utility (`bg-card`, `text-muted-foreground`,
+  `border-border/60`…) follows the active theme automatically.
+*/
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --background: oklch(0.988 0.003 106);
+  --foreground: oklch(0.18 0.008 160);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.962 0.004 106);
+  --muted-foreground: oklch(0.47 0.01 160);
+  --subtle: oklch(0.94 0.005 106);
+  --border: oklch(0.905 0.006 106);
+  --input: oklch(0.88 0.006 106);
+  --primary: oklch(0.5 0.115 158);
+  --primary-foreground: oklch(0.99 0.01 158);
+  --accent: oklch(0.95 0.035 158);
+  --accent-foreground: oklch(0.38 0.09 158);
+  --glow: oklch(0.78 0.15 162);
+  --ring: oklch(0.55 0.13 158);
+  --destructive: oklch(0.56 0.2 27);
+  --plate: oklch(1 0 0);
+  --shadow-color: 160 20% 12%;
+  --radius: 1.25rem;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.155 0.004 160);
+  --foreground: oklch(0.96 0.004 106);
+  --card: oklch(0.195 0.005 160);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.215 0.006 160);
+  --muted-foreground: oklch(0.7 0.008 160);
+  --subtle: oklch(0.25 0.007 160);
+  --border: oklch(0.29 0.007 160);
+  --input: oklch(0.34 0.008 160);
+  --primary: oklch(0.8 0.15 160);
+  --primary-foreground: oklch(0.2 0.04 160);
+  --accent: oklch(0.28 0.05 160);
+  --accent-foreground: oklch(0.88 0.1 160);
+  --glow: oklch(0.72 0.16 162);
+  --ring: oklch(0.8 0.15 160);
+  --destructive: oklch(0.68 0.19 25);
+  --plate: oklch(0.97 0.003 106);
+  --shadow-color: 0 0% 0%;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-glow: var(--glow);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-plate: var(--plate);
+
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Instrument Serif', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius-sm: calc(var(--radius) - 0.75rem);
+  --radius-md: calc(var(--radius) - 0.5rem);
+  --radius-lg: calc(var(--radius) - 0.25rem);
+  --radius-xl: var(--radius);
+  --radius-2xl: calc(var(--radius) + 0.5rem);
+  --radius-3xl: calc(var(--radius) + 1rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.04), 0 8px 24px -12px hsl(var(--shadow-color) / 0.12);
+  --shadow-lift: 0 2px 4px hsl(var(--shadow-color) / 0.04), 0 24px 48px -20px hsl(var(--shadow-color) / 0.22);
+  --shadow-panel: 0 30px 80px -30px hsl(var(--shadow-color) / 0.3);
+
+  --animate-marquee: lv-marquee var(--marquee-duration, 48s) linear infinite;
+  --animate-float: lv-float 9s ease-in-out infinite;
+}
+
+/* ───────────────────────────── Base ───────────────────────────── */
 
 @layer base {
-  :root {
-    --background: 230 26% 97%;
-    --foreground: 240 4% 12%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 4% 12%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 4% 12%;
-    --primary: 157 71% 29%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 18% 93%;
-    --secondary-foreground: 240 4% 14%;
-    --muted: 220 18% 94%;
-    --muted-foreground: 225 8% 42%;
-    --accent: 156 55% 92%;
-    --accent-foreground: 157 71% 29%;
-    --destructive: 0 75% 52%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 14% 86%;
-    --input: 220 14% 86%;
-    --ring: 157 71% 29%;
-    --chart-1: 157 71% 29%;
-    --chart-2: 198 60% 46%;
-    --chart-3: 42 88% 52%;
-    --chart-4: 268 61% 56%;
-    --chart-5: 338 75% 53%;
-    --radius: 0.9rem;
-    --radius-xl: 2rem;
-  }
-
-  .dark {
-    --background: 240 12% 8%;
-    --foreground: 210 24% 96%;
-    --card: 240 12% 10%;
-    --card-foreground: 210 24% 96%;
-    --popover: 240 12% 10%;
-    --popover-foreground: 210 24% 96%;
-    --primary: 157 63% 54%;
-    --primary-foreground: 240 10% 8%;
-    --secondary: 240 9% 17%;
-    --secondary-foreground: 210 24% 96%;
-    --muted: 240 9% 17%;
-    --muted-foreground: 220 8% 74%;
-    --accent: 159 45% 18%;
-    --accent-foreground: 157 63% 86%;
-    --destructive: 0 64% 44%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 7% 22%;
-    --input: 240 7% 22%;
-    --ring: 157 63% 54%;
-  }
-
-  * {
-    @apply border-border;
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
   }
 
   html {
-    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 6rem;
+    background: var(--background);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
-    @apply min-h-screen overflow-x-clip bg-background font-sans text-foreground antialiased leading-relaxed;
-    background-image:
-      radial-gradient(circle at 15% -10%, rgba(28, 173, 123, 0.14), transparent 35%),
-      radial-gradient(circle at 95% 20%, rgba(56, 189, 248, 0.08), transparent 25%);
+    min-height: 100vh;
+    overflow-x: clip;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'ss01', 'cv11';
   }
 
-  main {
-    @apply block;
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   a {
-    @apply text-primary underline-offset-4 transition-colors;
+    color: inherit;
+    text-decoration: none;
   }
 
-  a:hover {
-    @apply text-primary/85;
+  /* Inline links inside running copy. */
+  .prose-lv a,
+  a.inline-link {
+    color: var(--foreground);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in oklab, var(--primary) 55%, transparent);
+    transition: text-decoration-color 200ms, color 200ms;
+  }
+  .prose-lv a:hover,
+  a.inline-link:hover {
+    color: var(--primary);
+    text-decoration-color: var(--primary);
   }
 
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  textarea:focus-visible,
-  summary:focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
-  }
-
-  section[id] {
-    scroll-margin-top: 6rem;
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 
   ::selection {
-    @apply bg-primary/80 text-primary-foreground;
+    background: color-mix(in oklab, var(--primary) 28%, transparent);
+    color: var(--foreground);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  img,
+  video {
+    max-width: 100%;
   }
 }
 
+/* ───────────────────────────── Components ───────────────────────────── */
+
 @layer components {
-  .lv-shell {
-    @apply rounded-[var(--radius-xl)] border border-border/70 bg-card/95 shadow-panel backdrop-blur;
+  .container-lv {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
   }
-
-  .lv-section {
-    @apply lv-shell space-y-6 p-6 sm:p-10;
-  }
-
-  .lv-eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground;
-  }
-
-  .lv-heading {
-    @apply text-3xl font-semibold text-foreground sm:text-4xl;
-  }
-
-  .section-icon {
-    @apply inline-flex h-8 w-8 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary;
-  }
-
-  .typing-line {
-    @apply inline-flex max-w-full items-center justify-center gap-2 overflow-hidden whitespace-nowrap;
-    width: min(var(--typing-width, 22ch), 100%);
-    min-width: 0;
-  }
-
-  #hero-typing {
-    @apply inline-block whitespace-nowrap;
-  }
-
   @media (min-width: 640px) {
-    .typing-line {
-      width: min(var(--typing-width, 24ch), 100%);
+    .container-lv {
+      padding-inline: 2rem;
     }
+  }
+  @media (min-width: 1024px) {
+    .container-lv {
+      padding-inline: 3rem;
+    }
+  }
+  .container-narrow {
+    max-width: 52rem;
+  }
+
+  /* Vertical rhythm for top-level page sections. Generous on purpose. */
+  .section-lv {
+    padding-block: clamp(4.5rem, 10vw, 9rem);
+  }
+  .section-tight {
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+  .eyebrow.no-rule::before {
+    display: none;
+  }
+
+  .display-xl {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(3.4rem, 10vw, 8.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+  }
+  .display-lg {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 6.4vw, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
+  .display-md {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.1rem, 4.4vw, 3.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+  }
+  .display-sm {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.65rem, 2.6vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .display-xl em,
+  .display-lg em,
+  .display-md em,
+  .display-sm em {
+    font-style: italic;
+    color: var(--primary);
+  }
+
+  .lede {
+    font-size: clamp(1.08rem, 1.5vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--muted-foreground);
+  }
+
+  .prose-lv {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: color-mix(in oklab, var(--foreground) 84%, var(--background));
+  }
+  .prose-lv > * + * {
+    margin-top: 1.25em;
+  }
+  .prose-lv h2 {
+    margin-top: 2.4em;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    line-height: 1.15;
+    color: var(--foreground);
+  }
+  .prose-lv h3 {
+    margin-top: 1.8em;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  .prose-lv ul,
+  .prose-lv ol {
+    padding-left: 1.25em;
+  }
+  .prose-lv ul {
+    list-style: disc;
+  }
+  .prose-lv ol {
+    list-style: decimal;
+  }
+  .prose-lv li + li {
+    margin-top: 0.5em;
+  }
+  .prose-lv li::marker {
+    color: var(--primary);
+  }
+  .prose-lv code {
+    padding: 0.1em 0.4em;
+    border-radius: 0.4rem;
+    background: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+  }
+
+  .icon-well {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    border-radius: 0.9rem;
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  /* Buttons */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 300ms var(--ease-out-expo),
+      background-color 200ms,
+      border-color 200ms,
+      color 200ms,
+      box-shadow 300ms;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn .lv-icon {
+    transition: transform 300ms var(--ease-out-expo);
+  }
+  .btn:hover .lv-icon.arrow {
+    transform: translateX(3px);
+  }
+  .btn:hover .lv-icon.arrow-diag {
+    transform: translate(2px, -2px);
+  }
+  .btn-sm {
+    min-height: 2.25rem;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.85rem;
+  }
+  .btn-primary {
+    background: var(--foreground);
+    color: var(--background);
+  }
+  .btn-primary:hover {
+    background: color-mix(in oklab, var(--foreground) 86%, var(--primary));
+    box-shadow: 0 10px 30px -12px color-mix(in oklab, var(--primary) 60%, transparent);
+  }
+  .btn-brand {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+  .btn-brand:hover {
+    background: color-mix(in oklab, var(--primary) 88%, var(--foreground));
+  }
+  .btn-secondary {
+    background: var(--card);
+    color: var(--foreground);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: color-mix(in oklab, var(--foreground) 30%, var(--border));
+    background: var(--muted);
+  }
+  .btn-ghost {
+    color: var(--foreground);
+  }
+  .btn-ghost:hover {
+    background: var(--muted);
+  }
+  /* Legacy aliases kept so older markup still renders on-brand. */
+  .btn-ink {
+    background: var(--card);
+    color: var(--foreground);
+    border-color: var(--border);
+  }
+  .btn-ink:hover {
+    background: var(--muted);
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: color 200ms;
+  }
+  .link-arrow .lv-icon {
+    transition: transform 300ms var(--ease-out-expo);
+  }
+  .link-arrow:hover {
+    color: var(--primary);
+  }
+  .link-arrow:hover .lv-icon {
+    transform: translateX(3px);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .chip-live::before {
+    content: '';
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: var(--primary);
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 60%, transparent);
+    animation: lv-ping 2.4s var(--ease-out-expo) infinite;
+  }
+
+  /* Surfaces */
+  .card-lv {
+    position: relative;
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--border);
+    background: var(--card);
+    box-shadow: var(--shadow-soft);
+  }
+  .card-hover {
+    transition:
+      transform 500ms var(--ease-out-expo),
+      box-shadow 500ms var(--ease-out-expo),
+      border-color 300ms;
+  }
+  .card-hover:hover,
+  .card-hover:focus-within {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in oklab, var(--foreground) 16%, var(--border));
+  }
+
+  /* Pointer-tracked light that follows the cursor across a card (set by the motion script). */
+  .spotlight {
+    isolation: isolate;
+  }
+  .spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 400ms;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklab, var(--glow) 14%, transparent),
+      transparent 60%
+    );
+    z-index: 1;
+  }
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Stretched-link pattern: the whole card is clickable through one accessible link. */
+  .stretched-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+  }
+
+  /* Logos sit on a consistent plate so mismatched source files (opaque white boxes, dark
+     marks) read the same in both themes. */
+  .logo-plate {
+    display: grid;
+    place-items: center;
+    background: var(--plate);
+    border-radius: var(--radius-lg);
+  }
+  .logo-plate img {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+  .logo-plate.is-dark {
+    background: oklch(0.2 0.005 160);
+  }
+
+  .media-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-2xl);
+    background: var(--muted);
+  }
+  .media-frame img,
+  .media-frame video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .zoom-media img {
+    transition: transform 1200ms var(--ease-out-expo);
+  }
+  .zoom-media:hover img,
+  .zoom-media:focus-within img {
+    transform: scale(1.045);
+  }
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 15%, var(--border) 85%, transparent);
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Form controls */
+  .field-label {
+    display: block;
+    margin-bottom: 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--foreground);
+  }
+  .field {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--input);
+    background: var(--card);
+    color: var(--foreground);
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color 200ms, box-shadow 200ms;
+  }
+  .field::placeholder {
+    color: color-mix(in oklab, var(--muted-foreground) 70%, transparent);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--ring);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--ring) 18%, transparent);
+  }
+  textarea.field {
+    min-height: 9rem;
+    resize: vertical;
+  }
+
+  /* Ambient backdrop used behind heroes. */
+  .aurora {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aurora::before,
+  .aurora::after {
+    content: '';
+    position: absolute;
+    width: 60vmax;
+    height: 60vmax;
+    border-radius: 999px;
+    filter: blur(80px);
+    opacity: 0.35;
+    animation: var(--animate-float);
+  }
+  .aurora::before {
+    top: -32vmax;
+    left: -18vmax;
+    background: radial-gradient(circle, color-mix(in oklab, var(--glow) 55%, transparent), transparent 65%);
+  }
+  .aurora::after {
+    top: -26vmax;
+    right: -24vmax;
+    background: radial-gradient(circle, oklch(0.8 0.08 230 / 0.45), transparent 65%);
+    animation-delay: -4s;
+  }
+  .dark .aurora::before,
+  .dark .aurora::after {
+    opacity: 0.22;
+  }
+
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+  }
+
+  /* Marquee: content is duplicated (aria-hidden) and translated by -50%. */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: var(--animate-marquee);
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
   }
 
   .video-frame {
     position: relative;
     width: 100%;
-    padding-top: 56.25%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-2xl);
+    background: var(--muted);
   }
-
   .video-frame iframe {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     border: 0;
-    border-radius: 1.75rem;
   }
 
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium no-underline transition;
+  /* Legacy section helpers still referenced by a few components. */
+  .lv-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .lv-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
   }
 
-  .btn-brand {
-    @apply border-primary bg-primary text-primary-foreground hover:bg-primary/90;
+  audio {
+    width: 100%;
+    height: 2.75rem;
+    border-radius: 999px;
+  }
+  .dark audio {
+    color-scheme: dark;
+  }
+}
+
+/* ───────────────────────────── Motion ───────────────────────────── */
+
+@keyframes lv-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes lv-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3vmax, 2vmax, 0) scale(1.08);
+  }
+}
+@keyframes lv-ping {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+@keyframes lv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/*
+  Scroll reveals. Content is only hidden once the motion script has run (html.motion-ready), so
+  no-JS visitors, crawlers, and reduced-motion users always see everything.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  html.motion-ready [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    filter: blur(6px);
+    transition:
+      opacity 900ms var(--ease-out-expo),
+      transform 1100ms var(--ease-out-expo),
+      filter 900ms var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html.motion-ready [data-reveal='fade'] {
+    transform: none;
+  }
+  html.motion-ready [data-reveal='scale'] {
+    transform: scale(0.96);
+  }
+  html.motion-ready [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
-  .btn-ink {
-    @apply border-foreground/20 bg-card text-foreground hover:bg-accent;
+  /* Headline words rise in on load. */
+  .rise-words > .word {
+    display: inline-block;
+    animation: lv-rise 1100ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 80ms + 120ms);
+  }
+  .rise {
+    animation: lv-rise 1100ms var(--ease-out-expo) both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: auto;
+  }
+  .marquee-track > [aria-hidden='true'] {
+    display: none;
+  }
+  .aurora::before,
+  .aurora::after {
+    animation: none !important;
+  }
+}
+
+/* Reading-progress bar driven by the scroll timeline (no JS). */
+.scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  z-index: 70;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--primary), var(--glow));
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      animation: lv-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes lv-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Cross-document view transitions: page-to-page navigation cross-fades, the header holds still. */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.site-header {
+  view-transition-name: site-header;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

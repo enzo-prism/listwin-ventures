@@ -1,7 +1,8 @@
 ---
-import { buttonVariants } from '@/components/ui/button';
 import type { EntityDetail } from '../data/entityDetails';
 import { getDetailPath } from '../data/entityDetails';
+import Icon from './Icon.astro';
+import { darkPlateLogoIds } from '../lib/logos';
 
 export interface Props {
   title?: string;
@@ -9,55 +10,29 @@ export interface Props {
   hideImages?: boolean;
 }
 
-	const { title, items, hideImages = false } = Astro.props;
-
-	const inferImageDimensionsFromPath = (
-	  path: string,
-	  fallback: { width: number; height: number },
-	): { width: number; height: number } => {
-	  const match = path.match(/-(\d+)x(\d+)\.(?:png|jpe?g|webp)(?:\?|$)/i);
-	  if (match) {
-	    return { width: Number(match[1]), height: Number(match[2]) };
-	  }
-	  return fallback;
-	};
+const { title, items, hideImages = false } = Astro.props;
 ---
 
 {items.length > 0 && (
-  <section class="space-y-3">
-	    {title && <h3 class="text-lg font-semibold text-foreground">{title}</h3>}
-	    <div role="list" class="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-4 pt-1 -mx-1">
-	      {items.map((item) => {
-	        const dimensions = inferImageDimensionsFromPath(item.asset.path, { width: 320, height: 128 });
-	        return (
-	          <article
-	            class="min-w-[260px] snap-start rounded-[1.5rem] border border-border/70 bg-card/95 p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:ring-1 hover:ring-primary/15 focus-within:-translate-y-0.5 focus-within:border-primary/25 focus-within:ring-1 focus-within:ring-primary/15"
-	            role="listitem"
-	          >
-	            {!hideImages && (
-	              <img
-	                src={item.asset.path}
-	                alt={item.asset.alt}
-	                width={dimensions.width}
-	                height={dimensions.height}
-	                loading="lazy"
-	                decoding="async"
-	                class="mx-auto h-12 w-auto object-contain"
-	              />
-	            )}
-	            <div class="mt-3 space-y-1">
-	              <p class="text-sm font-semibold text-foreground">{item.name}</p>
-	              <p class="text-xs text-muted-foreground">{item.summary}</p>
-	            </div>
-	            <a
-	              class={`mt-3 ${buttonVariants({ variant: 'outline', size: 'sm' })}`}
-	              href={getDetailPath(item.slug)}
-	            >
-	              View detail
-	            </a>
-	          </article>
-	        );
-	      })}
-	    </div>
-	  </section>
-	)}
+  <section class="space-y-4">
+    {title && <h3 class="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">{title}</h3>}
+    <div role="list" class="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-4 pt-1 [scrollbar-width:thin]">
+      {items.map((item) => (
+        <article role="listitem" class="group card-lv card-hover spotlight relative flex w-[17rem] shrink-0 snap-start flex-col overflow-hidden p-2">
+          {!hideImages && (
+            <span class:list={['logo-plate h-24 px-6', darkPlateLogoIds.has(item.slug) && 'is-dark']}>
+              <img src={item.asset.path} alt={item.asset.alt} width="320" height="128" loading="lazy" decoding="async" class="max-h-11 w-auto max-w-[78%]" />
+            </span>
+          )}
+          <div class="flex flex-1 flex-col gap-1.5 p-3">
+            <a href={getDetailPath(item.slug)} class="stretched-link font-medium text-foreground">{item.name}</a>
+            <p class="line-clamp-3 text-sm leading-relaxed text-muted-foreground">{item.summary}</p>
+            <span class="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-medium text-foreground/80 group-hover:text-primary">
+              View detail <Icon name="arrow-right" size={14} />
+            </span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}

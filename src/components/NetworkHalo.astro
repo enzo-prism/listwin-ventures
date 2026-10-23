@@ -1,0 +1,142 @@
+---
+// Hero motion graphic: a living network around the portrait — a nod to the Cisco years. Lines
+// draw in, nodes breathe, and "packets" travel the links (SVG animateMotion). Purely decorative;
+// packets are removed under reduced motion and the static network still reads.
+const cx = 300;
+const cy = 300;
+const ring = (count: number, radius: number, offset = 0) =>
+  Array.from({ length: count }, (_, index) => {
+    const angle = ((index / count) * 360 + offset) * (Math.PI / 180);
+    return { x: Math.round(cx + Math.cos(angle) * radius), y: Math.round(cy + Math.sin(angle) * radius) };
+  });
+
+const outer = ring(10, 268, -12);
+const inner = ring(6, 205, 20);
+const nodes = [...outer, ...inner];
+
+// Links: neighbours on the outer ring, plus spokes from inner to outer nodes.
+const links: string[] = [];
+outer.forEach((node, index) => {
+  const next = outer[(index + 1) % outer.length];
+  const mx = (node.x + next.x) / 2;
+  const my = (node.y + next.y) / 2;
+  // Bow each arc outward a little for an organic, orbital feel.
+  const qx = Math.round(cx + (mx - cx) * 1.08);
+  const qy = Math.round(cy + (my - cy) * 1.08);
+  links.push(`M${node.x} ${node.y} Q${qx} ${qy} ${next.x} ${next.y}`);
+});
+inner.forEach((node, index) => {
+  const a = outer[(index * 2) % outer.length];
+  const b = outer[(index * 2 + 3) % outer.length];
+  links.push(`M${node.x} ${node.y} L${a.x} ${a.y}`);
+  links.push(`M${node.x} ${node.y} Q${cx} ${cy} ${b.x} ${b.y}`);
+});
+
+const packets = [0, 3, 7, 11, 14, 18].map((linkIndex, index) => ({
+  path: links[linkIndex % links.length],
+  dur: 3.6 + (index % 3) * 1.4,
+  begin: index * 0.9,
+}));
+---
+
+<svg class="network-halo" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="halo-fade" cx="50%" cy="50%" r="50%">
+      <stop offset="55%" stop-color="var(--glow)" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="var(--glow)" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <circle cx={cx} cy={cy} r="300" fill="url(#halo-fade)" />
+  <circle cx={cx} cy={cy} r="268" class="halo-orbit" />
+  <circle cx={cx} cy={cy} r="205" class="halo-orbit halo-orbit-2" />
+  <g class="halo-links">
+    {links.map((d, index) => <path d={d} pathLength="1" style={`--i:${index}`} />)}
+  </g>
+  <g class="halo-nodes">
+    {nodes.map((node, index) => (
+      <circle cx={node.x} cy={node.y} r={index < outer.length ? 4 : 3} style={`--i:${index}`} />
+    ))}
+  </g>
+  <g class="halo-packets">
+    {packets.map((packet) => (
+      <circle r="3.2">
+        <animateMotion dur={`${packet.dur}s`} begin={`${packet.begin}s`} repeatCount="indefinite" path={packet.path} />
+      </circle>
+    ))}
+  </g>
+</svg>
+
+<style>
+  .network-halo {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .halo-orbit {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+    transform-origin: 300px 300px;
+    animation: halo-spin 120s linear infinite;
+  }
+  .halo-orbit-2 {
+    animation-direction: reverse;
+    animation-duration: 90s;
+  }
+  .halo-links path {
+    fill: none;
+    stroke: color-mix(in oklab, var(--primary) 45%, var(--border));
+    stroke-width: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0.7;
+    animation: halo-draw 1800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--i) * 60ms + 400ms);
+  }
+  .halo-nodes circle {
+    fill: var(--background);
+    stroke: var(--primary);
+    stroke-width: 1.5;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: halo-node 4s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -0.37s);
+  }
+  .halo-packets circle {
+    fill: var(--primary);
+    filter: drop-shadow(0 0 6px var(--glow));
+  }
+  @keyframes halo-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes halo-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes halo-node {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.35);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .halo-links path {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+    .halo-packets {
+      display: none;
+    }
+    .halo-orbit,
+    .halo-nodes circle {
+      animation: none;
+    }
+  }
+</style>

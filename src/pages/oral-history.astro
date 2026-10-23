@@ -1,15 +1,32 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Icon } from 'astro-icon/components';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 
 const pageTitle = 'Don Listwin Oral History (2018) | Listwin Ventures';
 const pageDescription =
   'Watch the 2018 Computer History Museum oral history on Don Listwin covering Cisco growth, Openwave, leadership lessons, and the Canary Foundation.';
 
+// Visible copy (kept separate from the metadata strings above).
+const intro =
+  'A 2018 Computer History Museum interview chronicling Don’s journey from early networking engineering to leading Cisco growth, leading Openwave, and championing cancer detection through the Canary Foundation.';
+
+const youtubeId = 'WEHJnQ2XtN8';
+const youtubeWatchUrl = `https://www.youtube.com/watch?v=${youtubeId}`;
+const transcriptPdfUrl = 'https://archive.computerhistory.org/resources/access/text/2018/11/102738862-05-01-acc.pdf';
+
+// Interviewer and date per the CHM transcript cover page; running time per YouTube (3,288 s).
+const sessionMeta = [
+  { label: 'Institution', value: 'Computer History Museum' },
+  { label: 'Interviewer', value: 'Chuck House' },
+  { label: 'Recorded', value: 'August 22, 2018' },
+  { label: 'Running time', value: '54:48' },
+];
+
 const summarySections = [
   {
     title: 'Early Life & Career Start',
-    icon: 'education',
+    icon: 'graduation-cap',
     points: [
       'Born in Saskatoon, Canada; earned an engineering degree before joining Develcon, a small networking firm.',
       'Moved to Silicon Valley during the Ethernet boom of the 1980s to pursue ambitious networking work.',
@@ -36,7 +53,7 @@ const summarySections = [
   },
   {
     title: 'Founding the Canary Foundation',
-    icon: 'foundation',
+    icon: 'heart',
     points: [
       'Motivated by his mother’s misdiagnosed ovarian cancer, founded Canary Foundation to advance early cancer detection.',
       'Built multi-institution partnerships (Stanford, Cambridge, Calgary) pairing biology with engineering.',
@@ -45,7 +62,7 @@ const summarySections = [
   },
   {
     title: 'Later Ventures & Current Work',
-    icon: 'innovation',
+    icon: 'sparkles',
     points: [
       'Backed deep-tech ventures like D-Wave Systems (quantum computing).',
       'Invested in iSchemaView (RapidAI), whose software extended global stroke treatment windows from 6 to 24 hours.',
@@ -53,7 +70,7 @@ const summarySections = [
   },
   {
     title: 'Reflections & Guidance',
-    icon: 'insight',
+    icon: 'lightbulb',
     points: [
       'Applauds Cisco’s continued adaptability under Chuck Robbins.',
       'Encourages younger generations to pursue bioengineering, computer science, and machine learning as the next frontier.',
@@ -62,98 +79,234 @@ const summarySections = [
   },
 ];
 
-const iconMap: Record<string, string> = {
-  education: 'heroicons-outline:academic-cap',
-  network: 'tabler:network',
-  rocket: 'tabler:rocket',
-  foundation: 'heroicons-outline:heart',
-  innovation: 'tabler:sparkles',
-  insight: 'heroicons-outline:light-bulb',
-};
+const caltechSessions = ['Mar 25', 'Apr 2', 'Apr 7', 'Apr 28'];
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} ogType="article">
-  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-3 text-center">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Interview</p>
-      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Oral History of Don Listwin</h1>
-      <p class="text-ink/70">
-        A 2018 Computer History Museum interview chronicling Don’s journey from early networking engineering to leading
-        Cisco growth, leading Openwave, and championing cancer detection through the Canary Foundation.
-      </p>
-    </div>
-    <div class="video-frame overflow-hidden rounded-[32px] bg-ink/5 shadow-panel">
-      <iframe
-        src="https://www.youtube.com/embed/WEHJnQ2XtN8"
-        title="Oral History of Don Listwin"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
+  <!-- Hero + cinematic video frame -->
+  <section class="relative overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="grid-lines opacity-60" aria-hidden="true"></div>
+    <div class="container-lv relative z-10 pb-16 pt-14 sm:pb-24 sm:pt-20 lg:pt-24">
+      <nav aria-label="Breadcrumb" class="rise mb-8" style="--d:0ms">
+        <ol class="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+          <li class="inline-flex items-center gap-1.5"><a href="/press" class="transition-colors hover:text-foreground">Press</a></li>
+          <li class="inline-flex items-center gap-1.5">
+            <Icon name="chevron-right" size={14} class="opacity-50" />
+            <span aria-current="page" class="text-foreground/80">Oral history (2018)</span>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
+        <div>
+          <p class="eyebrow rise" style="--d:60ms">Interview · Computer History Museum</p>
+          <h1 class="display-lg rise mt-5" style="--d:140ms">Oral History of <em>Don Listwin</em></h1>
+        </div>
+        <p class="lede rise max-w-xl lg:pb-2" style="--d:260ms">{intro}</p>
+      </div>
+
+      <div class="oh-stage rise mt-12 sm:mt-16" style="--d:380ms">
+        <div class="oh-glow" aria-hidden="true"></div>
+        <div class="video-frame oh-video relative rounded-[1.5rem] shadow-[var(--shadow-panel)] sm:rounded-[2rem]">
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeId}`}
+            title="Oral History of Don Listwin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="rise mt-8 flex flex-col gap-6 border-t border-border pt-7 lg:flex-row lg:items-center lg:justify-between" style="--d:460ms">
+        <dl class="grid grid-cols-2 gap-x-8 gap-y-4 sm:flex sm:flex-wrap sm:gap-x-10">
+          {sessionMeta.map((item) => (
+            <div>
+              <dt class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-foreground">{item.label}</dt>
+              <dd class="mt-1 text-[0.95rem] text-foreground">{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <div class="flex flex-wrap gap-3">
+          <a class="btn btn-primary" href={transcriptPdfUrl} target="_blank" rel="noopener noreferrer">
+            <Icon name="file-text" size={16} />
+            Read transcript (PDF)
+          </a>
+          <a class="btn btn-secondary" href={youtubeWatchUrl} target="_blank" rel="noopener noreferrer">
+            <Icon name="tabler:brand-youtube" size={18} />
+            Open on YouTube
+            <Icon name="arrow-up-right" size={15} class="arrow-diag" />
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="space-y-6 rounded-apple bg-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <h2 class="text-2xl font-semibold text-ink">Episode Summary</h2>
-    <p class="text-ink/70">
-      The video captures six chapters of Don’s work—highlighting entrepreneurial risk, reinvention, leadership under
-      pressure, and a patient focus on blending engineering with medical breakthroughs.
-    </p>
-    <div class="space-y-4">
-      {summarySections.map((section) => (
-        <article
-          class="space-y-3 rounded-[28px] border border-white/80 bg-white/90 p-4 text-sm text-ink/75 shadow"
-          key={section.title}
-        >
-          <div class="flex items-center gap-3">
-            {section.icon && iconMap[section.icon] && (
-              <span class="flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-brand" aria-hidden="true">
-                <Icon name={iconMap[section.icon]} width="20" height="20" />
+  <!-- Chapters -->
+  <section class="container-lv section-lv !pt-6 sm:!pt-10">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.6fr)] lg:gap-20">
+      <div class="oh-chapters-head">
+        <SectionHeading
+          eyebrow="Episode summary"
+          title="Six chapters of a <em>builder’s</em> career"
+          description="The video captures six chapters of Don’s work—highlighting entrepreneurial risk, reinvention, leadership under pressure, and a patient focus on blending engineering with medical breakthroughs."
+          size="sm"
+        />
+        <ol class="mt-10 hidden space-y-1 lg:block" aria-label="Chapters">
+          {summarySections.map((section, index) => (
+            <li>
+              <a
+                href={`#chapter-${index + 1}`}
+                class="group flex items-center gap-3 rounded-full py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <span class="font-mono text-[0.7rem]">{pad(index + 1)}</span>
+                <span class="h-px w-5 bg-border transition-all duration-500 group-hover:w-8 group-hover:bg-primary"></span>
+                {section.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <ol class="oh-chapter-list divide-y divide-border border-y border-border" data-reveal-stagger="70">
+        {summarySections.map((section, index) => (
+          <li id={`chapter-${index + 1}`} class="oh-chapter grid gap-5 py-9 sm:grid-cols-[5.5rem_minmax(0,1fr)] sm:gap-8 sm:py-11" data-reveal>
+            <div class="flex items-center gap-4 sm:block">
+              <span class="font-display text-5xl leading-none tracking-[-0.03em] text-foreground/25 sm:text-6xl" aria-hidden="true">
+                {pad(index + 1)}
               </span>
-            )}
-            <h3 class="text-base font-semibold text-ink">{section.title}</h3>
-          </div>
-          <ul class="list-disc space-y-1 pl-5">
-            {section.points.map((point) => (
-              <li key={point}>{point}</li>
+              <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground sm:mt-5" aria-hidden="true">
+                <Icon name={section.icon} size={18} />
+              </span>
+            </div>
+            <div>
+              <h3 class="display-sm">
+                <span class="sr-only">Chapter {index + 1}: </span>{section.title}
+              </h3>
+              <ul class="mt-5 space-y-3">
+                {section.points.map((point) => (
+                  <li class="flex gap-3 text-[1rem] leading-relaxed text-foreground/80">
+                    <span class="mt-[0.7em] size-1.5 shrink-0 rounded-full bg-primary/70" aria-hidden="true"></span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- More interviews -->
+  <section class="container-lv pb-[clamp(4.5rem,10vw,9rem)]">
+    <a
+      href="/oral-history-caltech"
+      class="oh-more group card-lv card-hover spotlight relative block overflow-hidden p-7 sm:p-12 lg:p-14"
+      data-reveal="scale"
+    >
+      <div class="oh-more-wave" aria-hidden="true">
+        {Array.from({ length: 48 }, (_, i) => (
+          <span style={`--h:${(18 + Math.round(Math.abs(Math.sin(i * 0.55) * 62) + Math.abs(Math.cos(i * 1.7)) * 20))}%;--i:${i}`}></span>
+        ))}
+      </div>
+      <div class="relative z-[3] grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-end">
+        <div>
+          <p class="eyebrow">More interviews</p>
+          <h2 class="display-md mt-5 max-w-2xl">
+            Caltech Heritage Project <em>Oral History</em> (2025)
+          </h2>
+          <p class="lede mt-5 max-w-xl">
+            Also available: a four-part oral history recorded March–April 2025 with David Zierler.
+          </p>
+        </div>
+        <div class="flex flex-col gap-6 lg:items-end">
+          <ul class="flex flex-wrap gap-2 lg:justify-end" aria-label="Sessions recorded in 2025">
+            {caltechSessions.map((date, index) => (
+              <li class="chip">
+                <span class="text-foreground/70">{pad(index + 1)}</span>
+                {date}
+              </li>
             ))}
           </ul>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="rounded-apple bg-white p-6 text-center shadow-panel ring-1 ring-white/60">
-    <h2 class="text-2xl font-semibold text-ink">Watch the Full Interview</h2>
-    <p class="mt-3 text-ink/70">
-      Explore the entire conversation for deeper lessons on leadership, investment, and purpose-driven philanthropy.
-    </p>
-    <div class="mt-5 flex flex-wrap justify-center gap-3">
-      <a
-        class="btn btn-ink"
-        href="https://www.youtube.com/watch?v=WEHJnQ2XtN8"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Open on YouTube
-      </a>
-      <a
-        class="btn btn-ink"
-        href="https://archive.computerhistory.org/resources/access/text/2018/11/102738862-05-01-acc.pdf"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Read transcript (PDF)
-      </a>
-    </div>
-  </section>
-
-  <section class="rounded-apple bg-fog p-6 text-center shadow-panel ring-1 ring-white/60">
-    <h2 class="text-2xl font-semibold text-ink">More interviews</h2>
-    <p class="mt-3 text-ink/70">Also available: Caltech Heritage Project Oral History (2025)</p>
-    <div class="mt-5 flex justify-center">
-      <a class="btn btn-ink" href="/oral-history-caltech">
-        Listen &amp; read
-      </a>
-    </div>
+          <span class="btn btn-primary self-start lg:self-end">
+            <Icon name="audio-lines" size={16} />
+            Listen &amp; read
+            <Icon name="arrow-right" size={16} class="arrow" />
+          </span>
+        </div>
+      </div>
+    </a>
   </section>
 </BaseLayout>
+
+<style>
+  .oh-stage {
+    position: relative;
+  }
+  .oh-glow {
+    position: absolute;
+    inset: 8% 6% -6%;
+    border-radius: 3rem;
+    background: radial-gradient(60% 60% at 50% 60%, color-mix(in oklab, var(--glow) 32%, transparent), transparent 70%);
+    filter: blur(48px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  :global(.dark) .oh-glow {
+    opacity: 0.35;
+  }
+  .oh-video {
+    outline: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+    outline-offset: -1px;
+    background: color-mix(in oklab, var(--foreground) 92%, var(--background));
+  }
+
+  @media (min-width: 1024px) {
+    .oh-chapters-head {
+      position: sticky;
+      top: 7.5rem;
+      align-self: start;
+    }
+  }
+  .oh-chapter {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Decorative waveform that hints at the audio series on the other page. */
+  .oh-more-wave {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 46%;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.35rem;
+    padding-inline: 1.5rem;
+    opacity: 0.5;
+    pointer-events: none;
+    mask-image: linear-gradient(to top, #000, transparent 85%), linear-gradient(90deg, transparent, #000 40%);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+  }
+  .oh-more-wave span {
+    flex: 1 1 0;
+    min-width: 2px;
+    height: var(--h);
+    border-radius: 999px 999px 0 0;
+    background: color-mix(in oklab, var(--primary) 22%, transparent);
+    transform-origin: bottom;
+    transition: transform 900ms var(--ease-out-expo);
+    transition-delay: calc(var(--i) * 12ms);
+  }
+  .oh-more:hover .oh-more-wave span {
+    transform: scaleY(1.18);
+  }
+  .oh-more:hover .btn-primary {
+    background: color-mix(in oklab, var(--foreground) 86%, var(--primary));
+  }
+  .oh-more:hover .btn-primary .arrow {
+    transform: translateX(3px);
+  }
+</style>

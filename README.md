@@ -1,8 +1,14 @@
-# Listwin Ventures Rebuild
+# Listwin Ventures
 
-A modern Astro + Tailwind CSS scaffold prepared from the legacy WordPress export. The project
-includes cleaned static content, preserved media assets, and a responsive shell ready for further
-design or content work.
+Don Listwin's personal technology-investing and philanthropy site, live at
+**https://www.listwinventures.com**. Astro 7 static site + Tailwind 4, deployed on Vercel (push to
+`main` = production).
+
+The site was redesigned end-to-end in October 2026 — the "Quiet Ledger" design system: editorial
+whitespace, Instrument Serif display type over Geist, one Listwin-green accent, first-class light
+and dark themes (OS-following, with a toggle), and calm, optional motion (scroll reveals, count-ups,
+an animated network around the hero portrait, logo marquee, view transitions). **It ships zero
+framework JavaScript.** See [`docs/design-system.md`](docs/design-system.md).
 
 ## Prerequisites
 
@@ -43,8 +49,9 @@ npm run test:e2e:cv             # Playwright for the private CV workflow
 rather than a page. Use `vercel dev` to exercise it, or `npm run test:e2e:cv`, which serves the
 handler over a local http shim and needs no Vercel login.
 
-Note the `tests/visual.spec.ts` snapshot baselines are currently stale, so that suite fails as a
-whole. Review the diffs before treating a failure as a real regression.
+Visual snapshot baselines were regenerated for the October 2026 redesign (macOS renders). Refresh
+them with `npx playwright test tests/visual.spec.ts --update-snapshots` after an intended visual
+change, reviewing the diffs first.
 
 ### Large Files
 
@@ -60,14 +67,16 @@ the related media.
 
 ## Project Structure
 
-- `src/pages/` – Astro page routing (hero/homepage, legal pages, BelizeKids.org spotlight, oral history, contact form, exploit detail pages, etc.).
-- `src/layouts/BaseLayout.astro` – Global shell (sticky nav, dropdown menus, frosted glass header/footer, cookie-consent banner + deferred analytics loader).
+- `src/pages/` – Astro page routing (homepage, legal pages, BelizeKids.org spotlight, oral history, contact form, exploit detail pages, etc.). Each page owns its full-bleed sections (`.container-lv` + `.section-lv`).
+- `src/layouts/BaseLayout.astro` – Global shell (no-flash theme init, sticky header that frosts on scroll, theme toggle, dropdown menus, footer, share strip, cookie-consent banner + deferred analytics loader, and the one motion script).
+- `src/styles/global.css` – the whole design system: tokens (light + dark), type scale, buttons, cards, logo plates, form fields, motion. Tailwind 4 CSS-first config; there is no `tailwind.config.*` or PostCSS config.
+- `src/components/PageHero.astro`, `SectionHeading.astro`, `LogoTile.astro`, `CtaBand.astro`, `BrandMark.astro`, `NetworkHalo.astro`, `Icon.astro` – the redesign's building blocks.
 - `src/components/SiteNavigation.astro` – the header nav. **Zero-framework module JavaScript**
   (CSS desktop dropdowns + a native `<details>` mobile drawer with a small inline accessibility
   enhancement). It replaced the old React/Radix island. See “Navigation uses no framework
   JavaScript” in `docs/architecture.md`.
-- `src/components/CompanyCarousel.astro`, `LogoGrid.astro`, and `HeroMedia.astro` – reusable media primitives that render the homepage carousels, legacy grids, and hero imagery.
-- `src/components/Button` (global `.btn` utility via `src/styles/global.css`) – shared white-fill/colored-outline button styling consumed across all pages for consistent hover states.
+- `src/components/LogoGrid.astro`, `CompanyCarousel.astro`, and `HeroMedia.astro` – logo/media primitives (logos always sit on a `.logo-plate`; white-on-transparent marks are listed in `src/lib/logos.ts` and get a dark plate).
+- Buttons are global classes: `.btn` + `.btn-primary` (ink) / `.btn-secondary` / `.btn-ghost` / `.btn-brand` / `.btn-sm`.
 - `src/data/assets.ts` – legacy media mapping plus grouped board/investment/philanthropy collections.
 - `src/data/entityDetails.ts` – canonical portfolio metadata powering `/company/[slug]` pages and the nav dropdowns.
 - `src/data/exploitDetails.ts` – structured content for the Exploits cards and `/exploits/[slug]` pages (events, Belize initiatives, retreats).
@@ -90,9 +99,9 @@ To add or update a company:
 
 The navigation dropdowns pull from the same detail list. Company names now render in only one dropdown:
 
-- New – curated spotlight cards (driven by `workHighlights` in the layout).
+- Focus – curated spotlight items (driven by `workHighlights` in the layout).
 - Investments – grouped by stage, plus an Exits group.
-- Community Projects – philanthropic entities.
+- Community – philanthropic entities.
 - Some company routes intentionally hide the hero logo (Sequoia, HWVP, TeleSoft). Update the `hideHeroMedia` array inside `src/pages/company/[slug].astro` if you change that behaviour.
 - The Carbon Robotics detail page owns a “Latest News” block (`carbonNews` in the same file); refresh it whenever there is a notable funding or product announcement.
 
@@ -100,15 +109,17 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 
 The nav is a **zero-framework module-JS Astro component** (`src/components/SiteNavigation.astro`,
 fed `navItems` from `BaseLayout.astro`). Desktop dropdowns open on CSS
-`:hover`/`:focus-within`; the mobile drawer is a native `<details>`. A small inline script keeps
-ARIA state synchronized, contains and restores focus, makes background content inert, closes on
-Escape/backdrop activation, and preserves body scroll state. New icon names still need adding to
-the `astro.config.mjs` allowlist. It renders distinct menus:
+`:hover`/`:focus-within`; the mobile drawer is a native `<details>` full-height sheet with large
+serif entries. A small inline script keeps ARIA state synchronized, contains and restores focus,
+makes background content inert, closes on Escape/backdrop activation, and preserves body scroll
+state. Icons are Lucide names rendered by `Icon.astro`. It renders distinct menus:
 
-- **New** – curated spotlight cards for current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
-- **Investments** – mega-menu fed by `investmentAssets`/`entityDetails` (Seed, Private, Exits inserted between Private/Venture, then Venture, Public).
+- **Focus** – current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
+- **Investments** – mega-menu fed by `investmentAssets`/`entityDetails`, grouped by stage with Exits last.
 - **Community** – philanthropy slugs sourced from `entityDetails`.
-- **About** – links to the oral-history interview, the on-page “My Story” anchor, and the Press library.
+- **About** – My Story, the Caltech 2025 and CHM 2018 interviews, and the Press library.
+- **Press** – direct link to `/press`.
+- **Home** – mobile drawer only (the logo is the home link on desktop).
 - **Contact** – dedicated `/contact` page (first name, last name, organisation, email, message). Any CTA pointing to “Contact” should link to `/contact`.
   > **The contact form posts to a third-party form service.** The old Netlify markup
   > (`data-netlify` + hidden `form-name`) is gone; `src/pages/contact.astro` now posts to the URL in
@@ -121,7 +132,7 @@ the `astro.config.mjs` allowlist. It renders distinct menus:
   > is not configured instead of silently dropping the message.** New Formspree forms also require a
   > one-time email confirmation before they deliver.
 
-All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-width, touch-friendly drawer.
+All dropdowns share animated carets and card-style panels; the mobile nav expands into a full-height, touch-friendly sheet. A theme toggle (sun/moon) sits beside the nav on every breakpoint.
 
 The mobile drawer is tested as a real modal when JavaScript is available: focus stays inside,
 background content becomes inert, body scrolling locks, Escape closes the drawer, and focus returns
@@ -141,10 +152,11 @@ control and the static markup does not claim modal-only ARIA state.
 - Before release, run the focused responsive and CV tests plus `npm run build`, then verify that
   `dist/` contains no CV HTML, Word document, or CV PDF.
 
-### Icons (astro-icon allowlist)
+### Icons
 
-This project uses `astro-icon` in allowlist mode. If you reference a new icon name anywhere, add it
-to the `icon({ include: ... })` list in `astro.config.mjs` or `npm run build` will fail.
+`src/components/Icon.astro` renders Lucide (default) and Tabler (`tabler:` prefix) icons to inline
+SVG at build time from the Iconify JSON packages. No allowlist, no runtime JS; an unknown name
+fails the build.
 
 ## Press & References
 
@@ -158,5 +170,4 @@ to the `icon({ include: ... })` list in `astro.config.mjs` or `npm run build` wi
 - Keep `docs/architecture.md` in sync when redesigning sections (hero, investments, exploits, nav).
 - Use `src/data/entityDetails.ts` as the single source of truth for copy, CTA links, and navigation labels.
 - Maintain `src/data/exploitDetails.ts` when adding new “Exploits” cards so `/exploits/[slug]` stays in sync with the homepage.
-- Homepage content flows from: Hero → My Story → Investments (card carousel per stage) → Exploits. The Contact form now lives at `/contact`.
-- Prune or archive legacy pages (`home-old`, placeholder legal docs) once they are no longer needed.
+- Homepage content flows: Hero (portrait + animated network) → logo marquee → numbers → Current focus (Carbon Robotics, 4AG) → My Story → Milestones timeline → Interviews → Investments ledger (by stage) → Exploits (four themes) → Recognition → Contact CTA. The Contact form lives at `/contact`.

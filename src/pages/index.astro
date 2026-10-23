@@ -1,12 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CompanyCarousel from '../components/CompanyCarousel.astro';
-import HeroMedia from '../components/HeroMedia.astro';
-import { heroAssets, investmentAssets } from '../data/assets';
+import Icon from '../components/Icon.astro';
+import LogoTile from '../components/LogoTile.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CtaBand from '../components/CtaBand.astro';
+import NetworkHalo from '../components/NetworkHalo.astro';
+import { boardAssets, heroAssets, investmentAssets, type VisualAsset } from '../data/assets';
 import { getDetailPath, getEntityDetails, type EntityDetail } from '../data/entityDetails';
 import { getExploitPath } from '../data/exploitDetails';
 import { getPressItems, isExternalUrl, type PressItem } from '../data/press';
-import { Icon } from 'astro-icon/components';
+import { darkPlateLogoIds } from '../lib/logos';
 
 const profileSchema = {
   '@type': 'ProfilePage',
@@ -21,13 +24,10 @@ const pageDescription =
   'Don Listwin spent a decade at Cisco and led Openwave and RapidAI as CEO. See his investments across AI, robotics, and data, plus his cancer detection work.';
 
 const carbonRoboticsDetailPath = getDetailPath('carbon-robotics');
-const carbonRoboticsAsset = investmentAssets
-  .flatMap((group) => group.items)
-  .find((asset) => asset.id === 'carbon-robotics');
 const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
 const entityDetails = getEntityDetails();
 const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail) => [detail.slug, detail]));
-const hiddenInvestmentCarouselSlugs = new Set(['cradle']);
+const hiddenInvestmentSlugs = new Set(['cradle']);
 const pressItems = getPressItems();
 const verifiedLinkIds = [
   'stanford-medicine-deans-medal-2018-11-01',
@@ -41,23 +41,39 @@ const portraitPressItem = pressItems.find((item) => item.photo?.kind === 'hosted
 const hostedPortrait =
   portraitPressItem && portraitPressItem.photo?.kind === 'hosted' ? portraitPressItem.photo : null;
 
-const sectionIconNames = {
-  story: 'heroicons-outline:book-open',
-  work: 'tabler:compass',
-  investments: 'tabler:chart-line',
-  exploits: 'tabler:heart-handshake',
+// Stage groups for the investments ledger. "Frontier" and the archived group are not shown.
+const stageNotes: Record<string, string> = {
+  Seed: 'Earliest conviction',
+  Private: 'Growth-stage companies',
+  Venture: 'Funds & partnerships',
+  Public: 'Listed companies',
+  Philanthropic: 'Mission-driven',
+  Exits: 'Acquired, merged, or closed',
 };
-
-const investmentCarousels = investmentAssets.reduce((acc, group) => {
-  if (group.label === 'Frontier') return acc;
-  acc.push({
+const investmentGroups = investmentAssets
+  .filter((group) => group.label !== 'Frontier' && group.label !== 'Archived')
+  .map((group) => ({
     label: group.label,
+    note: stageNotes[group.label] ?? '',
     items: group.items
-      .map((asset) => entityDetailMap.get(asset.id))
-      .filter((detail): detail is EntityDetail => detail !== undefined && !hiddenInvestmentCarouselSlugs.has(detail.slug)),
-  });
-  return acc;
-}, [] as { label: string; items: EntityDetail[] }[]);
+      .map((asset) => ({ asset, detail: entityDetailMap.get(asset.id) }))
+      .filter((entry): entry is { asset: VisualAsset; detail: EntityDetail } =>
+        Boolean(entry.detail) && !hiddenInvestmentSlugs.has(entry.asset.id),
+      ),
+  }))
+  .filter((group) => group.items.length > 0);
+
+// Every distinct logo across boards and investments, for the marquee.
+const marqueeLogos = (() => {
+  const seen = new Set<string>();
+  return [...boardAssets.flatMap((group) => group.items), ...investmentAssets.flatMap((group) => group.items)].filter(
+    (asset) => {
+      if (seen.has(asset.id) || asset.id === '4ag' || asset.id === 'cradle') return false;
+      seen.add(asset.id);
+      return true;
+    },
+  );
+})();
 
 const linkTargets = {
   openwave: getDetailPath('openwave'),
@@ -70,9 +86,128 @@ const linkTargets = {
   belizekids: getDetailPath('belizekids'),
   stanford: getDetailPath('stanford'),
   canaryChallenge: getDetailPath('canary-challenge'),
+  zevx: getDetailPath('zevx'),
 };
 
-	const cardMedia: Record<
+// Every figure below is stated in the "My Story" copy on this page.
+const stats = [
+  { value: 40, suffix: '+', label: 'Years in the technology industry' },
+  { value: 10, suffix: '', label: 'Years building businesses at Cisco' },
+  { value: 12, prefix: '$', suffix: 'B+', label: 'Annual revenue across the businesses he oversaw' },
+  { value: 4, suffix: '', label: 'Current board seats' },
+];
+
+// Milestones, all drawn from the story copy and the press library.
+const milestones = [
+  {
+    year: '1980',
+    title: 'Develcon',
+    body: 'Began his career in Canada, marketing data switching technology for the mini-computer era.',
+    icon: 'radio',
+  },
+  {
+    year: '1990',
+    title: 'Cisco Systems',
+    body: 'Joined as employee #410. Over a decade he built the IBM, Access, and Service Provider businesses — more than $12B in annual revenue.',
+    icon: 'network',
+  },
+  {
+    year: '2000',
+    title: 'Openwave',
+    body: 'CEO of the public company whose software helped make the early mobile internet work.',
+    icon: 'smartphone',
+    href: linkTargets.openwave,
+  },
+  {
+    year: '2004',
+    title: 'Canary Foundation',
+    body: 'Founded to fund, discover, and develop tests for the early detection of cancer.',
+    icon: 'microscope',
+    href: linkTargets.canary,
+  },
+  {
+    year: '2009',
+    title: 'National Cancer Institute',
+    body: 'Appointed to the NCI’s Board of Scientific Advisors.',
+    icon: 'landmark',
+  },
+  {
+    year: '2010',
+    title: 'BelizeKids.org',
+    body: 'Co-created with his wife to support community and education initiatives in Belize.',
+    icon: 'heart-handshake',
+    href: '/belizekids',
+  },
+  {
+    year: '2018',
+    title: 'Stanford Dean’s Medal',
+    body: 'The School of Medicine’s highest honor; also began his tenure as CEO of RapidAI (2018–2021).',
+    icon: 'award',
+    href: linkTargets.stanford,
+  },
+  {
+    year: '2023',
+    title: 'ZEVX',
+    body: 'Named CEO as ZEVX closed a funding round of more than $20M.',
+    icon: 'zap',
+    href: '/zevx-closes-20m-funding-round-appoints-don-listwin-as-ceo',
+  },
+  {
+    year: '2025',
+    title: 'Carbon Robotics',
+    body: 'Joined the board as Lead Independent Director — AI, robotics, and agriculture.',
+    icon: 'tractor',
+    href: linkTargets.carbonRobotics,
+  },
+];
+
+const carbonPressReleaseUrl =
+  'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board';
+
+const focusCards = [
+  {
+    kicker: 'Lead Independent Director',
+    title: 'Carbon Robotics',
+    description:
+      'Carbon Robotics is revolutionizing agriculture with AI-guided laser weeding and tractor autonomy so growers can cut inputs, fight labor shortages, and capture agronomic data every pass.',
+    image: '/assets/media/carbon-laserweeder.webp',
+    imageAlt: 'Carbon Robotics LaserWeeder working a field at dusk',
+    href: carbonRoboticsDetailPath ?? '/',
+    linkLabel: 'Explore Carbon Robotics',
+    secondary: { label: 'Press release', href: carbonPressReleaseUrl },
+  },
+  {
+    kicker: 'Board member',
+    title: '4AG Robotics',
+    description: '4AG builds robots that pick, trim, and pack mushrooms at industrial scale.',
+    image: '/assets/media/4ag-robot.webp',
+    imageAlt: '4AG autonomous mushroom harvesting robot in a grow room',
+    href: '/4ag',
+    linkLabel: 'Explore 4AG',
+    secondary: { label: '4AG.ai', href: 'https://4ag.ai' },
+  },
+];
+
+const interviews = [
+  {
+    kicker: 'Caltech Heritage Project · 2025',
+    title: 'Caltech Heritage Project Oral History',
+    body: 'Four sessions with Don Listwin on leadership, investing, and building systems for early cancer detection.',
+    href: '/oral-history-caltech',
+    icon: 'audio-lines',
+    meta: '4 episodes · Audio + transcript',
+  },
+  {
+    kicker: 'Computer History Museum · 2018',
+    title: 'Oral History of Don Listwin',
+    body: 'The Computer History Museum oral history covering Cisco’s growth, Openwave, leadership lessons, and the Canary Foundation.',
+    href: '/oral-history',
+    icon: 'play',
+    meta: 'Video + full transcript',
+  },
+];
+
+const cardMedia: Record<
 	  string,
 	  {
 	    path: string;
@@ -141,54 +276,6 @@ const linkTargets = {
 	  // Reasonable default for WP-style photos when size isn't encoded in the filename.
 	  return { width: 768, height: 576 };
 	};
-
-const carbonPressReleaseUrl =
-  'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board';
-
-const recentWorkCards = [
-  {
-    title: 'Carbon Robotics',
-    role: 'Lead Independent Director, Carbon Robotics',
-    description:
-      'Carbon Robotics is revolutionizing agriculture with AI-guided laser weeding and tractor autonomy so growers can cut inputs, fight labor shortages, and capture agronomic data every pass.',
-    media: carbonRoboticsAsset ?? null,
-    mediaHref: carbonRoboticsDetailPath,
-    actions: [
-      {
-        label: 'Explore the Carbon Robotics detail →',
-        href: carbonRoboticsDetailPath ?? '#',
-        kind: 'link',
-      },
-      {
-        label: 'Read the press release',
-        href: carbonPressReleaseUrl,
-        kind: 'button',
-        buttonVariant: 'brand',
-        external: true,
-      },
-    ],
-  },
-  {
-    title: '4AG',
-    role: 'Autonomous mushroom harvesting robots',
-    description: '4AG builds robots that pick, trim, and pack mushrooms at industrial scale.',
-    media: null,
-    actions: [
-      {
-        label: 'Explore the 4AG initiative',
-        href: '/4ag',
-        kind: 'link',
-      },
-      {
-        label: 'Visit 4AG.ai',
-        href: 'https://4ag.ai',
-        kind: 'button',
-        buttonVariant: 'ink',
-        external: true,
-      },
-    ],
-  },
-];
 
 const exploitThemes = [
   {
@@ -315,156 +402,218 @@ const exploitThemes = [
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} jsonLd={profileSchema}>
-  <section data-reveal class="space-y-7 rounded-apple bg-gradient-to-br from-white via-white to-brand/5 p-8 text-center shadow-panel ring-1 ring-white/60 sm:p-12">
-		    <p class="mx-auto flex items-center justify-center text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-ink/50 sm:text-xs">
-	      <span class="sr-only">Roles:</span>
-	      <span class="typing-line">
-	        <span id="hero-typing" class="text-[0.78rem] text-ink/70 sm:text-sm">Technology investor</span>
-	        <span class="inline-block h-3 w-[2px] animate-pulse bg-brand align-middle motion-reduce:animate-none sm:h-4" aria-hidden="true"></span>
-	      </span>
-	    </p>
-    <h1 class="font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">Don Listwin</h1>
-    <p class="mx-auto max-w-2xl text-ink/70">
-      Building enduring companies across networking, data, and health while backing founders who pair engineering rigor with human
-      impact.
-      <br />
-      <br />
-      And now digging into AG TECH AI ROBOTICS.
-    </p>
-    <div class="grid gap-4 sm:grid-cols-2">
-      <div
-        data-reveal
-        class="hero-spotlight-card group space-y-4 rounded-[32px] border border-ink/10 px-6 py-6 text-center text-white shadow-panel transition"
-        style={`--hero-image: url('/assets/media/carbon-laserweeder.webp');`}
-      >
-        <span class="hero-spotlight-card__glow" aria-hidden="true"></span>
-        <div class="hero-spotlight-card__content space-y-3">
-          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">Current focus</p>
-          <p class="text-lg font-semibold text-white">Carbon Robotics</p>
-          <a class="btn btn-ink" href={carbonRoboticsDetailPath ?? '#'}>
-            Explore Carbon Robotics
+  <!-- ─────────────── Hero ─────────────── -->
+  <section class="home-hero relative overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="container-lv relative z-10 grid items-center gap-14 pb-20 pt-10 sm:pt-16 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[1.15fr_0.85fr] lg:gap-10 lg:pb-24 lg:pt-8">
+      <div>
+        <a href="#focus" class="chip chip-live rise transition-colors hover:border-primary/40 hover:text-foreground" style="--d:0ms">
+          Now: AI robotics in agriculture
+        </a>
+        <p class="eyebrow rise mt-8" style="--d:80ms">
+          <span class="sr-only">Roles: </span>
+          <span class="role-rotator" aria-hidden="true">
+            <span>Technology investor</span>
+            <span>CEO</span>
+            <span>Philanthropist</span>
+          </span>
+          <span class="sr-only">Technology investor, CEO, philanthropist</span>
+        </p>
+        <h1 class="display-xl rise-words mt-5">
+          <span class="word" style="--i:0">Don</span>
+          <span class="word" style="--i:1"><em>Listwin</em></span>
+        </h1>
+        <p class="lede rise mt-8 max-w-xl" style="--d:420ms">
+          Building enduring companies across networking, data, and health while backing founders who pair engineering rigor
+          with human impact — and now digging into AgTech, AI, and robotics.
+        </p>
+        <div class="rise mt-10 flex flex-wrap items-center gap-3" style="--d:540ms">
+          <a href="#my-story" class="btn btn-primary">
+            Read my story
+            <Icon name="arrow-down" size={16} class="arrow" />
+          </a>
+          <a href="#investments" class="btn btn-secondary">
+            Investments
           </a>
         </div>
+        <dl class="rise mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-border pt-6" style="--d:660ms">
+          <div>
+            <dt class="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">Built</dt>
+            <dd class="mt-1 text-sm font-medium">Cisco · Openwave</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">Founded</dt>
+            <dd class="mt-1 text-sm font-medium">Canary Foundation</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">Backing</dt>
+            <dd class="mt-1 text-sm font-medium">AI · Robotics · Data</dd>
+          </div>
+        </dl>
       </div>
-      <div
-        data-reveal
-        class="hero-spotlight-card group space-y-4 rounded-[32px] border border-ink/10 px-6 py-6 text-center text-white shadow-panel transition"
-        style={`--hero-image: url('/assets/media/4ag-robot.webp');`}
-      >
-        <span class="hero-spotlight-card__glow" aria-hidden="true"></span>
-        <div class="hero-spotlight-card__content space-y-3">
-          <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">Current focus</p>
-          <p class="text-lg font-semibold text-white">4AG</p>
-          <a class="btn btn-ink" href="/4ag">
-            Explore 4AG Robotics
-          </a>
+
+      <div class="hero-visual rise relative mx-auto w-full max-w-[34rem]" style="--d:200ms">
+        <div class="absolute inset-[-8%]" aria-hidden="true">
+          <NetworkHalo />
+        </div>
+        {portrait && (
+          <figure class="portrait-frame relative mx-auto aspect-[640/702] w-[72%] overflow-hidden rounded-[2.25rem] border border-border bg-muted shadow-[var(--shadow-panel)]">
+            <img
+              src={portrait.path}
+              alt={portrait.alt}
+              width="640"
+              height="702"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+          </figure>
+        )}
+        <div class="hero-badge float-a absolute -left-1 top-[14%] sm:left-0">
+          <span class="grid size-9 place-items-center rounded-xl bg-accent text-accent-foreground"><Icon name="network" size={17} /></span>
+          <span>
+            <span class="block text-[0.8rem] font-medium leading-tight">Cisco Systems</span>
+            <span class="block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-muted-foreground">1990 – 2000</span>
+          </span>
+        </div>
+        <div class="hero-badge float-b absolute -right-1 bottom-[16%] sm:right-0">
+          <span class="grid size-9 place-items-center rounded-xl bg-accent text-accent-foreground"><Icon name="microscope" size={17} /></span>
+          <span>
+            <span class="block text-[0.8rem] font-medium leading-tight">Canary Foundation</span>
+            <span class="block font-mono text-[0.62rem] uppercase tracking-[0.12em] text-muted-foreground">Founded 2004</span>
+          </span>
         </div>
       </div>
     </div>
-  </section>
-
-  <section data-reveal class="rounded-apple border border-white/80 bg-white/95 p-5 shadow-panel ring-1 ring-white/60 sm:p-6">
-    <a
-      href="/oral-history-caltech"
-      class="group block rounded-[26px] border border-ink/10 bg-gradient-to-r from-fog via-white to-fog p-5 transition hover:border-brand/45 hover:shadow-panel sm:p-6"
-    >
-      <div class="flex flex-col gap-4 text-left sm:flex-row sm:items-center sm:justify-between">
-        <div class="space-y-2">
-          <p class="text-xs font-semibold uppercase tracking-[0.35em] text-brand/80">Featured interview</p>
-          <h2 class="text-2xl font-semibold text-ink sm:text-3xl">Caltech Heritage Project Oral History (2025)</h2>
-          <p class="text-sm text-ink/70 sm:text-base">
-            Four sessions with Don Listwin on leadership, investing, and building systems for early cancer detection.
-          </p>
-        </div>
-        <span class="inline-flex items-center text-sm font-semibold text-brand transition group-hover:text-brand-soft">
-          View interview
-        </span>
-      </div>
+    <a href="#logos" class="scroll-cue absolute bottom-6 left-1/2 hidden -translate-x-1/2 lg:flex" aria-label="Scroll to content">
+      <span class="scroll-cue-dot"></span>
     </a>
   </section>
 
-  {hostedPortrait && (
-    <section data-reveal class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="grid gap-6 lg:grid-cols-[auto_1fr] lg:items-center">
-        <div class="flex items-center gap-4">
+  <!-- ─────────────── Logo marquee ─────────────── -->
+  <section id="logos" class="border-y border-border bg-card/50 py-10" aria-label="Boards, investments, and exits">
+    <p class="container-lv mb-7 text-center font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground">
+      Boards, investments &amp; exits across four decades
+    </p>
+    <div class="marquee" style="--marquee-duration:70s">
+      <div class="marquee-track gap-3 pr-3">
+        {[0, 1].map((copy) => (
+          <div class="flex shrink-0 gap-3" aria-hidden={copy === 1 ? 'true' : undefined}>
+            {marqueeLogos.map((asset) => (
+              <span class:list={['logo-plate h-16 w-40 shrink-0 border border-border px-6 sm:h-[4.5rem] sm:w-44', darkPlateLogoIds.has(asset.id) && 'is-dark']}>
+                <img
+                  src={asset.path}
+                  alt={copy === 1 ? '' : asset.alt}
+                  width="320"
+                  height="128"
+                  loading="lazy"
+                  decoding="async"
+                  class="max-h-8 w-auto max-w-full sm:max-h-9"
+                />
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── Numbers ─────────────── -->
+  <section class="container-lv section-tight" aria-label="By the numbers">
+    <dl class="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4" data-reveal-stagger="90">
+      {stats.map((stat) => (
+        <div data-reveal class="border-l border-border pl-5 sm:pl-6">
+          <dd
+            class="stat-num"
+            data-count-to={stat.value}
+            data-count-prefix={stat.prefix ?? ''}
+            data-count-suffix={stat.suffix}
+          >
+            {stat.prefix ?? ''}{stat.value}{stat.suffix}
+          </dd>
+          <dt class="mt-3 max-w-[14rem] text-sm leading-snug text-muted-foreground">{stat.label}</dt>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- ─────────────── Current focus ─────────────── -->
+  <section id="focus" class="container-lv section-lv pt-8">
+    <SectionHeading eyebrow="Current focus" title="Where engineering meets the <em>field</em>">
+      <p class="max-w-sm text-[0.95rem] leading-relaxed text-muted-foreground md:text-right">
+        Board work at the frontier of AI-driven agriculture: autonomous machines that make farming cleaner and more productive.
+      </p>
+    </SectionHeading>
+    <div class="mt-14 grid gap-5 lg:grid-cols-2" data-reveal-stagger="120">
+      {focusCards.map((card) => (
+        <article data-reveal class="focus-card group relative isolate flex min-h-[30rem] flex-col justify-end overflow-hidden rounded-[2rem] text-white sm:min-h-[36rem]">
           <img
-            src={hostedPortrait.src}
-            alt={hostedPortrait.alt}
-            width="220"
-            height="220"
+            src={card.image}
+            alt={card.imageAlt}
+            width="1600"
+            height="900"
             loading="lazy"
             decoding="async"
-            class="h-28 w-28 rounded-[24px] border border-ink/10 object-cover sm:h-32 sm:w-32"
+            class="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-[1600ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
           />
-          <div class="space-y-2">
-            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Verified</p>
-            <h2 class="text-2xl font-semibold text-ink">Recognition & portraits</h2>
-            <p class="text-sm text-ink/70">
-              Primary-source links that corroborate Don’s Stanford honors and academic affiliations.
-            </p>
-            <p class="text-xs text-ink/60">
-              {hostedPortrait.credit} (
-              <a class="underline hover:text-ink" href={hostedPortrait.licenseUrl} target="_blank" rel="noopener noreferrer">
-                {hostedPortrait.licenseLabel}
+          <div class="focus-scrim absolute inset-0 -z-10" aria-hidden="true"></div>
+          <div class="p-7 sm:p-10">
+            <p class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-white/70">{card.kicker}</p>
+            <h3 class="mt-3 font-display text-[2.6rem] leading-none tracking-[-0.02em] sm:text-[3.25rem]">
+              <a href={card.href} class="stretched-link">{card.title}</a>
+            </h3>
+            <p class="mt-4 max-w-md text-[0.98rem] leading-relaxed text-white/80">{card.description}</p>
+            <div class="relative z-[3] mt-7 flex flex-wrap items-center gap-3">
+              <span class="btn btn-sm bg-white text-neutral-950 group-hover:bg-white/90" aria-hidden="true">
+                {card.linkLabel}
+                <Icon name="arrow-right" size={15} class="arrow" />
+              </span>
+              <a
+                href={card.secondary.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-sm border-white/30 text-white backdrop-blur-sm hover:bg-white/10"
+              >
+                {card.secondary.label}
+                <Icon name="arrow-up-right" size={14} class="arrow-diag" />
               </a>
-              ) via{' '}
-              <a class="underline hover:text-ink" href={hostedPortrait.sourceUrl} target="_blank" rel="noopener noreferrer">
-                Wikimedia Commons
-              </a>
-            </p>
+            </div>
           </div>
-        </div>
-        <div class="space-y-4">
-          <div class="flex flex-wrap gap-3">
-            {verifiedLinks.map((item) => {
-              const external = isExternalUrl(item.url);
-              return (
-                <a
-                  key={item.id}
-                  class="btn btn-ink px-4 py-2"
-                  href={item.url}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                >
-                  {item.title}
-                </a>
-              );
-            })}
-          </div>
-          <a class="text-sm font-semibold text-brand transition hover:text-brand-soft" href="/press">
-            See Press & References →
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ─────────────── My Story ─────────────── -->
+  <section id="my-story" class="story relative border-t border-border bg-card/40">
+    <div class="container-lv section-lv grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+        <p class="eyebrow">My story</p>
+        <h2 class="display-md mt-4">Forty years of building what <em>connects</em> us.</h2>
+        <p class="mt-6 max-w-sm text-[0.95rem] leading-relaxed text-muted-foreground">
+          From data switching in the mini-computer era to AI in the farm field — told in Don’s own words.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-secondary btn-sm" href="/oral-history">
+            <Icon name="play" size={14} />
+            Watch the oral history
           </a>
         </div>
       </div>
-    </section>
-  )}
 
-  <section id="my-story" data-reveal class="space-y-6">
-    <div class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="grid gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-center">
-        <div class="space-y-4">
-	          <h2 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
-	            <span class="section-icon" aria-hidden="true">
-	              <Icon name={sectionIconNames.story} width="16" height="16" />
-	            </span>
-	            My Story
-	          </h2>
-          <p>
-            I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a
-            public company—<a href={linkTargets.openwave}>OpenWave</a>—that helped power the first generation of the mobile internet. Since then, I created
-            Listwin Ventures which has invested in dozens of other leading technology companies. I founded the
-            <a href={linkTargets.canary}>Canary Foundation</a> in 2004 to advance early cancer detection. My operating experience
-            includes CEO roles at <a href={linkTargets.rapidai}>RapidAI</a> and ZEVX. I currently
-            serve on four boards: <a href={linkTargets.fourAg}>4AG Robotics</a>, <a href={linkTargets.carbonRobotics}>Carbon Robotics</a>,
-            <a href={linkTargets.canary}>Canary Foundation</a>, and <a href={linkTargets.belizekids}>BelizeKids.org</a>. I also serve as
-            a Tech Partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
-          </p>
-        </div>
-        {portrait && <HeroMedia asset={portrait} showCaption={false} loading="eager" fetchpriority="high" />}
-      </div>
-    </div>
-    <div class="rounded-apple border border-white/80 bg-white/90 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="space-y-4">
+      <div class="prose-lv max-w-[42rem]" data-reveal>
+        <p class="story-lead !text-[1.2rem] !leading-[1.6] text-foreground sm:!text-[1.45rem]">
+          I have 40+ years in the technology industry. I built a successful tech career at Cisco, and then became the CEO of a
+          public company—<a href={linkTargets.openwave}>OpenWave</a>—that helped power the first generation of the mobile
+          internet. Since then, I created Listwin Ventures which has invested in dozens of other leading technology companies. I
+          founded the <a href={linkTargets.canary}>Canary Foundation</a> in 2004 to advance early cancer detection. My operating
+          experience includes CEO roles at <a href={linkTargets.rapidai}>RapidAI</a> and ZEVX. I currently serve on four boards:
+          <a href={linkTargets.fourAg}>4AG Robotics</a>, <a href={linkTargets.carbonRobotics}>Carbon Robotics</a>,
+          <a href={linkTargets.canary}>Canary Foundation</a>, and <a href={linkTargets.belizekids}>BelizeKids.org</a>. I also
+          serve as a Tech Partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
+        </p>
         <p>
           With a focus on developing networking and data center technologies for the Internet, I began my career in 1980 at
           Develcon in Canada, marketing data switching technology for the mini-computer era. In the mid-1980s, I relocated to
@@ -473,17 +622,19 @@ const exploitThemes = [
           annual revenue. In 2000, I became CEO of <a href={linkTargets.openwave}>Openwave</a>, which provided software that helped
           make the early mobile Internet work.
         </p>
+        <blockquote class="story-quote">
+          “I think just about any problem can be fixed with the right amount of leadership, intellect, and time.”
+        </blockquote>
         <p>
           After 25 years of senior leadership operating experience, I founded the <a href={linkTargets.canary}>Canary Foundation</a>
           in 2004 and dedicated myself to philanthropic work in science and technology for the early detection of cancer. The
           <a href={linkTargets.canary}>Canary Foundation</a> is a non-profit organization focused on funding, discovering, and
-          developing tests for early cancer detection. I continue to be deeply involved with other
-          cancer-related organizations. In 2009, I was appointed to the National Cancer Institute’s Board of Scientific Advisors. I
-          am a member of the Stanford Advisory Board for the Canary Center for Cancer Early Detection at
-          <a href={linkTargets.stanford}>Stanford</a> and in 2018 I was honored to be awarded the Dean's Medal—the highest honor
-          bestowed by the School of Medicine to individuals whose contributions have significantly advanced the mission of
-          <a href={linkTargets.stanford}>Stanford Medicine</a>. I am also a faculty member in Radiology at
-          <a href={linkTargets.stanford}>Stanford Medicine</a>.
+          developing tests for early cancer detection. I continue to be deeply involved with other cancer-related organizations. In
+          2009, I was appointed to the National Cancer Institute’s Board of Scientific Advisors. I am a member of the Stanford
+          Advisory Board for the Canary Center for Cancer Early Detection at <a href={linkTargets.stanford}>Stanford</a> and in 2018
+          I was honored to be awarded the Dean's Medal—the highest honor bestowed by the School of Medicine to individuals whose
+          contributions have significantly advanced the mission of <a href={linkTargets.stanford}>Stanford Medicine</a>. I am also a
+          faculty member in Radiology at <a href={linkTargets.stanford}>Stanford Medicine</a>.
         </p>
         <p>
           From 2018–2021, I served as CEO of <a href={linkTargets.rapidai}>RapidAI</a>— the worldwide leader in cerebrovascular
@@ -500,253 +651,453 @@ const exploitThemes = [
           A native of Canada, I hold a B.E. in Electrical Engineering and an Honorary Doctor of Laws from the University of
           Saskatchewan, Canada where I continue to actively support student entrepreneurs.
         </p>
-        <div class="pt-2">
-      <a class="btn btn-ink" href="/oral-history">
-        Learn more about Don’s story
-      </a>
-        </div>
       </div>
     </div>
   </section>
 
-	  <section id="recent-work" class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-	    <h2 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/60">
-	      <span class="section-icon" aria-hidden="true">
-	        <Icon name={sectionIconNames.work} width="16" height="16" />
-	      </span>
-	      Recent work
-	    </h2>
-    <div class="grid gap-6 lg:grid-cols-2">
-      {recentWorkCards.map((card) => (
-        <article key={card.title} class="space-y-4 rounded-apple border border-white/70 bg-white/90 p-5 shadow-panel">
-          <div class="space-y-2">
-            <h3 class="text-2xl font-semibold text-ink">{card.title}</h3>
-            <p class="text-sm font-semibold text-ink/70">{card.role}</p>
-            <p class="text-sm text-ink/70">{card.description}</p>
+  <!-- ─────────────── Journey timeline ─────────────── -->
+  <section id="journey" class="section-lv overflow-hidden">
+    <div class="container-lv">
+      <SectionHeading eyebrow="The journey" title="Milestones, <em>1980</em> to now">
+        <div class="timeline-controls hidden gap-2 md:flex" data-timeline-controls hidden>
+          <button type="button" class="grid size-11 place-items-center rounded-full border border-border bg-card transition hover:bg-muted" data-timeline-prev aria-label="Previous milestones">
+            <Icon name="arrow-left" size={17} />
+          </button>
+          <button type="button" class="grid size-11 place-items-center rounded-full border border-border bg-card transition hover:bg-muted" data-timeline-next aria-label="Next milestones">
+            <Icon name="arrow-right" size={17} />
+          </button>
+        </div>
+      </SectionHeading>
+    </div>
+    <div class="timeline-scroller mt-14" data-timeline-track tabindex="0" aria-label="Career milestones">
+      <ol class="timeline-list" data-reveal-stagger="60">
+        {milestones.map((milestone) => (
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <p class="font-display text-[3.25rem] leading-none tracking-[-0.03em] text-foreground">{milestone.year}</p>
+            <div class="mt-6 flex items-center gap-2.5">
+              <span class="grid size-8 place-items-center rounded-lg border border-border bg-card text-primary">
+                <Icon name={milestone.icon} size={15} />
+              </span>
+              <h3 class="text-[1.05rem] font-medium">
+                {milestone.href ? (
+                  <a href={milestone.href} class="transition-colors hover:text-primary">{milestone.title}</a>
+                ) : (
+                  milestone.title
+                )}
+              </h3>
+            </div>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-muted-foreground">{milestone.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─────────────── Interviews ─────────────── -->
+  <section class="container-lv section-tight" aria-labelledby="interviews-heading">
+    <SectionHeading id="interviews-heading" eyebrow="In conversation" title="Two oral histories, <em>one</em> career" />
+    <div class="mt-12 grid gap-5 md:grid-cols-2" data-reveal-stagger="120">
+      {interviews.map((interview) => (
+        <article data-reveal class="group card-lv card-hover spotlight relative flex flex-col overflow-hidden p-7 sm:p-9">
+          <div class="flex items-start justify-between gap-4">
+            <span class="grid size-12 place-items-center rounded-2xl bg-foreground text-background transition-transform duration-500 group-hover:scale-105">
+              <Icon name={interview.icon} size={20} />
+            </span>
+            <Icon name="arrow-up-right" size={20} class="text-muted-foreground transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
           </div>
-          <div class="flex flex-wrap gap-3">
-            {card.actions.map((action) => {
-              if (action.kind === 'link') {
-                return (
-                  <a
-                    key={action.label}
-                    class="inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:text-brand-soft"
-                    href={action.href}
-                    target={action.external ? '_blank' : undefined}
-                    rel={action.external ? 'noopener noreferrer' : undefined}
-                  >
-                    {action.label}
-                  </a>
-                );
-              }
-              const variant = action.buttonVariant === 'ink' ? 'btn-ink' : 'btn-brand';
-              return (
-                <a
-                  key={action.label}
-                  class={`btn ${variant}`}
-                  href={action.href}
-                  target={action.external ? '_blank' : undefined}
-                  rel={action.external ? 'noopener noreferrer' : undefined}
-                >
-                  {action.label}
-                </a>
-              );
-            })}
-          </div>
-          {card.media && (
-            <HeroMedia asset={card.media} rounded={false} showCaption={false} linkHref={card.mediaHref ?? undefined} />
-          )}
+          <p class="mt-10 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted-foreground">{interview.kicker}</p>
+          <h3 class="display-sm mt-3">
+            <a href={interview.href} class="stretched-link">{interview.title}</a>
+          </h3>
+          <p class="mt-4 max-w-md text-[0.98rem] leading-relaxed text-muted-foreground">{interview.body}</p>
+          <p class="mt-8 inline-flex items-center gap-2 text-sm font-medium text-foreground/80">
+            <span class="size-1.5 rounded-full bg-primary"></span>
+            {interview.meta}
+          </p>
         </article>
       ))}
     </div>
   </section>
 
-	  <section id="investments" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-	    <div class="space-y-4">
-	      <p class="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.35em] text-ink/70">
-	        <span class="section-icon" aria-hidden="true">
-	          <Icon name={sectionIconNames.investments} width="16" height="16" />
-	        </span>
-	        TECHNOLOGY AND BUSINESS DEVELOPMENT &middot; FOR NEW TECHNOLOGIES
-	      </p>
-	      <h2 class="text-lg font-semibold text-ink">My Investments</h2>
-      <p class="text-ink/70">
-        My investments range from seed through sizable stakes in public entities.
-      </p>
-      <p class="text-ink/70">
-        I like helping to solve technology and market development problems. As an engineer and entrepreneur, I think just about
-        any problem can be fixed with the right amount of leadership, intellect, and time. I believe in a systematic approach
-        that involves many disciplines collaborating to share information and working together around the world to give an edge.
-        This is how we do groundbreaking work bringing new products to market.
-      </p>
-    </div>
-    <div class="space-y-8">
-      {investmentCarousels.map((group) => (
-        <CompanyCarousel title={group.label} items={group.items} hideImages={group.label === 'Venture'} />
-      ))}
-    </div>
-  </section>
+  <!-- ─────────────── Investments ─────────────── -->
+  <section id="investments" class="section-lv border-t border-border">
+    <div class="container-lv">
+      <div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-end" data-reveal>
+        <div>
+          <p class="eyebrow">Technology &amp; business development · For new technologies</p>
+          <h2 class="display-lg mt-4">My <em>Investments</em></h2>
+        </div>
+        <div class="space-y-4 text-[1.02rem] leading-relaxed text-muted-foreground">
+          <p class="text-foreground">My investments range from seed through sizable stakes in public entities.</p>
+          <p>
+            I like helping to solve technology and market development problems. As an engineer and entrepreneur, I think just about
+            any problem can be fixed with the right amount of leadership, intellect, and time. I believe in a systematic approach
+            that involves many disciplines collaborating to share information and working together around the world to give an
+            edge. This is how we do groundbreaking work bringing new products to market.
+          </p>
+        </div>
+      </div>
 
-  <section id="exploits" data-reveal class="space-y-6 rounded-apple bg-gradient-to-br from-fog via-white to-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="grid gap-8 lg:grid-cols-[1.2fr]">
-      <div class="space-y-4">
-        <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">
-          <span class="section-icon" aria-hidden="true">
-            <Icon name={sectionIconNames.exploits} width="16" height="16" />
-          </span>
-          Exploits
-        </p>
-        <h2 class="text-3xl font-semibold text-ink">Community development projects</h2>
-        <a class="btn btn-ink" href={linkTargets.belizekids ?? '#'}>
-          Visit BelizeKids.org
-        </a>
+      <!-- Each stage row keeps its heading, note, and tiles under one parent: the content test reads
+           the Exits heading's parent for the exit names. -->
+      <div class="mt-16 space-y-0 border-t border-border sm:mt-20">
+        {investmentGroups.map((group) => (
+          <div class="investment-row grid gap-x-12 border-b border-border py-10 lg:grid-cols-[16rem_1fr] lg:grid-rows-[auto_1fr] lg:py-12">
+            <h3 class="font-display text-[2rem] leading-none tracking-[-0.02em] lg:col-start-1" data-reveal>{group.label}</h3>
+            <p class="mt-3 flex items-start gap-2 self-start font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted-foreground lg:col-start-1" data-reveal>
+              <span class="tabular-nums text-foreground">{String(group.items.length).padStart(2, '0')}</span>
+              <span aria-hidden="true">·</span>
+              {group.note}
+            </p>
+            <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 xl:grid-cols-4" data-reveal-stagger="45">
+              {group.items.map(({ asset, detail }) => (
+                <div data-reveal>
+                  <LogoTile asset={asset} label={detail.name.replace(/\s+(logo|crest|lockup)$/i, '')} size="sm" class="h-full" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-    <div class="space-y-10">
-      {exploitThemes.map((theme) => (
-        <div class="space-y-4" key={theme.kicker}>
-          <div class="space-y-2">
-            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/60">{theme.kicker}</p>
-            <h3 class="text-xl font-semibold text-ink">{theme.heading}</h3>
+  </section>
+
+  <!-- ─────────────── Exploits ─────────────── -->
+  <section id="exploits" class="section-lv relative overflow-hidden bg-card/40">
+    <div class="container-lv">
+      <SectionHeading
+        eyebrow="Exploits"
+        title="Community development <em>projects</em>"
+        description="Big events, big ideas, big love, and big fun — the work beyond the boardroom."
+      >
+        <a class="btn btn-secondary" href={linkTargets.belizekids ?? '/belizekids'}>
+          Visit BelizeKids.org
+          <Icon name="arrow-right" size={15} class="arrow" />
+        </a>
+      </SectionHeading>
+
+      <nav class="exploit-index mt-12 flex gap-2 overflow-x-auto pb-2" aria-label="Exploit themes">
+        {exploitThemes.map((theme) => (
+          <a href={`#theme-${theme.kicker.toLowerCase().replace(/\s+/g, '-')}`} class="chip shrink-0 transition-colors hover:border-primary/40 hover:text-foreground">
+            {theme.kicker}
+          </a>
+        ))}
+      </nav>
+
+      <div class="mt-14 space-y-24">
+        {exploitThemes.map((theme, themeIndex) => (
+          <div id={`theme-${theme.kicker.toLowerCase().replace(/\s+/g, '-')}`} class="scroll-mt-28">
+            <div class="flex items-baseline gap-5" data-reveal>
+              <span class="font-mono text-xs tabular-nums text-muted-foreground">0{themeIndex + 1}</span>
+              <div>
+                <p class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-primary">{theme.kicker}</p>
+                <h3 class="display-sm mt-2">{theme.heading}</h3>
+              </div>
+            </div>
+            <div
+              class:list={[
+                'mt-10 grid gap-5 sm:grid-cols-2',
+                theme.cards.length === 4 && 'lg:grid-cols-4',
+                theme.cards.length === 5 && 'lg:grid-cols-4',
+              ]}
+              data-reveal-stagger="80"
+            >
+              {theme.cards.map((card, cardIndex) => {
+                const media = card.tag ? cardMedia[card.tag] : undefined;
+                const mediaDimensions = media ? inferImageDimensionsFromPath(media.path) : null;
+                const featured = theme.cards.length === 5 && cardIndex === 0;
+                return (
+                  <article
+                    data-reveal
+                    class:list={[
+                      'group card-lv card-hover spotlight relative flex flex-col overflow-hidden p-2',
+                      featured && 'lg:col-span-2 lg:row-span-2',
+                    ]}
+                  >
+                    {media && (
+                      <div class:list={['media-frame rounded-[1.4rem]', featured ? 'aspect-[4/3] lg:aspect-auto lg:min-h-[22rem] lg:flex-1' : 'aspect-[4/3]']}>
+                        <img
+                          src={media.path}
+                          alt={media.alt}
+                          width={mediaDimensions?.width ?? 768}
+                          height={mediaDimensions?.height ?? 576}
+                          loading="lazy"
+                          decoding="async"
+                          class="transition-transform duration-[1400ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
+                        />
+                      </div>
+                    )}
+                    <div class:list={['flex flex-col p-4 sm:p-5', !featured && 'flex-1']}>
+                      <h4 class:list={['font-medium leading-snug tracking-[-0.01em]', featured ? 'font-display text-[2rem] font-normal' : 'text-[1.1rem]']}>
+                        {card.link ? (
+                          <a href={card.link} class="stretched-link">
+                            {card.title}
+                          </a>
+                        ) : (
+                          card.title
+                        )}
+                      </h4>
+                      <p class="mt-2 text-[0.92rem] leading-relaxed text-muted-foreground">{card.description}</p>
+                      {card.link && (
+                        <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-medium text-foreground/80 transition-colors group-hover:text-primary" aria-hidden="true">
+                          Learn more
+                          <Icon name="arrow-right" size={14} class="transition-transform duration-500 group-hover:translate-x-0.5" />
+                        </span>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </div>
-          <div class="grid gap-4 md:grid-cols-2">
-	            {theme.cards.map((card, cardIndex) => {
-	              const media = card.tag ? cardMedia[card.tag] : undefined;
-	              const mediaDimensions = media ? inferImageDimensionsFromPath(media.path) : null;
-	              const buttonHref = card.link ?? '#';
-	              const buttonDisabled = !card.link;
-	              return (
-                <article
-                  data-reveal
-                  style={`--reveal-delay:${cardIndex * 80}ms;`}
-                  class="group space-y-3 rounded-[28px] border border-white/70 bg-white/90 p-5 text-sm text-ink/75 shadow-panel transition hover:-translate-y-1 hover:border-brand/40 hover:shadow-xl"
-                  key={card.title}
-                >
-	                  {media && (
-	                    <img
-	                      src={media.path}
-	                      alt={media.alt}
-	                      width={mediaDimensions?.width ?? 768}
-	                      height={mediaDimensions?.height ?? 576}
-	                      loading="lazy"
-	                      decoding="async"
-	                      class="w-full rounded-[24px] border border-white/70"
-	                    />
-	                  )}
-                  <h4 class="text-lg font-semibold text-ink">{card.title}</h4>
-                  <p>{card.description}</p>
-                  {buttonDisabled ? (
-                    <span
-                      class="btn btn-ink cursor-not-allowed border-ink/20 text-xs uppercase tracking-[0.3em] text-ink/40"
-                      aria-disabled="true"
-                    >
-                      Learn more<span class="sr-only"> about {card.title} (coming soon)</span>
-                    </span>
-                  ) : (
-                    <a class="btn btn-ink text-xs uppercase tracking-[0.3em]" href={buttonHref}>
-                      Learn more<span class="sr-only"> about {card.title}</span>
-                    </a>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </section>
 
+  <!-- ─────────────── Recognition ─────────────── -->
+  {hostedPortrait && (
+    <section class="container-lv section-lv" aria-labelledby="recognition-heading">
+      <div class="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <figure data-reveal="scale">
+          <div class="media-frame aspect-[4/3] rounded-[2rem] shadow-[var(--shadow-lift)]">
+            <img src={hostedPortrait.src} alt={hostedPortrait.alt} width="1200" height="900" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="mt-4 text-xs leading-relaxed text-muted-foreground">
+            {hostedPortrait.credit} (
+            <a class="inline-link" href={hostedPortrait.licenseUrl} target="_blank" rel="noopener noreferrer">{hostedPortrait.licenseLabel}</a>
+            ) via{' '}
+            <a class="inline-link" href={hostedPortrait.sourceUrl} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>
+          </figcaption>
+        </figure>
+        <div data-reveal>
+          <p class="eyebrow">Verified</p>
+          <h2 id="recognition-heading" class="display-md mt-4">Recognition &amp; <em>references</em></h2>
+          <p class="lede mt-5">Primary-source links that corroborate Don’s Stanford honors and academic affiliations.</p>
+          <ul class="mt-10 divide-y divide-border border-y border-border">
+            {verifiedLinks.map((item) => {
+              const external = isExternalUrl(item.url);
+              return (
+                <li>
+                  <a
+                    class="group flex items-center justify-between gap-6 py-5 transition-colors hover:text-primary"
+                    href={item.url}
+                    target={external ? '_blank' : undefined}
+                    rel={external ? 'noopener noreferrer' : undefined}
+                  >
+                    <span>
+                      <span class="block text-[1.05rem] font-medium">{item.title}</span>
+                      <span class="mt-1 block font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted-foreground">{item.publisher}</span>
+                    </span>
+                    <Icon name="arrow-up-right" size={18} class="shrink-0 text-muted-foreground transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <a class="link-arrow mt-8" href="/press">
+            See Press &amp; References
+            <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CtaBand />
 </BaseLayout>
 
+<script is:inline>
+  // Timeline arrows: progressive enhancement over a native, swipeable scroll-snap track.
+  (() => {
+    const track = document.querySelector('[data-timeline-track]');
+    const controls = document.querySelector('[data-timeline-controls]');
+    if (!track || !controls) return;
+    controls.hidden = false;
+    const step = () => Math.max(track.clientWidth * 0.7, 280);
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    controls.querySelector('[data-timeline-prev]')?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior }));
+    controls.querySelector('[data-timeline-next]')?.addEventListener('click', () => track.scrollBy({ left: step(), behavior }));
+  })();
+</script>
+
 <style>
-  .hero-spotlight-card {
+  /* Rotating role line: three words cycle vertically; static first word without motion. */
+  .role-rotator {
     position: relative;
+    display: inline-grid;
+    height: 1.2em;
     overflow: hidden;
-    isolation: isolate;
-    background-color: rgba(15, 23, 42, 0.8);
-    background-image: radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.05), transparent 32%),
-      radial-gradient(circle at 88% 8%, rgba(59, 130, 246, 0.12), transparent 30%),
-      linear-gradient(135deg, rgba(3, 7, 18, 0.78), rgba(30, 64, 175, 0.65));
-    transition: transform 420ms ease, box-shadow 420ms ease, border-color 320ms ease;
+    color: var(--foreground);
   }
-
-  .hero-spotlight-card::before {
-    content: '';
-    position: absolute;
-    inset: -8%;
-    background-image: var(--hero-image);
-    background-size: cover;
-    background-position: center;
-    filter: saturate(1.05) brightness(0.95);
-    transform: scale(1);
-    transition: transform 700ms ease, filter 420ms ease;
-    z-index: 0;
+  .role-rotator > span {
+    grid-area: 1 / 1;
+    white-space: nowrap;
   }
-
-  .hero-spotlight-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(3, 7, 18, 0.75), rgba(30, 64, 175, 0.7));
-    opacity: 0.9;
-    transition: opacity 420ms ease;
-    z-index: 1;
-  }
-
-  .hero-spotlight-card__glow {
-    position: absolute;
-    inset: -30% -20% auto;
-    height: 120%;
-    background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3), transparent 40%),
-      radial-gradient(circle at 80% 8%, rgba(94, 234, 212, 0.3), transparent 34%);
+  .role-rotator > span:not(:first-child) {
     opacity: 0;
-    transform: translate3d(0, 10px, 0);
-    filter: blur(12px);
-    transition: opacity 480ms ease, transform 620ms ease;
-    z-index: 2;
-    pointer-events: none;
   }
-
-  .hero-spotlight-card__content {
-    position: relative;
-    z-index: 3;
-  }
-
-  .hero-spotlight-card:hover,
-  .hero-spotlight-card:focus-within {
-    transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow:
-      0 14px 38px rgba(15, 23, 42, 0.4),
-      0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .hero-spotlight-card:hover::before,
-  .hero-spotlight-card:focus-within::before {
-    transform: scale(1.08);
-    filter: saturate(1.15) brightness(1.05);
-  }
-
-  .hero-spotlight-card:hover::after,
-  .hero-spotlight-card:focus-within::after {
-    opacity: 0.78;
-  }
-
-  .hero-spotlight-card:hover .hero-spotlight-card__glow,
-  .hero-spotlight-card:focus-within .hero-spotlight-card__glow {
-    opacity: 0.65;
-    transform: translate3d(0, 0, 0);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-spotlight-card,
-    .hero-spotlight-card::before,
-    .hero-spotlight-card__glow {
-      transition: none;
+  @media (prefers-reduced-motion: no-preference) {
+    .role-rotator > span {
+      opacity: 0;
+      animation: role-cycle 7.5s var(--ease-out-expo) infinite;
     }
-    .hero-spotlight-card:hover,
-    .hero-spotlight-card:focus-within {
+    .role-rotator > span:nth-child(2) {
+      animation-delay: 2.5s;
+    }
+    .role-rotator > span:nth-child(3) {
+      animation-delay: 5s;
+    }
+  }
+  /* Each word owns a third of the cycle, so exactly one is always on screen. */
+  @keyframes role-cycle {
+    0% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    4%,
+    30% {
+      opacity: 1;
       transform: none;
     }
+    33.4%,
+    100% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+  }
+
+  .hero-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1rem 0.55rem 0.55rem;
+    border-radius: 1.1rem;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--card) 88%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-lift);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .float-a {
+      animation: badge-float 7s ease-in-out infinite;
+    }
+    .float-b {
+      animation: badge-float 8s ease-in-out -3s infinite;
+    }
+  }
+  @keyframes badge-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .scroll-cue {
+    width: 26px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1.5px solid color-mix(in oklab, var(--foreground) 25%, transparent);
+    justify-content: center;
+    padding-top: 8px;
+  }
+  .scroll-cue-dot {
+    width: 4px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--foreground);
+    animation: cue 2s var(--ease-out-expo) infinite;
+  }
+  @keyframes cue {
+    0% {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    40% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  .focus-scrim {
+    background:
+      linear-gradient(to top, rgb(5 8 7 / 0.92) 0%, rgb(5 8 7 / 0.55) 42%, rgb(5 8 7 / 0.05) 75%),
+      linear-gradient(to right, rgb(5 8 7 / 0.35), transparent 60%);
+  }
+
+  .story-quote {
+    margin-block: 2.25em;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--primary);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.6rem, 3vw, 2.15rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--foreground);
+  }
+
+  /* Horizontal milestone track: native scroll-snap, swipe on touch, arrows on desktop. */
+  .timeline-scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: max(1.25rem, calc((100vw - 80rem) / 2 + 3rem));
+    scrollbar-width: none;
+  }
+  .timeline-scroller::-webkit-scrollbar {
+    display: none;
+  }
+  .timeline-list {
+    position: relative;
+    display: flex;
+    gap: 0;
+    width: max-content;
+    padding-inline: max(1.25rem, calc((100vw - 80rem) / 2 + 3rem));
+  }
+  @media (min-width: 640px) {
+    .timeline-list {
+      padding-inline: max(2rem, calc((100vw - 80rem) / 2 + 3rem));
+    }
+  }
+  .timeline-list::before {
+    content: '';
+    position: absolute;
+    top: 0.42rem;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    width: min(78vw, 19rem);
+    padding: 2.75rem 2.25rem 0 0;
+    scroll-snap-align: start;
+  }
+  .timeline-dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: var(--background);
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 0 5px var(--background);
+  }
+  .timeline-item:last-child .timeline-dot {
+    background: var(--primary);
+    box-shadow:
+      0 0 0 5px var(--background),
+      0 0 0 9px color-mix(in oklab, var(--primary) 25%, transparent);
   }
 </style>

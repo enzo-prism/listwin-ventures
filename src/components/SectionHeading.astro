@@ -1,0 +1,37 @@
+---
+// Section title block. `title` may contain an <em>…</em> accent (authored strings only).
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: 'left' | 'center';
+  size?: 'md' | 'lg' | 'sm';
+  id?: string;
+  as?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { eyebrow, title, description, align = 'left', size = 'md', id, as: Tag = 'h2', class: className = '' } = Astro.props;
+const centered = align === 'center';
+const sizeClass = size === 'lg' ? 'display-lg' : size === 'sm' ? 'display-sm' : 'display-md';
+---
+
+<div
+  class:list={[
+    'section-heading',
+    centered ? 'mx-auto max-w-3xl text-center' : 'flex flex-col gap-6 md:flex-row md:items-end md:justify-between',
+    className,
+  ]}
+  data-reveal
+>
+  <div class:list={[!centered && 'max-w-3xl']}>
+    {eyebrow && <p class:list={['eyebrow', centered && 'justify-center']}>{eyebrow}</p>}
+    <Tag id={id} class:list={[sizeClass, eyebrow && 'mt-4']} set:html={title} />
+    {description && <p class:list={['lede mt-5', centered && 'mx-auto max-w-2xl']}>{description}</p>}
+  </div>
+  {Astro.slots.has('default') && (
+    <div class:list={['shrink-0', centered && 'mt-8 flex justify-center']}>
+      <slot />
+    </div>
+  )}
+</div>

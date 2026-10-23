@@ -1,5 +1,6 @@
 ---
 import type { VisualAsset } from '../data/assets';
+import { darkPlateLogoIds } from '../lib/logos';
 
 export interface Props {
   asset: VisualAsset;
@@ -30,63 +31,70 @@ const {
 } = Astro.props;
 
 const resolvedLink = linkHref === null ? undefined : linkHref ?? asset.href;
-const isExternal = resolvedLink ? !linkHref && !!asset.href : false;
-const usesDarkFrame = asset.id === 'carbon-robotics';
-const figureToneClass = usesDarkFrame ? 'bg-foreground text-background ring-border/20' : 'bg-card/95 text-foreground ring-border/70';
-	const captionToneClass = usesDarkFrame ? 'text-background/60' : 'text-muted-foreground';
-	const isLogoAsset = /\b(logo|lockup|crest)\b/i.test(asset.alt);
-	const showMediaCaption = showCaption && !isLogoAsset;
+const isExternal = resolvedLink ? /^https?:\/\//.test(resolvedLink) : false;
+const isLogoAsset = /\b(logo|lockup|crest)\b/i.test(asset.alt);
+const darkPlate = darkPlateLogoIds.has(asset.id) && isLogoAsset;
+const showMediaCaption = showCaption && !isLogoAsset;
 
-	const inferImageDimensionsFromPath = (
-	  path: string,
-	  fallback: { width: number; height: number },
-	): { width: number; height: number } => {
-	  const match = path.match(/-(\d+)x(\d+)\.(?:png|jpe?g|webp)(?:\?|$)/i);
-	  if (match) {
-	    return { width: Number(match[1]), height: Number(match[2]) };
-	  }
-	  return fallback;
-	};
+const inferImageDimensionsFromPath = (
+  path: string,
+  fallback: { width: number; height: number },
+): { width: number; height: number } => {
+  const match = path.match(/-(\d+)x(\d+)\.(?:png|jpe?g|webp)(?:\?|$)/i);
+  if (match) {
+    return { width: Number(match[1]), height: Number(match[2]) };
+  }
+  return fallback;
+};
 
-	const dimensions = inferImageDimensionsFromPath(
-	  asset.path,
-	  isLogoAsset ? { width: 320, height: 128 } : { width: 1200, height: 900 },
-	);
+const dimensions = inferImageDimensionsFromPath(
+  asset.path,
+  isLogoAsset ? { width: 320, height: 128 } : { width: 1200, height: 900 },
+);
+
+const frameClass = [
+  'block overflow-hidden',
+  rounded ? 'rounded-[1.75rem]' : 'rounded-2xl',
+  shadow ? 'shadow-[var(--shadow-lift)]' : '',
+  isLogoAsset ? `logo-plate px-10 py-10 ${darkPlate ? 'is-dark' : ''}` : 'bg-muted',
+].join(' ');
+const imgClass = isLogoAsset ? 'mx-auto h-20 w-auto max-w-[80%] object-contain' : 'h-full w-full object-cover';
 ---
 
-<figure
-  class={`w-full flex flex-col items-center gap-3 rounded-[var(--radius-xl)] p-4 text-center text-sm shadow-panel ring-1 ${figureToneClass} ${className}`}
->
+<figure class={`hero-media w-full ${className}`.trim()}>
   {resolvedLink ? (
     <a
       href={resolvedLink}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
-      class={`${rounded ? 'overflow-hidden rounded-[28px]' : ''} block`}
+      class={`${frameClass} zoom-media`}
     >
-	      <img
-	        src={asset.path}
-	        alt={asset.alt}
-	        width={dimensions.width}
-	        height={dimensions.height}
-	        loading={loading}
-	        decoding="async"
-	        fetchpriority={fetchpriority}
-	        class={`w-full object-contain ${shadow ? 'shadow-panel' : ''}`}
-	      />
+      <img
+        src={asset.path}
+        alt={asset.alt}
+        width={dimensions.width}
+        height={dimensions.height}
+        loading={loading}
+        decoding="async"
+        fetchpriority={fetchpriority}
+        class={imgClass}
+      />
     </a>
   ) : (
-	    <img
-	      src={asset.path}
-	      alt={asset.alt}
-	      width={dimensions.width}
-	      height={dimensions.height}
-	      loading={loading}
-	      fetchpriority={fetchpriority}
-	      class={`w-full object-contain ${rounded ? 'rounded-[28px]' : ''} ${shadow ? 'shadow-panel' : ''}`}
-	    />
+    <div class={frameClass}>
+      <img
+        src={asset.path}
+        alt={asset.alt}
+        width={dimensions.width}
+        height={dimensions.height}
+        loading={loading}
+        decoding="async"
+        fetchpriority={fetchpriority}
+        class={imgClass}
+      />
+    </div>
   )}
   {showMediaCaption && (
-    <figcaption class={`text-xs uppercase tracking-[0.25em] ${captionToneClass}`}>{asset.name}</figcaption>
+    <figcaption class="mt-3 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted-foreground">{asset.name}</figcaption>
   )}
 </figure>

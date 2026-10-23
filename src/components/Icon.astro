@@ -1,0 +1,54 @@
+---
+// Build-time SVG icons. Renders straight from the Iconify JSON sets, so there is no runtime
+// JavaScript, no icon font, and no allowlist to maintain: any valid name just works, and an
+// unknown name fails the build loudly instead of shipping an empty box.
+//
+// Names: `arrow-right` (Lucide, the default set) or a prefixed `lucide:…` / `tabler:…`.
+import { getIconData, iconToHTML, iconToSVG, replaceIDs } from '@iconify/utils';
+import lucide from '@iconify-json/lucide/icons.json';
+import tabler from '@iconify-json/tabler/icons.json';
+
+interface Props {
+  name: string;
+  size?: number | string;
+  class?: string;
+  label?: string;
+  strokeWidth?: number;
+  [key: string]: unknown;
+}
+
+const { name, size = 18, class: className, label, strokeWidth, ...rest } = Astro.props;
+
+const sets = { lucide, tabler } as const;
+const [prefix, iconName] = name.includes(':') ? name.split(':') : ['lucide', name];
+const set = sets[prefix as keyof typeof sets];
+const data = set ? getIconData(set as never, iconName) : null;
+if (!data) {
+  throw new Error(`Unknown icon "${name}". Use a Lucide name (lucide.dev/icons) or tabler:<name>.`);
+}
+
+const rendered = iconToSVG(data, { height: 'auto' });
+let body = replaceIDs(rendered.body);
+if (strokeWidth) body = body.replaceAll('stroke-width="2"', `stroke-width="${strokeWidth}"`);
+
+const attributes: Record<string, string> = {
+  ...rendered.attributes,
+  width: String(size),
+  height: String(size),
+  class: ['lv-icon', className].filter(Boolean).join(' '),
+  focusable: 'false',
+};
+if (label) {
+  attributes.role = 'img';
+  attributes['aria-label'] = label;
+} else {
+  attributes['aria-hidden'] = 'true';
+}
+for (const [key, value] of Object.entries(rest)) {
+  if (value !== undefined && value !== null && value !== false) attributes[key] = String(value);
+}
+
+const html = iconToHTML(body, attributes);
+---
+
+<Fragment set:html={html} />

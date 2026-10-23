@@ -7,9 +7,9 @@ interface Props {
 const { title, class: className = '' } = Astro.props;
 ---
 
-<article class={`rounded-[1.4rem] border border-border/70 bg-muted/40 p-4 ${className}`.trim()}>
+<article class={`card-lv card-hover spotlight p-6 ${className}`.trim()} data-reveal>
   <h3 class="text-base font-semibold text-foreground">{title}</h3>
-  <div class="mt-2 text-sm text-muted-foreground">
+  <div class="mt-2 text-sm leading-relaxed text-muted-foreground">
     <slot />
   </div>
 </article>

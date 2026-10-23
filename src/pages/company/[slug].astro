@@ -1,10 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { buildTitle, buildDescription } from '../../lib/seo';
-import HeroMedia from '../../components/HeroMedia.astro';
+import PageHero from '../../components/PageHero.astro';
 import RelatedPressSection from '../../components/RelatedPressSection.astro';
-import { getEntityDetails, type EntityDetail } from '../../data/entityDetails';
-import type { VisualAsset } from '../../data/assets';
+import LogoTile from '../../components/LogoTile.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { getDetailPath, getEntityDetails, type EntityDetail } from '../../data/entityDetails';
+import { boardAssets, investmentAssets, philanthropyAssets, type VisualAsset } from '../../data/assets';
 import { getRelatedPressCount, getRelatedPressItems } from '../../data/press';
 
 export const prerender = true;
@@ -52,7 +55,6 @@ const jsonLd = {
   ...(detail.externalUrl ? { url: detail.externalUrl, sameAs: [detail.externalUrl] } : {}),
   ...(detail.asset?.path ? { logo: { '@type': 'ImageObject', url: detail.asset.path } } : {}),
 };
-const externalUrlLabel = detail.externalUrl ? detail.externalUrl.replace(/\/$/, '') : null;
 const pressReleaseUrl =
   detail.slug === 'carbon-robotics'
     ? 'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board'
@@ -98,126 +100,272 @@ const carbonNews = isCarbonRobotics
       kicker: 'Current platform',
     }
   : null;
+const carbonNewsIcons = ['scan-eye', 'ruler', 'tractor', 'globe'];
+
+// ── Where this record sits in the portfolio (all derived from src/data/assets.ts) ──
+const has = (items: VisualAsset[]) => items.some((item) => item.id === detail.slug);
+const investmentGroups = investmentAssets.filter((group) => has(group.items));
+const boardGroups = boardAssets.filter((group) => has(group.items));
+const philanthropyGroups = philanthropyAssets.filter((group) => has(group.items));
+const isPhilanthropy =
+  philanthropyGroups.length > 0 || investmentGroups.some((group) => group.label === 'Philanthropic');
+
+const eyebrow = hideCategoryLabel
+  ? undefined
+  : isPhilanthropy
+    ? 'Philanthropy'
+    : investmentGroups[0]
+      ? `Portfolio · ${investmentGroups[0].label}`
+      : boardGroups[0]
+        ? `Board · ${boardGroups[0].label}`
+        : primaryCategoryLabel;
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  isPhilanthropy ? { label: 'Community', href: '/#investments' } : { label: 'Investments', href: '/#investments' },
+  { label: detail.name },
+];
+
+// Relationship rows for the "At a glance" panel. Sequoia's grouping is intentionally not labelled.
+const relationshipRows = hideCategoryLabel
+  ? []
+  : [
+      boardGroups.length ? { label: 'Board', values: boardGroups.map((group) => group.label) } : null,
+      investmentGroups.length ? { label: 'Portfolio', values: investmentGroups.map((group) => group.label) } : null,
+      philanthropyGroups.length ? { label: 'Community', values: philanthropyGroups.map((group) => group.label) } : null,
+    ].filter((row): row is { label: string; values: string[] } => Boolean(row));
+
+// Siblings: other records from the same groups (primary group first), linked where a page exists.
+const standaloneRoutes: Record<string, string> = { belizekids: '/belizekids', genologics: '/genologics' };
+const siblingGroups = isPhilanthropy
+  ? [...philanthropyGroups, ...investmentGroups, ...boardGroups]
+  : [...investmentGroups, ...boardGroups, ...philanthropyGroups];
+// If the record's own groups are thin (Carbon Robotics, Calix…), top up from the wider portfolio.
+if (!isPhilanthropy) siblingGroups.push(...investmentAssets, ...boardAssets);
+const siblingSeen = new Set<string>([detail.slug]);
+const siblings: { asset: VisualAsset; group: string; href: string }[] = [];
+for (const group of siblingGroups) {
+  for (const asset of group.items) {
+    if (siblings.length >= 4 || siblingSeen.has(asset.id)) continue;
+    const href = standaloneRoutes[asset.id] ?? getDetailPath(asset.id);
+    if (!href) continue;
+    siblingSeen.add(asset.id);
+    siblings.push({ asset, group: group.label, href });
+  }
+}
+const siblingTitle = isPhilanthropy ? 'More from the <em>community</em>' : 'More from the <em>portfolio</em>';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} canonical={canonical} jsonLd={jsonLd}>
-  <section class="space-y-8 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-6 text-center">
-      {!hideCategoryLabel && (
-        <div class="flex flex-wrap justify-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
-          <span class="rounded-full border border-ink/10 px-3 py-1 text-ink/70">
-            {categoryLabels[detail.categories[0]] ?? detail.categories[0]}
-          </span>
-        </div>
-      )}
-      {!hideHeroMedia && (
-        <div class="mx-auto flex max-w-md flex-col items-center space-y-4">
-          <HeroMedia asset={detail.asset} linkHref={null} showCaption={false} />
-        </div>
-      )}
-      {isCarbonRobotics && carbonVideos[0] && (
-        <div class="mx-auto w-full max-w-5xl">
-          <video
-            class="w-full rounded-[40px] border border-ink/10 shadow-panel"
-            src={carbonVideos[0]}
-            poster={carbonFieldAsset?.path}
-            preload="none"
-            playsinline
-            controls
+  <PageHero eyebrow={eyebrow} title={detail.name} intro={intro} crumbs={crumbs} class="company-hero">
+    {detail.externalUrl && (
+      <a class="btn btn-primary" href={detail.externalUrl} target="_blank" rel="noopener noreferrer">
+        Visit official site
+        <Icon name="arrow-up-right" size={16} class="arrow-diag" />
+      </a>
+    )}
+    {pressReleaseUrl && (
+      <a class="btn btn-secondary" href={pressReleaseUrl} target="_blank" rel="noopener noreferrer">
+        Read press release
+        <Icon name="arrow-up-right" size={16} class="arrow-diag" />
+      </a>
+    )}
+    {!hideHeroMedia && (
+      <figure slot="media" class="company-plate-frame">
+        <div class="company-plate-glow" aria-hidden="true"></div>
+        <div
+          class:list={[
+            'logo-plate company-plate relative aspect-[16/10] w-full rounded-[1.6rem] px-8 sm:aspect-[4/3] sm:px-10',
+            isCarbonRobotics && 'is-dark',
+          ]}
+        >
+          <img
+            src={detail.asset.path}
+            alt={detail.asset.alt}
+            width="320"
+            height="128"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            class="h-auto max-h-24 w-auto max-w-[72%] object-contain sm:max-h-28"
           />
         </div>
-      )}
-      <div class="space-y-2">
-        <h1 class="font-display text-3xl font-semibold text-ink sm:text-4xl">{detail.name}</h1>
-        <p class="text-base text-ink/70">{intro}</p>
-      </div>
-      {(detail.externalUrl || pressReleaseUrl) && (
-        <div class="flex flex-wrap justify-center gap-3">
-          {detail.externalUrl && (
-            <a class="btn btn-ink" href={detail.externalUrl} target="_blank" rel="noopener noreferrer">
-              Visit official site
-            </a>
-          )}
-          {pressReleaseUrl && (
-            <a class="btn btn-ink" href={pressReleaseUrl} target="_blank" rel="noopener noreferrer">
-              Read press release
-            </a>
-          )}
-        </div>
-      )}
-    </div>
+      </figure>
+    )}
+  </PageHero>
 
-  </section>
+  {isCarbonRobotics && carbonVideos[0] && (
+    <section class="container-lv pb-4" aria-label="Carbon Robotics in the field">
+      <div class="media-frame rounded-[2rem] shadow-[var(--shadow-panel)]" data-reveal="scale">
+        <video
+          class="aspect-video"
+          src={carbonVideos[0]}
+          poster={carbonFieldAsset?.path}
+          preload="none"
+          playsinline
+          controls
+        />
+      </div>
+    </section>
+  )}
 
   {detail.highlights.length > 0 && (
-    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <h2 class="text-2xl font-semibold text-ink">Highlights</h2>
-      <ul class="space-y-3 text-sm text-ink/75">
-        {detail.highlights.map((highlight) => (
-          <li key={highlight} class="rounded-[24px] border border-ink/10 bg-white/90 px-4 py-3 shadow">
-            {highlight}
-          </li>
-        ))}
-      </ul>
+    <section class="container-lv section-lv pt-10 sm:pt-14">
+      <div class="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div class="lg:sticky lg:top-28 lg:self-start" data-reveal>
+          <p class="eyebrow">Overview</p>
+          <h2 class="display-md mt-4">Highlights</h2>
+          {relationshipRows.length > 0 && (
+            <dl class="mt-10 space-y-5 border-t border-border pt-6">
+              {relationshipRows.map((row) => (
+                <div class="grid grid-cols-[6.5rem_1fr] items-baseline gap-4">
+                  <dt class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{row.label}</dt>
+                  <dd class="flex flex-wrap gap-1.5">
+                    {row.values.map((value) => (
+                      <span class="chip">{value}</span>
+                    ))}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </div>
+
+        <ol class="highlight-list" data-reveal-stagger="90">
+          {detail.highlights.map((highlight, index) => (
+            <li class="grid grid-cols-[3.25rem_1fr] gap-4 border-t border-border py-8 first:border-t-0 first:pt-0 sm:grid-cols-[4.5rem_1fr] sm:gap-6 sm:py-10" data-reveal>
+              <span class="font-display text-3xl leading-none text-primary sm:text-4xl" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <p class="text-[1.125rem] leading-relaxed text-foreground/90 sm:text-[1.3rem] sm:leading-[1.55]">{highlight}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   )}
 
   {carbonNews && (
-    <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <div class="space-y-3">
-        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">{carbonNews.kicker}</p>
-        <h2 class="text-2xl font-semibold text-ink">{carbonNews.title}</h2>
-        <p class="text-ink/70">{carbonNews.summary}</p>
+    <section class="border-y border-border bg-muted/50">
+      <div class="container-lv section-lv">
+        <div class="max-w-3xl" data-reveal>
+          <p class="eyebrow">{carbonNews.kicker}</p>
+          <h2 class="display-md mt-4">{carbonNews.title}</h2>
+          <p class="lede mt-5">{carbonNews.summary}</p>
+        </div>
+        <ul class="mt-14 grid gap-4 sm:grid-cols-2" data-reveal-stagger="80">
+          {carbonNews.details.map((item, index) => (
+            <li class="card-lv spotlight card-hover flex gap-5 p-6 sm:p-8" data-reveal>
+              <span class="grid size-11 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
+                <Icon name={carbonNewsIcons[index] ?? 'sparkles'} size={20} />
+              </span>
+              <p class="relative z-[2] text-[1.02rem] leading-relaxed text-foreground/85">{item}</p>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul class="space-y-3 text-sm text-ink/75">
-        {carbonNews.details.map((detail) => (
-          <li key={detail} class="rounded-[24px] border border-ink/10 bg-white/90 px-4 py-3 shadow">
-            {detail}
-          </li>
-        ))}
-      </ul>
+    </section>
+  )}
+
+  {(galleryAssets.length > 0 || carbonVideos.length > 0) && (
+    <section class="container-lv section-tight">
+      {galleryAssets.length > 0 && (
+        <Fragment>
+          <div data-reveal>
+            <p class="eyebrow">Media</p>
+            <h2 class="display-sm mt-4">Media gallery</h2>
+          </div>
+          <div class="mt-10 grid gap-6">
+            {galleryAssets.map((asset) => (
+              <figure data-reveal>
+                <div class="media-frame zoom-media aspect-[16/10] rounded-[2rem] sm:aspect-[21/9]">
+                  <img src={asset.path} alt={asset.alt} width="1600" height="900" loading="lazy" decoding="async" />
+                </div>
+                <figcaption class="mt-4 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+                  {asset.name}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </Fragment>
+      )}
+      {carbonVideos.length > 0 && (
+        <Fragment>
+          <div class:list={[galleryAssets.length > 0 && 'mt-20 sm:mt-28']} data-reveal>
+            <p class="eyebrow">Video</p>
+            <h2 class="display-sm mt-4">Field footage</h2>
+          </div>
+          <div class="mt-10 grid gap-6 md:grid-cols-2" data-reveal-stagger="100">
+            {carbonVideos.map((src, index) => (
+              <div class="media-frame aspect-video rounded-[1.75rem] bg-foreground shadow-[var(--shadow-soft)]" data-reveal>
+                <video
+                  src={`${src}#t=0.5`}
+                  controls
+                  preload="metadata"
+                  playsinline
+                  aria-label={`Carbon Robotics video ${index + 1}`}
+                />
+              </div>
+            ))}
+          </div>
+        </Fragment>
+      )}
     </section>
   )}
 
   <RelatedPressSection items={relatedPress} title={relatedReadingTitle} countNote={relatedPressCountNote} />
 
-  {galleryAssets.length > 0 && (
-    <section class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <h2 class="text-2xl font-semibold text-ink">Media gallery</h2>
-      <div class="grid gap-6 md:grid-cols-2">
-	        {galleryAssets.map((asset) => (
-	          <figure key={asset.id} class="space-y-3">
-	            <img
-	              src={asset.path}
-	              alt={asset.alt}
-	              width="1600"
-	              height="900"
-	              loading="lazy"
-	              class="w-full rounded-[32px] border border-ink/10"
-	            />
-	            <figcaption class="text-sm text-ink/60">{asset.name}</figcaption>
-	          </figure>
-	        ))}
+  {siblings.length > 0 && (
+    <section class="container-lv section-tight">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-reveal>
+        <div>
+          <p class="eyebrow">Keep exploring</p>
+          <h2 class="display-sm mt-4" set:html={siblingTitle} />
+        </div>
+        <a class="link-arrow text-sm" href="/#investments">
+          All investments
+          <Icon name="arrow-right" size={15} />
+        </a>
       </div>
-    </section>
-  )}
-
-  {carbonVideos.length > 0 && (
-    <section class="space-y-4 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-      <h2 class="text-2xl font-semibold text-ink">Field footage</h2>
-      <div class="grid gap-6 md:grid-cols-2">
-        {carbonVideos.map((src, index) => (
-          <video
-            key={src}
-            class="w-full rounded-[32px] border border-ink/10"
-            src={src}
-            controls
-            preload="none"
-            playsinline
-            aria-label={`Carbon Robotics video ${index + 1}`}
-          />
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4" data-reveal-stagger="70">
+        {siblings.map((sibling) => (
+          <div data-reveal>
+            <LogoTile asset={sibling.asset} label={sibling.asset.name} sublabel={sibling.group} href={sibling.href} size="sm" />
+          </div>
         ))}
       </div>
     </section>
   )}
+
+  <CtaBand />
 </BaseLayout>
+
+<style>
+  .company-plate-frame {
+    position: relative;
+    margin: 0;
+    padding: 0.75rem;
+    border-radius: 2.1rem;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--card) 70%, transparent);
+    box-shadow: var(--shadow-panel);
+    backdrop-filter: blur(6px);
+  }
+  .company-plate {
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--foreground) 6%, transparent);
+  }
+  .company-plate-glow {
+    position: absolute;
+    inset: 12% -8% -10% 18%;
+    z-index: -1;
+    border-radius: 999px;
+    background: radial-gradient(circle, color-mix(in oklab, var(--glow) 30%, transparent), transparent 65%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+  @media (max-width: 1023px) {
+    .company-plate-frame {
+      max-width: 34rem;
+    }
+  }
+</style>

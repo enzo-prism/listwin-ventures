@@ -5,6 +5,13 @@ This folder (`listwinventures-rebuild/`) is the actively developed Astro + Tailw
 
 Use Node 22.x locally and in Vercel.
 
+**Design system:** the site was redesigned end-to-end in October 2026 ("Quiet Ledger"). Read
+`docs/design-system.md` before touching any page or component — tokens, type scale, components,
+motion hooks, and light/dark rules all live there. Stack: Astro 7 + Tailwind 4 (CSS-first via
+`@tailwindcss/vite`, no `tailwind.config`/PostCSS files) + self-hosted Geist / Instrument Serif /
+Geist Mono. **The site ships zero framework JavaScript** — React, Radix, Embla, shadcn/ui, and
+`astro-icon` were all removed.
+
 ## Quick Start
 
 ```bash
@@ -24,8 +31,9 @@ npm run test:e2e:cv            # Playwright for the private CV workflow
 `vercel dev` (port 3000) to exercise it, or `npm run test:e2e:cv`, which serves the handler over a
 local http shim and needs no credentials.
 
-⚠️ The `tests/visual.spec.ts` baselines are stale and that suite currently fails wholesale. Review
-the diffs before trusting a red run, and refresh with `--update-snapshots` once confirmed.
+Visual baselines (`tests/visual.spec.ts-snapshots/`) were regenerated for the October 2026
+redesign. They are macOS (`-darwin`) renders; refresh with `--update-snapshots` after an intended
+visual change and review the diffs first.
 
 ## Where Content Lives
 
@@ -36,15 +44,19 @@ the diffs before trusting a red run, and refresh with `--update-snapshots` once 
 - `src/pages/press.astro` – `/press` route.
 - `src/components/SiteNavigation.astro` – the header nav. **Zero-framework module JavaScript**
   (CSS desktop dropdowns + a native `<details>` drawer with a small inline accessibility
-  enhancement). It replaced a React/Radix island, so only `/4ag` hydrates React. New icon names go
-  in the `astro.config.mjs` allowlist. See “Navigation uses no framework JavaScript” in
+  enhancement). Menus: Focus, Investments, Community, About, Press + Contact; the theme toggle
+  sits beside it in `BaseLayout.astro`. See “Navigation uses no framework JavaScript” in
   `docs/architecture.md`.
+- `src/components/Icon.astro` – build-time SVG icons straight from `@iconify-json/lucide` (default)
+  and `@iconify-json/tabler` (`tabler:brand-x` etc.). No allowlist; an unknown name fails the build.
 - `src/pages/contact.astro` – contact form. Posts to `PUBLIC_CONTACT_ENDPOINT` (a Formspree endpoint,
   set in Vercel for Production + Preview and in `.env.local`). `PUBLIC_*` vars inline at build time,
   so changing the endpoint needs a redeploy. See “Contact form” in `docs/architecture.md`.
-- `src/layouts/BaseLayout.astro` – global shell. Also owns the cookie-consent banner + the
-  consent-gated, idle-deferred GA/Hotjar loader (analytics load only after opt-in). See
-  “Analytics & cookie consent” in `docs/architecture.md`.
+- `src/layouts/BaseLayout.astro` – global shell: no-flash theme init in `<head>`, header + theme
+  toggle, footer, share strip, cookie-consent banner + the consent-gated, idle-deferred GA/Hotjar
+  loader (analytics load only after opt-in), and the single motion script (scroll reveals,
+  count-ups, cursor spotlight, header frost). See “Analytics & cookie consent” in
+  `docs/architecture.md` and “Motion” in `docs/design-system.md`.
 - `private/cv.html` plus the Word/PDF files in `private/` – the password-gated CV viewer and source
   documents. **Not Astro/public assets.** `vercel.json` rewrites `/cv` to `api/cv.js`, which reads
   them only after the password check passes. **Never move them under `public/` or `src/pages/`** —
@@ -63,10 +75,9 @@ the diffs before trusting a red run, and refresh with `--update-snapshots` once 
 
 ### Add Or Change Icons
 
-This project uses `astro-icon` in allowlist mode.
-
-If you reference a new icon name (ex: `tabler:news`) anywhere, you must also add the icon name to
-`astro.config.mjs` under `icon({ include: { ... } })` or `npm run build` will fail.
+Use `<Icon name="…" />` from `src/components/Icon.astro`. Any Lucide name works (lucide.dev/icons);
+prefix `tabler:` for brand marks (`tabler:brand-linkedin`). Icons render to inline SVG at build
+time — there is no allowlist and no runtime cost. A typo fails `npm run build` with the bad name.
 
 ### Add A New Static Route
 
@@ -88,7 +99,7 @@ When you add a new file under `src/pages/`, also update:
 - Audio behavior on `/oral-history-caltech`:
   - An episode audio player and `Download audio (MP3)` link render only when the matching `.mp3` exists and has file size > 0.
   - Otherwise the UI shows `Audio coming soon` (no broken controls).
-- If you change the `/oral-history` CTA section layout, refresh Desktop visual snapshots:
+- If you change the `/oral-history` CTA section layout, refresh the Desktop visual snapshots:
   - `npx playwright test tests/visual.spec.ts --project="Desktop Chrome" --update-snapshots --grep "(/ \\(top\\)|/oral-history \\(transcript CTA\\))"`
 
 #### Caltech 2025 Source Ingest Notes
@@ -119,7 +130,10 @@ When you add a new file under `src/pages/`, also update:
   and `npm run test:e2e:cv` pass, and `dist/` contains no CV HTML, Word, or PDF assets (their
   presence means the CV is being published unprotected).
 - Any new static routes show up in `sitemap.xml`.
-- Any new icons are added to the `astro.config.mjs` allowlist.
+- Every changed page is checked in **light and dark** mode and at **360px, 390px, tablet, and
+  desktop** widths — no horizontal overflow, no hard-coded colors (tokens only).
+- Motion stays optional: content must be fully visible with JavaScript off and under
+  `prefers-reduced-motion` (the Playwright suite runs with reduced motion).
 - If you touched the nav (`SiteNavigation.astro`) or anything header-related: `npm run test:e2e`
   passes `tests/responsive.spec.ts` (no horizontal overflow, focus containment and restoration,
   inert background, scroll locking, Escape close, JavaScript-off fallback, desktop-resize unlock,

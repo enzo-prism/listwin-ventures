@@ -1,0 +1,67 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const {
+  eyebrow = 'Contact',
+  title = 'Building something that <em>matters?</em>',
+  body = 'Founders, partners, and collaborators working at the intersection of technology and human impact are welcome to reach out.',
+  primaryLabel = 'Start a conversation',
+  primaryHref = '/contact',
+  secondaryLabel,
+  secondaryHref,
+} = Astro.props;
+---
+
+<section class="container-lv section-tight">
+  <div class="cta-band relative isolate overflow-hidden rounded-[2rem] bg-foreground px-6 py-16 text-background sm:px-14 sm:py-20" data-reveal="scale">
+    <div class="cta-glow" aria-hidden="true"></div>
+    <div class="relative z-10 grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+      <div>
+        <p class="eyebrow text-background/60">{eyebrow}</p>
+        <h2 class="cta-title display-md mt-4" set:html={title} />
+        <p class="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-background/70">{body}</p>
+      </div>
+      <div class="flex flex-wrap gap-3 lg:justify-end">
+        <a href={primaryHref} class="btn bg-background text-foreground hover:bg-background/90">
+          {primaryLabel}
+          <Icon name="arrow-right" size={16} class="arrow" />
+        </a>
+        {secondaryLabel && secondaryHref && (
+          <a href={secondaryHref} class="btn border-background/25 text-background hover:bg-background/10">
+            {secondaryLabel}
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-glow {
+    position: absolute;
+    inset: auto -10% -60% auto;
+    width: 70%;
+    aspect-ratio: 1;
+    border-radius: 999px;
+    background: radial-gradient(circle, color-mix(in oklab, var(--glow) 45%, transparent), transparent 62%);
+    filter: blur(40px);
+    opacity: 0.55;
+    animation: lv-float 12s ease-in-out infinite;
+  }
+  .cta-title :global(em) {
+    color: var(--glow);
+  }
+  :global(.dark) .cta-title :global(em) {
+    color: oklch(0.48 0.12 158);
+  }
+</style>

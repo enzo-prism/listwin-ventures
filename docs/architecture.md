@@ -6,24 +6,36 @@ structural, security, routing, or deployment changes.
 ## Project Layout
 
 ```
-listwinventures-rebuild/
+listwin-ventures/
   public/                  # legacy CSS (kept for reference; not loaded) + uploads (large media ignored via .gitignore)
-  playwright.config.ts     # Playwright config for responsive smoke tests
+  playwright.config.ts     # Playwright config for responsive/content/visual tests
   src/
-    components/            # HeroMedia, LogoGrid, CompanyCarousel, etc.
+    components/            # PageHero, SectionHeading, LogoTile, CtaBand, Icon, BrandMark, NetworkHalo, press cards…
     data/                  # assets.ts + entityDetails.ts + exploitDetails.ts + press.ts (content catalogs)
-    layouts/               # BaseLayout.astro (sticky nav + dropdowns)
+    layouts/               # BaseLayout.astro (theme init, header, nav, footer, consent, motion script)
+    lib/                   # seo.ts, ga4.ts, logos.ts (dark-plate logo ids)
     pages/                 # Astro routes (home, contact form, oral history, BelizeKids.org, exploit detail, company detail)
-    styles/global.css      # Tailwind entry point + Apple-inspired theming + shared .btn utility
-  tests/                   # Playwright smoke tests (responsive overflow checks)
-  docs/                    # this file
+    styles/global.css      # the design system: Tailwind 4 entry + tokens (light/dark) + components + motion
+  tests/                   # Playwright + node:test suites
+  docs/                    # this file, design-system.md, site-copy.md
 ```
 
 ## CSS Strategy
 
-- `src/styles/global.css` is the only global stylesheet entry point (Tailwind base/components/utilities + shared site styles).
-- Tailwind 3 is processed through `postcss.config.cjs`; the retired `@astrojs/tailwind` integration
-  is intentionally absent from `astro.config.mjs`.
+- `src/styles/global.css` is the only global stylesheet entry point. It is a **Tailwind 4 CSS-first**
+  config: `@import 'tailwindcss'`, a class-based `dark` custom variant, theme tokens declared as
+  plain CSS variables on `:root` / `.dark` and mapped into utilities with `@theme inline`, plus the
+  component classes and motion. The full reference is `docs/design-system.md`.
+- Tailwind runs through `@tailwindcss/vite` (registered in `astro.config.mjs`). There is no
+  `tailwind.config.*`, `postcss.config.*`, or `components.json` anymore.
+- Fonts are self-hosted via `@fontsource` packages (Geist Variable, Geist Mono Variable, Instrument
+  Serif) and bundled into `/_astro/`, so the CSP's `font-src 'self'` needs no third-party host.
+- Theme: an inline `<head>` script in `BaseLayout.astro` applies `.dark` before first paint from
+  `localStorage['lv-theme']`, falling back to `prefers-color-scheme`. The toggle
+  (`[data-theme-toggle]`) uses a View Transition circular reveal where supported.
+- `compressHTML` is **off** in `astro.config.mjs`. Astro's compression removed the newline between
+  running text and an inline element that started on the next source line, gluing words together
+  ("founded the<a>Canary Foundation</a>") across the old site. Keep it off.
 - Legacy WordPress stylesheets remain under `public/assets/css/` for reference only and are not loaded by `BaseLayout.astro`.
 
 ## Data Sources
@@ -45,21 +57,21 @@ listwinventures-rebuild/
 
 `BaseLayout.astro` renders a responsive navigation system:
 
-1. **New** – curated spotlight cards (currently Carbon Robotics, 4AG, BelizeKids.org). Update the
-   `workHighlights` array in the layout when swapping focus projects and include an icon name so the
-   dropdown visuals stay consistent.
+1. **Focus** – current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update the
+   `workHighlights` array in the layout when swapping focus projects; each item carries a Lucide icon
+   name and a one-line description.
 2. **Investments** – mega-menu grouped by stage (`investmentAssets` + `entityDetails`). Exits sit in
    their own group at the end.
 3. **Community** – philanthropy slugs pulled from `entityDetails`.
-4. **About** – quick links to the oral-history interview, the on-page “My Story”, and the Press library.
-5. **Contact** – persistent CTA linking to `/contact`.
+4. **About** – My Story, the Caltech 2025 interview, the CHM 2018 oral history, and the Press library.
+5. **Press** – a direct link.
+6. **Contact** – persistent ink CTA linking to `/contact`. A theme toggle sits to its right.
 
-The dropdown carets animate, the desktop mega-menu stays right-aligned to prevent overflow, and the
-mobile nav expands into a full-width card with all sections stacked.
+`Home` is a `mobileOnly` item (the logo links home on desktop). The dropdown carets animate, the
+desktop mega-menu stays right-aligned to prevent overflow, and the mobile nav is a full-height sheet
+with large serif entries and accordion sections. `aria-current="page"` marks the active route.
 
-- All nav entries leverage `astro-icon`. Keep the icon maps (`navItems`, `workHighlights`,
-  `investmentIcons`, `communityLinks`, `storyLinks`) in `BaseLayout.astro` updated whenever you add
-  or rename items so the grey→green hover treatment remains aligned across desktop and mobile.
+- Leaf icons are Lucide names rendered by `src/components/Icon.astro` (no allowlist).
 
 ### Navigation uses no framework JavaScript (`SiteNavigation.astro`)
 
@@ -83,8 +95,9 @@ mobile nav expands into a full-width card with all sections stacked.
     descendants in Chromium. The open state disables that filter and raises the header above the
     consent banner so the panel and backdrop cover the full viewport. The mobile Playwright checks
     guard this geometry and stacking behavior.
-  - New icon names still go in the `astro.config.mjs` allowlist (the nav added `chevron-down`,
-    `menu-2`, `x`). The React-only page now is `/4ag` (the Embla carousel island).
+  - No page hydrates a framework anymore: the `/4ag` Embla/React carousel was replaced by a CSS
+    scroll-snap gallery, and React, Radix, shadcn/ui, and `astro-icon` were removed in the October
+    2026 redesign.
   - The drawer toggle is a `<summary>`, not a `<button>` — update selectors accordingly.
 
 ## Canonical URLs & Share Links
@@ -157,13 +170,28 @@ Rules worth knowing before editing:
 
 ## Homepage Sections
 
-After the hero and “My Story” modules, the homepage is limited to three key sections:
+`src/pages/index.astro`, top to bottom:
 
-1. **Recent Work** – Carbon Robotics spotlight (copy + CTA + media).
-2. **Investments** – hero text plus stage-specific carousels (Seed, Private, Exits, Venture, Public).
-3. **Exploits** – themed cards that now link to `/exploits/[slug]` for long-form writeups.
-
-The standalone contact section was removed; all inquiries route through `/contact`.
+1. **Hero** – rotating role line, display name, lede, CTAs, and the portrait inside `NetworkHalo`
+   (an SVG network whose links draw in and whose "packets" travel via `animateMotion`; packets are
+   removed under reduced motion). Two floating badges (Cisco 1990–2000, Canary Foundation 2004).
+2. **Logo marquee** – every distinct board/investment logo on plates; pauses on hover, static
+   under reduced motion.
+3. **Numbers** – count-ups for figures stated in the My Story copy (40+ years, 10 years at Cisco,
+   $12B+, 4 boards). Do not add a number that the copy does not state.
+4. **Current focus** (`#focus`) – full-bleed photo cards for Carbon Robotics and 4AG.
+5. **My Story** (`#my-story`) – sticky heading + the verbatim story copy. `tests/content.spec.ts`
+   asserts its text and that `4AG Robotics` / `Carbon Robotics` each resolve to exactly one link
+   inside `#my-story`, so do not add other links whose accessible name contains those strings here.
+6. **Milestones** (`#journey`) – horizontal scroll-snap timeline (arrows are a progressive
+   enhancement), every entry sourced from the story copy or press library.
+7. **Interviews** – Caltech 2025 and CHM 2018 cards.
+8. **Investments** (`#investments`) – a ledger: one row per stage with `LogoTile`s. The `Exits`
+   `<h3>`'s parent must contain the exit names (content test).
+9. **Exploits** (`#exploits`) – four themes (Big Events / Big Idea / Big Love / Big Fun) with photo
+   cards linking to `/exploits/[slug]` or company pages; a five-card theme gets a 2×2 featured card.
+10. **Recognition** – the Wikimedia FT photo with credit + primary-source Stanford links.
+11. **CTA band** → `/contact`.
 
 ### Initiative Pages
 
@@ -211,12 +239,12 @@ The standalone contact section was removed; all inquiries route through `/contac
   - Public web audio is MP3 (mono, 44.1kHz, 64kbps) written to `public/media/oral-history/caltech-2025/episode-*.mp3`.
   - Keep runtime and transcript links in `src/pages/oral-history-caltech.astro` in sync with uploaded assets.
 
-## Icons (astro-icon allowlist)
+## Icons
 
-`astro-icon` is configured in allowlist mode via `astro.config.mjs`.
-
-If you reference a new icon name anywhere (navigation, Press page, etc.), you must add it to the
-`icon({ include: ... })` list or `npm run build` will fail.
+`src/components/Icon.astro` renders icons to inline SVG at build time from `@iconify-json/lucide`
+(default set) and `@iconify-json/tabler` (`tabler:` prefix, used for brand marks). There is no
+allowlist; an unknown name throws during `npm run build`. Icons are `aria-hidden` unless a `label`
+prop is passed.
 
 ## Sitemap
 
@@ -286,15 +314,18 @@ If you reference a new icon name anywhere (navigation, Press page, etc.), you mu
 - Progressive enhancement: with JS it submits via `fetch` (inline status, no navigation); without JS
   it falls back to a native POST. A hidden `_gotcha` honeypot filters bots. When the variable is
   unset the form tells the visitor it is not configured rather than silently dropping the message.
-- The form controls are server-rendered shadcn components (`Input`/`Label`/`Textarea`) with no
-  `client:` directive, so the page still ships zero framework JS.
+- The form controls are native `<input>`/`<textarea>` elements styled with the design system's
+  `.field` / `.field-label` classes (the shadcn/React components were removed).
 
 ## Image optimization
 
 - Remote Cloudinary image URLs carry `f_auto,q_auto` transforms (AVIF/WebP + auto quality). The
   `Don_Listwin_*.pdf` transcript URL is deliberately left untransformed — it is not an image.
 - Raw `<img>` tags in the shared components and the homepage grids set `decoding="async"` alongside
-  `loading="lazy"`. Images under `public/` are still not run through `astro:assets` (that would mean
+  `loading="lazy"`; the hero portrait is `eager` + `fetchpriority="high"`.
+- Logos are raster files with inconsistent backgrounds, so they always render on a `.logo-plate`
+  (white in both themes). White-on-transparent marks (Carbon Robotics, HWVP) are listed in
+  `src/lib/logos.ts` and get the dark plate. Images under `public/` are still not run through `astro:assets` (that would mean
   moving them into `src/`); a future migration could add responsive `srcset`/AVIF at build time.
 
 ## Private CV operations
@@ -387,7 +418,7 @@ npm audit
 npm run test:security-headers
 npm run test:cv-auth
 npm run test:e2e:cv
-npm run test:e2e   # Playwright responsive smoke tests (multi-viewport)
+npm run test:e2e   # Playwright responsive/content/visual tests (multi-viewport)
 ```
 
 Tailwind + Astro support hot reload. When editing data catalogs, run `npm run build` to ensure the

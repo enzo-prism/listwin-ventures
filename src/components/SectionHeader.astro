@@ -1,4 +1,7 @@
 ---
+// Legacy API kept for older pages; renders the new SectionHeading styling.
+import SectionHeading from './SectionHeading.astro';
+
 interface Props {
   eyebrow?: string;
   title: string;
@@ -7,19 +10,7 @@ interface Props {
   class?: string;
 }
 
-const {
-  eyebrow,
-  title,
-  description,
-  align = 'left',
-  class: className = '',
-} = Astro.props;
-
-const alignClass = align === 'center' ? 'text-center mx-auto max-w-3xl' : '';
+const { eyebrow, title, description, align = 'left', class: className = '' } = Astro.props;
 ---
 
-<div class={`space-y-2 ${alignClass} ${className}`.trim()}>
-  {eyebrow && <p class="lv-eyebrow">{eyebrow}</p>}
-  <h2 class="lv-heading">{title}</h2>
-  {description && <p class="text-sm text-muted-foreground sm:text-base">{description}</p>}
-</div>
+<SectionHeading eyebrow={eyebrow} title={title} description={description} align={align} size="sm" class={className} />

@@ -1,0 +1,56 @@
+---
+import type { VisualAsset } from '../data/assets';
+import { getDetailPath } from '../data/entityDetails';
+import Icon from './Icon.astro';
+import { darkPlateLogoIds } from '../lib/logos';
+
+interface Props {
+  asset: VisualAsset;
+  /** Shown under the plate. Defaults to the asset name. */
+  label?: string;
+  sublabel?: string;
+  href?: string | null;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+
+const { asset, label, sublabel, href, size = 'md', class: className = '' } = Astro.props;
+const resolvedHref = href === null ? undefined : href ?? getDetailPath(asset.id) ?? asset.href;
+const external = Boolean(resolvedHref && /^https?:\/\//.test(resolvedHref));
+const plateHeight = size === 'lg' ? 'h-32' : size === 'sm' ? 'h-20' : 'h-24';
+const imgHeight = size === 'lg' ? 'max-h-16' : size === 'sm' ? 'max-h-9' : 'max-h-12';
+const Tag = resolvedHref ? 'a' : 'div';
+---
+
+<Tag
+  href={resolvedHref}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  class={`logo-tile group spotlight card-lv card-hover relative flex flex-col gap-3 overflow-hidden p-2 ${className}`.trim()}
+>
+  <span class:list={['logo-plate relative z-0 w-full px-6', plateHeight, darkPlateLogoIds.has(asset.id) && 'is-dark']}>
+    <img
+      src={asset.path}
+      alt={asset.alt}
+      width="320"
+      height="128"
+      loading="lazy"
+      decoding="async"
+      class:list={['w-auto max-w-[78%] transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04]', imgHeight]}
+    />
+  </span>
+  <span class="flex items-center justify-between gap-2 px-3 pb-2">
+    <span class="min-w-0">
+      <span class="line-clamp-2 block text-[0.95rem] font-medium leading-snug text-foreground">{label ?? asset.name}</span>
+      {sublabel && <span class="block truncate text-xs text-muted-foreground">{sublabel}</span>}
+    </span>
+    {resolvedHref && (
+      <Icon
+        name={external ? 'arrow-up-right' : 'arrow-right'}
+        size={16}
+        class="shrink-0 text-muted-foreground transition-all duration-500 group-hover:translate-x-0.5 group-hover:text-primary"
+      />
+    )}
+  </span>
+</Tag>

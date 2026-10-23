@@ -1,9 +1,6 @@
 ---
-import { buttonVariants } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import Ga4LeadTracker from '../components/Ga4LeadTracker.astro';
+import Icon from '../components/Icon.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const pageTitle = 'Contact Listwin Ventures | Investment and Media Inquiries';
@@ -14,66 +11,133 @@ const pageDescription =
 // PUBLIC_CONTACT_ENDPOINT in the environment. When it is unset the form renders but posts are
 // short-circuited with a clear message instead of silently failing (the previous behaviour).
 const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
+
+// The four inquiry types named in this page's description. Labels only — no invented detail.
+const topics = [
+  { icon: 'trending-up', label: 'Investments' },
+  { icon: 'handshake', label: 'Partnerships' },
+  { icon: 'mic', label: 'Speaking' },
+  { icon: 'newspaper', label: 'Media' },
+];
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <section class="lv-section">
-    <div class="space-y-2">
-      <h1 class="lv-heading">Contact</h1>
-      <p class="text-sm text-muted-foreground">Tell us what you are building and how we can help.</p>
+  <section class="relative overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="grid-lines opacity-50" aria-hidden="true"></div>
+
+    <div class="container-lv relative z-10 grid gap-14 pb-24 pt-14 sm:pt-20 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:pb-32 lg:pt-24">
+      <!-- Context column -->
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <p class="eyebrow rise" style="--d:0ms">Contact</p>
+        <h1 class="display-lg rise mt-5" style="--d:80ms">Start a <em>conversation</em></h1>
+        <p class="lede rise mt-6 max-w-md" style="--d:180ms">
+          Tell us what you are building and how we can help.
+        </p>
+
+        <div class="rise mt-12" style="--d:280ms">
+          <p class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">Reach out about</p>
+          <ul class="mt-4 grid grid-cols-2 gap-2.5 sm:max-w-md">
+            {topics.map((topic) => (
+              <li class="topic">
+                <Icon name={topic.icon} size={17} strokeWidth={1.75} class="text-primary" />
+                {topic.label}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="rise mt-12 max-w-md border-t border-border pt-8" style="--d:360ms">
+          <p class="flex items-start gap-3 text-[0.95rem] leading-relaxed text-muted-foreground">
+            <Icon name="building-2" size={18} strokeWidth={1.75} class="mt-[0.2rem] shrink-0 text-foreground/70" />
+            <span>Share your organization and what you are currently building — we’ll be in touch.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Form card -->
+      <div class="rise" style="--d:220ms">
+        <div class="card-lv form-card p-6 sm:p-10 lg:p-12">
+          <div class="mb-8 flex items-center justify-between gap-4">
+            <h2 class="display-sm">Send a message</h2>
+            <span class="icon-badge" aria-hidden="true"><Icon name="mail" size={18} strokeWidth={1.75} /></span>
+          </div>
+
+          <form
+            class="grid gap-6"
+            name="contact"
+            method="post"
+            action={contactEndpoint || '#'}
+            data-contact-form
+            data-endpoint={contactEndpoint}
+          >
+            <!-- Honeypot: real people leave this empty; bots tend to fill every field. Visually and
+                 programmatically hidden, and excluded from the tab order. -->
+            <div class="hidden" aria-hidden="true">
+              <label>
+                Leave this field empty
+                <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+              </label>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 sm:gap-5">
+              <div>
+                <label class="field-label" for="contact-first-name">First name</label>
+                <input class="field" id="contact-first-name" type="text" name="firstName" autocomplete="given-name" required />
+              </div>
+              <div>
+                <label class="field-label" for="contact-last-name">Last name</label>
+                <input class="field" id="contact-last-name" type="text" name="lastName" autocomplete="family-name" required />
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label" for="contact-organization">Organization name</label>
+              <input class="field" id="contact-organization" type="text" name="organization" autocomplete="organization" required />
+            </div>
+
+            <div>
+              <label class="field-label" for="contact-email">Email address</label>
+              <input
+                class="field"
+                id="contact-email"
+                type="email"
+                name="email"
+                autocomplete="email"
+                inputmode="email"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="field-label" for="contact-message">Message</label>
+              <textarea class="field min-h-[11rem]" id="contact-message" name="message" rows="6" required></textarea>
+            </div>
+
+            <div class="flex flex-col gap-5 border-t border-border pt-7 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-xs leading-relaxed text-muted-foreground">
+                All fields are required. See our <a class="inline-link" href="/privacy-policy">Privacy Policy</a>.
+              </p>
+              <button type="submit" class="btn btn-primary w-full shrink-0 sm:w-auto" data-contact-submit>
+                Send message
+                <Icon name="send" size={16} class="arrow-diag" />
+              </button>
+            </div>
+
+            <div class="contact-status" data-contact-status-wrap data-tone="">
+              <span class="status-icon" aria-hidden="true">
+                <Icon name="loader-circle" size={18} class="icon-info animate-spin" />
+                <Icon name="check" size={18} class="icon-success" />
+                <Icon name="circle-alert" size={18} class="icon-error" />
+              </span>
+              <p data-contact-status role="status" aria-live="polite" class="text-sm text-muted-foreground"></p>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-
-    <form
-      class="space-y-6"
-      name="contact"
-      method="post"
-      action={contactEndpoint || '#'}
-      data-contact-form
-      data-endpoint={contactEndpoint}
-    >
-      <!-- Honeypot: real people leave this empty; bots tend to fill every field. Visually and
-           programmatically hidden, and excluded from the tab order. -->
-      <div class="hidden" aria-hidden="true">
-        <label>
-          Leave this field empty
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
-        </label>
-      </div>
-
-      <div class="grid gap-4 md:grid-cols-2">
-        <label class="space-y-2">
-          <Label>First name</Label>
-          <Input type="text" name="firstName" autoComplete="given-name" required />
-        </label>
-
-        <label class="space-y-2">
-          <Label>Last name</Label>
-          <Input type="text" name="lastName" autoComplete="family-name" required />
-        </label>
-      </div>
-
-      <label class="space-y-2">
-        <Label>Organization name</Label>
-        <Input type="text" name="organization" autoComplete="organization" required />
-      </label>
-
-      <label class="space-y-2">
-        <Label>Email address</Label>
-        <Input type="email" name="email" autoComplete="email" inputMode="email" autoCapitalize="none" spellCheck="false" required />
-      </label>
-
-      <label class="space-y-2">
-        <Label>Message</Label>
-        <Textarea className="min-h-[170px]" name="message" required />
-      </label>
-
-      <div class="flex flex-wrap items-center gap-4">
-        <button type="submit" class={buttonVariants({ variant: 'default' })} data-contact-submit>
-          Send message
-        </button>
-        <p data-contact-status role="status" aria-live="polite" class="text-sm text-muted-foreground"></p>
-      </div>
-    </form>
   </section>
   <Ga4LeadTracker />
 </BaseLayout>
@@ -83,6 +147,7 @@ const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
     const form = document.querySelector('[data-contact-form]');
     if (!form) return;
     const status = form.querySelector('[data-contact-status]');
+    const statusWrap = form.querySelector('[data-contact-status-wrap]');
     const submit = form.querySelector('[data-contact-submit]');
     const endpoint = form.getAttribute('data-endpoint') || '';
 
@@ -93,6 +158,8 @@ const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
       status.classList.add(
         tone === 'success' ? 'text-primary' : tone === 'error' ? 'text-destructive' : 'text-muted-foreground',
       );
+      // Presentation only: drives the callout styling and icon.
+      if (statusWrap) statusWrap.setAttribute('data-tone', message ? tone : '');
     };
 
     form.addEventListener('submit', async (event) => {
@@ -133,3 +200,131 @@ const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '';
     });
   })();
 </script>
+
+<style>
+  .form-card {
+    box-shadow: var(--shadow-panel);
+  }
+
+  .topic {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.9rem;
+    background: color-mix(in oklab, var(--muted) 85%, transparent);
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .icon-badge {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .field {
+    transition:
+      border-color 200ms,
+      box-shadow 200ms,
+      background-color 200ms;
+  }
+  .field:hover:not(:focus) {
+    border-color: color-mix(in oklab, var(--foreground) 22%, var(--input));
+  }
+
+  [data-contact-submit]:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  /* Inline status callout. Empty → collapsed; the live region stays in the DOM either way. */
+  .contact-status {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border-radius: 1rem;
+    border: 1px solid transparent;
+    padding: 0;
+    transition:
+      background-color 300ms,
+      border-color 300ms,
+      padding 300ms var(--ease-out-expo);
+  }
+  .contact-status[data-tone=''] {
+    margin-top: -1.5rem;
+  }
+  .contact-status[data-tone=''] .status-icon {
+    display: none;
+  }
+  .contact-status:not([data-tone='']) {
+    padding: 1rem 1.1rem;
+    animation: status-in 500ms var(--ease-out-expo) both;
+  }
+  .contact-status[data-tone='info'] {
+    background: var(--muted);
+    border-color: var(--border);
+  }
+  .contact-status[data-tone='success'] {
+    background: var(--accent);
+    border-color: color-mix(in oklab, var(--primary) 35%, transparent);
+  }
+  .contact-status[data-tone='error'] {
+    background: color-mix(in oklab, var(--destructive) 9%, var(--card));
+    border-color: color-mix(in oklab, var(--destructive) 35%, transparent);
+  }
+  .contact-status p {
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .status-icon {
+    display: grid;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+  .status-icon :global(.lv-icon) {
+    display: none;
+  }
+  [data-tone='info'] .status-icon :global(.icon-info),
+  [data-tone='success'] .status-icon :global(.icon-success),
+  [data-tone='error'] .status-icon :global(.icon-error) {
+    display: block;
+  }
+  [data-tone='info'] .status-icon {
+    color: var(--muted-foreground);
+  }
+  [data-tone='success'] .status-icon {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: -0.05rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+  [data-tone='success'] .status-icon :global(.icon-success) {
+    width: 14px;
+    height: 14px;
+  }
+  [data-tone='error'] .status-icon {
+    color: var(--destructive);
+  }
+
+  @keyframes status-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

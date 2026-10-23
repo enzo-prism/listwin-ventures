@@ -2,6 +2,7 @@
 import { existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 
 const pageTitle = 'Don Listwin: Caltech Oral History (2025) | Listwin Ventures';
 const pageDescription =
@@ -46,7 +47,7 @@ const episodes: Episode[] = [
   {
     title: 'Episode 1 — March 25, 2025',
     subtitle: 'From Cisco to Canary: building early detection as a system',
-    runtime: '1h 04m',
+    runtime: '1h 05m',
     audioUrl: '/media/oral-history/caltech-2025/episode-1-2025-03-25.mp3',
     highlights: [
       'Why the “two-step” early detection model matters (biomarker + imaging)',
@@ -136,97 +137,420 @@ const seriesSchema = {
       isPartOf: { '@id': `${seriesUrl}#series` },
     })),
 };
+
+// ── Visible copy (kept separate from the metadata strings above) ──
+const intro =
+  'A four-part oral history recorded March–April 2025 with David Zierler (Caltech Heritage Project). Don Listwin traces the arc from building Cisco’s growth engine to leading Openwave through the dot-com collapse—and then rebuilding his life around early cancer detection through the Canary Foundation.';
+
+const themes = [
+  'Building markets, not just products: Cisco-era lessons on platform shifts, distribution, and customer-pulled roadmaps',
+  'The pivot from tech to science: why early detection became the mission, and what “team science” fixes',
+  'The Canary model: seed funding → early data → leverage into major grants (and why milestones matter)',
+  'Why imaging is the next big bet: biomarker + confirmatory imaging as a practical path to action',
+  'AI’s near-term impact: imaging + pathology as the first domains where algorithms reliably outperform variability',
+];
+
+const toMinutes = (runtime: string) =>
+  Number(/(\d+)\s*h/.exec(runtime)?.[1] ?? 0) * 60 + Number(/(\d+)\s*m/.exec(runtime)?.[1] ?? 0);
+const totalMinutes = episodes.reduce((sum, episode) => sum + toMinutes(episode.runtime), 0);
+const totalRuntime = `${Math.floor(totalMinutes / 60)}h ${String(totalMinutes % 60).padStart(2, '0')}m`;
+
+const seriesMeta = [
+  { label: 'Interviewer', value: 'David Zierler' },
+  { label: 'Sessions', value: String(episodes.length) },
+  { label: 'Recorded', value: 'March–April 2025' },
+  { label: 'Total runtime', value: totalRuntime },
+];
+
+const formatIsoDate = (iso?: string, month: 'long' | 'short' = 'long') =>
+  iso
+    ? new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', year: 'numeric', month, day: 'numeric' }).format(new Date(iso))
+    : '';
+
+const episodeCards = episodesWithMedia.map((episode, index) => {
+  const iso = /(\d{4}-\d{2}-\d{2})/.exec(episode.audioUrl)?.[1];
+  return {
+    ...episode,
+    number: String(index + 1).padStart(2, '0'),
+    anchor: `episode-${index + 1}`,
+    iso,
+    dateLabel: formatIsoDate(iso),
+    shortDate: formatIsoDate(iso, 'short'),
+  };
+});
+
+const relatedLinks = [
+  { href: '/company/canary-foundation', label: 'Canary Foundation', note: 'The early-detection mission', icon: 'heart' },
+  { href: '/oral-history', label: 'Oral History (Computer History Museum, 2018)', note: 'Video interview + transcript', icon: 'video' },
+  { href: '/press', label: 'Press & References', note: 'Coverage and primary sources', icon: 'library' },
+];
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} jsonLd={seriesSchema}>
-  <section class="space-y-6 rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <div class="space-y-3 text-center">
-      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-ink/50">Interview</p>
-      <h1 class="font-display text-4xl font-semibold text-ink sm:text-5xl">Caltech Heritage Project Oral History (2025)</h1>
-      <p class="text-ink/70">
-        A four-part oral history recorded March–April 2025 with David Zierler (Caltech Heritage Project). Don Listwin
-        traces the arc from building Cisco’s growth engine to leading Openwave through the dot-com collapse—and then
-        rebuilding his life around early cancer detection through the Canary Foundation.
-      </p>
-    </div>
-  </section>
+  <!-- Series hero -->
+  <section class="relative overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="grid-lines opacity-60" aria-hidden="true"></div>
+    <div class="container-lv relative z-10 pb-16 pt-14 sm:pb-24 sm:pt-20 lg:pt-24">
+      <nav aria-label="Breadcrumb" class="rise mb-8" style="--d:0ms">
+        <ol class="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+          <li class="inline-flex items-center gap-1.5"><a href="/press" class="transition-colors hover:text-foreground">Press</a></li>
+          <li class="inline-flex items-center gap-1.5">
+            <Icon name="chevron-right" size={14} class="opacity-50" />
+            <span aria-current="page" class="text-foreground/80">Oral history (2025)</span>
+          </li>
+        </ol>
+      </nav>
 
-  <section class="space-y-6 rounded-apple bg-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <h2 class="text-2xl font-semibold text-ink">What this series covers</h2>
-    <ul class="list-disc space-y-2 pl-5 text-ink/75">
-      <li>Building markets, not just products: Cisco-era lessons on platform shifts, distribution, and customer-pulled roadmaps</li>
-      <li>The pivot from tech to science: why early detection became the mission, and what “team science” fixes</li>
-      <li>The Canary model: seed funding → early data → leverage into major grants (and why milestones matter)</li>
-      <li>Why imaging is the next big bet: biomarker + confirmatory imaging as a practical path to action</li>
-      <li>AI’s near-term impact: imaging + pathology as the first domains where algorithms reliably outperform variability</li>
-    </ul>
-  </section>
-
-  <section class="space-y-6 rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <h2 class="text-2xl font-semibold text-ink">Listen + download</h2>
-    <div class="flex flex-wrap gap-3">
-      <a class="btn btn-ink" href={transcriptPdfUrl} target="_blank" rel="noopener noreferrer">
-        Download full transcript (PDF)
-      </a>
-      {showTranscriptTxt && (
-        <a class="btn btn-ink" href={transcriptTxtUrl}>
-          Download full transcript (TXT)
-        </a>
-      )}
-    </div>
-  </section>
-
-  <section class="space-y-6 rounded-apple bg-fog p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <h2 class="text-2xl font-semibold text-ink">Episodes</h2>
-    <div class="space-y-4">
-      {episodesWithMedia.map((episode) => (
-        <article class="space-y-4 rounded-[28px] border border-white/80 bg-white/90 p-5 text-ink/75 shadow" key={episode.title}>
-          <div class="space-y-2">
-            <h3 class="text-xl font-semibold text-ink">{episode.title}</h3>
-            <p class="text-sm font-medium text-ink/65">{episode.subtitle}</p>
-            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-ink/45">Runtime: {episode.runtime}</p>
+      <div class="grid gap-12 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
+        <div>
+          <p class="eyebrow rise" style="--d:60ms">Interview series · Four sessions</p>
+          <h1 class="display-lg rise mt-5" style="--d:140ms">Caltech Heritage Project <em>Oral History</em> (2025)</h1>
+          <p class="lede rise mt-7 max-w-2xl" style="--d:260ms">{intro}</p>
+          <div class="rise mt-9 flex flex-wrap gap-3" style="--d:360ms">
+            <a class="btn btn-primary" href="#episodes">
+              <Icon name="play" size={16} />
+              Listen to the series
+            </a>
+            <a class="btn btn-secondary" href="#full-transcript">
+              <Icon name="file-text" size={16} />
+              Full transcript
+            </a>
           </div>
+        </div>
 
-          {episode.hasAudio ? (
-            <audio class="w-full" controls preload="metadata">
-              <source src={episode.audioUrl} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          ) : (
-            <p class="rounded-[18px] border border-ink/15 bg-ink/[0.03] px-4 py-3 text-sm text-ink/60">Audio coming soon</p>
-          )}
+        <!-- Series "cover": decorative waveform + meta -->
+        <div class="rise" style="--d:320ms">
+          <div class="ch-cover card-lv spotlight overflow-hidden p-2">
+            <div class="ch-cover-art relative overflow-hidden rounded-[1.4rem] bg-foreground px-6 pb-6 pt-7 text-background sm:px-8">
+              <div class="ch-cover-glow" aria-hidden="true"></div>
+              <p class="relative font-mono text-[0.68rem] uppercase tracking-[0.18em] text-background/60">Caltech Heritage Project</p>
+              <p class="relative mt-3 font-display text-[2.1rem] leading-[1.02] tracking-[-0.02em]">Don Listwin<br /><span class="ch-cover-em">in conversation</span></p>
+              <div class="ch-bars relative mt-8" aria-hidden="true">
+                {Array.from({ length: 40 }, (_, i) => (
+                  <span style={`--h:${16 + Math.round(Math.abs(Math.sin(i * 0.62)) * 58 + Math.abs(Math.cos(i * 1.9)) * 24)}%;--i:${i}`}></span>
+                ))}
+              </div>
+            </div>
+            <dl class="grid grid-cols-2 gap-x-6 gap-y-5 px-5 py-6 sm:px-7">
+              {seriesMeta.map((item) => (
+                <div>
+                  <dt class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-foreground">{item.label}</dt>
+                  <dd class="mt-1 text-[0.98rem] text-foreground">{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          {(episode.hasAudio || episode.availableTranscriptLinks.length > 0) && (
-            <div class="flex flex-wrap gap-2">
-              {episode.hasAudio && (
-                <a class="btn btn-ink" href={episode.audioUrl} download>
-                  Download audio (MP3)
+  <!-- What this series covers -->
+  <section class="container-lv section-tight">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.6fr)] lg:gap-20">
+      <div data-reveal>
+        <p class="eyebrow">Themes</p>
+        <h2 class="display-md mt-4">What this series <em>covers</em></h2>
+      </div>
+      <ol class="divide-y divide-border border-y border-border" data-reveal-stagger="70">
+        {themes.map((theme, index) => (
+          <li class="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-4 py-5 sm:grid-cols-[3rem_minmax(0,1fr)] sm:py-6" data-reveal>
+            <span class="pt-0.5 font-mono text-[0.72rem] text-muted-foreground">{String(index + 1).padStart(2, '0')}</span>
+            <p class="text-[1.02rem] leading-relaxed text-foreground/85">{theme}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Episodes + transcript rail -->
+  <section id="episodes" class="ch-anchor container-lv section-lv">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,2fr)] lg:gap-14">
+      <aside class="ch-rail" aria-labelledby="full-transcript-title">
+        <div id="full-transcript" class="ch-anchor" data-reveal>
+          <p class="eyebrow">Listen + download</p>
+          <h2 class="display-md mt-4">Episodes</h2>
+          <div class="card-lv mt-8 p-5 sm:p-6">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                <Icon name="file-text" size={18} />
+              </span>
+              <div>
+                <h3 id="full-transcript-title" class="text-[1rem] font-medium leading-tight">Full transcript</h3>
+                <p class="font-mono text-[0.66rem] uppercase tracking-[0.14em] text-muted-foreground">All four sessions</p>
+              </div>
+            </div>
+            <div class="mt-5 grid gap-2">
+              <a class="btn btn-primary btn-sm justify-between" href={transcriptPdfUrl} target="_blank" rel="noopener noreferrer">
+                Download full transcript (PDF)
+                <Icon name="arrow-up-right" size={14} class="arrow-diag" />
+              </a>
+              {showTranscriptTxt && (
+                <a class="btn btn-secondary btn-sm justify-between" href={transcriptTxtUrl}>
+                  Download full transcript (TXT)
+                  <Icon name="download" size={14} />
                 </a>
               )}
-              {episode.availableTranscriptLinks.map((transcriptLink) => (
-                <a class="btn btn-ink" href={transcriptLink.href} key={transcriptLink.href}>
-                  {transcriptLink.label}
-                </a>
-              ))}
             </div>
-          )}
-
-          <ul class="list-disc space-y-1 pl-5 text-sm">
-            {episode.highlights.map((highlight) => (
-              <li key={highlight}>{highlight}</li>
+          </div>
+          <ol class="mt-8 hidden space-y-1 lg:block" aria-label="Jump to an episode">
+            {episodeCards.map((episode) => (
+              <li>
+                <a href={`#${episode.anchor}`} class="group flex items-center gap-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                  <span class="font-mono text-[0.7rem]">{episode.number}</span>
+                  <span class="h-px w-5 bg-border transition-all duration-500 group-hover:w-8 group-hover:bg-primary"></span>
+                  {episode.shortDate}
+                </a>
+              </li>
             ))}
-          </ul>
-        </article>
-      ))}
+          </ol>
+        </div>
+      </aside>
+
+      <ol class="grid gap-5 sm:gap-6" data-reveal-stagger="90">
+        {episodeCards.map((episode) => (
+          <li id={episode.anchor} class="ch-anchor" data-reveal>
+            <article class="ch-episode card-lv card-hover spotlight relative overflow-hidden p-6 sm:p-8 lg:p-10" data-episode>
+              <div class="relative z-[2] grid gap-6 sm:grid-cols-[5.5rem_minmax(0,1fr)] sm:gap-8">
+                <div class="flex items-center justify-between gap-4 sm:block">
+                  <span class="ch-num font-display block text-[3.75rem] leading-[0.85] tracking-[-0.04em] text-foreground/20 sm:text-[5.25rem]" aria-hidden="true">
+                    {episode.number}
+                  </span>
+                  <span class="ch-eq sm:mt-5" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                </div>
+
+                <div class="min-w-0">
+                  <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+                    <span>{episode.title.split('—')[0].trim()}</span>
+                    <span aria-hidden="true" class="opacity-40">/</span>
+                    {episode.iso ? <time datetime={episode.iso}>{episode.dateLabel}</time> : <span>{episode.dateLabel}</span>}
+                    <span aria-hidden="true" class="opacity-40">/</span>
+                    <span><span class="sr-only">Runtime: </span>{episode.runtime}</span>
+                  </p>
+                  <h3 class="display-sm mt-3">{episode.subtitle}</h3>
+
+                  <div class="mt-6">
+                    {episode.hasAudio ? (
+                      <div class="ch-player">
+                        <audio controls preload="metadata" aria-label={`${episode.title}: ${episode.subtitle}`}>
+                          <source src={episode.audioUrl} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    ) : (
+                      <p class="flex items-center gap-3 rounded-full border border-dashed border-input bg-muted/50 px-5 py-3 text-sm text-muted-foreground">
+                        <Icon name="clock" size={16} />
+                        Audio coming soon
+                      </p>
+                    )}
+                  </div>
+
+                  {(episode.hasAudio || episode.availableTranscriptLinks.length > 0) && (
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      {episode.hasAudio && (
+                        <a class="btn btn-secondary btn-sm" href={episode.audioUrl} download>
+                          <Icon name="download" size={14} />
+                          Download audio (MP3)
+                        </a>
+                      )}
+                      {episode.availableTranscriptLinks.map((transcriptLink) => (
+                        <a class="btn btn-ghost btn-sm" href={transcriptLink.href}>
+                          <Icon name="file-text" size={14} />
+                          {transcriptLink.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+
+                  <div class="mt-8 border-t border-border pt-6">
+                    <p class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-foreground">In this episode</p>
+                    <ul class="mt-4 grid gap-x-8 gap-y-3 md:grid-cols-2">
+                      {episode.highlights.map((highlight) => (
+                        <li class="flex gap-3 text-[0.95rem] leading-relaxed text-foreground/80">
+                          <span class="mt-[0.7em] size-1.5 shrink-0 rounded-full bg-primary/70" aria-hidden="true"></span>
+                          <span>{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
-  <section class="space-y-4 rounded-apple bg-white p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <h2 class="text-2xl font-semibold text-ink">Related links</h2>
-    <div class="flex flex-wrap gap-3">
-      <a class="btn btn-ink" href="/company/canary-foundation">Canary Foundation</a>
-      <a class="btn btn-ink" href="/oral-history">Oral History (Computer History Museum, 2018)</a>
-      <a class="btn btn-ink" href="/press">Press & References</a>
+  <!-- Related -->
+  <section class="container-lv pb-[clamp(4.5rem,10vw,9rem)]">
+    <div class="hairline"></div>
+    <div class="mt-14 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between" data-reveal>
+      <div>
+        <p class="eyebrow">Keep exploring</p>
+        <h2 class="display-sm mt-4">Related links</h2>
+      </div>
     </div>
+    <ul class="mt-8 grid gap-4 md:grid-cols-3" data-reveal-stagger="80">
+      {relatedLinks.map((link) => (
+        <li data-reveal>
+          <a href={link.href} class="group card-lv card-hover spotlight flex h-full items-center gap-4 p-5 sm:p-6">
+            <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+              <Icon name={link.icon} size={18} />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-medium leading-snug text-foreground">{link.label}</span>
+              <span class="mt-0.5 block text-sm text-muted-foreground">{link.note}</span>
+            </span>
+            <Icon name="arrow-right" size={16} class="shrink-0 text-muted-foreground transition-transform duration-500 group-hover:translate-x-1 group-hover:text-primary" />
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
 </BaseLayout>
+
+<style>
+  .ch-anchor {
+    scroll-margin-top: 6rem;
+  }
+  @media (min-width: 1024px) {
+    .ch-rail > div {
+      position: sticky;
+      top: 7.5rem;
+    }
+  }
+
+  /* Series cover */
+  .ch-cover-glow {
+    position: absolute;
+    inset: auto -20% -70% 20%;
+    aspect-ratio: 1;
+    border-radius: 999px;
+    background: radial-gradient(circle, color-mix(in oklab, var(--glow) 50%, transparent), transparent 62%);
+    filter: blur(30px);
+    opacity: 0.6;
+  }
+  .ch-cover-em {
+    font-style: italic;
+    color: var(--glow);
+  }
+  :global(.dark) .ch-cover-em {
+    color: oklch(0.48 0.12 158);
+  }
+  .ch-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 4.5rem;
+  }
+  .ch-bars span {
+    flex: 1 1 0;
+    min-width: 2px;
+    height: var(--h);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--background) 55%, transparent);
+    transform-origin: bottom;
+  }
+  .ch-bars span:nth-child(-n + 14) {
+    background: var(--glow);
+  }
+  :global(.dark) .ch-bars span:nth-child(-n + 14) {
+    background: oklch(0.48 0.12 158);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ch-bars span {
+      animation: ch-breathe 2.8s ease-in-out infinite;
+      animation-delay: calc(var(--i) * -90ms);
+    }
+  }
+  @keyframes ch-breathe {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(0.62);
+    }
+  }
+
+  /* Episode cards */
+  .ch-num {
+    transition: color 500ms var(--ease-out-expo);
+  }
+  .ch-episode:hover .ch-num,
+  .ch-episode.is-playing .ch-num {
+    color: var(--primary);
+  }
+  .ch-episode.is-playing {
+    border-color: color-mix(in oklab, var(--primary) 45%, var(--border));
+  }
+  .ch-player {
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--muted);
+    padding: 0.3rem;
+  }
+  .ch-player audio {
+    display: block;
+  }
+
+  /* Little equaliser that comes alive while an episode plays. */
+  .ch-eq {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 1.1rem;
+    opacity: 0.35;
+    transition: opacity 300ms;
+  }
+  .ch-eq i {
+    width: 3px;
+    height: 35%;
+    border-radius: 999px;
+    background: var(--primary);
+  }
+  .ch-episode.is-playing .ch-eq {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ch-episode.is-playing .ch-eq i {
+      animation: ch-eq 900ms ease-in-out infinite alternate;
+    }
+    .ch-eq i:nth-child(2) {
+      animation-delay: -300ms !important;
+    }
+    .ch-eq i:nth-child(3) {
+      animation-delay: -600ms !important;
+    }
+    .ch-eq i:nth-child(4) {
+      animation-delay: -150ms !important;
+    }
+  }
+  @keyframes ch-eq {
+    from {
+      height: 25%;
+    }
+    to {
+      height: 100%;
+    }
+  }
+</style>
+
+<script>
+  // One episode plays at a time; the playing card gets an `is-playing` state for the equaliser.
+  const players = Array.from(document.querySelectorAll<HTMLAudioElement>('[data-episode] audio'));
+  players.forEach((audio) => {
+    const card = audio.closest('[data-episode]');
+    audio.addEventListener('play', () => {
+      players.forEach((other) => {
+        if (other !== audio && !other.paused) other.pause();
+      });
+      card?.classList.add('is-playing');
+    });
+    const stop = () => card?.classList.remove('is-playing');
+    audio.addEventListener('pause', stop);
+    audio.addEventListener('ended', stop);
+  });
+</script>

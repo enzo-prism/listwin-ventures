@@ -1,6 +1,6 @@
 ---
 import type { VisualAsset } from '../data/assets';
-import { getDetailPath } from '../data/entityDetails';
+import LogoTile from './LogoTile.astro';
 
 export interface Props {
   title?: string;
@@ -9,92 +9,22 @@ export interface Props {
 }
 
 const { title, assets, columns = 4 } = Astro.props;
-
-const colClass = (() => {
-  const md = Math.min(Math.max(columns, 2), 4);
-  const lg = Math.min(Math.max(columns, 2), 6);
-  const map: Record<number, string> = {
-    2: 'md:grid-cols-2',
-    3: 'md:grid-cols-3',
-    4: 'md:grid-cols-4',
-  };
-  const mapLg: Record<number, string> = {
-    2: 'lg:grid-cols-2',
-    3: 'lg:grid-cols-3',
-    4: 'lg:grid-cols-4',
-    5: 'lg:grid-cols-5',
-    6: 'lg:grid-cols-6',
-  };
-  return `${map[md] ?? 'md:grid-cols-4'} ${mapLg[lg] ?? 'lg:grid-cols-4'}`;
-})();
-
-	const usesDarkBackground = (assetId: string) => assetId === 'carbon-robotics';
-
-	const inferImageDimensionsFromPath = (
-	  path: string,
-	  fallback: { width: number; height: number },
-	): { width: number; height: number } => {
-	  const match = path.match(/-(\d+)x(\d+)\.(?:png|jpe?g|webp)(?:\?|$)/i);
-	  if (match) {
-	    return { width: Number(match[1]), height: Number(match[2]) };
-	  }
-	  return fallback;
-	};
+const lgCols: Record<number, string> = {
+  2: 'lg:grid-cols-2',
+  3: 'lg:grid-cols-3',
+  4: 'lg:grid-cols-4',
+  5: 'lg:grid-cols-5',
+  6: 'lg:grid-cols-6',
+};
 ---
 
-<section class="space-y-4 rounded-[var(--radius-xl)] border border-border/70 bg-card/95 p-5 shadow-panel sm:p-6">
-  {title && <h3 class="text-lg font-semibold text-foreground">{title}</h3>}
-  <div class={`grid gap-4 sm:grid-cols-2 ${colClass}`}>
-	    {assets.map((asset, index) => {
-	      const darkBackground = usesDarkBackground(asset.id);
-	      const dimensions = inferImageDimensionsFromPath(asset.path, { width: 320, height: 128 });
-	      const figureToneClass = darkBackground
-	        ? 'border-primary/40 bg-foreground text-background'
-	        : 'border-border/70 bg-card text-muted-foreground';
-	      return (
-        <figure
-          key={asset.id}
-          style={`--logo-delay:${index * 40}ms;`}
-          class={`flex h-full flex-col items-center gap-3 rounded-[1.7rem] border px-4 py-5 text-center transition hover:-translate-y-0.5 hover:border-primary/40 ${figureToneClass}`}
-        >
-          {(() => {
-            const detailPath = getDetailPath(asset.id);
-            const linkHref = detailPath ?? asset.href;
-            const isInternal = Boolean(linkHref?.startsWith('/'));
-            if (linkHref) {
-              return (
-                <a
-                  href={linkHref}
-                  target={detailPath || isInternal ? undefined : '_blank'}
-                  rel={detailPath || isInternal ? undefined : 'noopener noreferrer'}
-                  class="transition hover:scale-105"
-                >
-	                  <img
-	                    src={asset.path}
-	                    alt={asset.alt}
-	                    width={dimensions.width}
-	                    height={dimensions.height}
-	                    loading="lazy"
-	                    decoding="async"
-	                    class="h-16 w-auto max-w-[160px] object-contain"
-	                  />
-	                </a>
-              );
-            }
-            return (
-	              <img
-	                src={asset.path}
-	                alt={asset.alt}
-	                width={dimensions.width}
-	                height={dimensions.height}
-	                loading="lazy"
-	                decoding="async"
-	                class="h-16 w-auto max-w-[160px] object-contain"
-	              />
-            );
-          })()}
-        </figure>
-      );
-    })}
+<section class="space-y-5">
+  {title && <h3 class="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">{title}</h3>}
+  <div class={`grid grid-cols-2 gap-3 sm:grid-cols-3 ${lgCols[Math.min(Math.max(columns, 2), 6)] ?? 'lg:grid-cols-4'}`} data-reveal-stagger="50">
+    {assets.map((asset) => (
+      <div data-reveal>
+        <LogoTile asset={asset} size="sm" class="h-full" />
+      </div>
+    ))}
   </div>
 </section>

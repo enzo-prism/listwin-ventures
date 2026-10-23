@@ -1,59 +1,246 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
 
 const pageTitle = 'Cookie Policy | Listwin Ventures';
 const pageDescription =
   'How Listwin Ventures uses essential storage and optional analytics, and how to change your choice.';
+
+// Table of contents — ids match the section headings below.
+const toc = [
+  { id: 'essential-storage', label: 'Essential storage' },
+  { id: 'optional-analytics', label: 'Optional analytics' },
+  { id: 'change-your-choice', label: 'Change your choice' },
+  { id: 'questions', label: 'Questions' },
+];
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <section class="rounded-apple bg-white/95 p-6 shadow-panel ring-1 ring-white/60 sm:p-10">
-    <article class="mx-auto max-w-3xl space-y-7 text-base leading-7 text-ink/80 [overflow-wrap:anywhere]">
-      <header class="space-y-2">
-        <h1 class="text-3xl font-semibold text-ink">Cookie Policy</h1>
-        <p>Last updated July 29, 2026.</p>
-        <p>
-          This policy explains the small amount of browser storage and optional analytics used on
-          listwinventures.com.
-        </p>
-      </header>
+  <PageHero eyebrow="Legal" title="Cookie <em>Policy</em>" size="md">
+    <span class="chip"><Icon name="calendar" size={13} />Last updated July 29, 2026</span>
+  </PageHero>
 
-      <section class="space-y-3">
-        <h2 class="text-2xl font-semibold text-ink">Essential storage</h2>
-        <p>
-          The site stores your analytics choice in your browser under <code>lv-analytics-consent</code>. This prevents the
-          consent notice from appearing on every visit. It does not identify you and is not used for advertising.
-        </p>
-      </section>
+  <div class="container-lv pb-24 sm:pb-32">
+    <div class="legal-layout">
+      <aside class="legal-aside" aria-label="On this page">
+        <nav class="toc-desktop" aria-label="Table of contents">
+          <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted-foreground">On this page</p>
+          <ol class="toc-list mt-4" data-toc>
+            {toc.map((item) => (
+              <li><a href={`#${item.id}`}>{item.label}</a></li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
 
-      <section class="space-y-3">
-        <h2 class="text-2xl font-semibold text-ink">Optional analytics</h2>
-        <p>
-          Google Analytics and Hotjar load only after you select Accept. They help us understand page usage and improve the
-          site. Selecting Decline prevents both services from loading.
-        </p>
-        <ul class="list-disc space-y-1 pl-6">
-          <li>Google Analytics measures visits and site interactions.</li>
-          <li>Hotjar provides aggregated interaction and usability insights.</li>
-        </ul>
-        <p>We do not use advertising or marketing cookies on this site.</p>
-      </section>
+      <article class="legal prose-lv" data-legal>
+        <header>
+          <p class="legal-lead">
+            This policy explains the small amount of browser storage and optional analytics used on
+            listwinventures.com.
+          </p>
+        </header>
 
-      <section class="space-y-3">
-        <h2 class="text-2xl font-semibold text-ink">Change your choice</h2>
-        <p>
-          Use the Cookie preferences button in the footer at any time. If analytics already loaded and you select Decline,
-          the page refreshes so those services stop loading.
-        </p>
-        <button type="button" data-cookie-preferences class="btn btn-brand">Cookie preferences</button>
-      </section>
+        <section aria-labelledby="essential-storage">
+          <h2 id="essential-storage">Essential storage</h2>
+          <p>
+            The site stores your analytics choice in your browser under <code>lv-analytics-consent</code>. This prevents the
+            consent notice from appearing on every visit. It does not identify you and is not used for advertising.
+          </p>
+        </section>
 
-      <section class="space-y-3">
-        <h2 class="text-2xl font-semibold text-ink">Questions</h2>
-        <p>
-          Contact <a class="text-brand underline" href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>.
+        <section aria-labelledby="optional-analytics">
+          <h2 id="optional-analytics">Optional analytics</h2>
+          <p>
+            Google Analytics and Hotjar load only after you select Accept. They help us understand page usage and improve the
+            site. Selecting Decline prevents both services from loading.
+          </p>
+          <ul>
+            <li>Google Analytics measures visits and site interactions.</li>
+            <li>Hotjar provides aggregated interaction and usability insights.</li>
+          </ul>
+          <p>We do not use advertising or marketing cookies on this site.</p>
+        </section>
+
+        <section aria-labelledby="change-your-choice">
+          <h2 id="change-your-choice">Change your choice</h2>
+          <p>
+            Use the Cookie preferences button in the footer at any time. If analytics already loaded and you select Decline,
+            the page refreshes so those services stop loading.
+          </p>
+          <div class="pt-2">
+            <button type="button" data-cookie-preferences class="btn btn-primary">
+              <Icon name="cookie" size={16} />
+              Cookie preferences
+            </button>
+          </div>
+        </section>
+
+        <section aria-labelledby="questions">
+          <h2 id="questions">Questions</h2>
+          <p>
+            Contact <a href="mailto:privacy@listwinventures.com">privacy@listwinventures.com</a>.
+          </p>
+        </section>
+
+        <p class="legal-related">
+          <a class="link-arrow" href="/privacy-policy">
+            Read the Privacy Policy
+            <Icon name="arrow-right" size={16} />
+          </a>
         </p>
-      </section>
-    </article>
-  </section>
+      </article>
+    </div>
+  </div>
 </BaseLayout>
+
+<script is:inline>
+  // Highlights the current section in the desktop table of contents. Pure enhancement.
+  (() => {
+    const toc = document.querySelector('[data-toc]');
+    if (!toc || !('IntersectionObserver' in window)) return;
+    const links = new Map(
+      Array.from(toc.querySelectorAll('a')).map((link) => [link.getAttribute('href')?.slice(1), link]),
+    );
+    const headings = Array.from(document.querySelectorAll('[data-legal] h2[id]'));
+    const setActive = (id) => {
+      links.forEach((link, key) => {
+        if (key === id) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (visible.length) setActive(visible[0].target.id);
+      },
+      { rootMargin: '-15% 0px -70% 0px' },
+    );
+    if (headings[0]) setActive(headings[0].id);
+    headings.forEach((heading) => observer.observe(heading));
+  })();
+</script>
+
+<style>
+  .legal-layout {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 1024px) {
+    .legal-layout {
+      grid-template-columns: 15rem minmax(0, 44rem);
+      gap: 5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .legal-layout {
+      grid-template-columns: 17rem minmax(0, 44rem);
+      gap: 7rem;
+    }
+  }
+
+  /* Four short sections don't need a mobile TOC; the aside only appears on desktop. */
+  .legal-aside {
+    display: none;
+    min-width: 0;
+  }
+  @media (min-width: 1024px) {
+    .legal-aside {
+      display: block;
+    }
+    .toc-desktop {
+      position: sticky;
+      top: 7rem;
+    }
+  }
+
+  .toc-list {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .toc-list a {
+    display: block;
+    padding: 0.4rem 0 0.4rem 0.9rem;
+    border-left: 1px solid var(--border);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+    transition:
+      color 200ms,
+      border-color 200ms;
+  }
+  .toc-list a:hover {
+    color: var(--foreground);
+  }
+  .toc-list a[aria-current] {
+    color: var(--foreground);
+    border-left-color: var(--primary);
+  }
+
+  .legal {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .legal-lead {
+    font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+    line-height: 1.7;
+    color: var(--foreground);
+  }
+  .legal section {
+    margin-top: 3.25rem;
+    padding-top: 3.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .legal section > * + * {
+    margin-top: 1rem;
+  }
+  .legal h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    margin-top: 0;
+    scroll-margin-top: 6.5rem;
+  }
+  .legal ul {
+    display: grid;
+    gap: 0.55rem;
+    padding-left: 0;
+    list-style: none;
+  }
+  .legal ul li {
+    position: relative;
+    margin-top: 0;
+    padding-left: 1.5rem;
+  }
+  .legal ul li::before {
+    content: '';
+    position: absolute;
+    left: 0.25rem;
+    top: 0.78em;
+    width: 0.45rem;
+    height: 1px;
+    background: var(--primary);
+  }
+  .legal code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 0.15em 0.45em;
+    border-radius: 0.4rem;
+    border: 1px solid var(--border);
+    background: var(--muted);
+    color: var(--foreground);
+    white-space: nowrap;
+  }
+  .legal-related {
+    margin-top: 3.25rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .legal-related a {
+    text-decoration: none;
+  }
+</style>

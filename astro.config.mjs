@@ -1,61 +1,24 @@
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import icon from 'astro-icon';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://www.listwinventures.com',
   server: {
     port: 8080
   },
-  integrations: [
-    react(),
-    icon({
-      include: {
-        'heroicons-outline': ['book-open', 'academic-cap', 'heart', 'light-bulb'],
-        tabler: [
-          'compass',
-          'chevron-down',
-          'menu-2',
-          'x',
-          'chart-line',
-          'heart-handshake',
-          'network',
-          'rocket',
-          'sparkles',
-          'briefcase',
-          'chart-bar',
-          'school',
-          'heart',
-          'hospital',
-          'building-bank',
-          'building-church',
-          'shield-heart',
-          'book',
-          'user-heart',
-          'news',
-          'speakerphone',
-          'video',
-          'link',
-          'brand-twitter',
-          'brand-linkedin',
-          'brand-facebook',
-          'device-analytics',
-          'stethoscope',
-          'brain',
-          'cloud-computing',
-          'dna',
-          'lungs',
-          'wifi',
-          'server',
-          'database',
-          'layers-linked',
-          'apps',
-          'device-desktop-analytics',
-          'users-group',
-          'bulb',
-          'home'
-        ]
-      }
-    })
-  ]
+  // compressHTML strips the newline between running text and an inline element
+  // ("founded the<a>Canary Foundation</a>"), which glued words together across the old site.
+  compressHTML: false,
+  devToolbar: {
+    enabled: false
+  },
+  // Hover/focus prefetch makes same-site navigation feel instant. It is a tiny same-origin
+  // inline script, so the existing CSP needs no change.
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
+  },
+  vite: {
+    plugins: [tailwindcss()]
+  }
 });

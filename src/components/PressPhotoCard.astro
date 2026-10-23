@@ -1,5 +1,5 @@
 ---
-import { buttonVariants } from '@/components/ui/button';
+import Icon from './Icon.astro';
 import { isExternalUrl, type PressItem } from '../data/press';
 
 const { item } = Astro.props as { item: PressItem };
@@ -14,41 +14,33 @@ const linkLabel = photo.kind === 'external' ? photo.label : 'View source';
 const external = isExternalUrl(linkUrl);
 ---
 
-<article class="rounded-[1.8rem] border border-border/70 bg-card/95 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:ring-1 hover:ring-primary/15 focus-within:-translate-y-0.5 focus-within:border-primary/25 focus-within:ring-1 focus-within:ring-primary/15">
+<article class="group card-lv card-hover relative flex h-full flex-col overflow-hidden p-2">
   {photo.kind === 'hosted' && (
-    <img
-      src={photo.src}
-      alt={photo.alt}
-      width="1200"
-      height="900"
-      loading="lazy"
-      class="aspect-[4/3] w-full rounded-[1.45rem] border border-border/70 object-cover"
-    />
+    <div class="media-frame zoom-media aspect-[4/3] rounded-[1.4rem]">
+      <img src={photo.src} alt={photo.alt} width="1200" height="900" loading="lazy" decoding="async" />
+    </div>
   )}
-  <div class="mt-4 space-y-2">
-    <p class="text-xs font-semibold uppercase tracking-[0.32em] text-muted-foreground">{item.publisher}</p>
-    <h3 class="text-2xl font-semibold text-foreground">{item.title}</h3>
-    <p class="text-sm text-muted-foreground">{item.summary}</p>
+  <div class="flex flex-1 flex-col gap-2 p-4 sm:p-5">
+    <p class="font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted-foreground">{item.publisher}</p>
+    <h3 class="text-xl font-medium leading-snug tracking-[-0.01em] text-foreground">{item.title}</h3>
+    <p class="text-[0.95rem] leading-relaxed text-muted-foreground">{item.summary}</p>
     {photo.kind === 'hosted' && (
       <p class="text-xs text-muted-foreground">
         {photo.credit} (
-        <a class="underline" href={photo.licenseUrl} target="_blank" rel="noopener noreferrer">
-          {photo.licenseLabel}
-        </a>
+        <a class="inline-link" href={photo.licenseUrl} target="_blank" rel="noopener noreferrer">{photo.licenseLabel}</a>
         ) via{' '}
-        <a class="underline" href={photo.sourceUrl} target="_blank" rel="noopener noreferrer">
-          Wikimedia Commons
-        </a>
+        <a class="inline-link" href={photo.sourceUrl} target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>
       </p>
     )}
     {photo.kind === 'external' && <p class="text-xs text-muted-foreground">Photo is hosted by the original publisher.</p>}
     <a
-      class={buttonVariants({ variant: 'outline', size: 'sm' })}
+      class="btn btn-secondary btn-sm mt-auto self-start"
       href={linkUrl}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
     >
       {linkLabel}
+      <Icon name={external ? 'arrow-up-right' : 'arrow-right'} size={14} class="arrow-diag" />
     </a>
   </div>
 </article>

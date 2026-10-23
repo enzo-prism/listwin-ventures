@@ -1,8 +1,11 @@
 ---
-import { buttonVariants } from '@/components/ui/button';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 import PressLinkCard from '../components/PressLinkCard.astro';
 import PressPhotoCard from '../components/PressPhotoCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
 import { getPressItems, type PressItem } from '../data/press';
 
 const pressSchema = {
@@ -15,6 +18,11 @@ const pressSchema = {
 const pageTitle = 'Don Listwin Press & References | Listwin Ventures';
 const pageDescription =
   'A curated library of third-party coverage and primary sources on Don Listwin: Stanford honors, cancer early detection, board roles, and BelizeKIDS work.';
+
+// Visible copy (kept separate from the metadata strings above).
+const heading = 'Press &amp; <em>references</em>';
+const intro =
+  'A curated list of third-party coverage and primary references tied to Don’s operating history and current work.';
 
 const pressItems = getPressItems();
 
@@ -31,16 +39,15 @@ const photoItems = photoItemOrder
   .map((id) => pressItems.find((item) => item.id === id))
   .filter((item): item is PressItem => Boolean(item && item.photo));
 
+const hostedPhotoItems = photoItems.filter((item) => item.photo?.kind === 'hosted');
+const externalPhotoItems = photoItems.filter((item) => item.photo?.kind !== 'hosted');
+
+// Every URL renders exactly once on the page: photo items live only in the Photos section,
+// featured items only in Featured, and everything else in its topic section (or "More").
 const photoItemIds = new Set(photoItems.map((item) => item.id));
 const libraryItems = pressItems.filter((item) => !photoItemIds.has(item.id));
 const featured = libraryItems.filter((item) => item.featured);
 const rest = libraryItems.filter((item) => !item.featured);
-
-const recognitionAcademic = rest.filter((item) => item.section === 'recognition-academic');
-const globalHealthBelize = rest.filter((item) => item.section === 'global-health-belizekids');
-const cancerEarlyDetection = rest.filter((item) => item.section === 'cancer-early-detection');
-const boardsOperatorRoles = rest.filter((item) => item.section === 'boards-operator-roles');
-const technologyLeadership = rest.filter((item) => item.section === 'technology-leadership');
 const ungrouped = rest.filter((item) => !item.section);
 
 const sections = [
@@ -49,156 +56,349 @@ const sections = [
     title: 'Recognition & Academic',
     description:
       'Industry awards, Stanford honors, and official profiles that anchor recognition, academic affiliation, and early detection leadership.',
-    items: recognitionAcademic,
   },
   {
     id: 'global-health-belizekids',
     title: 'Global Health & BelizeKIDS',
     description:
       'Stanford Ophthalmology annual reports documenting Belize vision clinic partnerships and global training initiatives.',
-    items: globalHealthBelize,
   },
   {
     id: 'cancer-early-detection',
     title: 'Cancer Early Detection',
     description:
       'Canary Foundation work, institutional partnerships, and award coverage anchored by primary sources.',
-    items: cancerEarlyDetection,
   },
   {
     id: 'boards-operator-roles',
     title: 'Boards & Operator Roles',
     description: 'Board appointments and operator leadership context from primary announcements.',
-    items: boardsOperatorRoles,
   },
   {
     id: 'technology-leadership',
     title: 'Technology Leadership',
     description: 'Leadership transitions and operating context from industry press and primary announcements.',
-    items: technologyLeadership,
+  },
+].map((section) => ({ ...section, items: rest.filter((item) => item.section === section.id) }));
+
+const visibleSections = sections.filter((section) => section.items.length > 0);
+
+const indexLinks = [
+  ...(featured.length > 0 ? [{ href: '#featured', label: 'Featured', count: featured.length }] : []),
+  ...visibleSections.map((section) => ({ href: `#${section.id}`, label: section.title, count: section.items.length })),
+  ...(photoItems.length > 0 ? [{ href: '#photos', label: 'Photos & Portraits', count: photoItems.length }] : []),
+  ...(ungrouped.length > 0 ? [{ href: '#library', label: 'More', count: ungrouped.length }] : []),
+];
+
+const publisherCount = new Set(pressItems.map((item) => item.publisher)).size;
+const glance = [
+  { value: pressItems.length, label: 'References' },
+  { value: publisherCount, label: 'Publishers' },
+  { value: visibleSections.length, label: 'Topics' },
+];
+
+const notes = [
+  { icon: 'library', title: 'What this is', body: 'Links for context, due diligence, and deeper reading.' },
+  {
+    icon: 'link',
+    title: 'How it’s used',
+    body: 'We connect companies and initiatives back to original sources so the website stays grounded in verifiable history.',
+  },
+  {
+    icon: 'copyright',
+    title: 'Who owns it',
+    body: 'External content is owned by its publishers. This page links out for reference and context; it does not mirror full articles.',
   },
 ];
 
-const visibleSections = sections.filter((section) => section.items.length > 0);
-const browseAllAnchor = visibleSections[0] ? `#${visibleSections[0].id}` : ungrouped.length ? '#library' : '#featured';
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} jsonLd={pressSchema}>
-  <section class="lv-section">
-    <div class="space-y-3 text-center">
-      <p class="lv-eyebrow">Press</p>
-      <h1 class="font-display text-4xl font-semibold text-foreground sm:text-5xl">Press & References</h1>
-      <p class="mx-auto max-w-3xl text-base text-muted-foreground">
-        A curated list of third-party coverage and primary references tied to Don’s operating history and current work.
-      </p>
+  <PageHero eyebrow="Press" title={heading} intro={intro}>
+    {featured.length > 0 && (
+      <a class="btn btn-primary" href="#featured">
+        Start with the highlights
+        <Icon name="arrow-down" size={16} />
+      </a>
+    )}
+    <a class="btn btn-secondary" href="/contact">
+      Share a link
+      <Icon name="arrow-right" size={16} class="arrow" />
+    </a>
 
-      <div class="flex flex-wrap justify-center gap-2 pt-2">
-        {photoItems.length > 0 && <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href="#photos">Photos & Portraits</a>}
-        {featured.length > 0 && <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href="#featured">Featured</a>}
-        {visibleSections.map((section) => (
-          <a key={section.id} class={buttonVariants({ variant: 'outline', size: 'sm' })} href={`#${section.id}`}>
-            {section.title}
-          </a>
+    <div slot="media" class="press-glance card-lv spotlight overflow-hidden p-2">
+      <div class="rounded-[1.4rem] bg-muted/60 p-6 sm:p-8">
+        <p class="eyebrow no-rule">The library at a glance</p>
+        <dl class="mt-6 grid grid-cols-3 gap-4">
+          {glance.map((stat) => (
+            <div class="flex flex-col-reverse gap-2">
+              <dt class="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</dt>
+              <dd class="stat-num text-foreground" data-count-to={stat.value}>{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <ol class="divide-y divide-border px-4 py-2 sm:px-6">
+        {indexLinks.map((link, index) => (
+          <li>
+            <a
+              href={link.href}
+              class="group flex min-h-11 items-center gap-4 py-2.5 text-[0.95rem] text-foreground/85 transition-colors hover:text-primary"
+            >
+              <span class="font-mono text-[0.7rem] text-muted-foreground">{pad(index + 1)}</span>
+              <span class="flex-1">{link.label}</span>
+              <span class="font-mono text-[0.7rem] text-muted-foreground">{link.count}</span>
+              <Icon name="arrow-right" size={14} class="opacity-40 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:opacity-100" />
+            </a>
+          </li>
         ))}
-        {ungrouped.length > 0 && <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href="#library">More</a>}
-      </div>
+      </ol>
     </div>
+  </PageHero>
 
-    <div class="grid gap-4 md:grid-cols-3">
-      <article class="rounded-[1.5rem] border border-border/70 bg-muted/40 p-5">
-        <p class="lv-eyebrow">What this is</p>
-        <p class="mt-2 text-sm text-muted-foreground">Links for context, due diligence, and deeper reading.</p>
-      </article>
-      <article class="rounded-[1.5rem] border border-border/70 bg-muted/40 p-5">
-        <p class="lv-eyebrow">How it’s used</p>
-        <p class="mt-2 text-sm text-muted-foreground">
-          We connect companies and initiatives back to original sources so the website stays grounded in verifiable history.
-        </p>
-      </article>
-      <article class="rounded-[1.5rem] border border-border/70 bg-muted/40 p-5">
-        <p class="lv-eyebrow">Want to add one?</p>
-        <p class="mt-2 text-sm text-muted-foreground">If you have a missing citation or updated link, send it through contact.</p>
-        <a class={`mt-4 w-full ${buttonVariants({ variant: 'default', size: 'sm' })}`} href="/contact">Share a link</a>
-      </article>
-    </div>
-  </section>
-
-  {photoItems.length > 0 && (
-    <section id="photos" class="lv-section">
-      <div class="space-y-2">
-        <p class="lv-eyebrow">Photos & Portraits</p>
-        <h2 class="lv-heading">Photos & Portraits</h2>
-        <p class="text-sm text-muted-foreground">Licensed imagery plus external links to portraits hosted by their publishers.</p>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {photoItems.map((item) => (
-          <PressPhotoCard item={item} key={item.id} />
+  <!-- Sticky section index: horizontally scrollable chips on small screens. -->
+  <nav class="press-index sticky z-30 border-y border-border/70" aria-label="Press sections">
+    <div class="container-lv">
+      <ul class="press-index-track flex items-center gap-2 overflow-x-auto py-3">
+        {indexLinks.map((link) => (
+          <li class="shrink-0">
+            <a href={link.href} class="press-chip chip" data-index-link={link.href.slice(1)}>
+              {link.label}
+              <span class="press-chip-count">{link.count}</span>
+            </a>
+          </li>
         ))}
-      </div>
-      <p class="text-xs text-muted-foreground">
-        External portraits remain hosted by their publishers. We only re-host imagery with explicit reuse permission.
-      </p>
-    </section>
-  )}
+      </ul>
+    </div>
+  </nav>
 
   {featured.length > 0 && (
-    <section id="featured" class="lv-section bg-primary/[0.08] ring-primary/20">
-      <div class="space-y-3">
-        <div class="flex flex-wrap items-end justify-between gap-3">
-          <div class="space-y-2">
-            <p class="lv-eyebrow">Featured</p>
-            <h2 class="lv-heading">Start here</h2>
-          </div>
-          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            {featured.length} featured • {pressItems.length} total links
-          </p>
-        </div>
-        <p class="text-sm text-muted-foreground">
-          Featured highlights only. Browse topic sections and the full library below for the complete set of links.
+    <section id="featured" class="press-anchor container-lv section-lv">
+      <SectionHeading
+        eyebrow="Featured"
+        title="Start <em>here</em>"
+        description="Featured highlights only. Browse the topic sections below for the complete set of links."
+      >
+        <p class="font-mono text-[0.72rem] uppercase tracking-[0.14em] text-muted-foreground">
+          {featured.length} featured · {pressItems.length} total links
         </p>
-        <a class={buttonVariants({ variant: 'outline', size: 'sm' })} href={browseAllAnchor}>Browse all links</a>
-      </div>
-      <div class="grid gap-6 md:grid-cols-2">
+      </SectionHeading>
+      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:gap-6" data-reveal-stagger="90">
         {featured.map((item) => (
-          <PressLinkCard item={item} variant="featured" showQuote={true} showTags={true} key={item.id} />
+          <div data-reveal>
+            <PressLinkCard item={item} variant="featured" showQuote={true} showTags={true} />
+          </div>
         ))}
       </div>
     </section>
   )}
 
-  {visibleSections.map((section) => (
-    <section key={section.id} id={section.id} class="lv-section">
-      <div class="space-y-2">
-        <p class="lv-eyebrow">Topic</p>
-        <h2 class="lv-heading">{section.title}</h2>
-        <p class="text-sm text-muted-foreground">{section.description}</p>
-      </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {section.items.map((item) => (
-          <PressLinkCard item={item} variant="standard" showTags={true} key={item.id} />
-        ))}
+  <div class="container-lv"><div class="hairline"></div></div>
+
+  {visibleSections.map((section, index) => (
+    <section id={section.id} class="press-anchor container-lv section-tight">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,2fr)] lg:gap-16">
+        <header class="press-topic-head" data-reveal>
+          <p class="eyebrow">Topic {pad(index + 1)}</p>
+          <h2 class="display-sm mt-4">{section.title}</h2>
+          <p class="mt-4 max-w-md text-[0.98rem] leading-relaxed text-muted-foreground">{section.description}</p>
+          <p class="mt-5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+            {section.items.length} {section.items.length === 1 ? 'reference' : 'references'}
+          </p>
+        </header>
+        <div class="grid gap-4 sm:grid-cols-2 lg:gap-5" data-reveal-stagger="80">
+          {section.items.map((item) => (
+            <div data-reveal>
+              <PressLinkCard item={item} variant="standard" showTags={true} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   ))}
 
-  {ungrouped.length > 0 && (
-    <section id="library" class="lv-section">
-      <div class="space-y-2">
-        <p class="lv-eyebrow">More</p>
-        <h2 class="lv-heading">Additional links</h2>
-        <p class="text-sm text-muted-foreground">
-          Other sources and internal releases that do not fit neatly into the topic sections above.
-        </p>
+  {photoItems.length > 0 && (
+    <section id="photos" class="press-anchor relative overflow-hidden border-y border-border/70 bg-muted/40">
+      <div class="container-lv section-lv">
+        <SectionHeading
+          eyebrow="Gallery"
+          title="Photos &amp; <em>portraits</em>"
+          description="Licensed imagery plus external links to portraits hosted by their publishers."
+        />
+        <div class="mt-12 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.75fr)] lg:gap-6">
+          {hostedPhotoItems.length > 0 && (
+            <div class="press-photo-lead grid gap-5" data-reveal>
+              {hostedPhotoItems.map((item) => (
+                <PressPhotoCard item={item} />
+              ))}
+            </div>
+          )}
+          <div class="grid gap-5 sm:grid-cols-2 lg:gap-6" data-reveal-stagger="80">
+            {externalPhotoItems.map((item) => (
+              <div data-reveal>
+                <PressPhotoCard item={item} />
+              </div>
+            ))}
+            <div class="flex flex-col justify-between gap-6 rounded-[var(--radius-2xl)] border border-dashed border-input p-6 sm:p-7" data-reveal>
+              <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                <Icon name="image" size={18} />
+              </span>
+              <p class="text-[0.95rem] leading-relaxed text-muted-foreground">
+                External portraits remain hosted by their publishers. We only re-host imagery with explicit reuse permission.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="grid gap-5 md:grid-cols-2">
-        {ungrouped.map((item) => (
-          <PressLinkCard item={item} variant="standard" showTags={true} key={item.id} />
-        ))}
-      </div>
-      <p class="pt-2 text-xs text-muted-foreground">
-        External content is owned by its publishers. This page links out for reference and context; it does not mirror full
-        articles.
-      </p>
     </section>
   )}
+
+  {ungrouped.length > 0 && (
+    <section id="library" class="press-anchor container-lv section-tight">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,2fr)] lg:gap-16">
+        <header class="press-topic-head" data-reveal>
+          <p class="eyebrow">More</p>
+          <h2 class="display-sm mt-4">Additional links</h2>
+          <p class="mt-4 max-w-md text-[0.98rem] leading-relaxed text-muted-foreground">
+            Other sources and internal releases that do not fit neatly into the topic sections above.
+          </p>
+        </header>
+        <div class="grid gap-4 sm:grid-cols-2 lg:gap-5" data-reveal-stagger="80">
+          {ungrouped.map((item) => (
+            <div data-reveal>
+              <PressLinkCard item={item} variant="standard" showTags={true} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="container-lv section-tight" aria-labelledby="press-notes-title">
+    <h2 id="press-notes-title" class="sr-only">About this library</h2>
+    <div class="grid gap-px overflow-hidden rounded-[2rem] border border-border bg-border md:grid-cols-3" data-reveal-stagger="80">
+      {notes.map((note) => (
+        <div class="bg-card p-7 sm:p-8" data-reveal>
+          <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
+            <Icon name={note.icon} size={18} />
+          </span>
+          <p class="mt-5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{note.title}</p>
+          <p class="mt-2 text-[0.98rem] leading-relaxed text-foreground/85">{note.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Want to add one?"
+    title="Missing a <em>citation?</em>"
+    body="If you have a missing citation or updated link, send it through contact."
+    primaryLabel="Share a link"
+  />
 </BaseLayout>
+
+<style>
+  .press-index {
+    top: 4rem;
+    background: color-mix(in oklab, var(--background) 82%, transparent);
+    backdrop-filter: saturate(1.6) blur(18px);
+    -webkit-backdrop-filter: saturate(1.6) blur(18px);
+  }
+  @media (min-width: 1024px) {
+    .press-index {
+      top: 4.5rem;
+    }
+  }
+  .press-index-track {
+    scrollbar-width: none;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
+  }
+  .press-index-track::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 1280px) {
+    .press-index-track {
+      mask-image: none;
+    }
+  }
+  .press-chip {
+    min-height: 2.25rem;
+    padding-inline: 0.9rem;
+    transition:
+      color 200ms,
+      border-color 200ms,
+      background-color 200ms;
+  }
+  .press-chip:hover {
+    color: var(--foreground);
+    border-color: color-mix(in oklab, var(--foreground) 28%, var(--border));
+  }
+  .press-chip[aria-current='true'] {
+    background: var(--foreground);
+    border-color: var(--foreground);
+    color: var(--background);
+  }
+  .press-chip-count {
+    opacity: 0.55;
+  }
+
+  /* Anchored sections clear the sticky header + index bar. */
+  .press-anchor {
+    scroll-margin-top: 8.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .press-topic-head {
+      position: sticky;
+      top: 10rem;
+      align-self: start;
+    }
+    .press-photo-lead {
+      position: sticky;
+      top: 10rem;
+      align-self: start;
+    }
+  }
+</style>
+
+<script>
+  // Scroll-spy for the section index: marks the chip of the section currently in view and keeps
+  // it scrolled into the visible part of the (horizontally scrollable) chip rail.
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-index-link]'));
+  const targets = links
+    .map((link) => document.getElementById(link.dataset.indexLink ?? ''))
+    .filter((el): el is HTMLElement => Boolean(el));
+
+  if (links.length && targets.length && 'IntersectionObserver' in window) {
+    const visible = new Map<string, number>();
+    const rail = links[0].closest('ul');
+    const setActive = (id: string | null) => {
+      if (!id && rail && rail.scrollLeft > 0) rail.scrollTo({ left: 0, behavior: 'smooth' });
+      links.forEach((link) => {
+        const active = link.dataset.indexLink === id;
+        if (active) {
+          link.setAttribute('aria-current', 'true');
+          if (rail && rail.scrollWidth > rail.clientWidth) {
+            const left = link.offsetLeft - rail.clientWidth / 2 + link.offsetWidth / 2;
+            rail.scrollTo({ left, behavior: 'smooth' });
+          }
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visible.set(entry.target.id, entry.boundingClientRect.top);
+          else visible.delete(entry.target.id);
+        });
+        const first = targets.find((target) => visible.has(target.id));
+        setActive(first ? first.id : null);
+      },
+      { rootMargin: '-35% 0px -55% 0px' },
+    );
+    targets.forEach((target) => observer.observe(target));
+  }
+</script>
