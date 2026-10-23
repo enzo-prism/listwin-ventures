@@ -1,35 +1,49 @@
 ---
-// The Listwin Ventures mark: the original logo's slanted green bar, redrawn as SVG so it stays
-// crisp and follows the active theme. The wordmark is live text (no black-on-dark PNG problem).
+// The original Listwin Ventures logo. Its "LISTWIN/VENTURES" text and grey "V" are dark on a
+// transparent background, so dark mode swaps in listwin-ventures-logo-dark.webp: the same file
+// with only the black/grey pixels lightened (the green bar and "L/" are untouched).
 interface Props {
   class?: string;
-  compact?: boolean;
+  loading?: 'eager' | 'lazy';
 }
-const { class: className = '', compact = false } = Astro.props;
+const { class: className = 'h-10', loading = 'eager' } = Astro.props;
 ---
 
-<span class={`brand-mark inline-flex items-center gap-2.5 ${className}`.trim()}>
-  <svg viewBox="0 0 30 32" width="24" height="26" aria-hidden="true" class="shrink-0 overflow-visible">
-    <path d="M9 0h12l-9 32H0z" fill="var(--primary)" class="brand-bar" />
-    <path d="M24.5 6h5.5l-6.8 26h-5.4z" fill="currentColor" opacity="0.28" class="brand-bar-2" />
-  </svg>
-  {!compact && (
-    <span class="flex flex-col leading-none">
-      <span class="font-display text-[1.35rem] leading-[0.9] tracking-[-0.01em]">Listwin</span>
-      <span class="mt-[3px] font-mono text-[0.56rem] uppercase tracking-[0.32em] text-muted-foreground">Ventures</span>
-    </span>
-  )}
+<span class="brand-mark inline-flex items-center">
+  <img
+    src="/assets/media/listwin-ventures-logo.webp"
+    alt="Listwin Ventures"
+    width="300"
+    height="120"
+    loading={loading}
+    decoding="async"
+    class={`brand-logo-light w-auto ${className}`}
+  />
+  <img
+    src="/assets/media/listwin-ventures-logo-dark.webp"
+    alt="Listwin Ventures"
+    width="300"
+    height="120"
+    loading={loading}
+    decoding="async"
+    class={`brand-logo-dark w-auto ${className}`}
+  />
 </span>
 
 <style>
-  .brand-bar,
-  .brand-bar-2 {
-    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  .brand-logo-dark {
+    display: none;
   }
-  :global(a:hover) > .brand-mark .brand-bar {
-    transform: translateX(1.5px);
+  :global(.dark) .brand-logo-light {
+    display: none;
   }
-  :global(a:hover) > .brand-mark .brand-bar-2 {
-    transform: translateX(-1px);
+  :global(.dark) .brand-logo-dark {
+    display: block;
+  }
+  img {
+    transition: opacity 300ms;
+  }
+  :global(a:hover) > .brand-mark img {
+    opacity: 0.8;
   }
 </style>

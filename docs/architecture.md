@@ -10,7 +10,7 @@ listwin-ventures/
   public/                  # legacy CSS (kept for reference; not loaded) + uploads (large media ignored via .gitignore)
   playwright.config.ts     # Playwright config for responsive/content/visual tests
   src/
-    components/            # PageHero, SectionHeading, LogoTile, CtaBand, Icon, BrandMark, NetworkHalo, press cards…
+    components/            # PageHero, SectionHeading, LogoTile, CtaBand, Icon, BrandMark (original logo + dark variant), NetworkHalo, press cards…
     data/                  # assets.ts + entityDetails.ts + exploitDetails.ts + press.ts (content catalogs)
     layouts/               # BaseLayout.astro (theme init, header, nav, footer, consent, motion script)
     lib/                   # seo.ts, ga4.ts, logos.ts (dark-plate logo ids)

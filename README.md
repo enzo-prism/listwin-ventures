@@ -70,7 +70,7 @@ the related media.
 - `src/pages/` – Astro page routing (homepage, legal pages, BelizeKids.org spotlight, oral history, contact form, exploit detail pages, etc.). Each page owns its full-bleed sections (`.container-lv` + `.section-lv`).
 - `src/layouts/BaseLayout.astro` – Global shell (no-flash theme init, sticky header that frosts on scroll, theme toggle, dropdown menus, footer, share strip, cookie-consent banner + deferred analytics loader, and the one motion script).
 - `src/styles/global.css` – the whole design system: tokens (light + dark), type scale, buttons, cards, logo plates, form fields, motion. Tailwind 4 CSS-first config; there is no `tailwind.config.*` or PostCSS config.
-- `src/components/PageHero.astro`, `SectionHeading.astro`, `LogoTile.astro`, `CtaBand.astro`, `BrandMark.astro`, `NetworkHalo.astro`, `Icon.astro` – the redesign's building blocks.
+- `src/components/PageHero.astro`, `SectionHeading.astro`, `LogoTile.astro`, `CtaBand.astro`, `BrandMark.astro` (the original logo, with a lightened dark-mode copy), `NetworkHalo.astro`, `Icon.astro` – the redesign's building blocks.
 - `src/components/SiteNavigation.astro` – the header nav. **Zero-framework module JavaScript**
   (CSS desktop dropdowns + a native `<details>` mobile drawer with a small inline accessibility
   enhancement). It replaced the old React/Radix island. See “Navigation uses no framework

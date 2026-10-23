@@ -31,6 +31,11 @@ npm run test:e2e:cv            # Playwright for the private CV workflow
 `vercel dev` (port 3000) to exercise it, or `npm run test:e2e:cv`, which serves the handler over a
 local http shim and needs no credentials.
 
+Astro 7 keeps a lock file for `astro preview` and refuses to start a second one (and
+`astro preview --background` daemons outlive the shell). `preview:test` passes `--ignore-lock` so
+Playwright always serves the fresh build; if tests ever hit a server showing Astro's 404 page, run
+`npx astro preview stop` — a stale preview is serving a deleted `dist/`.
+
 Visual baselines (`tests/visual.spec.ts-snapshots/`) were regenerated for the October 2026
 redesign. They are macOS (`-darwin`) renders; refresh with `--update-snapshots` after an intended
 visual change and review the diffs first.

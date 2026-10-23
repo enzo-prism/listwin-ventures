@@ -77,7 +77,7 @@ words to inline links that started on a new line ("founded the<a>Canary…"). Ke
 | `HeroMedia.astro` | Photo or logo figure (logos get a plate). |
 | `PressLinkCard` / `PressPhotoCard` / `RelatedPressSection` | Press system. Whole card is clickable via `.stretched-link`. |
 | `SharePanel.astro` | Rendered by `BaseLayout` at the bottom of `<main>` on share-enabled paths. |
-| `BrandMark.astro` | SVG mark + live-text wordmark (theme-aware; replaces the black PNG logo in the chrome). |
+| `BrandMark.astro` | The original Listwin Ventures logo (`/assets/media/listwin-ventures-logo.webp`) in the header and footer. Dark mode swaps in `listwin-ventures-logo-dark.webp` — the same artwork with only the black/grey text and "V" lightened; the green is untouched. Regenerate the dark file if the logo ever changes. |
 
 Utility classes: `.btn` + `.btn-primary` (ink) / `.btn-secondary` (outlined card) / `.btn-ghost` /
 `.btn-brand` (green, use rarely) / `.btn-sm`; `.link-arrow`; `.chip` (+ `.chip-live` pulsing dot);
