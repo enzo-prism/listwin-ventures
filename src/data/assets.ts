@@ -49,8 +49,8 @@ export const boardAssets: AssetGroup[] = [
     label: 'Current Boards',
     items: [
       make('4ag', '/assets/media/4ag-robot.webp', '4AG autonomous mushroom harvester', '/4ag'),
-      make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
-      make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
+      make('belizekids', '/assets/media/belizekids-logo.svg', 'BelizeKids.org logo', 'https://belizekids.org/'),
+      make('canary-foundation', '/assets/media/canary-foundation-logo.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
     ],
   },
   {
@@ -61,8 +61,8 @@ export const boardAssets: AssetGroup[] = [
       make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
       make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo'),
       make('sana', '2018/05/sana.png', 'Sana Security logo'),
-      make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
-      make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
+      make('canary-foundation', '/assets/media/canary-foundation-logo.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
+      make('belizekids', '/assets/media/belizekids-logo.svg', 'BelizeKids.org logo', 'https://belizekids.org/'),
     ],
   },
   {
@@ -115,7 +115,7 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Venture',
     items: [
-      make('hwvp', '/assets/media/hwvp-logo.svg', 'HWVP logo', 'https://hwvp.com/'),
+      make('hwvp', '/assets/media/hwvp-logo-dark.svg', 'HWVP logo', 'https://hwvp.com/'),
       make('rally', '2018/05/rally.png', 'Rally Ventures logo', 'https://rallyventures.com/'),
       make('sequoia', '/assets/media/sequoia-logo.png', 'Sequoia Capital logo', 'https://www.sequoiacap.com/'),
       make('telesoft', '/assets/media/telesoft-logo.png', 'TeleSoft Partners logo', 'https://www.telesoft.ai/'),
@@ -132,8 +132,8 @@ export const investmentAssets: AssetGroup[] = [
     type: 'investment',
     label: 'Philanthropic',
     items: [
-      make('belizekids', '2018/05/belize.png', 'BelizeKids.org', 'https://belizekids.org/'),
-      make('canary-foundation', '2018/05/cf.png', 'Canary Foundation', 'https://www.canaryfoundation.org/'),
+      make('belizekids', '/assets/media/belizekids-logo.svg', 'BelizeKids.org', 'https://belizekids.org/'),
+      make('canary-foundation', '/assets/media/canary-foundation-logo.png', 'Canary Foundation', 'https://www.canaryfoundation.org/'),
     ],
   },
   {
@@ -164,8 +164,8 @@ export const philanthropyAssets: AssetGroup[] = [
     type: 'philanthropy',
     label: 'Philanthropy & Academia',
     items: [
-      make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
-      make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
+      make('belizekids', '/assets/media/belizekids-logo.svg', 'BelizeKids.org logo', 'https://belizekids.org/'),
+      make('canary-foundation', '/assets/media/canary-foundation-logo.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
       make('lucile', '2019/03/lucile.png', 'Lucile Packard Children’s Hospital logo'),
       make('moffitt', '2018/05/moffitt.png', 'Moffitt Cancer Center logo'),
       make('nih', '2018/05/nih.png', 'National Institutes of Health logo', 'https://www.cancer.gov/'),

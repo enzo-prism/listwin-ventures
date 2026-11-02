@@ -50,6 +50,10 @@ Shadows: `shadow-[var(--shadow-soft)]`, `shadow-[var(--shadow-lift)]`, `shadow-[
 | `.display-sm` | Sub-section / card titles that should feel editorial |
 | `.lede` | Intro paragraphs (muted, 18–21px) |
 | `.prose-lv` | Long-form copy: inline links get a green underline; `h2`/`h3`, lists (green markers), and `code` are styled |
+
+**Size floor:** no text below `0.75rem` (12px). Mono uppercase labels (eyebrows, chips, meta lines,
+stat captions) were 10–11.5px before November 2026 and were raised to `0.75rem` for legibility;
+do not add `text-[0.6…rem]`/`text-[0.7rem]` again.
 | `.eyebrow` | Mono label with a leading rule (`.eyebrow.no-rule` drops the rule) |
 | `<em>` inside a display class | Italic green accent — use once per headline at most |
 

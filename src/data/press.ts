@@ -104,7 +104,7 @@ const pressItems: PressItem[] = [
   },
   {
     id: 'stanford-medicine-profile-don-listwin',
-    title: 'Dr. Don Listwin',
+    title: 'Don Listwin — Stanford Medicine Profile',
     publisher: 'Stanford Medicine',
     url: 'https://med.stanford.edu/profiles/don-listwin',
     summary:
@@ -174,7 +174,7 @@ const pressItems: PressItem[] = [
   },
   {
     id: 'stanford-canary-center-history',
-    title: 'History',
+    title: 'Canary Center at Stanford: History',
     publisher: 'Stanford Canary Center',
     url: 'https://med.stanford.edu/canarycenter/history.html',
     summary:
@@ -390,6 +390,7 @@ const pressItems: PressItem[] = [
     summary:
       'Press release detailing ZEVX’s funding round and Don Listwin’s appointment as CEO.',
     kind: 'press-release',
+    section: 'boards-operator-roles',
     tags: ['ev', 'funding', 'leadership'],
     relatedSlugs: ['zevx'],
   },

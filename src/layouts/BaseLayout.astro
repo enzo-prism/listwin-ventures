@@ -221,19 +221,15 @@ const footerColumns = [
 
 const rawPathname = Astro.url?.pathname ?? '/';
 const pathname = rawPathname === '/' ? '/' : rawPathname.replace(/\/+$/, '');
+// Sharing is offered only where a visitor is likely to pass the page on: the press library, the
+// two interviews, and the ZEVX announcement. Profile and portfolio pages stay uncluttered.
 const shareEnabledPaths = new Set([
-  '/',
   '/oral-history',
   '/oral-history-caltech',
   '/press',
-  '/4ag',
-  '/belizekids',
-  '/genologics',
   '/zevx-closes-20m-funding-round-appoints-don-listwin-as-ceo',
 ]);
-const shareEnabledPrefixes = ['/company/', '/exploits/'];
-const showSharePanel =
-  shareEnabledPaths.has(pathname) || shareEnabledPrefixes.some((prefix) => pathname.startsWith(prefix));
+const showSharePanel = shareEnabledPaths.has(pathname);
 ---
 
 <!DOCTYPE html>
@@ -339,7 +335,7 @@ const showSharePanel =
             <div class="grid grid-cols-2 gap-10 sm:grid-cols-3">
               {footerColumns.map((column) => (
                 <div>
-                  <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted-foreground">{column.label}</p>
+                  <p class="font-mono text-[0.75rem] uppercase tracking-[0.16em] text-muted-foreground">{column.label}</p>
                   <ul class="mt-4 space-y-2.5">
                     {column.links.map((link) => (
                       <li>

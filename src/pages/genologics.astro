@@ -128,7 +128,7 @@ const focusAreas = [
         {timeline.map((entry, index) => (
           <li class="geno-step relative pl-10 md:pl-0 md:pt-12" data-reveal>
             <span class="geno-dot" aria-hidden="true"></span>
-            <p class="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-primary">{entry.label}</p>
+            <p class="font-mono text-[0.75rem] uppercase tracking-[0.16em] text-primary">{entry.label}</p>
             <h3 class="display-sm mt-3">{entry.title}</h3>
             <p class="mt-4 text-[1rem] leading-relaxed text-muted-foreground">{entry.description}</p>
             {index === timeline.length - 1 && <span class="chip mt-6"><Icon name="check" size={12} />Exit</span>}

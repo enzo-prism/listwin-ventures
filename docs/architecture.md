@@ -118,8 +118,9 @@ with large serif entries and accordion sections. `aria-current="page"` marks the
 - `src/components/SharePanel.astro` powers social share buttons and Copy Link. It also normalizes
   links at runtime with `window.location.href` and includes a clipboard fallback (`document.execCommand('copy')`)
   for browsers where `navigator.clipboard` is unavailable.
-- Share-strip visibility is controlled in `BaseLayout.astro` via `shareEnabledPaths` and
-  `shareEnabledPrefixes`; update those lists when adding/removing key routes.
+- Share-strip visibility is controlled in `BaseLayout.astro` via `shareEnabledPaths`. Since November
+  2026 it is limited to pages people actually pass around (`/press`, both oral histories, the ZEVX
+  announcement); the homepage, company, initiative, and Exploits pages stay without it.
 - Regression check after share/SEO URL changes:
   - `npm run build`
   - `rg "localhost:8080|localhost" dist`
@@ -176,11 +177,14 @@ Rules worth knowing before editing:
    (an SVG network whose links draw in and whose "packets" travel via `animateMotion`; packets are
    removed under reduced motion). Two floating badges (Cisco 1990–2000, Canary Foundation 2004).
 2. **Logo marquee** – every distinct board/investment logo on plates; pauses on hover, static
-   under reduced motion.
+   under reduced motion. It opens on recognizable operating/board brands (Openwave, RapidAI, ZEVX…);
+   Don's own non-profits (`marqueeTrailingIds`) come last so a phone's first view is never the
+   weakest marks.
 3. **Numbers** – count-ups for figures stated in the My Story copy (40+ years, 10 years at Cisco,
    $12B+, 3 boards). Do not add a number that the copy does not state.
-4. **Current focus** (`#focus`) – full-bleed photo cards (currently 4AG only). One card spans the full
-   width; two or more switch to a two-column grid.
+4. **Current focus** (`#focus`) – with one company (currently 4AG) it renders a split card: photo
+   beside the kicker, title, description, three sourced facts (`facts`, taken from `/4ag`), and CTAs.
+   Two or more companies switch to the full-bleed photo grid.
 5. **My Story** (`#my-story`) – sticky heading + the verbatim story copy. `tests/content.spec.ts`
    asserts its text and that `4AG Robotics` / `Canary Foundation` / `BelizeKids.org` resolve to their links
    inside `#my-story`, so do not add other links whose accessible name contains those strings here.
@@ -326,9 +330,13 @@ prop is passed.
   `Don_Listwin_*.pdf` transcript URL is deliberately left untransformed — it is not an image.
 - Raw `<img>` tags in the shared components and the homepage grids set `decoding="async"` alongside
   `loading="lazy"`; the hero portrait is `eager` + `fetchpriority="high"`.
-- Logos are raster files with inconsistent backgrounds, so they always render on a `.logo-plate`
-  (white in both themes). White-on-transparent marks (HWVP) are listed in
-  `src/lib/logos.ts` and get the dark plate. Images under `public/` are still not run through `astro:assets` (that would mean
+- Logos always render on a `.logo-plate` (white / near-white). Plate images are height-bound, so
+  every logo PNG is trimmed to its artwork plus a ~4% margin; untrimmed padding is what made some
+  logos look tiny. Trim new logos the same way. Prefer dark-ink artwork: HWVP uses
+  `hwvp-logo-dark.svg`, BelizeKids `belizekids-logo.svg` (vector), and Canary Foundation a
+  two-line lockup (`canary-foundation-logo.png`, built from the official stacked logo) that stays
+  legible at plate sizes. `src/lib/logos.ts` (`darkPlateLogoIds`) remains for any future
+  white-on-transparent mark. Images under `public/` are still not run through `astro:assets` (that would mean
   moving them into `src/`); a future migration could add responsive `srcset`/AVIF at build time.
 
 ## Private CV operations

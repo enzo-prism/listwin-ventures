@@ -224,7 +224,7 @@ const relatedLinks = [
           <div class="ch-cover card-lv spotlight overflow-hidden p-2">
             <div class="ch-cover-art relative overflow-hidden rounded-[1.4rem] bg-foreground px-6 pb-6 pt-7 text-background sm:px-8">
               <div class="ch-cover-glow" aria-hidden="true"></div>
-              <p class="relative font-mono text-[0.68rem] uppercase tracking-[0.18em] text-background/60">Caltech Heritage Project</p>
+              <p class="relative font-mono text-[0.75rem] uppercase tracking-[0.18em] text-background/60">Caltech Heritage Project</p>
               <p class="relative mt-3 font-display text-[2.1rem] leading-[1.02] tracking-[-0.02em]">Don Listwin<br /><span class="ch-cover-em">in conversation</span></p>
               <div class="ch-bars relative mt-8" aria-hidden="true">
                 {Array.from({ length: 40 }, (_, i) => (
@@ -235,7 +235,7 @@ const relatedLinks = [
             <dl class="grid grid-cols-2 gap-x-6 gap-y-5 px-5 py-6 sm:px-7">
               {seriesMeta.map((item) => (
                 <div>
-                  <dt class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-foreground">{item.label}</dt>
+                  <dt class="font-mono text-[0.75rem] uppercase tracking-[0.16em] text-muted-foreground">{item.label}</dt>
                   <dd class="mt-1 text-[0.98rem] text-foreground">{item.value}</dd>
                 </div>
               ))}
@@ -256,7 +256,7 @@ const relatedLinks = [
       <ol class="divide-y divide-border border-y border-border" data-reveal-stagger="70">
         {themes.map((theme, index) => (
           <li class="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-4 py-5 sm:grid-cols-[3rem_minmax(0,1fr)] sm:py-6" data-reveal>
-            <span class="pt-0.5 font-mono text-[0.72rem] text-muted-foreground">{String(index + 1).padStart(2, '0')}</span>
+            <span class="pt-0.5 font-mono text-[0.75rem] text-muted-foreground">{String(index + 1).padStart(2, '0')}</span>
             <p class="text-[1.02rem] leading-relaxed text-foreground/85">{theme}</p>
           </li>
         ))}
@@ -278,7 +278,7 @@ const relatedLinks = [
               </span>
               <div>
                 <h3 id="full-transcript-title" class="text-[1rem] font-medium leading-tight">Full transcript</h3>
-                <p class="font-mono text-[0.66rem] uppercase tracking-[0.14em] text-muted-foreground">All four sessions</p>
+                <p class="font-mono text-[0.75rem] uppercase tracking-[0.14em] text-muted-foreground">All four sessions</p>
               </div>
             </div>
             <div class="mt-5 grid gap-2">
@@ -298,7 +298,7 @@ const relatedLinks = [
             {episodeCards.map((episode) => (
               <li>
                 <a href={`#${episode.anchor}`} class="group flex items-center gap-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
-                  <span class="font-mono text-[0.7rem]">{episode.number}</span>
+                  <span class="font-mono text-[0.75rem]">{episode.number}</span>
                   <span class="h-px w-5 bg-border transition-all duration-500 group-hover:w-8 group-hover:bg-primary"></span>
                   {episode.shortDate}
                 </a>
@@ -321,7 +321,7 @@ const relatedLinks = [
                 </div>
 
                 <div class="min-w-0">
-                  <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+                  <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-muted-foreground">
                     <span>{episode.title.split('—')[0].trim()}</span>
                     <span aria-hidden="true" class="opacity-40">/</span>
                     {episode.iso ? <time datetime={episode.iso}>{episode.dateLabel}</time> : <span>{episode.dateLabel}</span>}
@@ -364,7 +364,7 @@ const relatedLinks = [
                   )}
 
                   <div class="mt-8 border-t border-border pt-6">
-                    <p class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-foreground">In this episode</p>
+                    <p class="font-mono text-[0.75rem] uppercase tracking-[0.16em] text-muted-foreground">In this episode</p>
                     <ul class="mt-4 grid gap-x-8 gap-y-3 md:grid-cols-2">
                       {episode.highlights.map((highlight) => (
                         <li class="flex gap-3 text-[0.95rem] leading-relaxed text-foreground/80">

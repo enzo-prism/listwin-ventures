@@ -78,7 +78,7 @@ const groupIsCurrent = (item: NavMenu) =>
             >
               {item.sections?.map((section) => (
                 <div class="rounded-2xl p-3">
-                  <p class="mb-2 px-2 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">{section.label}</p>
+                  <p class="mb-2 px-2 font-mono text-[0.75rem] uppercase tracking-[0.16em] text-muted-foreground">{section.label}</p>
                   <div class="space-y-0.5">
                     {section.items.map((leaf) => (
                       <a
@@ -133,7 +133,7 @@ const groupIsCurrent = (item: NavMenu) =>
       aria-labelledby="mobile-navigation-title"
     >
       <div class="flex items-center justify-between px-5 pb-3 pt-4">
-        <span id="mobile-navigation-title" class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
+        <span id="mobile-navigation-title" class="font-mono text-[0.75rem] uppercase tracking-[0.18em] text-muted-foreground">
           Navigation
         </span>
         <button
@@ -170,7 +170,7 @@ const groupIsCurrent = (item: NavMenu) =>
               <div class="space-y-4 px-3 pb-4 pt-1">
                 {item.sections?.map((section) => (
                   <div>
-                    <p class="mb-1.5 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-muted-foreground">{section.label}</p>
+                    <p class="mb-1.5 font-mono text-[0.75rem] uppercase tracking-[0.18em] text-muted-foreground">{section.label}</p>
                     <div class="grid gap-0.5">
                       {section.items.map((leaf) => (
                         <a

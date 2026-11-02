@@ -124,7 +124,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <dl class="grid grid-cols-2 gap-x-8 gap-y-4 sm:flex sm:flex-wrap sm:gap-x-10">
           {sessionMeta.map((item) => (
             <div>
-              <dt class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-foreground">{item.label}</dt>
+              <dt class="font-mono text-[0.75rem] uppercase tracking-[0.16em] text-muted-foreground">{item.label}</dt>
               <dd class="mt-1 text-[0.95rem] text-foreground">{item.value}</dd>
             </div>
           ))}
@@ -161,7 +161,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                 href={`#chapter-${index + 1}`}
                 class="group flex items-center gap-3 rounded-full py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
-                <span class="font-mono text-[0.7rem]">{pad(index + 1)}</span>
+                <span class="font-mono text-[0.75rem]">{pad(index + 1)}</span>
                 <span class="h-px w-5 bg-border transition-all duration-500 group-hover:w-8 group-hover:bg-primary"></span>
                 {section.title}
               </a>

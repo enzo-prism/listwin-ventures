@@ -133,7 +133,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <dl class="mt-6 grid grid-cols-3 gap-4">
           {glance.map((stat) => (
             <div class="flex flex-col-reverse gap-2">
-              <dt class="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</dt>
+              <dt class="font-mono text-[0.75rem] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</dt>
               <dd class="stat-num text-foreground" data-count-to={stat.value}>{stat.value}</dd>
             </div>
           ))}
@@ -146,9 +146,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
               href={link.href}
               class="group flex min-h-11 items-center gap-4 py-2.5 text-[0.95rem] text-foreground/85 transition-colors hover:text-primary"
             >
-              <span class="font-mono text-[0.7rem] text-muted-foreground">{pad(index + 1)}</span>
+              <span class="font-mono text-[0.75rem] text-muted-foreground">{pad(index + 1)}</span>
               <span class="flex-1">{link.label}</span>
-              <span class="font-mono text-[0.7rem] text-muted-foreground">{link.count}</span>
+              <span class="font-mono text-[0.75rem] text-muted-foreground">{link.count}</span>
               <Icon name="arrow-right" size={14} class="opacity-40 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:opacity-100" />
             </a>
           </li>
@@ -180,7 +180,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         title="Start <em>here</em>"
         description="Featured highlights only. Browse the topic sections below for the complete set of links."
       >
-        <p class="font-mono text-[0.72rem] uppercase tracking-[0.14em] text-muted-foreground">
+        <p class="font-mono text-[0.75rem] uppercase tracking-[0.14em] text-muted-foreground">
           {featured.length} featured · {pressItems.length} total links
         </p>
       </SectionHeading>
@@ -203,7 +203,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <p class="eyebrow">Topic {pad(index + 1)}</p>
           <h2 class="display-sm mt-4">{section.title}</h2>
           <p class="mt-4 max-w-md text-[0.98rem] leading-relaxed text-muted-foreground">{section.description}</p>
-          <p class="mt-5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
+          <p class="mt-5 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-muted-foreground">
             {section.items.length} {section.items.length === 1 ? 'reference' : 'references'}
           </p>
         </header>
@@ -283,7 +283,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
             <Icon name={note.icon} size={18} />
           </span>
-          <p class="mt-5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{note.title}</p>
+          <p class="mt-5 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-muted-foreground">{note.title}</p>
           <p class="mt-2 text-[0.98rem] leading-relaxed text-foreground/85">{note.body}</p>
         </div>
       ))}
