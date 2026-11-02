@@ -41,7 +41,6 @@ export const heroAssets: VisualAsset[] = [
   make('clarius', '2020/05/clarius.png', 'Clarius Mobile Health logo', 'https://clarius.com/'),
   make('rapidai', '2020/05/rapid-ai.png', 'RapidAI logo', 'https://www.rapidai.com/'),
   make('zevx', '2023/02/ZevX-logo-300x141.png', 'ZEVX logo'),
-  make('carbon-robotics', '/assets/media/carbon-robotics-logo.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
 ];
 
 export const boardAssets: AssetGroup[] = [
@@ -50,7 +49,6 @@ export const boardAssets: AssetGroup[] = [
     label: 'Current Boards',
     items: [
       make('4ag', '/assets/media/4ag-robot.webp', '4AG autonomous mushroom harvester', '/4ag'),
-      make('carbon-robotics', '/assets/media/carbon-robotics-logo.webp', 'Carbon Robotics logo', 'https://carbonrobotics.com/'),
       make('belizekids', '2018/05/belize.png', 'BelizeKids.org logo', 'https://belizekids.org/'),
       make('canary-foundation', '2018/05/cf.png', 'Canary Foundation logo', 'https://www.canaryfoundation.org/'),
     ],

@@ -23,7 +23,6 @@ const pageTitle = 'Don Listwin, Technology Investor | Listwin Ventures';
 const pageDescription =
   'Don Listwin spent a decade at Cisco and led Openwave and RapidAI as CEO. See his investments across AI, robotics, and data, plus his cancer detection work.';
 
-const carbonRoboticsDetailPath = getDetailPath('carbon-robotics');
 const portrait = heroAssets.find((asset) => asset.id === 'don-listwin');
 const entityDetails = getEntityDetails();
 const entityDetailMap = new Map<string, EntityDetail>(entityDetails.map((detail) => [detail.slug, detail]));
@@ -79,7 +78,6 @@ const linkTargets = {
   openwave: getDetailPath('openwave'),
   rapidai: getDetailPath('rapidai'),
   fourAg: '/4ag',
-  carbonRobotics: getDetailPath('carbon-robotics'),
   canary: getDetailPath('canary-foundation'),
   sequoia: getDetailPath('sequoia'),
   rally: getDetailPath('rally'),
@@ -94,7 +92,7 @@ const stats = [
   { value: 40, suffix: '+', label: 'Years in the technology industry' },
   { value: 10, suffix: '', label: 'Years building businesses at Cisco' },
   { value: 12, prefix: '$', suffix: 'B+', label: 'Annual revenue across the businesses he oversaw' },
-  { value: 4, suffix: '', label: 'Current board seats' },
+  { value: 3, suffix: '', label: 'Current board seats' },
 ];
 
 // Milestones, all drawn from the story copy and the press library.
@@ -152,30 +150,9 @@ const milestones = [
     icon: 'zap',
     href: '/zevx-closes-20m-funding-round-appoints-don-listwin-as-ceo',
   },
-  {
-    year: '2025',
-    title: 'Carbon Robotics',
-    body: 'Joined the board as Lead Independent Director — AI, robotics, and agriculture.',
-    icon: 'tractor',
-    href: linkTargets.carbonRobotics,
-  },
 ];
 
-const carbonPressReleaseUrl =
-  'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board';
-
 const focusCards = [
-  {
-    kicker: 'Lead Independent Director',
-    title: 'Carbon Robotics',
-    description:
-      'Carbon Robotics is revolutionizing agriculture with AI-guided laser weeding and tractor autonomy so growers can cut inputs, fight labor shortages, and capture agronomic data every pass.',
-    image: '/assets/media/carbon-laserweeder.webp',
-    imageAlt: 'Carbon Robotics LaserWeeder working a field at dusk',
-    href: carbonRoboticsDetailPath ?? '/',
-    linkLabel: 'Explore Carbon Robotics',
-    secondary: { label: 'Press release', href: carbonPressReleaseUrl },
-  },
   {
     kicker: 'Board member',
     title: '4AG Robotics',
@@ -541,12 +518,12 @@ const exploitThemes = [
 
   <!-- ─────────────── Current focus ─────────────── -->
   <section id="focus" class="container-lv section-lv pt-8">
-    <SectionHeading eyebrow="Current focus" title="Where engineering meets the <em>field</em>">
+    <SectionHeading eyebrow="Current focus" title="Where engineering meets the <em>farm</em>">
       <p class="max-w-sm text-[0.95rem] leading-relaxed text-muted-foreground md:text-right">
-        Board work at the frontier of AI-driven agriculture: autonomous machines that make farming cleaner and more productive.
+        Board work at the frontier of AI-driven agriculture: autonomous robots that make growing food more productive.
       </p>
     </SectionHeading>
-    <div class="mt-14 grid gap-5 lg:grid-cols-2" data-reveal-stagger="120">
+    <div class:list={['mt-14 grid gap-5', focusCards.length > 1 && 'lg:grid-cols-2']} data-reveal-stagger="120">
       {focusCards.map((card) => (
         <article data-reveal class="focus-card group relative isolate flex min-h-[30rem] flex-col justify-end overflow-hidden rounded-[2rem] text-white sm:min-h-[36rem]">
           <img
@@ -593,7 +570,7 @@ const exploitThemes = [
         <p class="eyebrow">My story</p>
         <h2 class="display-md mt-4">Forty years of building what <em>connects</em> us.</h2>
         <p class="mt-6 max-w-sm text-[0.95rem] leading-relaxed text-muted-foreground">
-          From data switching in the mini-computer era to AI in the farm field — told in Don’s own words.
+          From data switching in the mini-computer era to AI on the farm — told in Don’s own words.
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
           <a class="btn btn-secondary btn-sm" href="/oral-history">
@@ -609,9 +586,8 @@ const exploitThemes = [
           public company—<a href={linkTargets.openwave}>OpenWave</a>—that helped power the first generation of the mobile
           internet. Since then, I created Listwin Ventures which has invested in dozens of other leading technology companies. I
           founded the <a href={linkTargets.canary}>Canary Foundation</a> in 2004 to advance early cancer detection. My operating
-          experience includes CEO roles at <a href={linkTargets.rapidai}>RapidAI</a> and ZEVX. I currently serve on four boards:
-          <a href={linkTargets.fourAg}>4AG Robotics</a>, <a href={linkTargets.carbonRobotics}>Carbon Robotics</a>,
-          <a href={linkTargets.canary}>Canary Foundation</a>, and <a href={linkTargets.belizekids}>BelizeKids.org</a>. I also
+          experience includes CEO roles at <a href={linkTargets.rapidai}>RapidAI</a> and ZEVX. I currently serve on three boards:
+          <a href={linkTargets.fourAg}>4AG Robotics</a>, <a href={linkTargets.canary}>Canary Foundation</a>, and <a href={linkTargets.belizekids}>BelizeKids.org</a>. I also
           serve as a Tech Partner at <a href={linkTargets.sequoia}>Sequoia Capital</a> and <a href={linkTargets.rally}>Rally Ventures</a>.
         </p>
         <p>

@@ -108,18 +108,12 @@ const structuredData = {
 const entityDetails = getEntityDetails();
 const detailBySlug = new Map(entityDetails.map((detail) => [detail.slug, detail]));
 
-const hiddenInvestmentNavSlugs = new Set(['carbon-robotics', 'cradle']);
+const hiddenInvestmentNavSlugs = new Set(['cradle']);
 
 const prettify = (name: string) => name.replace(/\s+(logo|crest|lockup)$/i, '');
 
 // Icon values are Lucide names rendered at build time by Icon.astro.
 const workHighlights = [
-  {
-    label: 'Carbon Robotics',
-    description: 'AI-driven laser weeding and farm autonomy.',
-    href: getDetailPath('carbon-robotics') ?? '/',
-    icon: 'tractor',
-  },
   {
     label: '4AG Robotics',
     description: 'Autonomous mushroom cultivation and harvesting.',
@@ -200,7 +194,6 @@ const footerColumns = [
   {
     label: 'Focus',
     links: [
-      { label: 'Carbon Robotics', href: getDetailPath('carbon-robotics') ?? '/' },
       { label: '4AG Robotics', href: '/4ag' },
       { label: 'Investments', href: '/#investments' },
       { label: 'Exploits', href: '/#exploits' },

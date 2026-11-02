@@ -11,7 +11,6 @@ const routes = [
   '/privacy-policy',
   '/cookie-policy',
   '/zevx-closes-20m-funding-round-appoints-don-listwin-as-ceo',
-  '/company/carbon-robotics',
   '/exploits/netaid',
 ] as const;
 

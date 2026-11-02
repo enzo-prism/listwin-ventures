@@ -91,9 +91,8 @@ test.describe('Content coverage', () => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     const story = page.locator('#my-story');
-    await expect(story).toContainText('I currently serve on four boards');
+    await expect(story).toContainText('I currently serve on three boards');
     await expect(story.getByRole('link', { name: '4AG Robotics' })).toHaveAttribute('href', '/4ag');
-    await expect(story.getByRole('link', { name: 'Carbon Robotics' })).toHaveAttribute('href', '/company/carbon-robotics');
     await expect(story.getByRole('link', { name: 'Canary Foundation' }).first()).toHaveAttribute('href', '/company/canary-foundation');
     await expect(story.getByRole('link', { name: 'BelizeKids.org' }).first()).toHaveAttribute('href', '/company/belizekids');
     await expect(story).not.toContainText('Lead Independent Director at Calix');
@@ -102,6 +101,22 @@ test.describe('Content coverage', () => {
     await expect(story).not.toContainText('B.S. degree');
     await expect(page.locator('main')).not.toContainText('New investment');
     await expect(page.locator('main')).not.toContainText('New interview live');
+  });
+
+  test('Carbon Robotics is pulled from the site (Don, Nov 2026)', async ({ page, request }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('body')).not.toContainText('Carbon Robotics');
+    await expect(page.locator('a[href*="carbon"]')).toHaveCount(0);
+
+    expect((await request.get('/company/carbon-robotics')).status()).toBe(404);
+    expect((await request.get('/assets/media/carbon-laserweeder.webp')).status()).toBe(404);
+
+    const press = await (await request.get('/press')).text();
+    expect(press).not.toContain('Carbon Robotics');
+    const sitemap = await (await request.get('/sitemap.xml')).text();
+    expect(sitemap).not.toContain('carbon-robotics');
+    const llms = await (await request.get('/llms.txt')).text();
+    expect(llms).not.toContain('Carbon Robotics');
   });
 
   test('Current content avoids stale relative claims and third-party image hotlinks', async ({ page, request }) => {
@@ -130,7 +145,6 @@ test.describe('Content coverage', () => {
 
     expect(currentBoards?.items.map((item) => item.id)).toEqual([
       '4ag',
-      'carbon-robotics',
       'belizekids',
       'canary-foundation',
     ]);

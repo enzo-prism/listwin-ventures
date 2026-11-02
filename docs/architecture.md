@@ -48,7 +48,7 @@ listwin-ventures/
   (NetAid, San Jose Grand Prix, Belize initiatives, Canary Cove, etc.).
 - **`src/data/press.ts`** – curated third-party articles, interviews, and press releases. It powers
   `/press` plus the “Related reading” blocks on matching company pages.
-- **`public/assets/uploads/`** – static media. Large items (GeoLite DB, Carbon Robotics videos,
+- **`public/assets/uploads/`** – static media. Large items (GeoLite DB,
   `*.mp4`) are ignored by git; copy them from the secure archive if you need them locally.
 - **`public/media/oral-history/caltech-2025/`** – interview media placeholders and downloads for
   `/oral-history-caltech` (episode audio plus transcript files).
@@ -57,7 +57,7 @@ listwin-ventures/
 
 `BaseLayout.astro` renders a responsive navigation system:
 
-1. **Focus** – current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update the
+1. **Focus** – current focus areas (4AG, BelizeKids.org). Update the
    `workHighlights` array in the layout when swapping focus projects; each item carries a Lucide icon
    name and a one-line description.
 2. **Investments** – mega-menu grouped by stage (`investmentAssets` + `entityDetails`). Exits sit in
@@ -178,10 +178,11 @@ Rules worth knowing before editing:
 2. **Logo marquee** – every distinct board/investment logo on plates; pauses on hover, static
    under reduced motion.
 3. **Numbers** – count-ups for figures stated in the My Story copy (40+ years, 10 years at Cisco,
-   $12B+, 4 boards). Do not add a number that the copy does not state.
-4. **Current focus** (`#focus`) – full-bleed photo cards for Carbon Robotics and 4AG.
+   $12B+, 3 boards). Do not add a number that the copy does not state.
+4. **Current focus** (`#focus`) – full-bleed photo cards (currently 4AG only). One card spans the full
+   width; two or more switch to a two-column grid.
 5. **My Story** (`#my-story`) – sticky heading + the verbatim story copy. `tests/content.spec.ts`
-   asserts its text and that `4AG Robotics` / `Carbon Robotics` each resolve to exactly one link
+   asserts its text and that `4AG Robotics` / `Canary Foundation` / `BelizeKids.org` resolve to their links
    inside `#my-story`, so do not add other links whose accessible name contains those strings here.
 6. **Milestones** (`#journey`) – horizontal scroll-snap timeline (arrows are a progressive
    enhancement), every entry sourced from the story copy or press library.
@@ -203,9 +204,11 @@ Rules worth knowing before editing:
 
 - `src/pages/company/[slug].astro` consumes `getEntityDetails()` to prerender every portfolio slug. Keep `entityDetails.ts` as the single source of truth for copy/highlights.
 - Some slugs (currently Sequoia, HWVP, and TeleSoft) intentionally hide the hero logo to avoid duplicating brand assets. Update the `hideHeroMedia` list in the page component if the design changes.
-- Carbon Robotics includes an inline “Latest News” card stack managed by the `carbonNews` object in the same file. Refresh that block whenever there is a funding or product update so the detail page stays current.
 - Company pages render “Related reading” by matching `detail.slug` against `relatedSlugs` inside `src/data/press.ts`.
-- Extra media (e.g., the Carbon Robotics field footage) is defined near the top of the file. Add new entries there so `galleryAssets` and `carbonVideos` stay organized.
+- Carbon Robotics was pulled from the site at Don’s request (Nov 2026): no company page, nav entry,
+  focus card, milestone, press item, or media. `/company/carbon-robotics` now 404s, and
+  `tests/content.spec.ts` guards against it coming back. Don’s private CV (`private/`) is his own
+  document and was left as he supplied it.
 
 ## Press & References
 
@@ -324,7 +327,7 @@ prop is passed.
 - Raw `<img>` tags in the shared components and the homepage grids set `decoding="async"` alongside
   `loading="lazy"`; the hero portrait is `eager` + `fetchpriority="high"`.
 - Logos are raster files with inconsistent backgrounds, so they always render on a `.logo-plate`
-  (white in both themes). White-on-transparent marks (Carbon Robotics, HWVP) are listed in
+  (white in both themes). White-on-transparent marks (HWVP) are listed in
   `src/lib/logos.ts` and get the dark plate. Images under `public/` are still not run through `astro:assets` (that would mean
   moving them into `src/`); a future migration could add responsive `srcset`/AVIF at build time.
 

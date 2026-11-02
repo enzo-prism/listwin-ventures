@@ -18,7 +18,6 @@ const routes = [
   '/belizekids',
   '/company/canary-foundation',
   '/company/openwave',
-  '/company/carbon-robotics',
   '/exploits/netaid',
 ] as const;
 

@@ -55,26 +55,6 @@ const jsonLd = {
   ...(detail.externalUrl ? { url: detail.externalUrl, sameAs: [detail.externalUrl] } : {}),
   ...(detail.asset?.path ? { logo: { '@type': 'ImageObject', url: detail.asset.path } } : {}),
 };
-const pressReleaseUrl =
-  detail.slug === 'carbon-robotics'
-    ? 'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board'
-    : null;
-const isCarbonRobotics = detail.slug === 'carbon-robotics';
-const carbonFieldAsset: VisualAsset | null = isCarbonRobotics
-  ? {
-      id: 'carbon-robotics-laserweeder',
-      name: 'Carbon Robotics LaserWeeder G2',
-      path: '/assets/media/carbon-laserweeder.webp',
-      alt: 'Carbon Robotics LaserWeeder G2 operating at sunset in a field',
-    }
-  : null;
-const carbonVideos = isCarbonRobotics
-  ? [
-      'https://res.cloudinary.com/dhqpqfw6w/video/upload/v1762635443/CR_video_1_ui2n13.mp4',
-      'https://res.cloudinary.com/dhqpqfw6w/video/upload/v1762635466/CR_video_1-1_ncwtrz.mp4',
-    ]
-  : [];
-const galleryAssets = [carbonFieldAsset].filter(Boolean) as VisualAsset[];
 const hideHeroMedia = ['sequoia', 'hwvp', 'telesoft'].includes(detail.slug);
 const hideCategoryLabel = detail.slug === 'sequoia';
 const isExternalCoveragePage = ['canary-foundation', 'stanford'].includes(detail.slug);
@@ -86,21 +66,6 @@ const relatedPressCountNote =
   !expandRelatedPress && relatedPressCount > relatedPress.length
     ? `Showing ${relatedPress.length} of ${relatedPressCount}.`
     : undefined;
-const carbonNews = isCarbonRobotics
-  ? {
-      title: 'LaserWeeder G2 and Carbon Autonomy',
-      summary:
-        'Carbon Robotics now pairs its LaserWeeder G2 product line with Carbon Autonomy, a retrofit system for dependable autonomous tractor operations.',
-      details: [
-        'LaserWeeder G2 uses computer vision and high-powered lasers for precise weed control without herbicides or soil disturbance.',
-        'The G2 line includes models for farms and field layouts ranging from 8 to 40 feet.',
-        'Carbon Autonomy installs on compatible existing tractors and combines camera, radar, lidar, remote supervision, and manual override.',
-        'Carbon Robotics equipment is used by growers across 15 countries.',
-      ],
-      kicker: 'Current platform',
-    }
-  : null;
-const carbonNewsIcons = ['scan-eye', 'ruler', 'tractor', 'globe'];
 
 // ── Where this record sits in the portfolio (all derived from src/data/assets.ts) ──
 const has = (items: VisualAsset[]) => items.some((item) => item.id === detail.slug);
@@ -140,7 +105,7 @@ const standaloneRoutes: Record<string, string> = { belizekids: '/belizekids', ge
 const siblingGroups = isPhilanthropy
   ? [...philanthropyGroups, ...investmentGroups, ...boardGroups]
   : [...investmentGroups, ...boardGroups, ...philanthropyGroups];
-// If the record's own groups are thin (Carbon Robotics, Calix…), top up from the wider portfolio.
+// If the record's own groups are thin (Calix…), top up from the wider portfolio.
 if (!isPhilanthropy) siblingGroups.push(...investmentAssets, ...boardAssets);
 const siblingSeen = new Set<string>([detail.slug]);
 const siblings: { asset: VisualAsset; group: string; href: string }[] = [];
@@ -164,20 +129,11 @@ const siblingTitle = isPhilanthropy ? 'More from the <em>community</em>' : 'More
         <Icon name="arrow-up-right" size={16} class="arrow-diag" />
       </a>
     )}
-    {pressReleaseUrl && (
-      <a class="btn btn-secondary" href={pressReleaseUrl} target="_blank" rel="noopener noreferrer">
-        Read press release
-        <Icon name="arrow-up-right" size={16} class="arrow-diag" />
-      </a>
-    )}
     {!hideHeroMedia && (
       <figure slot="media" class="company-plate-frame">
         <div class="company-plate-glow" aria-hidden="true"></div>
         <div
-          class:list={[
-            'logo-plate company-plate relative aspect-[16/10] w-full rounded-[1.6rem] px-8 sm:aspect-[4/3] sm:px-10',
-            isCarbonRobotics && 'is-dark',
-          ]}
+          class="logo-plate company-plate relative aspect-[16/10] w-full rounded-[1.6rem] px-8 sm:aspect-[4/3] sm:px-10"
         >
           <img
             src={detail.asset.path}
@@ -193,21 +149,6 @@ const siblingTitle = isPhilanthropy ? 'More from the <em>community</em>' : 'More
       </figure>
     )}
   </PageHero>
-
-  {isCarbonRobotics && carbonVideos[0] && (
-    <section class="container-lv pb-4" aria-label="Carbon Robotics in the field">
-      <div class="media-frame rounded-[2rem] shadow-[var(--shadow-panel)]" data-reveal="scale">
-        <video
-          class="aspect-video"
-          src={carbonVideos[0]}
-          poster={carbonFieldAsset?.path}
-          preload="none"
-          playsinline
-          controls
-        />
-      </div>
-    </section>
-  )}
 
   {detail.highlights.length > 0 && (
     <section class="container-lv section-lv pt-10 sm:pt-14">
@@ -242,74 +183,6 @@ const siblingTitle = isPhilanthropy ? 'More from the <em>community</em>' : 'More
           ))}
         </ol>
       </div>
-    </section>
-  )}
-
-  {carbonNews && (
-    <section class="border-y border-border bg-muted/50">
-      <div class="container-lv section-lv">
-        <div class="max-w-3xl" data-reveal>
-          <p class="eyebrow">{carbonNews.kicker}</p>
-          <h2 class="display-md mt-4">{carbonNews.title}</h2>
-          <p class="lede mt-5">{carbonNews.summary}</p>
-        </div>
-        <ul class="mt-14 grid gap-4 sm:grid-cols-2" data-reveal-stagger="80">
-          {carbonNews.details.map((item, index) => (
-            <li class="card-lv spotlight card-hover flex gap-5 p-6 sm:p-8" data-reveal>
-              <span class="grid size-11 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
-                <Icon name={carbonNewsIcons[index] ?? 'sparkles'} size={20} />
-              </span>
-              <p class="relative z-[2] text-[1.02rem] leading-relaxed text-foreground/85">{item}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )}
-
-  {(galleryAssets.length > 0 || carbonVideos.length > 0) && (
-    <section class="container-lv section-tight">
-      {galleryAssets.length > 0 && (
-        <Fragment>
-          <div data-reveal>
-            <p class="eyebrow">Media</p>
-            <h2 class="display-sm mt-4">Media gallery</h2>
-          </div>
-          <div class="mt-10 grid gap-6">
-            {galleryAssets.map((asset) => (
-              <figure data-reveal>
-                <div class="media-frame zoom-media aspect-[16/10] rounded-[2rem] sm:aspect-[21/9]">
-                  <img src={asset.path} alt={asset.alt} width="1600" height="900" loading="lazy" decoding="async" />
-                </div>
-                <figcaption class="mt-4 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
-                  {asset.name}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </Fragment>
-      )}
-      {carbonVideos.length > 0 && (
-        <Fragment>
-          <div class:list={[galleryAssets.length > 0 && 'mt-20 sm:mt-28']} data-reveal>
-            <p class="eyebrow">Video</p>
-            <h2 class="display-sm mt-4">Field footage</h2>
-          </div>
-          <div class="mt-10 grid gap-6 md:grid-cols-2" data-reveal-stagger="100">
-            {carbonVideos.map((src, index) => (
-              <div class="media-frame aspect-video rounded-[1.75rem] bg-foreground shadow-[var(--shadow-soft)]" data-reveal>
-                <video
-                  src={`${src}#t=0.5`}
-                  controls
-                  preload="metadata"
-                  playsinline
-                  aria-label={`Carbon Robotics video ${index + 1}`}
-                />
-              </div>
-            ))}
-          </div>
-        </Fragment>
-      )}
     </section>
   )}
 

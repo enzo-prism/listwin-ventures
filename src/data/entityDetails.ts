@@ -76,14 +76,6 @@ const content: Record<string, DetailContent> = {
       'Calix Cloud and Revenue EDGE help providers launch new services without heavy engineering teams.',
     ],
   },
-  'carbon-robotics': {
-    summary:
-      'Carbon Robotics builds autonomous farm robots that pair computer vision with high-powered lasers to eliminate weeds while protecting soil health.',
-    highlights: [
-      'Invests at the intersection of AI, robotics, and sustainability—aligning with Don’s thesis on data-rich industrial systems.',
-      'Carbon Robotics helps growers boost yields, reduce herbicide use, and capture detailed agronomic data with each pass.',
-    ],
-  },
   'canary-foundation': {
     seoDescription: 'Canary Foundation, founded and led by Don Listwin, focuses solely on early cancer detection, funding research centers at Stanford, Cambridge, and Calgary.',
     summary:
@@ -355,7 +347,6 @@ const requiredSlugs = Array.from(new Set([
   'awarex',
   'belizekids',
   'calix',
-  'carbon-robotics',
   'canary-foundation',
   'canary-challenge',
   'clarius',

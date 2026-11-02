@@ -103,7 +103,6 @@ The navigation dropdowns pull from the same detail list. Company names now rende
 - Investments – grouped by stage, plus an Exits group.
 - Community – philanthropic entities.
 - Some company routes intentionally hide the hero logo (Sequoia, HWVP, TeleSoft). Update the `hideHeroMedia` array inside `src/pages/company/[slug].astro` if you change that behaviour.
-- The Carbon Robotics detail page owns a “Latest News” block (`carbonNews` in the same file); refresh it whenever there is a notable funding or product announcement.
 
 ## Navigation
 
@@ -114,7 +113,7 @@ serif entries. A small inline script keeps ARIA state synchronized, contains and
 makes background content inert, closes on Escape/backdrop activation, and preserves body scroll
 state. Icons are Lucide names rendered by `Icon.astro`. It renders distinct menus:
 
-- **Focus** – current focus areas (Carbon Robotics, 4AG, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
+- **Focus** – current focus areas (4AG, BelizeKids.org). Update `workHighlights` in the layout when the focus list changes.
 - **Investments** – mega-menu fed by `investmentAssets`/`entityDetails`, grouped by stage with Exits last.
 - **Community** – philanthropy slugs sourced from `entityDetails`.
 - **About** – My Story, the Caltech 2025 and CHM 2018 interviews, and the Press library.
@@ -170,4 +169,4 @@ fails the build.
 - Keep `docs/architecture.md` in sync when redesigning sections (hero, investments, exploits, nav).
 - Use `src/data/entityDetails.ts` as the single source of truth for copy, CTA links, and navigation labels.
 - Maintain `src/data/exploitDetails.ts` when adding new “Exploits” cards so `/exploits/[slug]` stays in sync with the homepage.
-- Homepage content flows: Hero (portrait + animated network) → logo marquee → numbers → Current focus (Carbon Robotics, 4AG) → My Story → Milestones timeline → Interviews → Investments ledger (by stage) → Exploits (four themes) → Recognition → Contact CTA. The Contact form lives at `/contact`.
+- Homepage content flows: Hero (portrait + animated network) → logo marquee → numbers → Current focus (4AG) → My Story → Milestones timeline → Interviews → Investments ledger (by stage) → Exploits (four themes) → Recognition → Contact CTA. The Contact form lives at `/contact`.

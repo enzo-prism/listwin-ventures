@@ -382,18 +382,6 @@ const pressItems: PressItem[] = [
     relatedSlugs: ['canary-foundation'],
   },
   {
-    id: 'carbon-robotics-businesswire-2025-06-02',
-    title: 'Carbon Robotics Adds Lead Independent Director to Board',
-    publisher: 'Business Wire',
-    publishedIso: '2025-06-02',
-    url: 'https://www.businesswire.com/news/home/20250602427241/en/Carbon-Robotics-Adds-Lead-Independent-Director-to-Board',
-    summary:
-      'Board update and company milestones from Carbon Robotics.',
-    kind: 'press-release',
-    tags: ['board', 'robotics', 'agtech'],
-    relatedSlugs: ['carbon-robotics'],
-  },
-  {
     id: 'zevx-press-release-2023-02-16',
     title: 'ZEVX Closes $20M+ Funding Round, Appoints Don Listwin as CEO',
     publisher: 'ZEVX',
